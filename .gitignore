@@ -17,6 +17,10 @@
 *.out
 *.app
 
+# Useless
+*.sdf
+*.suo
+
 # Specific directories and files
 Release/
 Debug/
