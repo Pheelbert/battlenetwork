@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Game">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Game\Field">
+      <UniqueIdentifier>{3e0be7ae-d786-4657-8650-cfd3bf250541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity">
+      <UniqueIdentifier>{2f7945d0-72a3-4a3f-aa64-466703264ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Tile">
+      <UniqueIdentifier>{8bd2fb17-906f-4def-ade7-710283fde6b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{0e5b07ae-1ba2-404d-a462-579ab664eac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{b2d44660-3edc-4851-bcad-91fd074e9eef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="User Interface">
+      <UniqueIdentifier>{e1bf74ec-2dce-40f2-916d-b32bedd01daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="User Interface\Player">
+      <UniqueIdentifier>{cdecab96-d736-431e-a28c-0ee1b60e6ae2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="User Interface\Background">
+      <UniqueIdentifier>{dc29490c-a264-4350-a55e-b02202ddc325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="User Interface\Mob">
+      <UniqueIdentifier>{7362b404-a2e1-442d-ad8d-77dd6ae4f801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity\Spell">
+      <UniqueIdentifier>{8744243d-c514-4f2e-b8c3-ff0cd15fef0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity\Spell\Wave">
+      <UniqueIdentifier>{357d9067-4a1f-4abd-836b-20c9aab639c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity\Spell\Buster">
+      <UniqueIdentifier>{a5b0fd9b-980a-4240-9250-0d06444c60a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity\Player">
+      <UniqueIdentifier>{10c1c4d0-3a84-4a71-bef9-04835d2185da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity\Mob">
+      <UniqueIdentifier>{0f4191b1-38d3-45c5-8f7c-e2facc1ad5da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity\Mob\Mettaur">
+      <UniqueIdentifier>{16b3fe77-dae3-4ab7-a685-3797a65c1775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Component">
+      <UniqueIdentifier>{dfa2cbcd-8575-45f2-93b6-c5d98a64e469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Component\Resource">
+      <UniqueIdentifier>{32f5b123-7c10-4d87-abfc-a9326380e103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Component\Charge">
+      <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="bnMain.cpp" />
+    <ClCompile Include="bnGame.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="bnField.cpp">
+      <Filter>Game\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="bnTile.cpp">
+      <Filter>Game\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="bnPlayer.cpp">
+      <Filter>Game\Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="bnSpell.cpp">
+      <Filter>Game\Entity\Spell</Filter>
+    </ClCompile>
+    <ClCompile Include="bnResourceManager.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="bnPlayerHealthUI.cpp">
+      <Filter>User Interface\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="bnBackgroundUI.cpp">
+      <Filter>User Interface\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="bnMobHealthUI.cpp">
+      <Filter>User Interface\Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="bnWave.cpp">
+      <Filter>Game\Entity\Spell\Wave</Filter>
+    </ClCompile>
+    <ClCompile Include="bnBuster.cpp">
+      <Filter>Game\Entity\Spell\Buster</Filter>
+    </ClCompile>
+    <ClCompile Include="bnMettaur.cpp">
+      <Filter>Game\Entity\Mob\Mettaur</Filter>
+    </ClCompile>
+    <ClCompile Include="bnRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="bnResourceComponent.cpp">
+      <Filter>Game\Component\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="bnChargeComponent.cpp">
+      <Filter>Game\Component\Charge</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bnGame.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="bnField.h">
+      <Filter>Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="bnTile.h">
+      <Filter>Game\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="bnEntity.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMemory.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayer.h">
+      <Filter>Game\Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSpell.h">
+      <Filter>Game\Entity\Spell</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMob.h">
+      <Filter>Game\Entity\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="bnResourceManager.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="bnTextureType.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="bnTeam.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="bnDirection.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="bnLogger.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="bnTileState.h">
+      <Filter>Game\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerState.h">
+      <Filter>Game\Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMobState.h">
+      <Filter>Game\Entity\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerHealthUI.h">
+      <Filter>User Interface\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBackgroundUI.h">
+      <Filter>User Interface\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMobHealthUI.h">
+      <Filter>User Interface\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="bnWave.h">
+      <Filter>Game\Entity\Spell\Wave</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBuster.h">
+      <Filter>Game\Entity\Spell\Buster</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMettaur.h">
+      <Filter>Game\Entity\Mob\Mettaur</Filter>
+    </ClInclude>
+    <ClInclude Include="bnRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="bnLayered.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="bnResourceComponent.h">
+      <Filter>Game\Component\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChargeComponent.h">
+      <Filter>Game\Component\Charge</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
