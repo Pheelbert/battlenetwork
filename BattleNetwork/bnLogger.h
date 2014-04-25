@@ -9,17 +9,17 @@ using std::to_string;
 class Logger
 {
 public:
-	static void Log(string _message)
-	{
-		cerr << _message << endl;
-	}
+    static void Log(string _message)
+    {
+        cerr << _message << endl;
+    }
 
-	static string ToString(float _number)
-	{
-		return to_string(_number);
-	}
+    static string ToString(float _number)
+    {
+        return to_string(_number);
+    }
 
 private:
-	Logger();
-	~Logger();
+    Logger();
+    ~Logger();
 };

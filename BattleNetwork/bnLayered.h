@@ -10,111 +10,111 @@ using std::vector;
 class LayeredDrawable : public Sprite
 {
 private:
-	int layer;
-	int depth;
+    int layer;
+    int depth;
 
 public:
-	LayeredDrawable(void)
+    LayeredDrawable(void)
         : layer(0),
         depth(0)
-	{
-	}
+    {
+    }
 
-	LayeredDrawable(int _layer)
+    LayeredDrawable(int _layer)
         : layer(_layer),
         depth(0)
-	{
-	}
+    {
+    }
 
-	void SetLayer(int _layer)
-	{
-		layer = _layer;
-	}
+    void SetLayer(int _layer)
+    {
+        layer = _layer;
+    }
 
-	int GetLayer() const
-	{
-		return layer;
-	}
+    int GetLayer() const
+    {
+        return layer;
+    }
 
-	void SetDepth(int _depth)
-	{
-		depth = _depth;
-	}
+    void SetDepth(int _depth)
+    {
+        depth = _depth;
+    }
 
-	int GetDepth() const
-	{
-		return depth;
-	}
+    int GetDepth() const
+    {
+        return depth;
+    }
 };
 
 class Layers : vector<LayeredDrawable*>
 {
 public:
-	int min;
-	int max;
+    int min;
+    int max;
 
-	void Insert(LayeredDrawable* _layeredDrawable)
-	{
-		if (_layeredDrawable->GetLayer() > max)
-		{
-			max = _layeredDrawable->GetLayer();
-		}
-		else if (_layeredDrawable->GetLayer() < min)
-		{
-			min = _layeredDrawable->GetLayer();
-		}
+    void Insert(LayeredDrawable* _layeredDrawable)
+    {
+        if (_layeredDrawable->GetLayer() > max)
+        {
+            max = _layeredDrawable->GetLayer();
+        }
+        else if (_layeredDrawable->GetLayer() < min)
+        {
+            min = _layeredDrawable->GetLayer();
+        }
 
-		push_back(_layeredDrawable);
-	}
+        push_back(_layeredDrawable);
+    }
 
-	vector<Drawable*> At(int _layer)
-	{
-		vector<Drawable*> layer = vector<Drawable*>();
-		auto it = begin();
-		for(it; it != end(); ++it)
-		{
-			if ((*it)->GetLayer() == _layer)
-			{
-				layer.push_back(*it);
-			}
-		}
-		return layer;
-	}
+    vector<Drawable*> At(int _layer)
+    {
+        vector<Drawable*> layer = vector<Drawable*>();
+        auto it = begin();
+        for(it; it != end(); ++it)
+        {
+            if ((*it)->GetLayer() == _layer)
+            {
+                layer.push_back(*it);
+            }
+        }
+        return layer;
+    }
 
-	void Clear()
-	{
-		clear();
-	}
+    void Clear()
+    {
+        clear();
+    }
 
-	Layers()
-	{
-		min = 0;
-		max = 0;
-	}
+    Layers()
+    {
+        min = 0;
+        max = 0;
+    }
 };
 
 class Overlay : public vector<Drawable*>
 {
 public:
-	void Push(Drawable* _component)
-	{
-		push_back(_component);
-	}
+    void Push(Drawable* _component)
+    {
+        push_back(_component);
+    }
 
-	void Clear()
-	{
-		clear();
-	}
+    void Clear()
+    {
+        clear();
+    }
 
-	Overlay()
-	{
-	}
+    Overlay()
+    {
+    }
 };
 
 class Underlay : public Overlay
 {
 public:
-	Underlay()
-	{
-	}
+    Underlay()
+    {
+    }
 };

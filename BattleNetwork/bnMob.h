@@ -12,60 +12,60 @@ using sf::IntRect;
 class Mob : public Entity
 {
 public:
-	Mob(void)
+    Mob(void)
     {
         SetLayer(0);
     }
 
-	virtual ~Mob(void)
+    virtual ~Mob(void)
     {
         delete healthUI;
     }
 
-	virtual void Update(float _elapsed)            = 0;
-	virtual bool Move(Direction _direction)        = 0;
-	virtual vector<Drawable*> GetMiscComponents()  = 0;
-	virtual void RefreshTexture()                  = 0;
+    virtual void Update(float _elapsed)            = 0;
+    virtual bool Move(Direction _direction)        = 0;
+    virtual vector<Drawable*> GetMiscComponents()  = 0;
+    virtual void RefreshTexture()                  = 0;
     virtual int getStateFromString(string _string) = 0;
     virtual void addAnimation(int _state, FrameAnimation _animation, float _duration) = 0;
 
-	TextureType GetTextureType() const
+    TextureType GetTextureType() const
     {
         return ttype;
     }
 
-	MobState GetMobState() const
+    MobState GetMobState() const
     {
         return state;
     }
 
-	int GetHealth() const
+    int GetHealth() const
     {
         return health;
     }
 
-	void SetHealth(int _health)
+    void SetHealth(int _health)
     {
         health = _health;
     }
 
-	int Hit(int _damage)
+    int Hit(int _damage)
     {
         (health - _damage < 0) ? health = 0 : health -= _damage;
         return health;
     }
 
-	float GetHitHeight() const
+    float GetHitHeight() const
     {
         return hitHeight;
     }
 
 protected:
-	int health;
-	float hitHeight;
-	Direction direction;
-	MobState state;
-	TextureType ttype;
-	MobHealthUI* healthUI;
-	Animator<Sprite, MobState> animator;
+    int health;
+    float hitHeight;
+    Direction direction;
+    MobState state;
+    TextureType ttype;
+    MobHealthUI* healthUI;
+    Animator<Sprite, MobState> animator;
 };

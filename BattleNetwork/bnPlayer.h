@@ -14,37 +14,37 @@ using sf::IntRect;
 class Player : public Entity
 {
 public:
-	Player(void);
-	virtual ~Player(void);
+    Player(void);
+    virtual ~Player(void);
 
-	virtual void Update(float _elapsed);
-	virtual bool Move(Direction _direction);
-	void Attack(float _charge);
-	virtual vector<Drawable*> GetMiscComponents();
-	void RefreshTexture();
+    virtual void Update(float _elapsed);
+    virtual bool Move(Direction _direction);
+    void Attack(float _charge);
+    virtual vector<Drawable*> GetMiscComponents();
+    void RefreshTexture();
 
-	int GetHealth() const;
-	void SetHealth(int _health);
-	int Hit(int _damage);
+    int GetHealth() const;
+    void SetHealth(int _health);
+    int Hit(int _damage);
 
-	PlayerHealthUI* GetHealthUI() const;
+    PlayerHealthUI* GetHealthUI() const;
 
     virtual int getStateFromString(string _string);
     virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
 
 private:
-	int health;
+    int health;
 
-	//Cooldowns
-	float moveKeyPressCooldown;
-	float moveLagCooldown;
-	float attackKeyPressCooldown;
-	float attackToIdleCooldown;
+    //Cooldowns
+    float moveKeyPressCooldown;
+    float moveLagCooldown;
+    float attackKeyPressCooldown;
+    float attackToIdleCooldown;
 
-	TextureType ttype;
-	PlayerState state;
-	PlayerHealthUI* healthUI;
-	Animator<Sprite, PlayerState> animator;
+    TextureType ttype;
+    PlayerState state;
+    PlayerHealthUI* healthUI;
+    Animator<Sprite, PlayerState> animator;
 
     //-Animation-
     float animationProgress;

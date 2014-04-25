@@ -20,42 +20,42 @@ class Field;
 class Entity : public LayeredDrawable
 {
 public:
-	Entity(void)
-	: tile(nullptr),
+    Entity(void)
+    : tile(nullptr),
       previous(nullptr),
       field(nullptr),
       team(Team::UNKNOWN),
       deleted(false)
-	{
-	}
-
-	virtual ~Entity(void)
     {
     }
 
-	virtual void Update(float _elapsed)            = 0;
-	virtual bool Move(Direction _direction)        = 0;
-	virtual vector<Drawable*> GetMiscComponents()  = 0;
+    virtual ~Entity(void)
+    {
+    }
+
+    virtual void Update(float _elapsed)            = 0;
+    virtual bool Move(Direction _direction)        = 0;
+    virtual vector<Drawable*> GetMiscComponents()  = 0;
     virtual int getStateFromString(string _string) = 0;
     virtual void addAnimation(int _state, FrameAnimation _animation, float _duration) = 0;
 
-	bool Teammate(Team _team)    { return team == _team; }
+    bool Teammate(Team _team)    { return team == _team; }
 
-	void SetTile(Tile* _tile)    { tile = _tile; }
-	Tile* GetTile() const        { return tile; }
+    void SetTile(Tile* _tile)    { tile = _tile; }
+    Tile* GetTile() const        { return tile; }
 
-	void SetField(Field* _field) { field = _field; }
-	Field* GetField() const      { return field; }
+    void SetField(Field* _field) { field = _field; }
+    Field* GetField() const      { return field; }
 
-	Team GetTeam() const         { return team; }
-	void SetTeam(Team _team)     { team = _team; }
+    Team GetTeam() const         { return team; }
+    void SetTeam(Team _team)     { team = _team; }
 
-	bool IsDeleted() const       { return deleted; }
+    bool IsDeleted() const       { return deleted; }
 
 protected:
-	Tile* tile;
-	Tile* previous;
-	Field* field;
-	Team team;
-	bool deleted;
+    Tile* tile;
+    Tile* previous;
+    Field* field;
+    Team team;
+    bool deleted;
 };

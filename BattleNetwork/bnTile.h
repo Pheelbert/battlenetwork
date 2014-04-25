@@ -18,44 +18,44 @@ class Field;
 class Tile : public Sprite
 {
 public:
-	Tile(void);
-	Tile(int _x, int _y);
-	~Tile(void);
+    Tile(void);
+    Tile(int _x, int _y);
+    ~Tile(void);
 
-	void SetField(Field* _field);
+    void SetField(Field* _field);
 
-	int GetX() const;
-	int GetY() const;
+    int GetX() const;
+    int GetY() const;
 
-	Team GetTeam() const;
-	void SetTeam(Team _team);
+    Team GetTeam() const;
+    void SetTeam(Team _team);
 
-	float GetWidth() const;
-	float GetHeight() const;
+    float GetWidth() const;
+    float GetHeight() const;
 
-	void SetState(TileState _state);
-	void RefreshTexture();
+    void SetState(TileState _state);
+    void RefreshTexture();
 
-	bool IsWalkable() const;
-	bool IsCracked() const;
+    bool IsWalkable() const;
+    bool IsCracked() const;
 
-	void AddEntity(Entity* _entity);
-	void RemoveEntity(Entity* _entity);
-	bool ContainsEntity(Entity* _entity) const;
-	void AffectEntities(Spell* caller);
-	bool GetNextEntity(Entity*& out) const;
+    void AddEntity(Entity* _entity);
+    void RemoveEntity(Entity* _entity);
+    bool ContainsEntity(Entity* _entity) const;
+    void AffectEntities(Spell* caller);
+    bool GetNextEntity(Entity*& out) const;
 
-	void Update(float _elapsed);
+    void Update(float _elapsed);
 
 private:
-	int x;
-	int y;
-	Team team;
-	TileState state;
-	TextureType ttype;
-	float elapsed;
-	vector<Entity*> entities;
-	float width;
-	float height;
-	Field* field;
+    int x;
+    int y;
+    Team team;
+    TileState state;
+    TextureType ttype;
+    float elapsed;
+    vector<Entity*> entities;
+    float width;
+    float height;
+    Field* field;
 };

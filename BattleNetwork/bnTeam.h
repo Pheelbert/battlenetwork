@@ -1,7 +1,7 @@
 #pragma once
 enum Team
 {
-	UNKNOWN,
-	BLUE,
-	RED
+    UNKNOWN,
+    BLUE,
+    RED
 };

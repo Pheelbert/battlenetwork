@@ -16,62 +16,62 @@ using sf::Event;
 
 int Game::Run()
 {
-	Renderer::GetInstance().Initialise();
-	ResourceManager::GetInstance().LoadAllTextures();
+    Renderer::GetInstance().Initialise();
+    ResourceManager::GetInstance().LoadAllTextures();
 
-	Field* field(new Field(6, 3));
-	//TODO: just testing states here, remove later
-	field->GetAt(1, 1)->SetState(TileState::CRACKED);
-	field->GetAt(3, 1)->SetState(TileState::CRACKED);
-	field->GetAt(3, 2)->SetState(TileState::CRACKED);
-	field->GetAt(3, 3)->SetState(TileState::CRACKED);
+    Field* field(new Field(6, 3));
+    //TODO: just testing states here, remove later
+    field->GetAt(1, 1)->SetState(TileState::CRACKED);
+    field->GetAt(3, 1)->SetState(TileState::CRACKED);
+    field->GetAt(3, 2)->SetState(TileState::CRACKED);
+    field->GetAt(3, 3)->SetState(TileState::CRACKED);
 
-	//TODO: More dynamic way of handling entities
-	//(for now there's only 1 battle and you start straight in it)
-	Entity* player(new Player());
-	field->AddEntity(player, 2, 2);
-	Entity* mob(new Mettaur());
-	field->AddEntity(mob, 5, 2);
+    //TODO: More dynamic way of handling entities
+    //(for now there's only 1 battle and you start straight in it)
+    Entity* player(new Player());
+    field->AddEntity(player, 2, 2);
+    Entity* mob(new Mettaur());
+    field->AddEntity(mob, 5, 2);
 
-	BackgroundUI background = BackgroundUI();
+    BackgroundUI background = BackgroundUI();
 
-	Clock clock;
-	float elapsed = 0.0f;
-	while (Renderer::GetInstance().Running())
-	{
-		clock.restart();
-		field->Update(elapsed);
+    Clock clock;
+    float elapsed = 0.0f;
+    while (Renderer::GetInstance().Running())
+    {
+        clock.restart();
+        field->Update(elapsed);
 
-		Renderer::GetInstance().Clear();
+        Renderer::GetInstance().Clear();
 
-		background.Draw();
+        background.Draw();
 
         Tile* tile = nullptr;
-		while (field->GetNextTile(tile))
-		{
-			Renderer::GetInstance().Pose(tile);
-		}
+        while (field->GetNextTile(tile))
+        {
+            Renderer::GetInstance().Pose(tile);
+        }
 
-		for (int d = 1; d <= field->GetHeight(); d++)
-		{
-			Entity* entity = nullptr;
-			while (field->GetNextEntity(entity, d))
-			{
-				if (!entity->IsDeleted())
-				{
-					Renderer::GetInstance().Push(entity);
-					Renderer::GetInstance().Lay(entity->GetMiscComponents());
-				}
-			}
-		}
+        for (int d = 1; d <= field->GetHeight(); d++)
+        {
+            Entity* entity = nullptr;
+            while (field->GetNextEntity(entity, d))
+            {
+                if (!entity->IsDeleted())
+                {
+                    Renderer::GetInstance().Push(entity);
+                    Renderer::GetInstance().Lay(entity->GetMiscComponents());
+                }
+            }
+        }
 
-		Renderer::GetInstance().DrawUnderlay();
-		Renderer::GetInstance().DrawLayers();
-		Renderer::GetInstance().DrawOverlay();
-		Renderer::GetInstance().Display();
+        Renderer::GetInstance().DrawUnderlay();
+        Renderer::GetInstance().DrawLayers();
+        Renderer::GetInstance().DrawOverlay();
+        Renderer::GetInstance().Display();
 
-		elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
-	}
+        elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+    }
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

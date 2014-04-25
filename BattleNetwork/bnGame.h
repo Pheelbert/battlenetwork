@@ -2,5 +2,5 @@
 class Game
 {
 public:
-	static int Run();
+    static int Run();
 };

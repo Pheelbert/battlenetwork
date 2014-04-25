@@ -13,17 +13,17 @@
 BackgroundUI::BackgroundUI(void)
     : progress(0.0f)
 {
-	bgTexture = ResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/bg_green.png");
-	background.setTexture(*bgTexture);
-	background.setScale(2.f, 2.f);
-	cmTexture = ResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/fg_green.png");
-	component.setTexture(*cmTexture);
-	for (int x = 0; x < COMPONENT_FRAME_COUNT; x++)
-	{
-		float relative = 0.0f;
-		(x == COMPONENT_FRAME_COUNT - 1) ? relative = 2.f : relative = 0.3f;
-		animation.addFrame(relative, IntRect(COMPONENT_WIDTH*x, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT));
-	}
+    bgTexture = ResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/bg_green.png");
+    background.setTexture(*bgTexture);
+    background.setScale(2.f, 2.f);
+    cmTexture = ResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/fg_green.png");
+    component.setTexture(*cmTexture);
+    for (int x = 0; x < COMPONENT_FRAME_COUNT; x++)
+    {
+        float relative = 0.0f;
+        (x == COMPONENT_FRAME_COUNT - 1) ? relative = 2.f : relative = 0.3f;
+        animation.addFrame(relative, IntRect(COMPONENT_WIDTH*x, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT));
+    }
 }
 
 BackgroundUI::~BackgroundUI(void)
@@ -32,29 +32,29 @@ BackgroundUI::~BackgroundUI(void)
 
 void BackgroundUI::Draw()
 {
-	progress += 0.01f;
-	if (progress >= 1.f) progress = 0.0f;
-	static float mx = 0.0f, my = 0.0f;
-	bool ySwitch = false, xSwitch = false;;
-	Renderer::GetInstance().Draw(background);
-	for (int y = -10; y <= 10; y++)
-	{
-		for (int x = -10; x <= 15; x++)
-		{
-			if (xSwitch && ySwitch)
-			{
-				component.setPosition(x*32.f + x*X_OFFSET + mx, y*32.f + y*Y_OFFSET + my);
-				component.setScale(2.f, 2.f);
-				animation(component, progress);
-				Renderer::GetInstance().Draw(component);
-			}
-			xSwitch = !xSwitch;
-		}
-		ySwitch = !ySwitch;
-	}
+    progress += 0.01f;
+    if (progress >= 1.f) progress = 0.0f;
+    static float mx = 0.0f, my = 0.0f;
+    bool ySwitch = false, xSwitch = false;;
+    Renderer::GetInstance().Draw(background);
+    for (int y = -10; y <= 10; y++)
+    {
+        for (int x = -10; x <= 15; x++)
+        {
+            if (xSwitch && ySwitch)
+            {
+                component.setPosition(x*32.f + x*X_OFFSET + mx, y*32.f + y*Y_OFFSET + my);
+                component.setScale(2.f, 2.f);
+                animation(component, progress);
+                Renderer::GetInstance().Draw(component);
+            }
+            xSwitch = !xSwitch;
+        }
+        ySwitch = !ySwitch;
+    }
 
-	my += 0.5f;
-	mx += 0.5f;
+    my += 0.5f;
+    mx += 0.5f;
 
     if (mx >= 470.0f)
     {

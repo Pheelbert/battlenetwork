@@ -16,18 +16,18 @@ class Player;
 class PlayerHealthUI
 {
 public:
-	PlayerHealthUI(Entity* _entity);
-	PlayerHealthUI(Player* _player);
-	~PlayerHealthUI(void);
+    PlayerHealthUI(Entity* _entity);
+    PlayerHealthUI(Player* _player);
+    ~PlayerHealthUI(void);
 
-	bool GetNextComponent(Drawable*& out);
-	void Update();
+    bool GetNextComponent(Drawable*& out);
+    void Update();
 
 private:
-	Player* player;
-	Font* font;
-	Text text;
-	Sprite sprite;
-	Texture* texture;
-	vector<Drawable*> components;
+    Player* player;
+    Font* font;
+    Text text;
+    Sprite sprite;
+    Texture* texture;
+    vector<Drawable*> components;
 };

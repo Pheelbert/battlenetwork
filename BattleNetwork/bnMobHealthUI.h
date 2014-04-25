@@ -7,13 +7,13 @@ class Mob;
 class MobHealthUI : public Text
 {
 public:
-	MobHealthUI(void);
-	MobHealthUI(Mob* _mob);
-	~MobHealthUI(void);
+    MobHealthUI(void);
+    MobHealthUI(Mob* _mob);
+    ~MobHealthUI(void);
 
-	void Update();
+    void Update();
 
 private:
-	Mob* mob;
-	Font* font;
+    Mob* mob;
+    Font* font;
 };
