@@ -50,7 +50,7 @@ void ResourceComponent::load()
         {
             if (!animations.empty())
             {
-                entity->addAnimation(entity->getStateFromString(currentState), animations.at(frameAnimationIndex), currentDuration);
+                entity->addAnimation(entity->GetStateFromString(currentState), animations.at(frameAnimationIndex), currentDuration);
             }
             string state = valueOf("state", line);
             string duration = valueOf("duration", line);
@@ -76,7 +76,7 @@ void ResourceComponent::load()
 
         data = data.substr(endline + 1);
     } while (endline > -1);
-    entity->addAnimation(entity->getStateFromString(currentState), animations.at(frameAnimationIndex), currentDuration);
+    entity->addAnimation(entity->GetStateFromString(currentState), animations.at(frameAnimationIndex), currentDuration);
 }
 
 string ResourceComponent::valueOf(string _key, string _line)

@@ -82,10 +82,12 @@
   <ItemGroup>
     <ClCompile Include="bnBackgroundUI.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
+    <ClCompile Include="bnEntity.cpp" />
     <ClCompile Include="bnField.cpp" />
     <ClCompile Include="bnGame.cpp" />
     <ClCompile Include="bnMain.cpp" />
     <ClCompile Include="bnMobHealthUI.cpp" />
+    <ClCompile Include="bnMovingComponent.cpp" />
     <ClCompile Include="bnResourceComponent.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
@@ -96,6 +98,7 @@
     <ClCompile Include="bnWave.cpp" />
     <ClCompile Include="bnMettaur.cpp" />
     <ClCompile Include="bnRenderer.cpp" />
+    <ClCompile Include="bnControllerComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnBackgroundUI.h" />
@@ -107,6 +110,7 @@
     <ClInclude Include="bnMemory.h" />
     <ClInclude Include="bnMobHealthUI.h" />
     <ClInclude Include="bnMobState.h" />
+    <ClInclude Include="bnMovingComponent.h" />
     <ClInclude Include="bnResourceComponent.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />
@@ -114,7 +118,6 @@
     <ClInclude Include="bnDirection.h" />
     <ClInclude Include="bnPlayer.h" />
     <ClInclude Include="bnSpell.h" />
-    <ClInclude Include="bnMob.h" />
     <ClInclude Include="bnResourceManager.h" />
     <ClInclude Include="bnLogger.h" />
     <ClInclude Include="bnTileState.h" />
@@ -124,6 +127,7 @@
     <ClInclude Include="bnWave.h" />
     <ClInclude Include="bnMettaur.h" />
     <ClInclude Include="bnRenderer.h" />
+    <ClInclude Include="bnControllerComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

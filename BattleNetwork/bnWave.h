@@ -11,6 +11,6 @@ public:
     virtual bool Move(Direction _direction);
     virtual void Attack(Entity* _entity);
     virtual vector<Drawable*> GetMiscComponents();
-    virtual int getStateFromString(string _string);
+    virtual int GetStateFromString(string _string);
     virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
 };

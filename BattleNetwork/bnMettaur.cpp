@@ -36,12 +36,12 @@ Mettaur::Mettaur(void)
     : resourceComponent(ResourceComponent(this))
 {
     Entity::team = Team::RED;
-    Mob::health = 20;
-    Mob::hitHeight = 0;
-    Mob::direction = Direction::DOWN;
-    Mob::state = MobState::MOB_IDLE;
-    Mob::ttype = TextureType::MOB_METTAUR_IDLE;
-    Mob::healthUI = new MobHealthUI(this);
+    health = 20;
+    hitHeight = 0;
+    direction = Direction::DOWN;
+    state = MobState::MOB_IDLE;
+    ttype = TextureType::MOB_METTAUR_IDLE;
+    healthUI = new MobHealthUI(this);
 
     cooldown = 0;
     attackCooldown = 0;
@@ -268,8 +268,8 @@ void Mettaur::Attack()
 void Mettaur::RefreshTexture()
 {
     static sf::Clock clock;
-    Mob::animator.update(clock.restart());
-    if (!Mob::animator.isPlayingAnimation())
+    animator.update(clock.restart());
+    if (!animator.isPlayingAnimation())
     {
         if (state == MobState::MOB_IDLE)
         {
@@ -299,9 +299,9 @@ void Mettaur::RefreshTexture()
             setPosition(tile->getPosition().x + tile->GetWidth()/2.0f - 55.0f, tile->getPosition().y + tile->GetHeight()/2.0f - 105.0f);
             hitHeight = getLocalBounds().height;
         }
-        Mob::animator.playAnimation(state);
+        animator.playAnimation(state);
     }
-    Mob::animator.animate(*this);
+    animator.animate(*this);
 }
 
 vector<Drawable*> Mettaur::GetMiscComponents()
@@ -321,7 +321,7 @@ vector<Drawable*> Mettaur::GetMiscComponents()
     return drawables;
 }
 
-int Mettaur::getStateFromString(string _string)
+int Mettaur::GetStateFromString(string _string)
 {
     int size = 4;
     string MOB_STATE_STRINGS[] = { "MOB_MOVING", "MOB_IDLE", "MOB_HIT", "MOB_ATTACKING" };
@@ -340,4 +340,35 @@ int Mettaur::getStateFromString(string _string)
 void Mettaur::addAnimation(int _state, FrameAnimation _animation, float _duration)
 {
     animator.addAnimation(static_cast<MobState>(_state), _animation, sf::seconds(_duration));
+}
+
+TextureType Mettaur::GetTextureType() const
+{
+    return ttype;
+}
+
+MobState Mettaur::GetMobState() const
+{
+    return state;
+}
+
+int Mettaur::GetHealth() const
+{
+    return health;
+}
+
+void Mettaur::SetHealth(int _health)
+{
+    health = _health;
+}
+
+int Mettaur::Hit(int _damage)
+{
+    (health - _damage < 0) ? health = 0 : health -= _damage;
+    return health;
+}
+
+float Mettaur::GetHitHeight() const
+{
+    return hitHeight;
 }

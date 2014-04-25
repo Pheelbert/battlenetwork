@@ -2,18 +2,18 @@
 #include <SFML\Graphics.hpp>
 using sf::Font;
 using sf::Text;
-class Mob;
+class Mettaur;
 
 class MobHealthUI : public Text
 {
 public:
     MobHealthUI(void);
-    MobHealthUI(Mob* _mob);
+    MobHealthUI(Mettaur* _mob);
     ~MobHealthUI(void);
 
     void Update();
 
 private:
-    Mob* mob;
+    Mettaur* mob;
     Font* font;
 };

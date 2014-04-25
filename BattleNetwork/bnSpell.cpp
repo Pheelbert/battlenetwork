@@ -5,7 +5,6 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnPlayer.h"
-#include "bnMob.h"
 #include "bnResourceManager.h"
 
 #define COOLDOWN 40.0f

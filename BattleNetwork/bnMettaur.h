@@ -4,13 +4,13 @@ using thor::FrameAnimation;
 using thor::Animator;
 using sf::IntRect;
 
-#include "bnMob.h"
+#include "bnEntity.h"
 #include "bnMobState.h"
 #include "bnTextureType.h"
 #include "bnMobHealthUI.h"
 #include "bnResourceComponent.h"
 
-class Mettaur : public Mob
+class Mettaur : public Entity
 {
 public:
     Mettaur(void);
@@ -20,8 +20,15 @@ public:
     virtual bool Move(Direction _direction);
     virtual void RefreshTexture();
     virtual vector<Drawable*> GetMiscComponents();
-    virtual int getStateFromString(string _string);
+    virtual int GetStateFromString(string _string);
     virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
+    virtual int GetHealth() const;
+    virtual TextureType GetTextureType() const;
+    
+    MobState GetMobState() const;
+    void SetHealth(int _health);
+    int Hit(int _damage);
+    float GetHitHeight() const;
 
     void Attack();
 
@@ -40,4 +47,12 @@ private:
     FrameAnimation explode;
 
     ResourceComponent resourceComponent;
+
+    int health;
+    float hitHeight;
+    Direction direction;
+    MobState state;
+    TextureType ttype;
+    MobHealthUI* healthUI;
+    Animator<Sprite, MobState> animator;
 };

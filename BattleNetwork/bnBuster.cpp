@@ -5,7 +5,7 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnPlayer.h"
-#include "bnMob.h"
+#include "bnMettaur.h"
 #include "bnResourceManager.h"
 
 #define COOLDOWN 40.0f
@@ -143,7 +143,7 @@ void Buster::Attack(Entity* _entity)
         hit = true;
         return;
     }
-    Mob* isMob = dynamic_cast<Mob*>(_entity);
+    Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
     if (isMob)
     {
         isMob->Hit(damage);
@@ -158,7 +158,7 @@ vector<Drawable*> Buster::GetMiscComponents()
     return vector<Drawable*>();
 }
 
-int Buster::getStateFromString(string _string)
+int Buster::GetStateFromString(string _string)
 {
     assert(false && "Buster does not have states");
     return 0;

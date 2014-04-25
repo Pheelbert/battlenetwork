@@ -340,7 +340,7 @@ PlayerHealthUI* Player::GetHealthUI() const
     return healthUI;
 }
 
-int Player::getStateFromString(string _string)
+int Player::GetStateFromString(string _string)
 {
     int size = 3;
     string PLAYER_STATE_STRINGS[] = { "PLAYER_IDLE", "PLAYER_MOVING", "PLAYER_SHOOTING" };

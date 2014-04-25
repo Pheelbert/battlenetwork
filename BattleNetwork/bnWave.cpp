@@ -2,7 +2,7 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnPlayer.h"
-#include "bnMob.h"
+#include "bnMettaur.h"
 #include "bnResourceManager.h"
 
 #define COOLDOWN 500.0f
@@ -112,7 +112,7 @@ void Wave::Attack(Entity* _entity)
         deleted = true;
         return;
     }
-    Mob* isMob = dynamic_cast<Mob*>(_entity);
+    Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
     if (isMob)
     {
         isMob->Hit(10);
@@ -126,7 +126,7 @@ vector<Drawable*> Wave::GetMiscComponents()
     return vector<Drawable*>();
 }
 
-int Wave::getStateFromString(string _string)
+int Wave::GetStateFromString(string _string)
 {
     assert(false && "Wave does not have states");
     return 0;

@@ -2,18 +2,18 @@
 using std::to_string;
 
 #include "bnMobHealthUI.h"
-#include "bnMob.h"
+#include "bnMettaur.h"
 #include "bnResourceManager.h"
 
 #include "bnLogger.h"
 
 MobHealthUI::MobHealthUI(void)
     : mob(nullptr),
-    font(nullptr)
+      font(nullptr)
 {
 }
 
-MobHealthUI::MobHealthUI(Mob* _mob)
+MobHealthUI::MobHealthUI(Mettaur* _mob)
     : mob(_mob)
 {
     font = ResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");

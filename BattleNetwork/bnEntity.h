@@ -1,12 +1,6 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-using sf::CircleShape;
-using sf::Sprite;
-using sf::Drawable;
 #include <Thor\Animation.hpp>
 using thor::FrameAnimation;
-#include <vector>
-using std::vector;
 #include <string>
 using std::string;
 
@@ -14,43 +8,36 @@ using std::string;
 #include "bnTeam.h"
 #include "bnMemory.h"
 #include "bnRenderer.h"
+#include "bnTextureType.h"
 class Tile;
 class Field;
 
 class Entity : public LayeredDrawable
 {
 public:
-    Entity(void)
-    : tile(nullptr),
-      previous(nullptr),
-      field(nullptr),
-      team(Team::UNKNOWN),
-      deleted(false)
-    {
-    }
+    Entity(void);
+    virtual ~Entity(void);
 
-    virtual ~Entity(void)
-    {
-    }
+    virtual void Update(float _elapsed);
+    virtual bool Move(Direction _direction);
+    virtual vector<Drawable*> GetMiscComponents();
+    virtual int GetStateFromString(string _string);
+    virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
+    virtual int GetHealth();
+    virtual TextureType GetTextureType();
 
-    virtual void Update(float _elapsed)            = 0;
-    virtual bool Move(Direction _direction)        = 0;
-    virtual vector<Drawable*> GetMiscComponents()  = 0;
-    virtual int getStateFromString(string _string) = 0;
-    virtual void addAnimation(int _state, FrameAnimation _animation, float _duration) = 0;
+    bool Teammate(Team _team);
 
-    bool Teammate(Team _team)    { return team == _team; }
+    void SetTile(Tile* _tile);
+    Tile* GetTile() const;
 
-    void SetTile(Tile* _tile)    { tile = _tile; }
-    Tile* GetTile() const        { return tile; }
+    void SetField(Field* _field);
+    Field* GetField() const;
 
-    void SetField(Field* _field) { field = _field; }
-    Field* GetField() const      { return field; }
+    Team GetTeam() const;
+    void SetTeam(Team _team);
 
-    Team GetTeam() const         { return team; }
-    void SetTeam(Team _team)     { team = _team; }
-
-    bool IsDeleted() const       { return deleted; }
+    bool IsDeleted() const;
 
 protected:
     Tile* tile;
