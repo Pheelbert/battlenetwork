@@ -1,0 +1,14 @@
+#pragma once
+enum ControllableEvent
+{
+    PRESSED_UP,
+    PRESSED_DOWN,
+    PRESSED_LEFT,
+    PRESSED_RIGHT,
+    PRESSED_SPACE,
+    RELEASED_UP,
+    RELEASED_DOWN,
+    RELEASED_LEFT,
+    RELEASED_RIGHT,
+    RELEASED_SPACE
+};

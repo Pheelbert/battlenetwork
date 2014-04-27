@@ -12,7 +12,7 @@ using sf::Event;
 #include "bnBackgroundUI.h"
 #include "bnPlayerHealthUI.h"
 #include "bnResourceManager.h"
-#include "bnRenderer.h"
+#include "bnEngine.h"
 
 int main()
 {
@@ -21,7 +21,7 @@ int main()
 
 int BattleScene::Run()
 {
-    Renderer::GetInstance().Initialise();
+    Engine::GetInstance().Initialise();
     ResourceManager::GetInstance().LoadAllTextures();
 
     Field* field(new Field(6, 3));
@@ -42,19 +42,19 @@ int BattleScene::Run()
 
     Clock clock;
     float elapsed = 0.0f;
-    while (Renderer::GetInstance().Running())
+    while (Engine::GetInstance().Running())
     {
         clock.restart();
         field->Update(elapsed);
 
-        Renderer::GetInstance().Clear();
+        Engine::GetInstance().Clear();
 
         background.Draw();
 
         Tile* tile = nullptr;
         while (field->GetNextTile(tile))
         {
-            Renderer::GetInstance().Pose(tile);
+            Engine::GetInstance().Pose(tile);
         }
 
         for (int d = 1; d <= field->GetHeight(); d++)
@@ -64,16 +64,16 @@ int BattleScene::Run()
             {
                 if (!entity->IsDeleted())
                 {
-                    Renderer::GetInstance().Push(entity);
-                    Renderer::GetInstance().Lay(entity->GetMiscComponents());
+                    Engine::GetInstance().Push(entity);
+                    Engine::GetInstance().Lay(entity->GetMiscComponents());
                 }
             }
         }
 
-        Renderer::GetInstance().DrawUnderlay();
-        Renderer::GetInstance().DrawLayers();
-        Renderer::GetInstance().DrawOverlay();
-        Renderer::GetInstance().Display();
+        Engine::GetInstance().DrawUnderlay();
+        Engine::GetInstance().DrawLayers();
+        Engine::GetInstance().DrawOverlay();
+        Engine::GetInstance().Display();
 
         elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
     }

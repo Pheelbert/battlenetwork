@@ -5,7 +5,7 @@ using sf::Keyboard;
 #include "bnField.h"
 #include "bnBuster.h"
 #include "bnResourceManager.h"
-#include "bnRenderer.h"
+#include "bnEngine.h"
 #include "bnLogger.h"
 
 #define RESOURCE_NAME "megaman"
@@ -30,6 +30,7 @@ Player::Player(void)
     : health(99),
       state(PlayerState::PLAYER_IDLE),
       ttype(TextureType::NAVI_MEGAMAN_MOVE),
+      controllableComponent(ControllableComponent::GetInstance()),
       chargeComponent(ChargeComponent(this)),
       resourceComponent(ResourceComponent(this))
 {
@@ -67,6 +68,7 @@ void Player::Update(float _elapsed)
     attackToIdleCooldown   += _elapsed;
 
     //Components updates
+    controllableComponent.update();
     chargeComponent.update(_elapsed);
 
     //Update UI of player's health (top left corner)
@@ -83,90 +85,76 @@ void Player::Update(float _elapsed)
         }
     }
 
-    Event event;
     Direction direction = Direction::NONE;
-    while (Renderer::GetInstance().GetWindow()->pollEvent(event))
+    if (moveKeyPressCooldown >= MOVE_KEY_PRESS_COOLDOWN)
     {
-        if (event.type == Event::Closed)
+        if (controllableComponent.has(PRESSED_UP))
         {
-            Renderer::GetInstance().GetWindow()->close();
+            direction = Direction::UP;
         }
+        else if (controllableComponent.has(PRESSED_LEFT))
+        {
+            direction = Direction::LEFT;
+        }
+        else if (controllableComponent.has(PRESSED_DOWN))
+        {
+            direction = Direction::DOWN;
+        }
+        else if (controllableComponent.has(PRESSED_RIGHT))
+        {
+            direction = Direction::RIGHT;
+        }
+    }
+    else
+    {
+        state = PlayerState::PLAYER_IDLE;
+    }
 
-        if (Event::KeyPressed == event.type)
+    if (attackKeyPressCooldown >= ATTACK_KEY_PRESS_COOLDOWN)
+    {
+        if (controllableComponent.has(PRESSED_SPACE))
         {
-            if (moveKeyPressCooldown >= MOVE_KEY_PRESS_COOLDOWN)
-            {
-                if (Keyboard::Up == event.key.code)
-                {
-                    direction = Direction::UP;
-                }
-                else if (Keyboard::Left == event.key.code)
-                {
-                    direction = Direction::LEFT;
-                }
-                else if (Keyboard::Down == event.key.code)
-                {
-                    direction = Direction::DOWN;
-                }
-                else if (Keyboard::Right == event.key.code)
-                {
-                    direction = Direction::RIGHT;
-                }
-            }
-            else /* Move key press cooldown not elapsed yet */
-            {
-                state = PlayerState::PLAYER_IDLE;
-            }
+            attackKeyPressCooldown = 0.0f;
+            chargeComponent.SetCharging(true);
+        }
+    }
 
-            if (attackKeyPressCooldown >= ATTACK_KEY_PRESS_COOLDOWN)
-            {
-                if (Keyboard::Space == event.key.code)
-                {
-                    attackKeyPressCooldown = 0.0f;
-                    chargeComponent.SetCharging(true);
-                }
-            }
-        }
-        else /* Not pressing a key, set player back to idle */
+    if (controllableComponent.empty())
+    {
+        if (state != PlayerState::PLAYER_SHOOTING)
         {
-            //Unless he's shooting
-            if (state != PlayerState::PLAYER_SHOOTING)
-            {
-                state = PlayerState::PLAYER_IDLE;
-            }
+            state = PlayerState::PLAYER_IDLE;
         }
+    }
 
-        if (Event::KeyReleased == event.type)
-        {
-            if (Keyboard::Up == event.key.code)
-            {
-                direction = Direction::NONE;
-            }
-            else if (Keyboard::Left == event.key.code)
-            {
-                direction = Direction::NONE;
-            }
-            else if (Keyboard::Down == event.key.code)
-            {
-                direction = Direction::NONE;
-            }
-            else if (Keyboard::Right == event.key.code)
-            {
-                direction = Direction::NONE;
-            }
-            else if (Keyboard::Space == event.key.code)
-            {
-                Attack(chargeComponent.GetChargeCounter());
-                chargeComponent.SetCharging(false);
-                attackToIdleCooldown = 0.0f;
-                state = PlayerState::PLAYER_SHOOTING;
-            }
-        }
+    if (controllableComponent.has(RELEASED_UP))
+    {
+        direction = Direction::NONE;
+    }
+    else if (controllableComponent.has(RELEASED_LEFT))
+    {
+        direction = Direction::NONE;
+    }
+    else if (controllableComponent.has(RELEASED_DOWN))
+    {
+        direction = Direction::NONE;
+    }
+    else if (controllableComponent.has(RELEASED_RIGHT))
+    {
+        direction = Direction::NONE;
+    }
+    else if (controllableComponent.has(RELEASED_SPACE))
+    {
+        Attack(chargeComponent.GetChargeCounter());
+        chargeComponent.SetCharging(false);
+        attackToIdleCooldown = 0.0f;
+        state = PlayerState::PLAYER_SHOOTING;
     }
 
     if (direction != Direction::NONE && state != PlayerState::PLAYER_SHOOTING)
     {
-        if (Move(direction))
+        bool moved = Move(direction);
+        if (moved)
         {
             state = PlayerState::PLAYER_MOVING;
         }

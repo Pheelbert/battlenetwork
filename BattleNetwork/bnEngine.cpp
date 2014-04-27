@@ -1,28 +1,28 @@
-#include "bnRenderer.h"
+#include "bnEngine.h"
 
-Renderer& Renderer::GetInstance()
+Engine& Engine::GetInstance()
 {
-    static Renderer instance;
+    static Engine instance;
     return instance;
 }
 
-void Renderer::Initialise()
+void Engine::Initialise()
 {
     window = new RenderWindow(VideoMode(480, 320), "Battle Network : Prototype");
     window->setFramerateLimit(60);
 }
 
-void Renderer::Draw(Drawable& _drawable)
+void Engine::Draw(Drawable& _drawable)
 {
     window->draw(_drawable);
 }
 
-void Renderer::Draw(Drawable* _drawable)
+void Engine::Draw(Drawable* _drawable)
 {
     if (_drawable) window->draw(*_drawable);
 }
 
-void Renderer::Draw(vector<Drawable*> _drawable)
+void Engine::Draw(vector<Drawable*> _drawable)
 {
     auto it = _drawable.begin();
     for(it; it != _drawable.end(); ++it)
@@ -31,17 +31,17 @@ void Renderer::Draw(vector<Drawable*> _drawable)
     }
 }
 
-void Renderer::Display()
+void Engine::Display()
 {
     window->display();
 }
 
-bool Renderer::Running()
+bool Engine::Running()
 {
     return window->isOpen();
 }
 
-void Renderer::Clear()
+void Engine::Clear()
 {
     underlay.Clear();
     layers.Clear();
@@ -49,24 +49,24 @@ void Renderer::Clear()
     window->clear();
 }
 
-RenderWindow* Renderer::GetWindow() const
+RenderWindow* Engine::GetWindow() const
 {
     return window;
 }
 
-Renderer::Renderer(void)
+Engine::Engine(void)
     : layers(Layers()),
       overlay(Overlay()),
       underlay(Underlay())
 {
 }
 
-Renderer::~Renderer(void)
+Engine::~Engine(void)
 {
     delete window;
 }
 
-void Renderer::Push(LayeredDrawable* _drawable)
+void Engine::Push(LayeredDrawable* _drawable)
 {
     if (_drawable)
     {
@@ -74,7 +74,7 @@ void Renderer::Push(LayeredDrawable* _drawable)
     }
 }
 
-void Renderer::DrawLayers()
+void Engine::DrawLayers()
 {
     for (int i = layers.min; i <= layers.max; i++)
     {
@@ -82,7 +82,7 @@ void Renderer::DrawLayers()
     }
 }
 
-void Renderer::Lay(Drawable* _drawable)
+void Engine::Lay(Drawable* _drawable)
 {
     if (_drawable)
     {
@@ -90,7 +90,7 @@ void Renderer::Lay(Drawable* _drawable)
     }
 }
 
-void Renderer::Lay(vector<Drawable*> _drawable)
+void Engine::Lay(vector<Drawable*> _drawable)
 {
     auto it = _drawable.begin();
     for(it; it != _drawable.end(); ++it)
@@ -102,12 +102,12 @@ void Renderer::Lay(vector<Drawable*> _drawable)
     }
 }
 
-void Renderer::DrawOverlay()
+void Engine::DrawOverlay()
 {
     Draw(overlay);
 }
 
-void Renderer::Pose(Drawable* _drawable)
+void Engine::Pose(Drawable* _drawable)
 {
     if (_drawable)
     {
@@ -115,7 +115,7 @@ void Renderer::Pose(Drawable* _drawable)
     }
 }
 
-void Renderer::DrawUnderlay()
+void Engine::DrawUnderlay()
 {
     Draw(underlay);
 }

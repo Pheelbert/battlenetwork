@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{b2d44660-3edc-4851-bcad-91fd074e9eef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utilities">
       <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
     </Filter>
@@ -59,6 +56,9 @@
     <Filter Include="Battle\Background">
       <UniqueIdentifier>{dc29490c-a264-4350-a55e-b02202ddc325}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{b2d44660-3edc-4851-bcad-91fd074e9eef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -88,9 +88,6 @@
     <ClCompile Include="bnMettaur.cpp">
       <Filter>Battle\Entity\Living\Mettaur</Filter>
     </ClCompile>
-    <ClCompile Include="bnRenderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="bnResourceComponent.cpp">
       <Filter>Battle\Component\Resource</Filter>
     </ClCompile>
@@ -114,6 +111,9 @@
     </ClCompile>
     <ClCompile Include="bnControllableComponent.cpp">
       <Filter>Battle\Component\Moving</Filter>
+    </ClCompile>
+    <ClCompile Include="bnEngine.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,11 +156,8 @@
     <ClInclude Include="bnMettaur.h">
       <Filter>Battle\Entity\Living\Mettaur</Filter>
     </ClInclude>
-    <ClInclude Include="bnRenderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="bnLayered.h">
-      <Filter>Renderer</Filter>
+      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="bnResourceComponent.h">
       <Filter>Battle\Component\Resource</Filter>
@@ -197,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="bnControllableComponent.h">
       <Filter>Battle\Component\Moving</Filter>
+    </ClInclude>
+    <ClInclude Include="bnEngine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="bnControllableEvent.h">
+      <Filter>Battle\Enumerations</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

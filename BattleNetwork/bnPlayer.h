@@ -10,6 +10,7 @@ using sf::IntRect;
 #include "bnPlayerHealthUI.h"
 #include "bnChargeComponent.h"
 #include "bnResourceComponent.h"
+#include "bnControllableComponent.h"
 
 class Player : public Entity
 {
@@ -49,6 +50,7 @@ private:
     //-Animation-
     float animationProgress;
     
+    ControllableComponent controllableComponent;
     ChargeComponent chargeComponent;
     ResourceComponent resourceComponent;
 };

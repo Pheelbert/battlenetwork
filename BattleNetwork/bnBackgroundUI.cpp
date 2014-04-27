@@ -1,7 +1,7 @@
 #include "bnBackgroundUI.h"
 #include "bnLogger.h"
 #include "bnResourceManager.h"
-#include "bnRenderer.h"
+#include "bnEngine.h"
 
 #define X_OFFSET 15
 #define Y_OFFSET 15
@@ -36,7 +36,7 @@ void BackgroundUI::Draw()
     if (progress >= 1.f) progress = 0.0f;
     static float mx = 0.0f, my = 0.0f;
     bool ySwitch = false, xSwitch = false;;
-    Renderer::GetInstance().Draw(background);
+    Engine::GetInstance().Draw(background);
     for (int y = -10; y <= 10; y++)
     {
         for (int x = -10; x <= 15; x++)
@@ -46,7 +46,7 @@ void BackgroundUI::Draw()
                 component.setPosition(x*32.f + x*X_OFFSET + mx, y*32.f + y*Y_OFFSET + my);
                 component.setScale(2.f, 2.f);
                 animation(component, progress);
-                Renderer::GetInstance().Draw(component);
+                Engine::GetInstance().Draw(component);
             }
             xSwitch = !xSwitch;
         }

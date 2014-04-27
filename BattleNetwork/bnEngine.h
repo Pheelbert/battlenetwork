@@ -9,10 +9,10 @@ using std::vector;
 
 #include "bnLayered.h"
 
-class Renderer
+class Engine
 {
 public:
-    static Renderer& GetInstance();
+    static Engine& GetInstance();
     void Initialise();
     void Draw(Drawable& _drawable);
     void Draw(Drawable* _drawable);
@@ -31,8 +31,8 @@ public:
     void DrawUnderlay();
 
 private:
-    Renderer(void);
-    ~Renderer(void);
+    Engine(void);
+    ~Engine(void);
 
     RenderWindow* window;
     Underlay underlay;

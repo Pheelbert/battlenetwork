@@ -3,7 +3,7 @@
 #include "bnField.h"
 #include "bnWave.h"
 #include "bnResourceManager.h"
-#include "bnRenderer.h"
+#include "bnEngine.h"
 
 #define RESOURCE_NAME "mettaur"
 #define RESOURCE_PATH "resources/mobs/mettaur/mettaur.animation"

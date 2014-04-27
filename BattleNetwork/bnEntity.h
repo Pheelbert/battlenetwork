@@ -7,7 +7,7 @@ using std::string;
 #include "bnDirection.h"
 #include "bnTeam.h"
 #include "bnMemory.h"
-#include "bnRenderer.h"
+#include "bnEngine.h"
 #include "bnTextureType.h"
 class Tile;
 class Field;
