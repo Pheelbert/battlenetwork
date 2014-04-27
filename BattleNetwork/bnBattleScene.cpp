@@ -4,7 +4,7 @@ using sf::VideoMode;
 using sf::Clock;
 using sf::Event;
 
-#include "bnGame.h"
+#include "bnBattleScene.h"
 #include "bnField.h"
 #include "bnPlayer.h"
 #include "bnMemory.h"
@@ -14,7 +14,12 @@ using sf::Event;
 #include "bnResourceManager.h"
 #include "bnRenderer.h"
 
-int Game::Run()
+int main()
+{
+    return BattleScene::Run();
+}
+
+int BattleScene::Run()
 {
     Renderer::GetInstance().Initialise();
     ResourceManager::GetInstance().LoadAllTextures();

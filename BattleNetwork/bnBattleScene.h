@@ -1,5 +1,5 @@
 #pragma once
-class Game
+class BattleScene
 {
 public:
     static int Run();

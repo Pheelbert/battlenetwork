@@ -1,155 +1,139 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Game">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Game\Field">
-      <UniqueIdentifier>{3e0be7ae-d786-4657-8650-cfd3bf250541}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Entity">
-      <UniqueIdentifier>{2f7945d0-72a3-4a3f-aa64-466703264ef3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Tile">
-      <UniqueIdentifier>{8bd2fb17-906f-4def-ade7-710283fde6b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Renderer">
       <UniqueIdentifier>{b2d44660-3edc-4851-bcad-91fd074e9eef}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utilities">
       <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="User Interface">
-      <UniqueIdentifier>{e1bf74ec-2dce-40f2-916d-b32bedd01daf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="User Interface\Player">
-      <UniqueIdentifier>{cdecab96-d736-431e-a28c-0ee1b60e6ae2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="User Interface\Background">
-      <UniqueIdentifier>{dc29490c-a264-4350-a55e-b02202ddc325}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="User Interface\Mob">
-      <UniqueIdentifier>{7362b404-a2e1-442d-ad8d-77dd6ae4f801}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Entity\Spell">
-      <UniqueIdentifier>{8744243d-c514-4f2e-b8c3-ff0cd15fef0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Entity\Spell\Wave">
-      <UniqueIdentifier>{357d9067-4a1f-4abd-836b-20c9aab639c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Entity\Spell\Buster">
-      <UniqueIdentifier>{a5b0fd9b-980a-4240-9250-0d06444c60a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Component">
-      <UniqueIdentifier>{dfa2cbcd-8575-45f2-93b6-c5d98a64e469}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Component\Resource">
-      <UniqueIdentifier>{32f5b123-7c10-4d87-abfc-a9326380e103}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Component\Charge">
-      <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{0e5b07ae-1ba2-404d-a462-579ab664eac6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Enumerations">
-      <UniqueIdentifier>{5c9d2cbc-eb6d-4112-b2aa-bafcdf47830a}</UniqueIdentifier>
+    <Filter Include="Battle">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Game\Entity\Living">
+    <Filter Include="Battle\Field">
+      <UniqueIdentifier>{3e0be7ae-d786-4657-8650-cfd3bf250541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity">
+      <UniqueIdentifier>{2f7945d0-72a3-4a3f-aa64-466703264ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Spell">
+      <UniqueIdentifier>{8744243d-c514-4f2e-b8c3-ff0cd15fef0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Spell\Wave">
+      <UniqueIdentifier>{357d9067-4a1f-4abd-836b-20c9aab639c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Spell\Buster">
+      <UniqueIdentifier>{a5b0fd9b-980a-4240-9250-0d06444c60a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Living">
       <UniqueIdentifier>{e565b472-5297-4f4a-bb4e-f93b6d2d9345}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Entity\Living\Mettaur">
+    <Filter Include="Battle\Entity\Living\Mettaur">
       <UniqueIdentifier>{16b3fe77-dae3-4ab7-a685-3797a65c1775}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Entity\Living\Player">
+    <Filter Include="Battle\Entity\Living\Player">
       <UniqueIdentifier>{10c1c4d0-3a84-4a71-bef9-04835d2185da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Component\Moving">
+    <Filter Include="Battle\Tile">
+      <UniqueIdentifier>{8bd2fb17-906f-4def-ade7-710283fde6b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Component">
+      <UniqueIdentifier>{dfa2cbcd-8575-45f2-93b6-c5d98a64e469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Component\Resource">
+      <UniqueIdentifier>{32f5b123-7c10-4d87-abfc-a9326380e103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Component\Charge">
+      <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Component\Moving">
       <UniqueIdentifier>{4a441b30-9e2f-4ff8-921a-60ef383f26d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Component\Moving\Input">
-      <UniqueIdentifier>{1a4fcde6-18fa-46c0-92b7-b733cfd8e1df}</UniqueIdentifier>
+    <Filter Include="Battle\Enumerations">
+      <UniqueIdentifier>{5c9d2cbc-eb6d-4112-b2aa-bafcdf47830a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Background">
+      <UniqueIdentifier>{dc29490c-a264-4350-a55e-b02202ddc325}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bnMain.cpp" />
-    <ClCompile Include="bnGame.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="bnField.cpp">
-      <Filter>Game\Field</Filter>
+      <Filter>Battle\Field</Filter>
     </ClCompile>
     <ClCompile Include="bnTile.cpp">
-      <Filter>Game\Tile</Filter>
+      <Filter>Battle\Tile</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayer.cpp">
-      <Filter>Game\Entity\Living\Player</Filter>
+      <Filter>Battle\Entity\Living\Player</Filter>
     </ClCompile>
     <ClCompile Include="bnSpell.cpp">
-      <Filter>Game\Entity\Spell</Filter>
+      <Filter>Battle\Entity\Spell</Filter>
     </ClCompile>
     <ClCompile Include="bnResourceManager.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="bnPlayerHealthUI.cpp">
-      <Filter>User Interface\Player</Filter>
-    </ClCompile>
     <ClCompile Include="bnBackgroundUI.cpp">
-      <Filter>User Interface\Background</Filter>
-    </ClCompile>
-    <ClCompile Include="bnMobHealthUI.cpp">
-      <Filter>User Interface\Mob</Filter>
+      <Filter>Battle\Background</Filter>
     </ClCompile>
     <ClCompile Include="bnWave.cpp">
-      <Filter>Game\Entity\Spell\Wave</Filter>
+      <Filter>Battle\Entity\Spell\Wave</Filter>
     </ClCompile>
     <ClCompile Include="bnBuster.cpp">
-      <Filter>Game\Entity\Spell\Buster</Filter>
+      <Filter>Battle\Entity\Spell\Buster</Filter>
     </ClCompile>
     <ClCompile Include="bnMettaur.cpp">
-      <Filter>Game\Entity\Living\Mettaur</Filter>
+      <Filter>Battle\Entity\Living\Mettaur</Filter>
     </ClCompile>
     <ClCompile Include="bnRenderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="bnResourceComponent.cpp">
-      <Filter>Game\Component\Resource</Filter>
+      <Filter>Battle\Component\Resource</Filter>
     </ClCompile>
     <ClCompile Include="bnChargeComponent.cpp">
-      <Filter>Game\Component\Charge</Filter>
+      <Filter>Battle\Component\Charge</Filter>
     </ClCompile>
     <ClCompile Include="bnEntity.cpp">
-      <Filter>Game\Entity</Filter>
+      <Filter>Battle\Entity</Filter>
     </ClCompile>
     <ClCompile Include="bnMovingComponent.cpp">
-      <Filter>Game\Component\Moving</Filter>
+      <Filter>Battle\Component\Moving</Filter>
     </ClCompile>
-    <ClCompile Include="bnControllerComponent.cpp">
-      <Filter>Game\Component\Moving\Input</Filter>
+    <ClCompile Include="bnBattleScene.cpp">
+      <Filter>Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="bnPlayerHealthUI.cpp">
+      <Filter>Battle\Entity\Living\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="bnMobHealthUI.cpp">
+      <Filter>Battle\Entity\Living\Mettaur</Filter>
+    </ClCompile>
+    <ClCompile Include="bnControllableComponent.cpp">
+      <Filter>Battle\Component\Moving</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bnGame.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="bnField.h">
-      <Filter>Game\Field</Filter>
+      <Filter>Battle\Field</Filter>
     </ClInclude>
     <ClInclude Include="bnTile.h">
-      <Filter>Game\Tile</Filter>
+      <Filter>Battle\Tile</Filter>
     </ClInclude>
     <ClInclude Include="bnEntity.h">
-      <Filter>Game\Entity</Filter>
+      <Filter>Battle\Entity</Filter>
     </ClInclude>
     <ClInclude Include="bnMemory.h">
       <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayer.h">
-      <Filter>Game\Entity\Living\Player</Filter>
+      <Filter>Battle\Entity\Living\Player</Filter>
     </ClInclude>
     <ClInclude Include="bnSpell.h">
-      <Filter>Game\Entity\Spell</Filter>
+      <Filter>Battle\Entity\Spell</Filter>
     </ClInclude>
     <ClInclude Include="bnResourceManager.h">
       <Filter>Resource</Filter>
@@ -160,23 +144,17 @@
     <ClInclude Include="bnLogger.h">
       <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="bnPlayerHealthUI.h">
-      <Filter>User Interface\Player</Filter>
-    </ClInclude>
     <ClInclude Include="bnBackgroundUI.h">
-      <Filter>User Interface\Background</Filter>
-    </ClInclude>
-    <ClInclude Include="bnMobHealthUI.h">
-      <Filter>User Interface\Mob</Filter>
+      <Filter>Battle\Background</Filter>
     </ClInclude>
     <ClInclude Include="bnWave.h">
-      <Filter>Game\Entity\Spell\Wave</Filter>
+      <Filter>Battle\Entity\Spell\Wave</Filter>
     </ClInclude>
     <ClInclude Include="bnBuster.h">
-      <Filter>Game\Entity\Spell\Buster</Filter>
+      <Filter>Battle\Entity\Spell\Buster</Filter>
     </ClInclude>
     <ClInclude Include="bnMettaur.h">
-      <Filter>Game\Entity\Living\Mettaur</Filter>
+      <Filter>Battle\Entity\Living\Mettaur</Filter>
     </ClInclude>
     <ClInclude Include="bnRenderer.h">
       <Filter>Renderer</Filter>
@@ -185,31 +163,40 @@
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="bnResourceComponent.h">
-      <Filter>Game\Component\Resource</Filter>
+      <Filter>Battle\Component\Resource</Filter>
     </ClInclude>
     <ClInclude Include="bnChargeComponent.h">
-      <Filter>Game\Component\Charge</Filter>
+      <Filter>Battle\Component\Charge</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerState.h">
-      <Filter>Game\Enumerations</Filter>
+      <Filter>Battle\Enumerations</Filter>
     </ClInclude>
     <ClInclude Include="bnMobState.h">
-      <Filter>Game\Enumerations</Filter>
+      <Filter>Battle\Enumerations</Filter>
     </ClInclude>
     <ClInclude Include="bnTileState.h">
-      <Filter>Game\Enumerations</Filter>
+      <Filter>Battle\Enumerations</Filter>
     </ClInclude>
     <ClInclude Include="bnTeam.h">
-      <Filter>Game\Enumerations</Filter>
+      <Filter>Battle\Enumerations</Filter>
     </ClInclude>
     <ClInclude Include="bnDirection.h">
-      <Filter>Game\Enumerations</Filter>
+      <Filter>Battle\Enumerations</Filter>
     </ClInclude>
     <ClInclude Include="bnMovingComponent.h">
-      <Filter>Game\Component\Moving</Filter>
+      <Filter>Battle\Component\Moving</Filter>
     </ClInclude>
-    <ClInclude Include="bnControllerComponent.h">
-      <Filter>Game\Component\Moving\Input</Filter>
+    <ClInclude Include="bnBattleScene.h">
+      <Filter>Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerHealthUI.h">
+      <Filter>Battle\Entity\Living\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMobHealthUI.h">
+      <Filter>Battle\Entity\Living\Mettaur</Filter>
+    </ClInclude>
+    <ClInclude Include="bnControllableComponent.h">
+      <Filter>Battle\Component\Moving</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

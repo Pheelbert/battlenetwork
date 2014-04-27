@@ -16,13 +16,13 @@ private:
 public:
     LayeredDrawable(void)
         : layer(0),
-        depth(0)
+          depth(0)
     {
     }
 
     LayeredDrawable(int _layer)
         : layer(_layer),
-        depth(0)
+          depth(0)
     {
     }
 
