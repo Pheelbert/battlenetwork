@@ -74,14 +74,6 @@ void Engine::Push(LayeredDrawable* _drawable)
     }
 }
 
-void Engine::DrawLayers()
-{
-    for (int i = layers.min; i <= layers.max; i++)
-    {
-        Draw(layers.At(i));
-    }
-}
-
 void Engine::Lay(Drawable* _drawable)
 {
     if (_drawable)
@@ -102,17 +94,25 @@ void Engine::Lay(vector<Drawable*> _drawable)
     }
 }
 
-void Engine::DrawOverlay()
-{
-    Draw(overlay);
-}
-
-void Engine::Pose(Drawable* _drawable)
+void Engine::LayUnder(Drawable* _drawable)
 {
     if (_drawable)
     {
         underlay.Push(_drawable);
     }
+}
+
+void Engine::DrawLayers()
+{
+    for (int i = layers.min; i <= layers.max; i++)
+    {
+        Draw(layers.At(i));
+    }
+}
+
+void Engine::DrawOverlay()
+{
+    Draw(overlay);
 }
 
 void Engine::DrawUnderlay()

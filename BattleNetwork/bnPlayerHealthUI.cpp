@@ -7,8 +7,8 @@ using std::to_string;
 
 PlayerHealthUI::PlayerHealthUI(Entity* _entity)
     : player(nullptr),
-    font(nullptr),
-    texture(nullptr)
+      font(nullptr),
+      texture(nullptr)
 {
     PlayerHealthUI(dynamic_cast<Player*>(_entity));
 }

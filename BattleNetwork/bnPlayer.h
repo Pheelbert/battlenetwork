@@ -42,7 +42,7 @@ private:
     float attackKeyPressCooldown;
     float attackToIdleCooldown;
 
-    TextureType ttype;
+    TextureType textureType;
     PlayerState state;
     PlayerHealthUI* healthUI;
     Animator<Sprite, PlayerState> animator;

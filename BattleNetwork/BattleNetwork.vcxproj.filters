@@ -47,9 +47,6 @@
     <Filter Include="Battle\Component\Charge">
       <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Component\Moving">
-      <UniqueIdentifier>{4a441b30-9e2f-4ff8-921a-60ef383f26d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Enumerations">
       <UniqueIdentifier>{5c9d2cbc-eb6d-4112-b2aa-bafcdf47830a}</UniqueIdentifier>
     </Filter>
@@ -58,6 +55,9 @@
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{b2d44660-3edc-4851-bcad-91fd074e9eef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Component\Input">
+      <UniqueIdentifier>{4a441b30-9e2f-4ff8-921a-60ef383f26d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,9 +97,6 @@
     <ClCompile Include="bnEntity.cpp">
       <Filter>Battle\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="bnMovingComponent.cpp">
-      <Filter>Battle\Component\Moving</Filter>
-    </ClCompile>
     <ClCompile Include="bnBattleScene.cpp">
       <Filter>Battle</Filter>
     </ClCompile>
@@ -110,7 +107,7 @@
       <Filter>Battle\Entity\Living\Mettaur</Filter>
     </ClCompile>
     <ClCompile Include="bnControllableComponent.cpp">
-      <Filter>Battle\Component\Moving</Filter>
+      <Filter>Battle\Component\Input</Filter>
     </ClCompile>
     <ClCompile Include="bnEngine.cpp">
       <Filter>Engine</Filter>
@@ -180,9 +177,6 @@
     <ClInclude Include="bnDirection.h">
       <Filter>Battle\Enumerations</Filter>
     </ClInclude>
-    <ClInclude Include="bnMovingComponent.h">
-      <Filter>Battle\Component\Moving</Filter>
-    </ClInclude>
     <ClInclude Include="bnBattleScene.h">
       <Filter>Battle</Filter>
     </ClInclude>
@@ -193,7 +187,7 @@
       <Filter>Battle\Entity\Living\Mettaur</Filter>
     </ClInclude>
     <ClInclude Include="bnControllableComponent.h">
-      <Filter>Battle\Component\Moving</Filter>
+      <Filter>Battle\Component\Input</Filter>
     </ClInclude>
     <ClInclude Include="bnEngine.h">
       <Filter>Engine</Filter>

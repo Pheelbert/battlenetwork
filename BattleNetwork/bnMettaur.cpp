@@ -40,7 +40,7 @@ Mettaur::Mettaur(void)
     hitHeight = 0;
     direction = Direction::DOWN;
     state = MobState::MOB_IDLE;
-    ttype = TextureType::MOB_METTAUR_IDLE;
+    textureType = TextureType::MOB_METTAUR_IDLE;
     healthUI = new MobHealthUI(this);
 
     cooldown = 0;
@@ -50,7 +50,10 @@ Mettaur::Mettaur(void)
     explosionProgress2 = 0.0f;
     attackDelay = 0.0f;
 
-    setTexture(*ResourceManager::GetInstance().GetTexture(ttype));
+    blinker = 0.0f;
+    x1 = 0.0f, y1 = 0.0f, x2 = 0.0f, y2 = 0.0f;
+
+    setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
     setScale(2.f, 2.f);
 
     explosion.setTexture(*ResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
@@ -84,7 +87,7 @@ void Mettaur::Update(float _elapsed)
     //Explode animation then set deleted to true once it finishes
     if (health <= 0)
     {
-        static float blinker = 0.0f;
+        blinker = 0.0f;
         blinker += 0.01f;
         if (blinker >= 0.5f)
         {
@@ -93,7 +96,6 @@ void Mettaur::Update(float _elapsed)
         else setColor(sf::Color(255, 255, 255, 255));
         if (blinker >= 1.f) blinker = 0.0f;
 
-        static float x1 = 0.0f, y1 = 0.0f, x2 = 0.0f, y2 = 0.0f;
         if (explosionProgress == 0.0f)
         {
             x1 = tile->getPosition().x - 10.0f;
@@ -267,34 +269,33 @@ void Mettaur::Attack()
 
 void Mettaur::RefreshTexture()
 {
-    static sf::Clock clock;
     animator.update(clock.restart());
     if (!animator.isPlayingAnimation())
     {
         if (state == MobState::MOB_IDLE)
         {
-            ttype = TextureType::MOB_METTAUR_IDLE;
+            textureType = TextureType::MOB_METTAUR_IDLE;
         }
         else if (state == MobState::MOB_MOVING)
         {
-            ttype = TextureType::MOB_MOVE;
+            textureType = TextureType::MOB_MOVE;
         }
         else if (state == MobState::MOB_ATTACKING)
         {
-            ttype = TextureType::MOB_METTAUR_ATTACK;
+            textureType = TextureType::MOB_METTAUR_ATTACK;
         }
-        setTexture(*ResourceManager::GetInstance().GetTexture(ttype));
+        setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
         
-        if (ttype == TextureType::MOB_METTAUR_IDLE)
+        if (textureType == TextureType::MOB_METTAUR_IDLE)
         {
             setPosition(tile->getPosition().x + tile->GetWidth()/2.0f - 25.0f, tile->getPosition().y + tile->GetHeight()/2.0f - 45.0f);
             hitHeight = getLocalBounds().height;
         }
-        else if (ttype == TextureType::MOB_MOVE)
+        else if (textureType == TextureType::MOB_MOVE)
         {
             setPosition(tile->getPosition().x + tile->GetWidth()/2.0f - 35.0f, tile->getPosition().y + tile->GetHeight()/2.0f - 60.0f);
         }
-        else if (ttype == TextureType::MOB_METTAUR_ATTACK)
+        else if (textureType == TextureType::MOB_METTAUR_ATTACK)
         {
             setPosition(tile->getPosition().x + tile->GetWidth()/2.0f - 55.0f, tile->getPosition().y + tile->GetHeight()/2.0f - 105.0f);
             hitHeight = getLocalBounds().height;
@@ -344,7 +345,7 @@ void Mettaur::addAnimation(int _state, FrameAnimation _animation, float _duratio
 
 TextureType Mettaur::GetTextureType() const
 {
-    return ttype;
+    return textureType;
 }
 
 MobState Mettaur::GetMobState() const

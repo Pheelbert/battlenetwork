@@ -16,13 +16,13 @@ ResourceManager& ResourceManager::GetInstance()
 
 void ResourceManager::LoadAllTextures()
 {
-	TextureType ttype = static_cast<TextureType>(0);
-	while (ttype != TEXTURE_TYPE_SIZE)
+	TextureType textureType = static_cast<TextureType>(0);
+	while (textureType != TEXTURE_TYPE_SIZE)
 	{
 		Texture* texture = nullptr;
-        texture = LoadTextureFromFile(paths[static_cast<int>(ttype)]);
-		if (texture) textures.insert(pair<TextureType, Texture*>(ttype, texture));
-        ttype = (TextureType)(static_cast<int>(ttype) + 1);
+        texture = LoadTextureFromFile(paths[static_cast<int>(textureType)]);
+		if (texture) textures.insert(pair<TextureType, Texture*>(textureType, texture));
+        textureType = (TextureType)(static_cast<int>(textureType) + 1);
 	}
 }
 

@@ -37,6 +37,8 @@ int BattleScene::Run()
     field->AddEntity(player, 2, 2);
     Entity* mob(new Mettaur());
     field->AddEntity(mob, 5, 2);
+    Entity* mob2(new Mettaur());
+    field->AddEntity(mob2, 4, 2);
 
     BackgroundUI background = BackgroundUI();
 
@@ -54,7 +56,7 @@ int BattleScene::Run()
         Tile* tile = nullptr;
         while (field->GetNextTile(tile))
         {
-            Engine::GetInstance().Pose(tile);
+            Engine::GetInstance().LayUnder(tile);
         }
 
         for (int d = 1; d <= field->GetHeight(); d++)

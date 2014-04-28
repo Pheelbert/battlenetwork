@@ -52,7 +52,7 @@ private:
     int y;
     Team team;
     TileState state;
-    TextureType ttype;
+    TextureType textureType;
     float elapsed;
     vector<Entity*> entities;
     float width;

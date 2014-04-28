@@ -1,6 +1,3 @@
-#include <SFML\Window.hpp>
-using sf::Event;
-using sf::Keyboard;
 #include "bnPlayer.h"
 #include "bnField.h"
 #include "bnBuster.h"
@@ -29,7 +26,7 @@ using sf::Keyboard;
 Player::Player(void)
     : health(99),
       state(PlayerState::PLAYER_IDLE),
-      ttype(TextureType::NAVI_MEGAMAN_MOVE),
+      textureType(TextureType::NAVI_MEGAMAN_MOVE),
       controllableComponent(ControllableComponent::GetInstance()),
       chargeComponent(ChargeComponent(this)),
       resourceComponent(ResourceComponent(this))
@@ -298,13 +295,13 @@ void Player::RefreshTexture()
     switch (state)
     {
     case PlayerState::PLAYER_IDLE:
-        ttype = TextureType::NAVI_MEGAMAN_MOVE;
+        textureType = TextureType::NAVI_MEGAMAN_MOVE;
         break;
     case PlayerState::PLAYER_MOVING:
-        ttype = TextureType::NAVI_MEGAMAN_MOVE;
+        textureType = TextureType::NAVI_MEGAMAN_MOVE;
         break;
     case PlayerState::PLAYER_SHOOTING:
-        ttype = TextureType::NAVI_MEGAMAN_SHOOT;
+        textureType = TextureType::NAVI_MEGAMAN_SHOOT;
         break;
     default:
         assert(false && "Invalid player state.");
@@ -312,7 +309,7 @@ void Player::RefreshTexture()
 
     if (!animator.isPlayingAnimation())
     {
-        setTexture(*ResourceManager::GetInstance().GetTexture(ttype));
+        setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
         animator.playAnimation(state);
     }
 

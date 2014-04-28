@@ -112,13 +112,13 @@ void Wave::Attack(Entity* _entity)
         deleted = true;
         return;
     }
-    Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
+    /*Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
     if (isMob)
     {
         isMob->Hit(10);
         deleted = true;
         return;
-    }
+    }*/
 }
 
 vector<Drawable*> Wave::GetMiscComponents()

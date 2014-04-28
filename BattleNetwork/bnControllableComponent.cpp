@@ -84,8 +84,7 @@ void ControllableComponent::update()
 
 bool ControllableComponent::has(ControllableEvent _event)
 {
-    auto it = find(events.begin(), events.end(), _event);
-    return it != events.end();
+    return events.end() != find(events.begin(), events.end(), _event);
 }
 
 bool ControllableComponent::empty()

@@ -87,51 +87,51 @@ void Tile::RefreshTexture()
     {
         if (team == Team::BLUE)
         {
-            ttype = TextureType::TILE_BLUE_NORMAL;
+            textureType = TextureType::TILE_BLUE_NORMAL;
         }
         else
         {
-            ttype = TextureType::TILE_RED_NORMAL;
+            textureType = TextureType::TILE_RED_NORMAL;
         }
     }
     else if (state == TileState::CRACKED)
     {
         if (team == Team::BLUE)
         {
-            ttype = TextureType::TILE_BLUE_CRACKED;
+            textureType = TextureType::TILE_BLUE_CRACKED;
         }
         else
         {
-            ttype = TextureType::TILE_RED_CRACKED;
+            textureType = TextureType::TILE_RED_CRACKED;
         }
     }
     else if (state == TileState::BROKEN)
     {
         if (team == Team::BLUE)
         {
-            ttype = TextureType::TILE_BLUE_BROKEN;
+            textureType = TextureType::TILE_BLUE_BROKEN;
         }
         else
         {
-            ttype = TextureType::TILE_RED_BROKEN;
+            textureType = TextureType::TILE_RED_BROKEN;
         }
     }
     else if (state == TileState::EMPTY)
     {
         if (team == Team::BLUE)
         {
-            ttype = TextureType::TILE_BLUE_EMPTY;
+            textureType = TextureType::TILE_BLUE_EMPTY;
         }
         else
         {
-            ttype = TextureType::TILE_RED_EMPTY;
+            textureType = TextureType::TILE_RED_EMPTY;
         }
     }
     else
     {
         assert(false && "Tile in invalid state");
     }
-    setTexture(*ResourceManager::GetInstance().GetTexture(ttype));
+    setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
 }
 
 bool Tile::IsWalkable() const
@@ -172,16 +172,18 @@ void Tile::AffectEntities(Spell* caller)
     for (auto it = entities.begin(); it < entities.end(); ++it)
     {
         if (*it != caller)
+        {
             caller->Attack(*it);
+        }
     }
 }
 
 bool Tile::GetNextEntity(Entity*& out) const
 {
     static int x = 0;
-    while( x < (int)entities.size())
+    while (x < (int)this->entities.size())
     {
-        out = entities.at(x);
+        out = this->entities.at(x);
         x++;
         return true;
     }
@@ -191,15 +193,14 @@ bool Tile::GetNextEntity(Entity*& out) const
 
 void Tile::Update(float _elapsed)
 {
-    vector<Entity*> copy = entities;
-    for (auto it = copy.begin(); it < copy.end(); ++it)
+    vector<Entity*> copy = this->entities;
+    for (auto entity = copy.begin(); entity < copy.end(); ++entity)
     {
-        Entity* entity = *it;
-        entity->Update(_elapsed);
-        if (entity->IsDeleted())
+        (*entity)->Update(_elapsed);
+        if ((*entity)->IsDeleted())
         {
-            this->RemoveEntity(entity);
-            field->RemoveEntity(entity);
+            this->RemoveEntity(*entity);
+            field->RemoveEntity(*entity);
         }
     }
     this->RefreshTexture();

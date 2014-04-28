@@ -33,6 +33,11 @@ public:
     void Attack();
 
 private:
+    //Old static
+    float blinker;
+    float x1, y1, x2, y2;
+    sf::Clock clock;
+
     //Cooldowns
     float cooldown;
     float attackCooldown;
@@ -52,7 +57,7 @@ private:
     float hitHeight;
     Direction direction;
     MobState state;
-    TextureType ttype;
+    TextureType textureType;
     MobHealthUI* healthUI;
     Animator<Sprite, MobState> animator;
 };

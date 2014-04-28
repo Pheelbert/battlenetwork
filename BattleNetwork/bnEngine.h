@@ -23,11 +23,11 @@ public:
     RenderWindow* GetWindow() const;
 
     void Push(LayeredDrawable* _drawable);
-    void DrawLayers();
     void Lay(Drawable* _drawable);
     void Lay(vector<Drawable*> _drawable);
+    void LayUnder(Drawable* _drawable);
+    void DrawLayers();
     void DrawOverlay();
-    void Pose(Drawable* _drawable);
     void DrawUnderlay();
 
 private:
