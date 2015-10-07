@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -133,13 +133,6 @@ class Distribution
 		{
 			return mFactory();
 		}
-			
-		/// @brief Exchanges the contents of *this with other.
-		/// 
-		void						swap(Distribution<T>& other)
-		{
-			mFactory.swap(other.mFactory);
-		}
 
 	
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -147,14 +140,6 @@ class Distribution
 	private:
 		FactoryFn					mFactory;	
 };
-
-/// @relates Distribution
-/// @brief Swaps two Distribution<T> instances.
-template <typename T>
-void swap(Distribution<T>& lhs, Distribution<T>& rhs)
-{
-	lhs.swap(rhs);
-}
 
 /// @}
 

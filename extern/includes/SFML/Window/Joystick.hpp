@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2014 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -40,7 +40,7 @@ namespace sf
 ////////////////////////////////////////////////////////////
 class SFML_WINDOW_API Joystick
 {
-public :
+public:
 
     ////////////////////////////////////////////////////////////
     /// \brief Constants related to joysticks capabilities
@@ -73,11 +73,11 @@ public :
     /// \brief Structure holding a joystick's identification
     ///
     ////////////////////////////////////////////////////////////
-    struct Identification
+    struct SFML_WINDOW_API Identification
     {
         Identification();
 
-        sf::String   name;      ///< Name of the joystick
+        String       name;      ///< Name of the joystick
         unsigned int vendorId;  ///< Manufacturer identifier
         unsigned int productId; ///< Product identifier
     };
@@ -157,9 +157,9 @@ public :
     /// \brief Update the states of all joysticks
     ///
     /// This function is used internally by SFML, so you normally
-    /// don't have to call it explicitely. However, you may need to
+    /// don't have to call it explicitly. However, you may need to
     /// call it if you have no window yet (or no window at all):
-    /// in this case the joysticks states are not updated automatically.
+    /// in this case the joystick states are not updated automatically.
     ///
     ////////////////////////////////////////////////////////////
     static void update();
@@ -202,7 +202,7 @@ public :
 /// joysticks. When you have a window with event handling, this is done
 /// automatically, you don't need to call anything. But if you have no
 /// window, or if you want to check joysticks state before creating one,
-/// you must call sf::Joystick::update explicitely.
+/// you must call sf::Joystick::update explicitly.
 ///
 /// Usage example:
 /// \code

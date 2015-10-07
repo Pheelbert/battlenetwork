@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -83,8 +83,8 @@ namespace detail
 		public:
 			// Constructor
 			IdConnectionImpl(Container& container, unsigned int id)
-				: mContainer(&container)
-				, mId(id)
+			: mContainer(&container)
+			, mId(id)
 			{
 			}
 

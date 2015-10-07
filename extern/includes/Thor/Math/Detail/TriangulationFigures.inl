@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -48,13 +48,13 @@ Edge<V>::Edge(V& corner0, V& corner1)
 }
 
 template <typename V>
-V& Edge<V>::operator[] (unsigned int cornerIndex)
+V& Edge<V>::operator[] (std::size_t cornerIndex)
 {
 	return *mCorners[cornerIndex];
 }
 
 template <typename V>
-const V& Edge<V>::operator[] (unsigned int cornerIndex) const
+const V& Edge<V>::operator[] (std::size_t cornerIndex) const
 {
 	return *mCorners[cornerIndex];
 }
@@ -76,13 +76,13 @@ Triangle<V>::Triangle(V& corner0, V& corner1, V& corner2)
 }
 
 template <typename V>
-V& Triangle<V>::operator[] (unsigned int cornerIndex)
+V& Triangle<V>::operator[] (std::size_t cornerIndex)
 {
 	return *mCorners[cornerIndex];
 }
 
 template <typename V>
-const V& Triangle<V>::operator[] (unsigned int cornerIndex) const
+const V& Triangle<V>::operator[] (std::size_t cornerIndex) const
 {
 	return *mCorners[cornerIndex];
 }

@@ -4,13 +4,13 @@ using sf::CircleShape;
 using sf::Sprite;
 using sf::Drawable;
 using sf::Texture;
-#include <Thor/Animation.hpp>
+#include <Thor/Animations.hpp>
 using thor::FrameAnimation;
 using thor::Animator;
 using sf::IntRect;
 class Entity;
 
-#define CHARGE_TEXTURE "resources/spells/spell_buster_charge.gif"
+#define CHARGE_TEXTURE "resources/spells/spell_buster_charge.png"
 #define CHARGE_COUNTER_MIN 800.0f
 #define BLUE_CHARGE_FRAME_COUNT 8
 #define CHARGE_COUNTER_MAX 1400.0f

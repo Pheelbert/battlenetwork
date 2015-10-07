@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -78,10 +78,12 @@ namespace detail
 	};
 
 	// Structure to collect the sf::Event instances and number of realtime triggers.
-	struct ActionResult
+	struct THOR_API ActionResult
 	{
-		std::vector<sf::Event>			eventContainer;
-		unsigned int					nbRealtimeTriggers;
+									ActionResult();
+
+		std::vector<sf::Event>		eventContainer;
+		std::size_t					nbRealtimeTriggers;
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------

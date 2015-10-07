@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2014 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -29,6 +29,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Audio/Export.hpp>
+#include <SFML/Audio/AlResource.hpp>
 #include <SFML/System/Thread.hpp>
 #include <SFML/System/Time.hpp>
 #include <vector>
@@ -41,9 +42,9 @@ namespace sf
 /// \brief Abstract base class for capturing sound data
 ///
 ////////////////////////////////////////////////////////////
-class SFML_AUDIO_API SoundRecorder
+class SFML_AUDIO_API SoundRecorder : AlResource
 {
-public :
+public:
 
     ////////////////////////////////////////////////////////////
     /// \brief destructor
@@ -96,10 +97,10 @@ public :
     unsigned int getSampleRate() const;
 
     ////////////////////////////////////////////////////////////
-    /// \brief Get a list of the names of all availabe audio capture devices
+    /// \brief Get a list of the names of all available audio capture devices
     ///
     /// This function returns a vector of strings, containing
-    /// the names of all availabe audio capture devices.
+    /// the names of all available audio capture devices.
     ///
     /// \return A vector of strings containing the names
     ///
@@ -156,7 +157,7 @@ public :
     ////////////////////////////////////////////////////////////
     static bool isAvailable();
 
-protected :
+protected:
 
     ////////////////////////////////////////////////////////////
     /// \brief Default constructor
@@ -182,12 +183,12 @@ protected :
     /// \param interval Processing interval
     ///
     ////////////////////////////////////////////////////////////
-    void setProcessingInterval(sf::Time interval);
+    void setProcessingInterval(Time interval);
 
     ////////////////////////////////////////////////////////////
     /// \brief Start capturing audio data
     ///
-    /// This virtual function may be overriden by a derived class
+    /// This virtual function may be overridden by a derived class
     /// if something has to be done every time a new capture
     /// starts. If not, this function can be ignored; the default
     /// implementation does nothing.
@@ -216,7 +217,7 @@ protected :
     ////////////////////////////////////////////////////////////
     /// \brief Stop capturing audio data
     ///
-    /// This virtual function may be overriden by a derived class
+    /// This virtual function may be overridden by a derived class
     /// if something has to be done every time the capture
     /// ends. If not, this function can be ignored; the default
     /// implementation does nothing.
@@ -224,7 +225,7 @@ protected :
     ////////////////////////////////////////////////////////////
     virtual void onStop();
 
-private :
+private:
 
     ////////////////////////////////////////////////////////////
     /// \brief Function called as the entry point of the thread
@@ -259,7 +260,7 @@ private :
     Thread             m_thread;             ///< Thread running the background recording task
     std::vector<Int16> m_samples;            ///< Buffer to store captured samples
     unsigned int       m_sampleRate;         ///< Sample rate
-    sf::Time           m_processingInterval; ///< Time period between calls to onProcessSamples
+    Time               m_processingInterval; ///< Time period between calls to onProcessSamples
     bool               m_isCapturing;        ///< Capturing state
     std::string        m_deviceName;         ///< Name of the audio capture device
 };
@@ -285,7 +286,7 @@ private :
 /// A derived class has only one virtual function to override:
 /// \li onProcessSamples provides the new chunks of audio samples while the capture happens
 ///
-/// Moreover, two additionnal virtual functions can be overriden
+/// Moreover, two additional virtual functions can be overridden
 /// as well if necessary:
 /// \li onStart is called before the capture happens, to perform custom initializations
 /// \li onStop is called after the capture ends, to perform custom cleanup
@@ -303,9 +304,9 @@ private :
 ///
 /// If you have multiple sound input devices connected to your
 /// computer (for example: microphone, external soundcard, webcam mic, ...)
-/// you can get a list of all available devices throught the
+/// you can get a list of all available devices through the
 /// getAvailableDevices() function. You can then select a device
-/// by calling setDevice() with the appropiate device. Otherwise
+/// by calling setDevice() with the appropriate device. Otherwise
 /// the default capturing device will be used.
 ///
 /// It is important to note that the audio capture happens in a

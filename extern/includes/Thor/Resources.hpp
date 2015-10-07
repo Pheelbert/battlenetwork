@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -29,10 +29,11 @@
 #ifndef THOR_MODULE_RESOURCES_HPP
 #define THOR_MODULE_RESOURCES_HPP
 
-#include <Thor/Resources/MultiResourceCache.hpp>
-#include <Thor/Resources/ResourceCache.hpp>
-#include <Thor/Resources/ResourceKey.hpp>
-#include <Thor/Resources/ResourceStrategies.hpp>
+#include <Thor/Resources/OwnershipModels.hpp>
+#include <Thor/Resources/KnownIdStrategy.hpp>
+#include <Thor/Resources/ResourceHolder.hpp>
+#include <Thor/Resources/ResourceLoader.hpp>
+#include <Thor/Resources/ResourceExceptions.hpp>
 #include <Thor/Resources/SfmlLoaders.hpp>
 
 #endif // THOR_MODULE_RESOURCES_HPP

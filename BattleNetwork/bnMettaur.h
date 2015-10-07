@@ -1,5 +1,5 @@
 #pragma once
-#include <Thor/Animation.hpp>
+#include <Thor/Animations.hpp>
 using thor::FrameAnimation;
 using thor::Animator;
 using sf::IntRect;

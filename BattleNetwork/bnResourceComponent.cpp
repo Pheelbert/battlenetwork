@@ -1,4 +1,4 @@
-#include <Thor/Animation.hpp>
+#include <Thor/Animations.hpp>
 using thor::FrameAnimation;
 using thor::Animator;
 #include <SFML\Graphics.hpp>

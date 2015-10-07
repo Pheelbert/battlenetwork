@@ -4,7 +4,7 @@ using sf::Texture;
 using sf::Sprite;
 using sf::IntRect;
 using sf::Drawable;
-#include <Thor/Animation.hpp>
+#include <Thor/Animations.hpp>
 using thor::FrameAnimation;
 #include <vector>
 using std::vector;

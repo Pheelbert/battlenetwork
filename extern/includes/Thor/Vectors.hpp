@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -31,6 +31,6 @@
 
 #include <Thor/Vectors/VectorAlgebra2D.hpp>
 #include <Thor/Vectors/VectorAlgebra3D.hpp>
-#include <Thor/Vectors/PolarVector.hpp>
+#include <Thor/Vectors/PolarVector2.hpp>
 
 #endif // THOR_MODULE_VECTORS_HPP

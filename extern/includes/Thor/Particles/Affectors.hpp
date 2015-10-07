@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -52,14 +52,14 @@ class Particle;
 ///  to ensure the lifetime of the referenced object. Example:
 /// @code
 /// // Create affector and particle system
-/// thor::ForceAffector affector(...);
+/// thor::ForceAffector affector(acceleration);
 /// thor::ParticleSystem system(...);
 ///
 /// // Add affector to particle system
 /// system.addAffector(thor::refAffector(affector));
 ///
 /// // Change affector properties later
-/// affector.setAcceleration(acceleration);
+/// affector = ForceAffector(newAcceleration);
 /// @endcode
 template <typename Affector>
 std::function<void(Particle&, sf::Time)> refAffector(Affector& referenced)
@@ -87,14 +87,6 @@ class THOR_API ForceAffector
 		/// @param dt Time interval during which particles are affected.
 		void						operator() (Particle& particle, sf::Time dt);
 
-		/// @brief Sets the linear acceleration applied to the particles.
-		///
-		void						setAcceleration(sf::Vector2f acceleration);
-
-		/// @brief Returns the linear acceleration applied to the particles.
-		///
-		sf::Vector2f				getAcceleration() const;
-
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Private variables
@@ -115,17 +107,9 @@ class THOR_API TorqueAffector
 		///  this value each second.
 		explicit					TorqueAffector(float angularAcceleration);
 
-		/// @copydoc ForceAffector::affect
+		/// @copydoc ForceAffector::operator()()
 		///
 		void						operator() (Particle& particle, sf::Time dt);
-
-		/// @brief sets the angular acceleration applied to the particles (in degrees).
-		///
-		void						setAngularAcceleration(float angularAcceleration);
-
-		/// @brief Returns the angular acceleration applied to the particles (in degrees).
-		///
-		float						getAngularAcceleration() const;
 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -146,17 +130,9 @@ class THOR_API ScaleAffector
 		/// @param scaleFactor Factor by which particles are scaled every second.
 		explicit					ScaleAffector(sf::Vector2f scaleFactor);
 
-		/// @copydoc ForceAffector::affect
+		/// @copydoc ForceAffector::operator()()
 		///
 		void						operator() (Particle& particle, sf::Time dt);
-
-		/// @brief Sets the factor by which particles are scaled every second.
-		/// 
-		void						setScaleFactor(sf::Vector2f scaleFactor);
-
-		/// @brief Returns the factor by which particles are scaled every second.
-		/// 
-		sf::Vector2f				getScaleFactor() const;
 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -167,7 +143,7 @@ class THOR_API ScaleAffector
 
 
 /// @brief %Affector that animates particles using a function.
-/// @details This affector can be used to apply animations of Thor's Animation module to particles. Such animations are described
+/// @details This affector can be used to apply animations of Thor's Animations module to particles. Such animations are described
 ///  by a function with signature <b>void(Particle& animated, float progress)</b>.
 class THOR_API AnimationAffector
 {
@@ -180,7 +156,7 @@ class THOR_API AnimationAffector
 		///  corresponds to getElapsedRatio(particle), the delta time of operator() is ignored.
 		explicit					AnimationAffector(std::function<void(Particle&, float)> particleAnimation);
 
-		/// @copydoc ForceAffector::affect
+		/// @copydoc ForceAffector::operator()()
 		///
 		void						operator() (Particle& particle, sf::Time dt);
 

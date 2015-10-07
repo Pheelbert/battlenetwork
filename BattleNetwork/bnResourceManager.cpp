@@ -88,7 +88,7 @@ ResourceManager::ResourceManager(void)
 	//-Spells-
 	//Bullet
 	paths.push_back("resources/spells/spell_bullet_hit.png");
-	paths.push_back("resources/spells/spell_buster_charge.gif");
+	paths.push_back("resources/spells/spell_buster_charge.png");
 	  //paths.push_back("resources/spells/spell_charged_bullet_hit.png");
 	paths.push_back("resources/spells/spell_wave.png");
 }

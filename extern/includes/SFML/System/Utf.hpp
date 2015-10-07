@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2014 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -47,7 +47,7 @@ class Utf;
 template <>
 class Utf<8>
 {
-public :
+public:
 
     ////////////////////////////////////////////////////////////
     /// \brief Decode a single UTF-8 character
@@ -254,7 +254,7 @@ public :
 template <>
 class Utf<16>
 {
-public :
+public:
 
     ////////////////////////////////////////////////////////////
     /// \brief Decode a single UTF-16 character
@@ -461,7 +461,7 @@ public :
 template <>
 class Utf<32>
 {
-public :
+public:
 
     ////////////////////////////////////////////////////////////
     /// \brief Decode a single UTF-32 character

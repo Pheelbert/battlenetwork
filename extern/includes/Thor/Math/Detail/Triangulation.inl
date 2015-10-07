@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -107,8 +107,8 @@ namespace detail
 			VertexPtrIterator			end();
 
 			// Sets/returns the adjacent triangle on the opposite side of the corner #index.
-			void						setAdjacentTriangle(unsigned int index, const OptTriangleIterator& adjacentTriangle);
-			OptTriangleIterator			getAdjacentTriangle(unsigned int index) const;
+			void						setAdjacentTriangle(std::size_t index, const OptTriangleIterator& adjacentTriangle);
+			OptTriangleIterator			getAdjacentTriangle(std::size_t index) const;
 
 			// Marks this triangle (or removes mark)
 			void						setFlagged(bool flagged);

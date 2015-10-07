@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -30,8 +30,6 @@
 #define THOR_BIGTEXTURE_HPP
 
 #include <Thor/Config.hpp>
-
-#include <Aurora/Tools/Swap.hpp>
 
 #include <SFML/Graphics/Texture.hpp>
 
@@ -66,10 +64,6 @@ class THOR_API BigTexture
 		///
 									BigTexture();
 
-		/// @brief Swaps @a *this with @a other.
-		/// 
-		void						swap(BigTexture& other);
-
 		/// @brief Loads the texture from an image.
 		/// @param image The sf::Image of which the pixels are loaded by the texture.
 		bool						loadFromImage(const sf::Image& image);
@@ -103,6 +97,9 @@ class THOR_API BigTexture
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Private member functions
 	private:
+		// Swaps *this with other.
+		void						swap(BigTexture& other);
+
 		// Fills the sprites according to the own 2D array of textures.
 		// The return value is the size of everything, in world coordinates.
 		sf::Vector2f				fillSprites(const sf::Color& color, std::vector<sf::Sprite>& out) const;
@@ -121,10 +118,6 @@ class THOR_API BigTexture
 	// Friends
 	friend class BigSprite;
 };
-
-/// @relates BigTexture
-/// @brief Exchanges the contents of two big textures.
-AURORA_GLOBAL_SWAP(BigTexture)
 
 /// @}
 

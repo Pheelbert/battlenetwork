@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2014 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -42,7 +42,7 @@ class Window;
 ////////////////////////////////////////////////////////////
 class SFML_WINDOW_API Mouse
 {
-public :
+public:
 
     ////////////////////////////////////////////////////////////
     /// \brief Mouse buttons
@@ -57,6 +57,16 @@ public :
         XButton2,   ///< The second extra mouse button
 
         ButtonCount ///< Keep last -- the total number of mouse buttons
+    };
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Mouse wheels
+    ///
+    ////////////////////////////////////////////////////////////
+    enum Wheel
+    {
+        VerticalWheel,  ///< The vertical mouse wheel
+        HorizontalWheel ///< The horizontal mouse wheel
     };
 
     ////////////////////////////////////////////////////////////
@@ -162,6 +172,6 @@ public :
 /// sf::Mouse::setPosition(sf::Vector2i(100, 200), window);
 /// \endcode
 ///
-/// \see sf::Joystick, sf::Keyboard
+/// \see sf::Joystick, sf::Keyboard, sf::Touch
 ///
 ////////////////////////////////////////////////////////////

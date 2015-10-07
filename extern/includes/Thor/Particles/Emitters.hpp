@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -133,7 +133,7 @@ class THOR_API UniversalEmitter
 	// Private member functions
 	private:
 		// Returns the number of particles to emit during this frame.
-		unsigned int				computeParticleCount(sf::Time dt);
+		std::size_t					computeParticleCount(sf::Time dt);
 
 
 	// ---------------------------------------------------------------------------------------------------------------------------

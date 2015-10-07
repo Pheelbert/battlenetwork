@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -33,8 +33,6 @@
 #include <Thor/Particles/EmissionInterface.hpp>
 #include <Thor/Input/Connection.hpp>
 #include <Thor/Config.hpp>
-
-#include <Aurora/Tools/Swap.hpp>
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -123,9 +121,13 @@ class THOR_API ParticleSystem : public sf::Drawable, private sf::NonCopyable, pr
 		/// @details Requires a call to setTexture() and possibly addTextureRect() before the particle system can be used.
 									ParticleSystem();
 
-		/// @brief Swaps the contents of two instances in constant time.
-		///
-		void						swap(ParticleSystem& other);
+		/// @brief Move constructor
+		/// 
+									ParticleSystem(ParticleSystem&& source);
+
+		/// @brief Move assignment operator
+		/// 
+		ParticleSystem&				operator= (ParticleSystem&& source);
 
 		/// @brief Sets the used texture.
 		/// @details Only one texture can be used at a time. If you need multiple particle representations, specify different texture
@@ -228,10 +230,6 @@ class THOR_API ParticleSystem : public sf::Drawable, private sf::NonCopyable, pr
 		mutable std::vector<Quad>	mQuads;
 		mutable bool				mNeedsQuadUpdate;
 };
-
-/// @relates ParticleSystem
-/// @brief Exchanges the contents of two ParticleSystem instances.
-AURORA_GLOBAL_SWAP(ParticleSystem)
 
 /// @}
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <Thor\Animation.hpp>
+#include <Thor/Animations.hpp>
 using thor::FrameAnimation;
 #include <string>
 using std::string;

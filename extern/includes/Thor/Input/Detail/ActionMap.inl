@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -100,16 +100,23 @@ void ActionMap<ActionId>::invokeCallbacks(CallbackSystem& system, sf::Window* wi
 	AURORA_FOREACH(const auto& actionPair, mActionMap)
 	{
 		// Check if current action is active, collect additional information in result
-		detail::ActionResult result = {};
+		detail::ActionResult result;
 		if (!actionPair.second.isActive(mEventBuffer, result))
 			continue;
+
+		// Note: result.eventContainer may store more than one event in two cases, of which only the first is handled:
+		// 1. The action triggered multiple times in this frame, because the underlying events did
+		//    -> fine, invoke callback multiple times
+		// 2. One action contains multiple events even in a single triggering
+		//    -> ill-formed (logical operators should contain only one event-based action that can be simultaneously active)
 
 		// Invoke callback once for every sf::Event
 		AURORA_FOREACH(const sf::Event& event, result.eventContainer)
 			system.triggerEvent( ActionContext<ActionId>(window, &event, actionPair.first) );
 
-		// If at least one realtime constellation triggers this action, invoke callback for it
-		if (result.nbRealtimeTriggers > 0)
+		// If at least one realtime constellation triggers this action and we have not already invoked callbacks because of
+		// an event, then do it now. This assumes that realtime conditions can be active at most once per frame, unlike events.
+		if (result.nbRealtimeTriggers > 0 && result.eventContainer.empty())
 			system.triggerEvent( ActionContext<ActionId>(window, nullptr, actionPair.first) );
 	}
 }

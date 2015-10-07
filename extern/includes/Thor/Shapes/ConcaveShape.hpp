@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Thor C++ Library
-// Copyright (c) 2011-2014 Jan Haller
+// Copyright (c) 2011-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -29,25 +29,15 @@
 #ifndef THOR_CONCAVESHAPE_HPP
 #define THOR_CONCAVESHAPE_HPP
 
-#include <Thor/Math/TriangulationFigures.hpp>
 #include <Thor/Config.hpp>
 
-#include <Aurora/SmartPtr/CopiedPtr.hpp>
-#include <Aurora/Tools/Swap.hpp>
-
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
-#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 
 #include <vector>
-
-
-namespace sf
-{
-
-	class Shape;
-
-} // namespace sf
 
 
 namespace thor
@@ -72,27 +62,22 @@ class THOR_API ConcaveShape : public sf::Drawable, public sf::Transformable
 		/// @details The concave shape should look as similar as possible to the original convex shape.
 									ConcaveShape(const sf::Shape& shape);
 
-		/// @brief Exchanges the content of two instances in O(1).
-		///
-		void						swap(ConcaveShape& other);
-
-
 		/// @brief Sets the amount of points in the concave polygon.
 		///
-		void						setPointCount(unsigned int count);
+		void						setPointCount(std::size_t count);
 
 		/// @brief Returns the amount of points in the concave polygon.
 		///
-		unsigned int				getPointCount() const;
+		std::size_t					getPointCount() const;
 
 		/// @brief Sets the position of a point.
 		/// @param index Which point? Must be in [0, getPointCount()[
 		/// @param position New point position in local coordinates.
-		void						setPoint(unsigned int index, sf::Vector2f position);
+		void						setPoint(std::size_t index, sf::Vector2f position);
 
 		/// @brief Returns the position of a point.
 		/// @param index Which point? Must be in [0, getPointCount()[
-		sf::Vector2f				getPoint(unsigned int index) const;
+		sf::Vector2f				getPoint(std::size_t index) const;
 
 		/// @brief Sets the polygon's fill color.
 		/// 
@@ -118,15 +103,20 @@ class THOR_API ConcaveShape : public sf::Drawable, public sf::Transformable
 		///
 		float						getOutlineThickness() const;
 
+		/// @brief Return untransformed bounding rectangle.
+		///
+		sf::FloatRect				getLocalBounds() const;
+
+		/// @brief Return transformed bounding rectangle.
+		/// @details This function does not necessarily yield the minimal bounding rect that spans all vertices. It transforms
+		///  the local bounding rect, and then computes the bounding rect of that transformed bounding rect -- so for example, a
+		///  rotated shape might not have the bounding rect that you expect. This behavior is consistent with SFML.
+		sf::FloatRect				getGlobalBounds() const;
+
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Private types
 	private:
-		// Container typedefs
-		typedef std::vector< aurora::CopiedPtr<sf::Shape> >	ShapeContainer;
-		typedef std::vector< sf::Vector2f >					PointContainer;
-		typedef std::vector< Edge<const sf::Vector2f> >		EdgeContainer;
-
 		struct TriangleGenerator;
 
 
@@ -137,30 +127,26 @@ class THOR_API ConcaveShape : public sf::Drawable, public sf::Transformable
 		virtual void				draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 		// Computes how the shape can be split up into convex triangles.
-		void						decompose() const;
+		void						ensureDecomposed() const;
 
 		// Forms the outline out of the given edges.
-		void						formOutline() const;
+		void						ensureOutlineUpdated() const;
 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Private variables
 	private:
-		PointContainer				mPoints;
-		sf::Color					mFillColor;
-		sf::Color					mOutlineColor;
-		float						mOutlineThickness;
+		std::vector<sf::Vector2f>				mPoints;
+		sf::Color								mFillColor;
+		sf::Color								mOutlineColor;
+		float									mOutlineThickness;
 
-		mutable EdgeContainer		mEdges;
-		mutable ShapeContainer		mTriangleShapes;
-		mutable ShapeContainer		mEdgeShapes;
-		mutable bool				mNeedsTriangleUpdate;
-		mutable bool				mNeedsEdgeUpdate;
+		mutable sf::VertexArray					mTriangleVertices;
+		mutable std::vector<sf::ConvexShape>	mOutlineShapes;
+		mutable sf::FloatRect					mLocalBounds;
+		mutable bool							mNeedsDecomposition;
+		mutable bool							mNeedsOutlineUpdate;
 };
-
-/// @relates ConcaveShape
-/// @brief Exchanges the contents of two concave shapes.
-AURORA_GLOBAL_SWAP(ConcaveShape)
 
 /// @}
 

@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Aurora C++ Library
-// Copyright (c) 2012-2014 Jan Haller
+// Copyright (c) 2012-2015 Jan Haller
 // 
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -29,7 +29,7 @@
 #ifndef AURORA_SINGLEDISPATCHER_HPP
 #define AURORA_SINGLEDISPATCHER_HPP
 
-#include <Aurora/Dispatch/Rtti.hpp>
+#include <Aurora/Dispatch/DispatchTraits.hpp>
 #include <Aurora/Tools/NonCopyable.hpp>
 #include <Aurora/Tools/Exceptions.hpp>
 #include <Aurora/Meta/Templates.hpp>
@@ -51,14 +51,17 @@ namespace aurora
 /// @details Sometimes you encounter the situation where you need to implement polymorphic behavior, but you cannot
 ///  or don't want to add a virtual function to an existing class hierarchy. Here comes dynamic dispatch into play:
 ///  You define free functions, which can be treated by the dispatcher like virtual functions.
-/// @tparam B Reference or pointer to polymorphic class, which is the base class of every dispatched function's
+/// @tparam Signature Function signature <b>R(B)</b> or <b>R(B, U)</b>, with the following types:
+///  * <b>B</b>: Reference or pointer to polymorphic class, which is the base class of every dispatched function's
 ///  parameter type. When @a B is a pointer, the arguments of the dispatched functions shall be pointers too (the
 ///  same applies to references).
 ///  If @a B is a pointer or reference to const, the dispatched functions cannot modify their arguments. In this case,
 ///  the dispatched functions shall have arguments of type pointer or reference to const, too.
-/// @tparam R Return type of the dispatched functions.
+///  * <b>R</b>: Return type of the dispatched functions.
+///  * <b>U</b>: Any parameter type that can be used to forward user arguments to the functions
 /// @tparam Traits Traits class to customize the usage of the dispatcher. To define your own traits, you can (but don't have to)
-///  inherit the class aurora::DispatchTraits<K>, where K is your key. In general, the @a Traits class must contain the following members:
+///  inherit the class @ref aurora::DispatchTraits<K>, where K is your key. It predefines most members for convenience.
+///  In general, the @a Traits class must contain the following members:
 /// @code 
 /// struct Traits
 /// {
@@ -67,8 +70,9 @@ namespace aurora
 ///	    // as a key in std::unordered_map, i.e. it must support a std::hash<Key> specialization and operator==.
 ///	    typedef K Key;
 ///	    
-///	    // A function that returns the corresponding key (such as std::type_index) from a type identifier
-///	    // (such as aurora::Type<T>). Often, key and type identifier are the same.
+///	    // A function that returns the corresponding key (such as std::type_index) from a type identifier (such as aurora::Type<T>).
+///	    // The type identifier is passed to bind() and can contain static type information, while the key is used by the map
+///	    // storing the registered functions. Often, key and type identifier are the same. 
 ///	    static Key keyFromId(Id id);
 ///	    
 ///	    // Given a function argument base, this static function extracts the key from it. B corresponds to the template parameter
@@ -76,12 +80,13 @@ namespace aurora
 ///	    static Key keyFromBase(B base);
 ///	    
 ///	    // trampoline1() takes a function that is passed to SingleDispatcher::bind() and modifies it in order to fit the common
-///	    // R(B) signature. For example, this is the place to insert downcasts.
+///	    // R(B) signature. It therefore acts as a wrapper for user-defined functions which can link different signatures together.
+///	    // For example, this is the place to insert downcasts.
 ///	    // The first template parameter Id is required, as it will be explicitly specified when trampoline1() is called.
-///	     template <typename Id, typename Fn>
-///	     static std::function<R(B)> trampoline1(Fn f);
+///	    template <typename Id, typename Fn>
+///	    static std::function<R(B)> trampoline1(Fn f);
 ///	    
-///	    // Optional function that returns a string representation of @a key for debugging.
+///	    // Optional function that returns a string representation of key for debugging.
 ///	    static const char* name(Key k);
 /// };
 /// @endcode
@@ -98,7 +103,7 @@ namespace aurora
 /// void func2(Derived2* d);
 ///
 /// // Create dispatcher and register functions
-/// aurora::SingleDispatcher<Base*> dispatcher;
+/// aurora::SingleDispatcher<void(Base*)> dispatcher;
 /// dispatcher.bind(aurora::Type<Derived1>(), &func1);
 /// dispatcher.bind(aurora::Type<Derived2>(), &func2);
 ///
@@ -107,15 +112,31 @@ namespace aurora
 /// dispatcher.call(ptr); // Invokes void func1(Derived1* d);
 /// delete ptr;
 /// @endcode
-template <class B, typename R = void, class Traits = RttiDispatchTraits<B, R>>
+template <typename Signature, class Traits = RttiDispatchTraits<Signature, 1>>
 class SingleDispatcher : private NonCopyable
-{	 
+{	  
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Public types
+	public:
+		/// @brief Function return type
+		/// 
+		typedef typename FunctionResult<Signature>::Type		Result;
+
+		/// @brief Function parameter type denoting the object used for the dispatch
+		/// 
+		typedef typename FunctionParam<Signature, 0>::Type		Parameter;
+
+		/// @brief Addition parameter for user data, only useful if @a Signature contains more than 1 parameter
+		/// 
+		typedef typename FunctionParam<Signature, 1>::Type		UserData;
+
+		
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Static assertions
 
 	// Make sure that B is either T* or T&
-	static_assert(std::is_pointer<B>::value || std::is_lvalue_reference<B>::value,
-		"Template argument B must be a pointer or reference.");
+	static_assert(std::is_pointer<Parameter>::value || std::is_lvalue_reference<Parameter>::value,
+		"Function parameter must be a pointer or reference.");
 
 	 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -124,30 +145,62 @@ class SingleDispatcher : private NonCopyable
 		/// @brief Default constructor
 									SingleDispatcher();
 
-		/// @brief Registers a function bound to a specific key.
+		/// @brief Move constructor
+									SingleDispatcher(SingleDispatcher&& source);
+
+		/// @brief Move assignment operator
+		SingleDispatcher&			operator= (SingleDispatcher&& source);
+
+		/// @brief Destructor
+									~SingleDispatcher();
+
+		/// @brief Registers a function bound to a specific key
 		/// @tparam Id %Type that identifies the class. By default, this is aurora::Type<D>, where D is the derived class.
 		///  Can be deduced from the argument.
 		/// @tparam Fn %Type of the function. Can be deduced from the argument.
 		/// @param identifier Value that identifies the object. The key, which is mapped to the function, is computed from the
 		///  identifier through Traits::keyFromId(identifier).
-		/// @param functionObject Function to register and associate with the given identifier.
+		/// @param function Function to register and associate with the given identifier. Usually, the function has the signature
+		///  <i>Result(Parameter)</i>, but it's possible to deviate from it (e.g. using derived classes), see also the note about
+		///  trampolines in the Traits classes. In case you specified a second parameter for the @a Signature template
+		///  parameter, the function should have the signature <i>Result(Parameter, Parameter, UserData)</i>.
 		template <typename Id, typename Fn>
-		void						bind(Id identifier, Fn function);
+		void						bind(const Id& identifier, Fn function);
 
-		/// @brief Dispatches the key of @a arg and invokes the corresponding function.
-		/// @details Traits::keyFromBase(arg) is invoked to determine the key of the passed argument. The function bound to that
-		///  key is then looked up in the map and invoked.
+		/// @brief Dispatches the key of @a arg and invokes the corresponding function
+		/// @details <i>Traits::keyFromBase(arg)</i> is invoked to determine the key of the passed argument. The function bound to
+		///  that key is then looked up in the map and invoked. If no match is found and a fallback function has been registered
+		///  using fallback(), then the fallback function will be invoked.
 		/// @param arg Function argument as a reference or pointer.
 		/// @return The return value of the dispatched function, if any.
-		/// @throw FunctionCallException when no corresponding function is found.
-		R							call(B arg) const;
+		/// @throw FunctionCallException when no corresponding function is found and no fallback has been registered.
+		Result						call(Parameter arg) const;
+
+		/// @brief Invokes the function depending on @a arg and passes a user-defined argument @a data
+		/// @brief Dispatches the key of @a arg and invokes the corresponding function
+		/// @details <i>Traits::keyFromBase(arg)</i> is invoked to determine the key of the passed argument. The function bound to
+		///  that key is then looked up in the map and invoked. If no match is found and a fallback function has been registered
+		///  using fallback(), then the fallback function will be invoked.
+		///  @n@n This method is only enabled if the @a Signature template parameter contains 2 parameters.
+		/// @param arg Function argument as a reference or pointer.
+		/// @param data An additional user argument that is forwarded to the function.
+		/// @return The return value of the dispatched function, if any.
+		/// @throw FunctionCallException when no corresponding function is found and no fallback has been registered.
+		Result						call(Parameter arg, UserData data) const;
+
+		/// @brief Registers a fallback function.
+		/// @details The passed function will be invoked when call() doesn't find a registered function. It can be used when
+		///  not finding a match does not represent an exceptional situation, but a common case.
+		/// @n@n If you want to perform no action, you can pass @ref aurora::NoOp<R, 1>().
+		/// @param function Function according to the specified signature.
+		void						fallback(std::function<Signature> function);
 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Private types
 	private:
 		typedef typename Traits::Key					Key;
-		typedef std::function<R(B)>						BaseFunction;
+		typedef std::function<Signature>				BaseFunction;
 		typedef std::unordered_map<Key, BaseFunction>	FnMap;
 
 
@@ -155,6 +208,7 @@ class SingleDispatcher : private NonCopyable
 	// Private variables
 	private:
 		FnMap						mMap;
+		BaseFunction				mFallback;
 };
 
 /// @}

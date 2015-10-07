@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2014 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -47,7 +47,7 @@ namespace sf
 ////////////////////////////////////////////////////////////
 class SFML_GRAPHICS_API Text : public Drawable, public Transformable
 {
-public :
+public:
 
     ////////////////////////////////////////////////////////////
     /// \brief Enumeration of the string drawing styles
@@ -55,10 +55,11 @@ public :
     ////////////////////////////////////////////////////////////
     enum Style
     {
-        Regular    = 0,      ///< Regular characters, no style
-        Bold       = 1 << 0, ///< Bold characters
-        Italic     = 1 << 1, ///< Italic characters
-        Underlined = 1 << 2  ///< Underlined characters
+        Regular       = 0,      ///< Regular characters, no style
+        Bold          = 1 << 0, ///< Bold characters
+        Italic        = 1 << 1, ///< Italic characters
+        Underlined    = 1 << 2, ///< Underlined characters
+        StrikeThrough = 1 << 3  ///< Strike through characters
     };
 
     ////////////////////////////////////////////////////////////
@@ -71,6 +72,13 @@ public :
 
     ////////////////////////////////////////////////////////////
     /// \brief Construct the text from a string, font and size
+    ///
+    /// Note that if the used font is a bitmap font, it is not
+    /// scalable, thus not all requested sizes will be available
+    /// to use. This needs to be taken into consideration when
+    /// setting the character size. If you need to display text
+    /// of a certain size, make sure the corresponding bitmap
+    /// font that supports that size is used.
     ///
     /// \param string         Text assigned to the string
     /// \param font           Font used to draw the string
@@ -108,7 +116,7 @@ public :
     /// doesn't store its own copy of the font, but rather keeps
     /// a pointer to the one that you passed to this function.
     /// If the font is destroyed and the text tries to
-    /// use it, the behaviour is undefined.
+    /// use it, the behavior is undefined.
     ///
     /// \param font New font
     ///
@@ -121,6 +129,13 @@ public :
     /// \brief Set the character size
     ///
     /// The default size is 30.
+    ///
+    /// Note that if the used font is a bitmap font, it is not
+    /// scalable, thus not all requested sizes will be available
+    /// to use. This needs to be taken into consideration when
+    /// setting the character size. If you need to display text
+    /// of a certain size, make sure the corresponding bitmap
+    /// font that supports that size is used.
     ///
     /// \param size New character size, in pixels
     ///
@@ -178,7 +193,7 @@ public :
     /// \brief Get the text's font
     ///
     /// If the text has no font attached, a NULL pointer is returned.
-    /// The returned reference is const, which means that you
+    /// The returned pointer is const, which means that you
     /// cannot modify the font when you get it from this function.
     ///
     /// \return Pointer to the text's font
@@ -253,17 +268,17 @@ public :
     /// \brief Get the global bounding rectangle of the entity
     ///
     /// The returned rectangle is in global coordinates, which means
-    /// that it takes in account the transformations (translation,
+    /// that it takes into account the transformations (translation,
     /// rotation, scale, ...) that are applied to the entity.
     /// In other words, this function returns the bounds of the
-    /// sprite in the global 2D world's coordinate system.
+    /// text in the global 2D world's coordinate system.
     ///
     /// \return Global bounding rectangle of the entity
     ///
     ////////////////////////////////////////////////////////////
     FloatRect getGlobalBounds() const;
 
-private :
+private:
 
     ////////////////////////////////////////////////////////////
     /// \brief Draw the text to a render target
@@ -276,7 +291,7 @@ private :
 
     ////////////////////////////////////////////////////////////
     /// \brief Make sure the text's geometry is updated
-    /// 
+    ///
     /// All the attributes related to rendering are cached, such
     /// that the geometry is only updated when necessary.
     ///
@@ -312,8 +327,8 @@ private :
 /// It inherits all the functions from sf::Transformable:
 /// position, rotation, scale, origin. It also adds text-specific
 /// properties such as the font to use, the character size,
-/// the font style (bold, italic, underlined), the global color
-/// and the text to display of course.
+/// the font style (bold, italic, underlined, strike through), the
+/// global color and the text to display of course.
 /// It also provides convenience functions to calculate the
 /// graphical size of the text, or to get the global position
 /// of a given character.
@@ -341,7 +356,7 @@ private :
 /// // Declare and load a font
 /// sf::Font font;
 /// font.loadFromFile("arial.ttf");
-/// 
+///
 /// // Create a text
 /// sf::Text text("hello", font);
 /// text.setCharacterSize(30);

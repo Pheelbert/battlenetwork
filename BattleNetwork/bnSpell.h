@@ -1,6 +1,6 @@
 #pragma once
 #include "bnEntity.h"
-#include <Thor\Animation.hpp>
+#include <Thor/Animations.hpp>
 using thor::FrameAnimation;
 using sf::Texture;
 
