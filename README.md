@@ -1,6 +1,8 @@
 battlenetwork
 =============
 
+http://pheelbert.co.nf/battlenetworkinfo.php
+
 A Megaman Battle Network project that I work on occasionally. Made from scratch with SFML and Thor in C++.
 
 'extern/dlls/*(-d).dll' must be copied to the Release/ or Debug/
