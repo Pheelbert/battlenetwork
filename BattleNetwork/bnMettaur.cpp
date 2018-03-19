@@ -32,6 +32,9 @@
 #define EXPLODE_ANIMATION_WIDTH 59
 #define EXPLODE_ANIMATION_HEIGHT 59
 
+vector<int> Mettaur::metIDs = vector<int>();
+int Mettaur::currMetIndex = 0;
+
 Mettaur::Mettaur(void)
     : resourceComponent(ResourceComponent(this))
 {
@@ -76,10 +79,26 @@ Mettaur::Mettaur(void)
     //Components setup and load
     resourceComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
     resourceComponent.load();
+	
+	Mettaur::metIDs.push_back((int)Mettaur::metIDs.size() + 1);
+	metID = (int)Mettaur::metIDs.size();
 }
 
 Mettaur::~Mettaur(void)
 {
+	if (Mettaur::metIDs.size() > 0) 
+	{
+		vector<int>::iterator it = find(Mettaur::metIDs.begin(), Mettaur::metIDs.end(), metID);
+
+		if (it != Mettaur::metIDs.end())
+		{
+			Mettaur::metIDs.erase(it);
+			if (Mettaur::currMetIndex >= Mettaur::metIDs.size())
+			{
+				Mettaur::currMetIndex = 0;
+			}
+		}
+	}
 }
 
 void Mettaur::Update(float _elapsed)
@@ -157,14 +176,28 @@ void Mettaur::Update(float _elapsed)
             }
         }
 
-        attackCooldown += _elapsed;
-        if (attackCooldown >= ATTACK_COOLDOWN)
+		// Wait your turn
+		if (Mettaur::metIDs.at(Mettaur::currMetIndex) == metID) {
+			attackCooldown += _elapsed;
+		}
+
+		// NOTE: Mets only attack on their turn
+        if (attackCooldown >= ATTACK_COOLDOWN  && (Mettaur::metIDs.at(Mettaur::currMetIndex) == metID))
         {
+			Tile* forward = field->GetAt(tile->GetX() - 1, tile->GetY());
+
             if (state == MobState::MOB_IDLE)
             {
-                attackCooldown = 0;
-                waitCooldown = 0;
-                state = MobState::MOB_ATTACKING;
+				// NOTE: Mets do not attack on tiles are broken or empty
+				if (forward->IsWalkable()) {
+					attackCooldown = 0;
+					waitCooldown = 0;
+					state = MobState::MOB_ATTACKING;
+				}
+				else {
+					state = MobState::MOB_MOVING;
+					attackCooldown = 0.0f;
+				}
             }
         }
         else
@@ -182,6 +215,12 @@ void Mettaur::Update(float _elapsed)
         {
             Attack();
             attackDelay = 0.0f;
+
+			Mettaur::currMetIndex++; // move to the next met
+
+			if (Mettaur::currMetIndex >= Mettaur::metIDs.size()) {
+				Mettaur::currMetIndex = 0;
+			}
         }
     }
 
@@ -200,7 +239,14 @@ bool Mettaur::Move(Direction _direction)
         {
             next = field->GetAt(tile->GetX(), tile->GetY() - 1);
             if (Teammate(next->GetTeam()) && next->IsWalkable())
-                SetTile(next);
+				if (!next->ContainsEntityType<Mettaur>())
+				{
+					SetTile(next);
+				}
+				else {
+					next = nullptr;
+					direction = Direction::DOWN;
+				}
             else
                 next = nullptr;
         }
@@ -226,7 +272,15 @@ bool Mettaur::Move(Direction _direction)
         {
             next = field->GetAt(tile->GetX(), tile->GetY() + 1);
             if (Teammate(next->GetTeam()) && next->IsWalkable())
-                SetTile(next);
+				if (!next->ContainsEntityType<Mettaur>())
+				{
+					SetTile(next);
+				}
+				else 
+				{
+					next = nullptr;
+					direction = Direction::UP;
+				}
             else
                 next = nullptr;
         }
@@ -259,7 +313,7 @@ bool Mettaur::Move(Direction _direction)
 
 void Mettaur::Attack()
 {
-    if (tile->GetX() + 1 <= (int)field->GetWidth())
+    if (tile->GetX() + 1 <= (int)field->GetWidth() + 1)
     {
         Spell* spell = new Wave(field, team);
         spell->SetDirection(Direction::LEFT);

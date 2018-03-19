@@ -37,11 +37,13 @@ public:
     void RefreshTexture();
 
     bool IsWalkable() const;
+	bool IsEmptyOrBroken() const;
     bool IsCracked() const;
 
     void AddEntity(Entity* _entity);
     void RemoveEntity(Entity* _entity);
     bool ContainsEntity(Entity* _entity) const;
+	template<class Type> bool ContainsEntityType() const;
     void AffectEntities(Spell* caller);
     bool GetNextEntity(Entity*& out) const;
 
@@ -58,4 +60,20 @@ private:
     float width;
     float height;
     Field* field;
+	float cooldown;
+	float cooldownLength;
 };
+
+
+template<class Type>
+bool Tile::ContainsEntityType() const {
+	for (auto it = entities.begin(); it < entities.end(); ++it)
+	{
+		if (dynamic_cast<Type*>(*it) != nullptr)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}

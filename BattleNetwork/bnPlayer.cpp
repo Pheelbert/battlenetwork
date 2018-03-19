@@ -12,6 +12,7 @@
 #define MOVE_LAG_COOLDOWN 80.0f
 #define ATTACK_KEY_PRESS_COOLDOWN 300.0f
 #define ATTACK_TO_IDLE_COOLDOWN 150.0f
+#define HIT_COOLDOWN 150.0f
 
 #define CHARGE_COUNTER_MAX 1400.0f
 
@@ -39,6 +40,7 @@ Player::Player(void)
     moveLagCooldown = 0.0f;
     attackKeyPressCooldown = 0.0f;
     attackToIdleCooldown = 0.0f;
+	hitCoolDown = 0.0f;
 
     //Animation
     animationProgress = 0.0f;
@@ -63,6 +65,7 @@ void Player::Update(float _elapsed)
     moveLagCooldown        += _elapsed;
     attackKeyPressCooldown += _elapsed;
     attackToIdleCooldown   += _elapsed;
+	hitCoolDown += _elapsed;
 
     //Components updates
     controllableComponent.update();
@@ -70,6 +73,21 @@ void Player::Update(float _elapsed)
 
     //Update UI of player's health (top left corner)
     healthUI->Update();
+
+	// Cant do anything if hit/stunned 
+	if (hitCoolDown < HIT_COOLDOWN) 
+	{
+		RefreshTexture(); 
+		return;
+	}
+	else
+	{
+		// we're just now leaving the hit state
+		if (state == PlayerState::PLAYER_HIT)
+		{
+			state = PlayerState::PLAYER_IDLE;
+		}
+	}
 
     //Cooldown until player's movement catches up to actual position (avoid walking through spells)
     if (moveLagCooldown >= MOVE_LAG_COOLDOWN)
@@ -284,6 +302,9 @@ int Player::GetHealth() const
 
 int Player::Hit(int _damage)
 {
+	hitCoolDown = 0.0f; // start the timer 
+	state = PlayerState::PLAYER_HIT;
+
     return (health - _damage < 0) ? health = 0 : health -= _damage;
 }
 
@@ -303,6 +324,9 @@ void Player::RefreshTexture()
     case PlayerState::PLAYER_SHOOTING:
         textureType = TextureType::NAVI_MEGAMAN_SHOOT;
         break;
+	case PlayerState::PLAYER_HIT:
+		textureType = TextureType::NAVI_MEGAMAN_HIT;
+		break;
     default:
         assert(false && "Invalid player state.");
     }
@@ -327,8 +351,8 @@ PlayerHealthUI* Player::GetHealthUI() const
 
 int Player::GetStateFromString(string _string)
 {
-    int size = 3;
-    string PLAYER_STATE_STRINGS[] = { "PLAYER_IDLE", "PLAYER_MOVING", "PLAYER_SHOOTING" };
+    int size = 4;
+    string PLAYER_STATE_STRINGS[] = { "PLAYER_IDLE", "PLAYER_MOVING", "PLAYER_HIT", "PLAYER_SHOOTING" };
     for (int i = 0; i < size; i++)
     {
         if (_string == PLAYER_STATE_STRINGS[i])

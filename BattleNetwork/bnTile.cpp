@@ -7,7 +7,8 @@
 
 #define START_X 0.0f
 #define START_Y 144.f
-#define COOLDOWN 4.f
+#define COOLDOWN 30.f
+#define FLICKER 4.0f
 #define Y_OFFSET 10.0f
 
 Tile::Tile(int _x, int _y)
@@ -22,6 +23,8 @@ Tile::Tile(int _x, int _y)
     {
         team = Team::RED;
     }
+	cooldown = 0.0f;
+	cooldownLength = COOLDOWN;
     state = TileState::NORMAL;
     RefreshTexture();
     elapsed = 0;
@@ -78,6 +81,10 @@ float Tile::GetHeight() const
 void Tile::SetState(TileState _state)
 {
     state = _state;
+
+	if (state == TileState::CRACKED) {
+		cooldown = cooldownLength;
+	}
 }
 
 void Tile::RefreshTexture()
@@ -96,25 +103,25 @@ void Tile::RefreshTexture()
     }
     else if (state == TileState::CRACKED)
     {
-        if (team == Team::BLUE)
-        {
-            textureType = TextureType::TILE_BLUE_CRACKED;
-        }
-        else
-        {
-            textureType = TextureType::TILE_RED_CRACKED;
-        }
+		if (team == Team::BLUE)
+		{
+			textureType =  TextureType::TILE_BLUE_CRACKED;
+		}
+		else
+		{
+			textureType =  TextureType::TILE_RED_CRACKED;
+		}
     }
     else if (state == TileState::BROKEN)
     {
-        if (team == Team::BLUE)
-        {
-            textureType = TextureType::TILE_BLUE_BROKEN;
-        }
-        else
-        {
-            textureType = TextureType::TILE_RED_BROKEN;
-        }
+		if (team == Team::BLUE)
+		{
+			textureType = ((int)(cooldown * 1) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_BLUE_NORMAL : TextureType::TILE_BLUE_BROKEN;
+		}
+		else
+		{
+			textureType = ((int)(cooldown * 1) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_RED_NORMAL : TextureType::TILE_RED_BROKEN;
+		}
     }
     else if (state == TileState::EMPTY)
     {
@@ -136,7 +143,7 @@ void Tile::RefreshTexture()
 
 bool Tile::IsWalkable() const
 {
-    return state != TileState::BROKEN && state != TileState::EMPTY;
+	return (state != TileState::BROKEN && state != TileState::EMPTY);
 }
 
 bool Tile::IsCracked() const
@@ -204,4 +211,12 @@ void Tile::Update(float _elapsed)
         }
     }
     this->RefreshTexture();
+
+	if (state == TileState::BROKEN) {
+		cooldown -= 0.1f;
+	}
+
+	if (cooldown <= 0.0f) {
+		state = TileState::NORMAL;
+	}
 }

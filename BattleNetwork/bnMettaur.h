@@ -38,6 +38,10 @@ private:
     float x1, y1, x2, y2;
     sf::Clock clock;
 
+	static vector<int> metIDs;
+	static int currMetIndex;
+	int metID;
+
     //Cooldowns
     float cooldown;
     float attackCooldown;
