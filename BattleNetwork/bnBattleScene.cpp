@@ -36,9 +36,11 @@ int BattleScene::Run()
     Entity* player(new Player());
     field->AddEntity(player, 2, 2);
     Entity* mob(new Mettaur());
-    field->AddEntity(mob, 5, 2);
+    field->AddEntity(mob, 6, 2);
     Entity* mob2(new Mettaur());
     field->AddEntity(mob2, 4, 2);
+	Entity* mob3(new Mettaur());
+	field->AddEntity(mob3, 6, 1);
 
     BackgroundUI background = BackgroundUI();
 

@@ -41,6 +41,7 @@ private:
     float moveLagCooldown;
     float attackKeyPressCooldown;
     float attackToIdleCooldown;
+	float hitCoolDown;
 
     TextureType textureType;
     PlayerState state;

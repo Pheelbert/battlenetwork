@@ -8,6 +8,9 @@ frame relative="0.1" startx="38" starty="0"
 frame relative="0.1" startx="76" starty="0"
 frame relative="0.1" startx="114" starty="0"
 
+animation state="PLAYER_HIT" duration="0.01" width="39" height="58"
+frame relative="0.1" startx="0" starty="0"
+
 animation state="PLAYER_SHOOTING" duration="0.2" width="75" height="58"
 frame relative="0.2" startx="0" starty="0"
 frame relative="0.2" startx="75" starty="0"
