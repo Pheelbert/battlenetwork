@@ -5,12 +5,12 @@
 #include "bnResourceManager.h"
 #include "bnEngine.h"
 
-#define RESOURCE_NAME "ProgsMan"
+#define RESOURCE_NAME "progsman"
 #define RESOURCE_PATH "resources/mobs/progsman/progsman.animation"
 
 #define PROGS_COOLDOWN 1000.0f
 #define PROGS_ATTACK_COOLDOWN 2222.f
-#define PROGS_WAIT_COOLDOWN 500.0f
+#define PROGS_WAIT_COOLDOWN 100.0f
 #define PROGS_ATTACK_DELAY 500.0f
 
 #define EXPLODE_ANIMATION_SPRITES 16
@@ -21,7 +21,7 @@ ProgsMan::ProgsMan(void)
 	: resourceComponent(ResourceComponent(this))
 {
 	Entity::team = Team::RED;
-	health = 200;
+	health = 100;
 	hitHeight = 0;
 	direction = Direction::DOWN;
 	state = MobState::MOB_IDLE;
@@ -69,6 +69,32 @@ ProgsMan::~ProgsMan(void)
 {
 }
 
+int* ProgsMan::getAnimOffset() {
+	ProgsMan* mob = this;
+
+	int* res = new int[2];
+	
+	res[0] = res[1] = 0;
+
+	if (mob->GetTextureType() == TextureType::MOB_PROGSMAN_IDLE)
+	{
+		res[0] = 75.f;
+		res[1] = 115.f;
+	}
+	else if (mob->GetTextureType() == TextureType::MOB_PROGSMAN_PUNCH)
+	{
+		res[0] = 125.f;
+		res[1] = 125.f;
+	}
+	else if (mob->GetTextureType() == TextureType::MOB_PROGSMAN_MOVE)
+	{
+		res[0] = 75.f;
+		res[1] = 115.f;
+	}
+
+	return res;
+}
+
 void ProgsMan::Update(float _elapsed)
 {
 	//Explode animation then set deleted to true once it finishes
@@ -85,19 +111,19 @@ void ProgsMan::Update(float _elapsed)
 
 		if (explosionProgress == 0.0f)
 		{
-			x1 = tile->getPosition().x - 10.0f;
+			x1 = tile->getPosition().x - 20.0f;
 			y1 = tile->getPosition().y - 35.f;
 			healthUI->setScale(0.0f, 0.0f);
 		}
 		if (explosionProgress2 == 0.0f)
 		{
-			x2 = tile->getPosition().x + 10.0f;
+			x2 = tile->getPosition().x;
 			y2 = tile->getPosition().y - 50.0f;
 		}
-		explosionProgress += 0.015f;
+		explosionProgress += 0.020f;
 		if (explosionProgress >= 0.3f)
 		{
-			explosionProgress2 += 0.015f;
+			explosionProgress2 += 0.020f;
 			if (explosionProgress >= 0.9f)
 			{
 				setScale(0.0f, 0.0f);
@@ -134,17 +160,20 @@ void ProgsMan::Update(float _elapsed)
 	if (waitCooldown >= PROGS_WAIT_COOLDOWN)
 	{
 		cooldown += _elapsed;
+		attackCooldown += _elapsed;
 		if (cooldown >= PROGS_COOLDOWN)
 		{
 			if (state != MobState::MOB_ATTACKING)
 			{
 				if (Move(direction))
+				{
+					cooldown = 0.0f;
+					waitCooldown = 0;
 					state = MobState::MOB_MOVING;
-				cooldown = 0.0f;
+				}
 			}
 		}
-
-		if (attackCooldown >= PROGS_ATTACK_COOLDOWN)
+		else if (attackCooldown >= PROGS_ATTACK_COOLDOWN)
 		{
 			Tile* forward = field->GetAt(tile->GetX() - 1, tile->GetY());
 
@@ -152,19 +181,18 @@ void ProgsMan::Update(float _elapsed)
 			{
 				// NOTE: Mets do not attack on tiles are broken or empty
 				if (forward->IsWalkable()) {
-					attackCooldown = 0;
-					waitCooldown = 0;
 					state = MobState::MOB_ATTACKING;
 				}
 				else {
 					state = MobState::MOB_MOVING;
+					cooldown = 0;
 					attackCooldown = 0.0f;
 				}
 			}
 		}
 		else
 		{
-			if (cooldown != 0.0f)
+			if (cooldown >= 0.5f)
 				state = MobState::MOB_IDLE;
 		}
 	}
@@ -176,7 +204,10 @@ void ProgsMan::Update(float _elapsed)
 		if (attackDelay >= PROGS_ATTACK_DELAY)
 		{
 			Attack();
+			waitCooldown = 0;
 			attackDelay = 0.0f;
+			attackCooldown = 0;
+			cooldown = 0;
 		}
 	}
 
@@ -189,6 +220,24 @@ bool ProgsMan::Move(Direction _direction)
 	bool moved = false;
 	Tile* temp = tile;
 	Tile* next = nullptr;
+
+	int random = rand() % 4;
+
+	switch (random) {
+	case 0:
+		_direction = Direction::UP;
+		break;
+	case 1:
+		_direction = Direction::LEFT;
+		break;
+	case 2:
+		_direction = Direction::RIGHT;
+		break;
+	case 3:
+		_direction = Direction::DOWN;
+		break;
+	}
+
 	if (_direction == Direction::UP)
 	{
 		if (tile->GetY() - 1 > 0)
@@ -274,12 +323,27 @@ void ProgsMan::Attack()
 		Spell* spell = new Wave(field, team);
 		spell->SetDirection(Direction::LEFT);
 		field->AddEntity(spell, tile->GetX() - 1, tile->GetY());
+
+		Tile* next = 0;
+		next = field->GetAt(tile->GetX() - 1, tile->GetY());
+
+		Entity* entity = 0;
+		
+		while (next->GetNextEntity(entity)) {
+			Player* isPlayer = dynamic_cast<Player*>(entity);
+
+			if (isPlayer) {
+				isPlayer->Move(Direction::LEFT);
+				isPlayer->Hit(20);
+			}
+		}
 	}
 }
 
 void ProgsMan::RefreshTexture()
 {
 	animator.update(clock.restart());
+
 	if (!animator.isPlayingAnimation())
 	{
 		if (state == MobState::MOB_IDLE)
@@ -288,26 +352,27 @@ void ProgsMan::RefreshTexture()
 		}
 		else if (state == MobState::MOB_MOVING)
 		{
-			textureType = TextureType::MOB_MOVE;
+			textureType = TextureType::MOB_PROGSMAN_MOVE;
 		}
 		else if (state == MobState::MOB_ATTACKING)
 		{
 			textureType = TextureType::MOB_PROGSMAN_PUNCH;
 		}
+
 		setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
 
 		if (textureType == TextureType::MOB_PROGSMAN_IDLE)
 		{
-			setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 25.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 45.0f);
+			setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 65.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 115.0f);
 			hitHeight = getLocalBounds().height;
 		}
-		else if (textureType == TextureType::MOB_MOVE)
+		else if (textureType == TextureType::MOB_PROGSMAN_MOVE)
 		{
-			setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 35.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 60.0f);
+			setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 65.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
 		}
-		else if (textureType == TextureType::MOB_PROGSMAN_SHOOT)
+		else if (textureType == TextureType::MOB_PROGSMAN_PUNCH)
 		{
-			setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 55.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 105.0f);
+			setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 115.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
 			hitHeight = getLocalBounds().height;
 		}
 		animator.playAnimation(state);
@@ -336,6 +401,7 @@ int ProgsMan::GetStateFromString(string _string)
 {
 	int size = 4;
 	string MOB_STATE_STRINGS[] = { "MOB_MOVING", "MOB_IDLE", "MOB_HIT", "MOB_ATTACKING" };
+
 	for (int i = 0; i < size; i++)
 	{
 		if (_string == MOB_STATE_STRINGS[i])

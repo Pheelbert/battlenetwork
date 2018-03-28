@@ -36,7 +36,13 @@ void MobHealthUI::Update()
 		int* res = mob->getAnimOffset();
 
 		if (res != nullptr) {
+			//std::cout << "res: { " << res[0] << ", " << res[1] << " } " << std::endl;
 			setPosition(mob->getPosition().x + res[0], mob->getPosition().y + res[1]);
+			delete[] res;
+		}
+		else {
+			//std::cout << "nullptr!" << std::endl;
+			setPosition(mob->getPosition().x, mob->getPosition().y);
 		}
 	}
 }

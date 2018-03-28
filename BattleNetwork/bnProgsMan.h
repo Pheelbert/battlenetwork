@@ -29,7 +29,7 @@ public:
 	void SetHealth(int _health);
 	int Hit(int _damage);
 	float GetHitHeight() const;
-
+	int* ProgsMan::getAnimOffset();
 	void Attack();
 
 private:
@@ -53,7 +53,6 @@ private:
 
 	ResourceComponent resourceComponent;
 
-	int health;
 	float hitHeight;
 	Direction direction;
 	MobState state;

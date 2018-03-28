@@ -12,7 +12,7 @@
 #define MOVE_LAG_COOLDOWN 40.0f
 #define ATTACK_KEY_PRESS_COOLDOWN 300.0f
 #define ATTACK_TO_IDLE_COOLDOWN 150.0f
-#define HIT_COOLDOWN 150.0f
+#define HIT_COOLDOWN 300.0f
 
 #define CHARGE_COUNTER_MAX 1400.0f
 
@@ -61,6 +61,7 @@ Player::~Player(void)
 
 void Player::Update(float _elapsed)
 {
+
     moveKeyPressCooldown   += _elapsed;
     moveLagCooldown        += _elapsed;
     attackKeyPressCooldown += _elapsed;

@@ -5,6 +5,7 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnPlayer.h"
+#include "bnProgsMan.h"
 #include "bnMettaur.h"
 #include "bnResourceManager.h"
 
@@ -142,7 +143,17 @@ void Buster::Attack(Entity* _entity)
         hitHeight = isMob->GetHitHeight();
         hit = true;
         return;
-    }
+	}
+	else {
+		ProgsMan* isProgs = dynamic_cast<ProgsMan*>(_entity);
+		if (isProgs)
+		{
+			isProgs->Hit(damage);
+			hitHeight = isProgs->GetHitHeight();
+			hit = true;
+			return;
+		}
+	}
 }
 
 vector<Drawable*> Buster::GetMiscComponents()

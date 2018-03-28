@@ -216,7 +216,7 @@ void Tile::Update(float _elapsed)
 		cooldown -= 0.1f;
 	}
 
-	if (cooldown <= 0.0f) {
+	if (cooldown <= 0.0f && state == TileState::BROKEN) {
 		state = TileState::NORMAL;
 	}
 }

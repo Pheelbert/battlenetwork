@@ -9,6 +9,7 @@ using sf::Event;
 #include "bnPlayer.h"
 #include "bnMemory.h"
 #include "bnMettaur.h"
+#include "bnProgsMan.h"
 #include "bnBackgroundUI.h"
 #include "bnPlayerHealthUI.h"
 #include "bnResourceManager.h"
@@ -26,21 +27,27 @@ int BattleScene::Run()
 
     Field* field(new Field(6, 3));
     //TODO: just testing states here, remove later
-    field->GetAt(1, 1)->SetState(TileState::CRACKED);
     field->GetAt(3, 1)->SetState(TileState::CRACKED);
-    field->GetAt(3, 2)->SetState(TileState::CRACKED);
-    field->GetAt(3, 3)->SetState(TileState::CRACKED);
+	field->GetAt(1, 1)->SetState(TileState::EMPTY);
+	field->GetAt(1, 2)->SetState(TileState::EMPTY);
+	field->GetAt(1, 3)->SetState(TileState::EMPTY);
+    field->GetAt(6, 1)->SetState(TileState::CRACKED);
+    field->GetAt(6, 2)->SetState(TileState::CRACKED);
+    field->GetAt(6, 3)->SetState(TileState::CRACKED);
 
     //TODO: More dynamic way of handling entities
     //(for now there's only 1 battle and you start straight in it)
     Entity* player(new Player());
     field->AddEntity(player, 2, 2);
-    Entity* mob(new Mettaur());
+	Entity* mob(new ProgsMan());
+	field->AddEntity(mob, 5, 2);
+
+    /*Entity* mob(new Mettaur());
     field->AddEntity(mob, 6, 2);
     Entity* mob2(new Mettaur());
     field->AddEntity(mob2, 4, 2);
 	Entity* mob3(new Mettaur());
-	field->AddEntity(mob3, 6, 1);
+	field->AddEntity(mob3, 6, 1);*/
 
     BackgroundUI background = BackgroundUI();
 
