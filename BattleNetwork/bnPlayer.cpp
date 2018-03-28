@@ -9,7 +9,7 @@
 #define RESOURCE_PATH "resources/navis/megaman/megaman.animation"
 
 #define MOVE_KEY_PRESS_COOLDOWN 200.0f
-#define MOVE_LAG_COOLDOWN 80.0f
+#define MOVE_LAG_COOLDOWN 40.0f
 #define ATTACK_KEY_PRESS_COOLDOWN 300.0f
 #define ATTACK_TO_IDLE_COOLDOWN 150.0f
 #define HIT_COOLDOWN 150.0f
@@ -274,7 +274,7 @@ void Player::Attack(float _charge)
     {
         Spell* spell = new Buster(field, team, (_charge >= CHARGE_COUNTER_MAX));
         spell->SetDirection(Direction::RIGHT);
-        field->AddEntity(spell, tile->GetX() + 1, tile->GetY());
+        field->AddEntity(spell, tile->GetX(), tile->GetY());
     }
 }
 

@@ -1,0 +1,24 @@
+entity name="progsman"
+
+animation state="MOB_MOVING" duration="0.1" width="32" height="41"
+frame relative="0.1" startx="0" starty="0"
+frame relative="0.1" startx="32" starty="0"
+
+animation state="MOB_IDLE" duration="0.01" width="54" height="56"
+frame relative="0.1" startx="0" starty="0"
+
+animation state="MOB_HIT" duration="0.3" width="34" height="31"
+frame relative="0.2" startx="0" starty="0"
+frame relative="0.2" startx="34" starty="0"
+frame relative="0.2" startx="68" starty="0"
+
+animation state="MOB_ATTACKING" duration="0.8" width="53" height="56"
+frame relative="0.1" startx="0" starty="0"
+frame relative="0.1" startx="53" starty="0"
+frame relative="0.1" startx="106" starty="0"
+frame relative="0.5" startx="159" starty="0"
+frame relative="0.1" startx="212" starty="0"
+frame relative="0.1" startx="265" starty="0"
+frame relative="0.1" startx="318" starty="0"
+frame relative="0.1" startx="371" starty="0"
+frame relative="0.1" startx="424" starty="0"

@@ -59,6 +59,9 @@
     <Filter Include="Battle\Component\Input">
       <UniqueIdentifier>{4a441b30-9e2f-4ff8-921a-60ef383f26d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Living\ProgsMan">
+      <UniqueIdentifier>{5d15a7de-9f57-48f4-8d8a-3dcff2b9cefc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -111,6 +114,9 @@
     </ClCompile>
     <ClCompile Include="bnEngine.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="bnProgsMan.cpp">
+      <Filter>Battle\Entity\Living\ProgsMan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="bnControllableEvent.h">
       <Filter>Battle\Enumerations</Filter>
+    </ClInclude>
+    <ClInclude Include="bnProgsMan.h">
+      <Filter>Battle\Entity\Living\ProgsMan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

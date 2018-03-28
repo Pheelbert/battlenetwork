@@ -135,14 +135,6 @@ bool Buster::Move(Direction _direction)
 
 void Buster::Attack(Entity* _entity)
 {
-    Player* isPlayer = dynamic_cast<Player*>(_entity);
-    if (isPlayer)
-    {
-        isPlayer->Hit(damage);
-        hitHeight = isPlayer->getLocalBounds().height * isPlayer->getScale().y - 20.0f + random/2;
-        hit = true;
-        return;
-    }
     Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
     if (isMob)
     {

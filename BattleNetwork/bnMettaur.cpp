@@ -76,6 +76,8 @@ Mettaur::Mettaur(void)
         i++;
     }
 
+	this->SetHealth(health);
+
     //Components setup and load
     resourceComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
     resourceComponent.load();
@@ -99,6 +101,30 @@ Mettaur::~Mettaur(void)
 			}
 		}
 	}
+}
+
+int* Mettaur::getAnimOffset() {
+	Mettaur* mob = this;
+
+	int res[2] = { 0 };
+
+	if (mob->GetTextureType() == TextureType::MOB_METTAUR_IDLE)
+	{
+		res[0] = 35.f;
+		res[1] = 35.f;
+	}
+	else if (mob->GetTextureType() == TextureType::MOB_METTAUR_ATTACK)
+	{
+		res[0] = 65.f;
+		res[1] = 95.f;
+	}
+	else if (mob->GetTextureType() == TextureType::MOB_MOVE)
+	{
+		res[0] = 45.f;
+		res[1] = 55.f;
+	}
+
+	return res;
 }
 
 void Mettaur::Update(float _elapsed)
@@ -126,10 +152,10 @@ void Mettaur::Update(float _elapsed)
             x2 = tile->getPosition().x + 10.0f;
             y2 = tile->getPosition().y - 50.0f;
         }
-        explosionProgress += 0.015f;
+        explosionProgress += 0.020f;
         if (explosionProgress >= 0.3f)
         {
-            explosionProgress2 += 0.015f;
+            explosionProgress2 += 0.020f;
             if (explosionProgress >= 0.9f)
             {
                 setScale(0.0f, 0.0f);

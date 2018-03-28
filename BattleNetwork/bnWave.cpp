@@ -5,8 +5,8 @@
 #include "bnMettaur.h"
 #include "bnResourceManager.h"
 
-#define COOLDOWN 500.0f
-#define DAMAGE_COOLDOWN 500.0f
+#define COOLDOWN 250.0f
+#define DAMAGE_COOLDOWN 250.0f
 
 #define WAVE_ANIMATION_SPRITES 5
 #define WAVE_ANIMATION_WIDTH 41
@@ -47,7 +47,7 @@ void Wave::Update(float _elapsed)
     setTexture(*texture);
     setScale(2.f, 2.f);
     setPosition(tile->getPosition().x + 5.f, tile->getPosition().y - 50.0f);
-    progress += 0.01f;
+    progress += 0.05f;
     if (progress < 1.f)
     {
         animation(*this, progress);

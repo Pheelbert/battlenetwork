@@ -85,6 +85,13 @@ ResourceManager::ResourceManager(void)
 	paths.push_back("resources/mobs/mettaur/mob_mettaur_hit.png");
 	paths.push_back("resources/mobs/mettaur/mob_mettaur_attack.png");
 
+	// ProgsMan
+	paths.push_back("resources/mobs/progsman/mob_progsman_idle.png");
+	paths.push_back("resources/mobs/progsman/mob_progsman_move.png");
+	paths.push_back("resources/mobs/progsman/mob_progsman_shoot.png");
+	paths.push_back("resources/mobs/progsman/mob_progsman_hit.png");
+	paths.push_back("resources/mobs/progsman/mob_progsman_punch.png");
+
 	//-Spells-
 	//Bullet
 	paths.push_back("resources/spells/spell_bullet_hit.png");

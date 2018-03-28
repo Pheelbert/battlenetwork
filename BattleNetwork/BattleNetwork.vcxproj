@@ -156,6 +156,7 @@
     <ClCompile Include="bnField.cpp" />
     <ClCompile Include="bnBattleScene.cpp" />
     <ClCompile Include="bnMobHealthUI.cpp" />
+    <ClCompile Include="bnProgsMan.cpp" />
     <ClCompile Include="bnResourceComponent.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="bnMemory.h" />
     <ClInclude Include="bnMobHealthUI.h" />
     <ClInclude Include="bnMobState.h" />
+    <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnResourceComponent.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />

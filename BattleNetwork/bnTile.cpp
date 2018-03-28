@@ -116,11 +116,11 @@ void Tile::RefreshTexture()
     {
 		if (team == Team::BLUE)
 		{
-			textureType = ((int)(cooldown * 1) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_BLUE_NORMAL : TextureType::TILE_BLUE_BROKEN;
+			textureType = ((int)(cooldown * 5) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_BLUE_NORMAL : TextureType::TILE_BLUE_BROKEN;
 		}
 		else
 		{
-			textureType = ((int)(cooldown * 1) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_RED_NORMAL : TextureType::TILE_RED_BROKEN;
+			textureType = ((int)(cooldown * 5) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_RED_NORMAL : TextureType::TILE_RED_BROKEN;
 		}
     }
     else if (state == TileState::EMPTY)
