@@ -26,6 +26,7 @@ int BattleScene::Run()
     Engine::GetInstance().Initialise();
     TextureResourceManager::GetInstance().LoadAllTextures();
 	AudioResourceManager::GetInstance().LoadAllSources();
+	AudioResourceManager::GetInstance().SetStreamVolume(15); // 15% 
 
     Field* field(new Field(6, 3));
     //TODO: just testing states here, remove later

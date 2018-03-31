@@ -19,6 +19,8 @@ AudioResourceManager::AudioResourceManager()
 	for (int i = 0; i < AUDIO_TYPE_SIZE; i++) {
 		sources[i] = sf::SoundBuffer();
 	}
+
+	channelVolume = streamVolume = 100; //SFML default
 }
 
 
@@ -161,4 +163,14 @@ int AudioResourceManager::Stream(std::string path, bool loop)
 	stream.setLoop(loop);
 
 	return 0;
+}
+
+void AudioResourceManager::SetStreamVolume(int volume) {
+	stream.setVolume(volume);
+}
+
+void AudioResourceManager::SetChannelVolume(int volume) {
+	for (int i = 0; i < NUM_OF_CHANNELS; i++) {
+		channels[i].setVolume(volume);
+	}
 }

@@ -3,6 +3,7 @@
 #include "bnField.h"
 #include "bnWave.h"
 #include "bnTextureResourceManager.h"
+#include "bnAudioResourceManager.h"
 #include "bnEngine.h"
 
 #define RESOURCE_NAME "progsman"
@@ -91,6 +92,11 @@ int* ProgsMan::getAnimOffset() {
 		res[0] = 75.f;
 		res[1] = 115.f;
 	}
+	else if (mob->GetTextureType() == TextureType::MOB_PROGSMAN_THROW)
+	{
+		res[0] = 75.f;
+		res[1] = 115.f;
+	}
 
 	return res;
 }
@@ -111,6 +117,8 @@ void ProgsMan::Update(float _elapsed)
 
 		if (explosionProgress == 0.0f)
 		{
+			AudioResourceManager::GetInstance().Play(AudioType::EXPLODE);
+
 			x1 = tile->getPosition().x - 20.0f;
 			y1 = tile->getPosition().y - 35.f;
 			healthUI->setScale(0.0f, 0.0f);
@@ -130,6 +138,8 @@ void ProgsMan::Update(float _elapsed)
 			}
 			if (explosionProgress2 >= 1.f)
 			{
+				// play one more time
+				AudioResourceManager::GetInstance().Play(AudioType::EXPLODE);
 				deleted = true;
 				return;
 			}
@@ -179,8 +189,14 @@ void ProgsMan::Update(float _elapsed)
 
 			if (state == MobState::MOB_IDLE)
 			{
-				// NOTE: Mets do not attack on tiles are broken or empty
-				if (forward->IsWalkable()) {
+				int random = rand() % 5;
+
+				if (random == 4) {
+					state = MobState::MOB_THROW;
+
+					// Todo: spell that begins at pos as a ball 
+					// and moves to target tile when anim is over 
+				}else if (forward->IsWalkable()) {
 					state = MobState::MOB_ATTACKING;
 				}
 				else {
@@ -204,6 +220,20 @@ void ProgsMan::Update(float _elapsed)
 		if (attackDelay >= PROGS_ATTACK_DELAY)
 		{
 			Attack();
+			waitCooldown = 0;
+			attackDelay = 0.0f;
+			attackCooldown = 0;
+			cooldown = 0;
+		}
+	}
+
+	//Delay for animation to look cooler (only throw item at end of animation)
+	if (state == MobState::MOB_THROW)
+	{
+		attackDelay += _elapsed;
+		if (attackDelay >= PROGS_ATTACK_DELAY)
+		{
+			// Attack();
 			waitCooldown = 0;
 			attackDelay = 0.0f;
 			attackCooldown = 0;
@@ -358,6 +388,9 @@ void ProgsMan::RefreshTexture()
 		{
 			textureType = TextureType::MOB_PROGSMAN_PUNCH;
 		}
+		else if (state == MobState::MOB_THROW) {
+			textureType = TextureType::MOB_PROGSMAN_THROW;
+		}
 
 		setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
 
@@ -375,6 +408,12 @@ void ProgsMan::RefreshTexture()
 			setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 115.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
 			hitHeight = getLocalBounds().height;
 		}
+		else if (textureType == TextureType::MOB_PROGSMAN_THROW)
+		{
+			setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 115.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
+			hitHeight = getLocalBounds().height;
+		}
+
 		animator.playAnimation(state);
 	}
 	animator.animate(*this);
@@ -399,8 +438,8 @@ vector<Drawable*> ProgsMan::GetMiscComponents()
 
 int ProgsMan::GetStateFromString(string _string)
 {
-	int size = 4;
-	string MOB_STATE_STRINGS[] = { "MOB_MOVING", "MOB_IDLE", "MOB_HIT", "MOB_ATTACKING" };
+	int size = 5;
+	string MOB_STATE_STRINGS[] = { "MOB_MOVING", "MOB_IDLE", "MOB_HIT", "MOB_ATTACKING", "MOB_THROW" };
 
 	for (int i = 0; i < size; i++)
 	{

@@ -69,7 +69,6 @@ void ChargeComponent::update(float _elapsed)
         }
         else if (chargeCounter >= CHARGE_COUNTER_MIN)
         {
-			AudioResourceManager::GetInstance().Play(AudioType::BUSTER_CHARGING);
             animationProgress += 0.05f;
             (animationProgress >= 1.0f) ? animationProgress = 0.0f : animationProgress = animationProgress;
             chargeSprite.setTexture(chargeTexture);
@@ -83,6 +82,11 @@ void ChargeComponent::update(float _elapsed)
 
 void ChargeComponent::SetCharging(bool _charging)
 {
+	if (_charging && charging != _charging) {
+		// Switching states
+		AudioResourceManager::GetInstance().Play(AudioType::BUSTER_CHARGING);
+	}
+
     charging = _charging;
 }
 

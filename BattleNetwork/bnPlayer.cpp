@@ -96,7 +96,11 @@ void Player::Update(float _elapsed)
     {
         if (previous)
         {
-            if (previous->IsCracked()) previous->SetState(TileState::BROKEN);
+			if (previous->IsCracked()) {
+				AudioResourceManager::GetInstance().Play(AudioType::PANEL_CRACK);
+				previous->SetState(TileState::BROKEN);
+			}
+
             previous->RemoveEntity(this);
             previous = nullptr;
         }

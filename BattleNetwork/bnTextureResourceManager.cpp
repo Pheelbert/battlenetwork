@@ -91,6 +91,7 @@ TextureResourceManager::TextureResourceManager(void)
 	paths.push_back("resources/mobs/progsman/mob_progsman_shoot.png");
 	paths.push_back("resources/mobs/progsman/mob_progsman_hit.png");
 	paths.push_back("resources/mobs/progsman/mob_progsman_punch.png");
+	paths.push_back("resources/mobs/progsman/mob_progsman_throw.png");
 
 	//-Spells-
 	//Bullet
