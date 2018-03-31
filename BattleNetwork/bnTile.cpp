@@ -2,7 +2,7 @@
 #include "bnEntity.h"
 #include "bnSpell.h"
 #include "bnPlayer.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
 #include "bnField.h"
 
 #define START_X 0.0f
@@ -138,7 +138,7 @@ void Tile::RefreshTexture()
     {
         assert(false && "Tile in invalid state");
     }
-    setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
+    setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
 }
 
 bool Tile::IsWalkable() const

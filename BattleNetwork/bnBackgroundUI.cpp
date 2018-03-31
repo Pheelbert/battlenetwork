@@ -1,6 +1,6 @@
 #include "bnBackgroundUI.h"
 #include "bnLogger.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
 #include "bnEngine.h"
 
 #define X_OFFSET 15
@@ -13,10 +13,10 @@
 BackgroundUI::BackgroundUI(void)
     : progress(0.0f)
 {
-    bgTexture = ResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/bg_green.png");
+    bgTexture = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/bg_green.png");
     background.setTexture(*bgTexture);
     background.setScale(2.f, 2.f);
-    cmTexture = ResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/fg_green.png");
+    cmTexture = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/fg_green.png");
     component.setTexture(*cmTexture);
     for (int x = 0; x < COMPONENT_FRAME_COUNT; x++)
     {

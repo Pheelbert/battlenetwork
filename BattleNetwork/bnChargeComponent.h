@@ -36,6 +36,7 @@ public:
 private:
     Entity* entity;
     bool charging;
+	bool isCharged;
     float chargeCounter;
     float animationProgress;
     Texture chargeTexture;

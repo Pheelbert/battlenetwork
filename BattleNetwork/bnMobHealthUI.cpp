@@ -3,7 +3,7 @@ using std::to_string;
 
 #include "bnMobHealthUI.h"
 #include "bnEntity.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
 
 #include "bnLogger.h"
 
@@ -16,7 +16,7 @@ MobHealthUI::MobHealthUI(void)
 MobHealthUI::MobHealthUI(Entity* _mob)
     : mob(_mob)
 {
-    font = ResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
+    font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
     setFont(*font);
     setScale(0.8f, 0.8f);
 }

@@ -1,7 +1,8 @@
 #include "bnPlayer.h"
 #include "bnField.h"
 #include "bnBuster.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
+#include "bnAudioResourceManager.h"
 #include "bnEngine.h"
 #include "bnLogger.h"
 
@@ -271,7 +272,7 @@ bool Player::Move(Direction _direction)
 
 void Player::Attack(float _charge)
 {
-    if (tile->GetX() + 1 <= static_cast<int>(field->GetWidth()))
+    if (tile->GetX() <= static_cast<int>(field->GetWidth()))
     {
         Spell* spell = new Buster(field, team, (_charge >= CHARGE_COUNTER_MAX));
         spell->SetDirection(Direction::RIGHT);
@@ -305,6 +306,7 @@ int Player::Hit(int _damage)
 {
 	hitCoolDown = 0.0f; // start the timer 
 	state = PlayerState::PLAYER_HIT;
+	AudioResourceManager::GetInstance().Play(AudioType::HURT);
 
     return (health - _damage < 0) ? health = 0 : health -= _damage;
 }
@@ -334,7 +336,7 @@ void Player::RefreshTexture()
 
     if (!animator.isPlayingAnimation())
     {
-        setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
+        setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
         animator.playAnimation(state);
     }
 

@@ -7,7 +7,8 @@
 #include "bnPlayer.h"
 #include "bnProgsMan.h"
 #include "bnMettaur.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
+#include "bnAudioResourceManager.h"
 
 #define COOLDOWN 40.0f
 #define DAMAGE_COOLDOWN 50.0f
@@ -33,12 +34,12 @@ Buster::Buster(Field* _field, Team _team, bool _charged)
     {
         damage = 10;
         //TODO: make new sprite animation for charged bullet
-        texture = ResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
+        texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
     }
     else
     {
         damage = 1;
-        texture = ResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
+        texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
     }
     setScale(2.f, 2.f);
     for (int x = 0; x < BULLET_ANIMATION_SPRITES; x++)
@@ -142,7 +143,6 @@ void Buster::Attack(Entity* _entity)
         isMob->Hit(damage);
         hitHeight = isMob->GetHitHeight();
         hit = true;
-        return;
 	}
 	else {
 		ProgsMan* isProgs = dynamic_cast<ProgsMan*>(_entity);
@@ -151,8 +151,11 @@ void Buster::Attack(Entity* _entity)
 			isProgs->Hit(damage);
 			hitHeight = isProgs->GetHitHeight();
 			hit = true;
-			return;
 		}
+	}
+
+	if (hit) {
+		AudioResourceManager::GetInstance().Play(AudioType::HURT);
 	}
 }
 

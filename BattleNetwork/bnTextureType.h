@@ -1,7 +1,7 @@
 #pragma once
 /** 
  * @warning These have to be in order.
- * @see ResourceManager
+ * @see TextureResourceManager
 */
 enum TextureType
 {

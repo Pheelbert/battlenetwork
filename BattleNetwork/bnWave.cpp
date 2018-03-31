@@ -3,7 +3,8 @@
 #include "bnField.h"
 #include "bnPlayer.h"
 #include "bnMettaur.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
+#include "bnAudioResourceManager.h"
 
 #define COOLDOWN 250.0f
 #define DAMAGE_COOLDOWN 250.0f
@@ -22,7 +23,7 @@ Wave::Wave(Field* _field, Team _team)
     direction = Direction::NONE;
     deleted = false;
     hit = false;
-    texture = ResourceManager::GetInstance().GetTexture(TextureType::SPELL_WAVE);
+    texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_WAVE);
     for (int x = 0; x < WAVE_ANIMATION_SPRITES; x++)
     {
         animation.addFrame(0.3f, IntRect(WAVE_ANIMATION_WIDTH*x, 0, WAVE_ANIMATION_WIDTH, WAVE_ANIMATION_HEIGHT));
@@ -30,6 +31,8 @@ Wave::Wave(Field* _field, Team _team)
     progress = 0.0f;
     hitHeight = 0.0f;
     random = 0;
+
+	AudioResourceManager::GetInstance().Play(AudioType::WAVE);
 }
 
 Wave::~Wave(void)
@@ -64,6 +67,7 @@ void Wave::Update(float _elapsed)
     if (cooldown >= COOLDOWN)
     {
         Move(direction);
+		AudioResourceManager::GetInstance().Play(AudioType::WAVE);
         cooldown = 0;
         progress = 0.0f;
     }

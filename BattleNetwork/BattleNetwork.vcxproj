@@ -149,6 +149,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bnAudioResourceManager.cpp" />
     <ClCompile Include="bnBackgroundUI.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
     <ClCompile Include="bnControllableComponent.cpp" />
@@ -161,7 +162,7 @@
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
     <ClCompile Include="bnSpell.cpp" />
-    <ClCompile Include="bnResourceManager.cpp" />
+    <ClCompile Include="bnTextureResourceManager.cpp" />
     <ClCompile Include="bnPlayerHealthUI.cpp" />
     <ClCompile Include="bnBuster.cpp" />
     <ClCompile Include="bnWave.cpp" />
@@ -169,6 +170,8 @@
     <ClCompile Include="bnEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bnAudioResourceManager.h" />
+    <ClInclude Include="bnAudioType.h" />
     <ClInclude Include="bnBackgroundUI.h" />
     <ClInclude Include="bnChargeComponent.h" />
     <ClInclude Include="bnControllableComponent.h" />
@@ -188,7 +191,7 @@
     <ClInclude Include="bnDirection.h" />
     <ClInclude Include="bnPlayer.h" />
     <ClInclude Include="bnSpell.h" />
-    <ClInclude Include="bnResourceManager.h" />
+    <ClInclude Include="bnTextureResourceManager.h" />
     <ClInclude Include="bnLogger.h" />
     <ClInclude Include="bnTileState.h" />
     <ClInclude Include="bnPlayerState.h" />

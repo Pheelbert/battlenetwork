@@ -62,6 +62,12 @@
     <Filter Include="Battle\Entity\Living\ProgsMan">
       <UniqueIdentifier>{5d15a7de-9f57-48f4-8d8a-3dcff2b9cefc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\TextureResource">
+      <UniqueIdentifier>{04b25a7a-f471-420f-8ea0-6794994adb3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\AudioResource">
+      <UniqueIdentifier>{584d74c6-24b9-4e0b-b8cb-06f4e0b8a9c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -75,9 +81,6 @@
     </ClCompile>
     <ClCompile Include="bnSpell.cpp">
       <Filter>Battle\Entity\Spell</Filter>
-    </ClCompile>
-    <ClCompile Include="bnResourceManager.cpp">
-      <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="bnBackgroundUI.cpp">
       <Filter>Battle\Background</Filter>
@@ -118,6 +121,12 @@
     <ClCompile Include="bnProgsMan.cpp">
       <Filter>Battle\Entity\Living\ProgsMan</Filter>
     </ClCompile>
+    <ClCompile Include="bnAudioResourceManager.cpp">
+      <Filter>Resource\AudioResource</Filter>
+    </ClCompile>
+    <ClCompile Include="bnTextureResourceManager.cpp">
+      <Filter>Resource\TextureResource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -137,12 +146,6 @@
     </ClInclude>
     <ClInclude Include="bnSpell.h">
       <Filter>Battle\Entity\Spell</Filter>
-    </ClInclude>
-    <ClInclude Include="bnResourceManager.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="bnTextureType.h">
-      <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="bnLogger.h">
       <Filter>Utilities</Filter>
@@ -203,6 +206,18 @@
     </ClInclude>
     <ClInclude Include="bnProgsMan.h">
       <Filter>Battle\Entity\Living\ProgsMan</Filter>
+    </ClInclude>
+    <ClInclude Include="bnTextureType.h">
+      <Filter>Resource\TextureResource</Filter>
+    </ClInclude>
+    <ClInclude Include="bnAudioType.h">
+      <Filter>Resource\AudioResource</Filter>
+    </ClInclude>
+    <ClInclude Include="bnAudioResourceManager.h">
+      <Filter>Resource\AudioResource</Filter>
+    </ClInclude>
+    <ClInclude Include="bnTextureResourceManager.h">
+      <Filter>Resource\TextureResource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

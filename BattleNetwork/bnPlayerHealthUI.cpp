@@ -3,7 +3,7 @@ using std::to_string;
 
 #include "bnPlayer.h"
 #include "bnPlayerHealthUI.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
 
 PlayerHealthUI::PlayerHealthUI(Entity* _entity)
     : player(nullptr),
@@ -16,8 +16,8 @@ PlayerHealthUI::PlayerHealthUI(Entity* _entity)
 PlayerHealthUI::PlayerHealthUI(Player* _player)
     : player(_player)
 {
-    font = ResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
-    texture = ResourceManager::GetInstance().LoadTextureFromFile("resources/ui/img_health.png");
+    font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
+    texture = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/ui/img_health.png");
     sprite.setTexture(*texture);
     sprite.setPosition(3.f, 0.0f);
     sprite.setScale(2.f, 2.f);

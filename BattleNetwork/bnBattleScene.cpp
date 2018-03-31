@@ -12,7 +12,8 @@ using sf::Event;
 #include "bnProgsMan.h"
 #include "bnBackgroundUI.h"
 #include "bnPlayerHealthUI.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
+#include "bnAudioResourceManager.h"
 #include "bnEngine.h"
 
 int main()
@@ -23,7 +24,8 @@ int main()
 int BattleScene::Run()
 {
     Engine::GetInstance().Initialise();
-    ResourceManager::GetInstance().LoadAllTextures();
+    TextureResourceManager::GetInstance().LoadAllTextures();
+	AudioResourceManager::GetInstance().LoadAllSources();
 
     Field* field(new Field(6, 3));
     //TODO: just testing states here, remove later
@@ -50,6 +52,9 @@ int BattleScene::Run()
 	field->AddEntity(mob3, 6, 1);*/
 
     BackgroundUI background = BackgroundUI();
+
+	// Stream battle music 
+	AudioResourceManager::GetInstance().Stream("resources/loops/loop_boss_battle.ogg", true);
 
     Clock clock;
     float elapsed = 0.0f;

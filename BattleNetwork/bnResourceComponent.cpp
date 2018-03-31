@@ -6,7 +6,7 @@ using sf::Sprite;
 using sf::IntRect;
 
 #include "bnResourceComponent.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
 #include "bnLogger.h"
 #include "bnEntity.h"
 
@@ -34,7 +34,7 @@ void ResourceComponent::load()
     int currentWidth = 0;
     int currentHeight = 0;
 
-    string data = ResourceManager::GetInstance().LoadDataFromFile(path);
+    string data = TextureResourceManager::GetInstance().LoadDataFromFile(path);
     int endline = 0;
     do
     {

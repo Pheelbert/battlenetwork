@@ -2,7 +2,7 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnWave.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
 #include "bnEngine.h"
 
 #define RESOURCE_NAME "mettaur"
@@ -56,12 +56,12 @@ Mettaur::Mettaur(void)
     blinker = 0.0f;
     x1 = 0.0f, y1 = 0.0f, x2 = 0.0f, y2 = 0.0f;
 
-    setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
+    setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
     setScale(2.f, 2.f);
 
-    explosion.setTexture(*ResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
+    explosion.setTexture(*TextureResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
     explosion.setScale(0.0f, 0.0f);
-    explosion2.setTexture(*ResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
+    explosion2.setTexture(*TextureResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
     explosion2.setScale(0.0f, 0.0f);
     int i = 0;
     int y = 0;
@@ -364,7 +364,7 @@ void Mettaur::RefreshTexture()
         {
             textureType = TextureType::MOB_METTAUR_ATTACK;
         }
-        setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
+        setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
         
         if (textureType == TextureType::MOB_METTAUR_IDLE)
         {
