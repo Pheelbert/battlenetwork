@@ -51,7 +51,7 @@ private:
     //-Animation-
     float animationProgress;
     
-    ControllableComponent controllableComponent;
+    ControllableComponent* controllableComponent;
     ChargeComponent chargeComponent;
     ResourceComponent resourceComponent;
 };

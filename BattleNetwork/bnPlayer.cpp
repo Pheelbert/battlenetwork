@@ -29,7 +29,7 @@ Player::Player(void)
     : health(99),
       state(PlayerState::PLAYER_IDLE),
       textureType(TextureType::NAVI_MEGAMAN_MOVE),
-      controllableComponent(ControllableComponent::GetInstance()),
+      controllableComponent(&ControllableComponent::GetInstance()),
       chargeComponent(ChargeComponent(this)),
       resourceComponent(ResourceComponent(this))
 {
@@ -57,6 +57,7 @@ Player::Player(void)
 
 Player::~Player(void)
 {
+	controllableComponent = nullptr; 
     delete healthUI; 
 }
 
@@ -70,7 +71,6 @@ void Player::Update(float _elapsed)
 	hitCoolDown += _elapsed;
 
     //Components updates
-    controllableComponent.update();
     chargeComponent.update(_elapsed);
 
     //Update UI of player's health (top left corner)
@@ -109,19 +109,19 @@ void Player::Update(float _elapsed)
     Direction direction = Direction::NONE;
     if (moveKeyPressCooldown >= MOVE_KEY_PRESS_COOLDOWN)
     {
-        if (controllableComponent.has(PRESSED_UP))
+        if (controllableComponent->has(PRESSED_UP))
         {
             direction = Direction::UP;
         }
-        else if (controllableComponent.has(PRESSED_LEFT))
+        else if (controllableComponent->has(PRESSED_LEFT))
         {
             direction = Direction::LEFT;
         }
-        else if (controllableComponent.has(PRESSED_DOWN))
+        else if (controllableComponent->has(PRESSED_DOWN))
         {
             direction = Direction::DOWN;
         }
-        else if (controllableComponent.has(PRESSED_RIGHT))
+        else if (controllableComponent->has(PRESSED_RIGHT))
         {
             direction = Direction::RIGHT;
         }
@@ -133,14 +133,14 @@ void Player::Update(float _elapsed)
 
     if (attackKeyPressCooldown >= ATTACK_KEY_PRESS_COOLDOWN)
     {
-        if (controllableComponent.has(PRESSED_SPACE))
+        if (controllableComponent->has(PRESSED_ACTION1))
         {
             attackKeyPressCooldown = 0.0f;
             chargeComponent.SetCharging(true);
         }
     }
 
-    if (controllableComponent.empty())
+    if (controllableComponent->empty())
     {
         if (state != PlayerState::PLAYER_SHOOTING)
         {
@@ -148,23 +148,23 @@ void Player::Update(float _elapsed)
         }
     }
 
-    if (controllableComponent.has(RELEASED_UP))
+    if (controllableComponent->has(RELEASED_UP))
     {
         direction = Direction::NONE;
     }
-    else if (controllableComponent.has(RELEASED_LEFT))
+    else if (controllableComponent->has(RELEASED_LEFT))
     {
         direction = Direction::NONE;
     }
-    else if (controllableComponent.has(RELEASED_DOWN))
+    else if (controllableComponent->has(RELEASED_DOWN))
     {
         direction = Direction::NONE;
     }
-    else if (controllableComponent.has(RELEASED_RIGHT))
+    else if (controllableComponent->has(RELEASED_RIGHT))
     {
         direction = Direction::NONE;
     }
-    else if (controllableComponent.has(RELEASED_SPACE))
+    else if (controllableComponent->has(RELEASED_ACTION1))
     {
         Attack(chargeComponent.GetChargeCounter());
         chargeComponent.SetCharging(false);

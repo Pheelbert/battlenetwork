@@ -3,6 +3,7 @@ using sf::RenderWindow;
 using sf::VideoMode;
 using sf::Clock;
 using sf::Event;
+using sf::Font;
 
 #include "bnBattleScene.h"
 #include "bnField.h"
@@ -14,6 +15,7 @@ using sf::Event;
 #include "bnPlayerHealthUI.h"
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
+#include "bnControllableComponent.h"
 #include "bnEngine.h"
 
 int main()
@@ -54,15 +56,31 @@ int BattleScene::Run()
 
     BackgroundUI background = BackgroundUI();
 
+	sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
+	sf::Text* pauseLabel = new sf::Text;
+	pauseLabel->setFont(*font);
+	pauseLabel->setPosition((sf::Vector2f)((sf::Vector2i)Engine::GetInstance().GetWindow()->getSize()/2));
+
+	Engine::GetInstance().Lay(pauseLabel);
+
 	// Stream battle music 
 	AudioResourceManager::GetInstance().Stream("resources/loops/loop_boss_battle.ogg", true);
 
     Clock clock;
     float elapsed = 0.0f;
+	bool isPaused = false; 
+	bool isInChipSelect = false;
+
     while (Engine::GetInstance().Running())
     {
         clock.restart();
-        field->Update(elapsed);
+
+		// TODO: Do not update when paused or in chip select
+		ControllableComponent::GetInstance().update();
+
+		if (!isPaused) {
+			field->Update(elapsed);
+		}
 
         Engine::GetInstance().Clear();
 
@@ -91,6 +109,11 @@ int BattleScene::Run()
         Engine::GetInstance().DrawLayers();
         Engine::GetInstance().DrawOverlay();
         Engine::GetInstance().Display();
+
+		// Scene keyboard controls
+		if (ControllableComponent::GetInstance().has(PRESSED_PAUSE)) {
+			isPaused = !isPaused;
+		}
 
         elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
     }

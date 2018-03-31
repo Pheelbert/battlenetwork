@@ -52,8 +52,11 @@ void ControllableComponent::update()
             }
             else if (Keyboard::Space == event.key.code)
             {
-                events.push_back(PRESSED_SPACE);
-            }
+                events.push_back(PRESSED_ACTION1);
+            } 
+			else if (Keyboard::Return == event.key.code) {
+				events.push_back(PRESSED_PAUSE);
+			}
         }
 
         if (Event::KeyReleased == event.type)
@@ -76,8 +79,12 @@ void ControllableComponent::update()
             }
             else if (Keyboard::Space == event.key.code)
             {
-                events.push_back(RELEASED_SPACE);
+                events.push_back(RELEASED_ACTION1);
             }
+			else if (Keyboard::Return == event.key.code)
+			{
+				events.push_back(RELEASED_PAUSE);
+			}
         }
     }   
 }
