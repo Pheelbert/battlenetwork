@@ -124,7 +124,7 @@ void AudioResourceManager::LoadAllSources()
 
 int AudioResourceManager::Play(AudioType type)
 {
-	if (type >= AudioType::AUDIO_TYPE_SIZE) {
+	if (type == AudioType::AUDIO_TYPE_SIZE) {
 		return -1;
 	}
 
@@ -135,12 +135,12 @@ int AudioResourceManager::Play(AudioType type)
 	//                             HIGH    (cancels lower rankings),
 	// Find a free channel 
 	for (int i = 0; i < NUM_OF_CHANNELS; i++) {
-		if (channels[i].getStatus() == sf::SoundSource::Status::Stopped) {
-			// Check if this is the same type
-			if (channels[i].getBuffer() != &(const sf::SoundBuffer)sources[type]) {
+		if (channels[i].getStatus() != sf::SoundSource::Status::Playing) {
+			// TODO: Check if this is the same type
+			//if (channels[i].getBuffer() != &(const sf::SoundBuffer)sources[type]) {
 				channels[i].setBuffer(sources[type]);
 				return 0;
-			}
+			//}
 		}
 	}
 

@@ -3,6 +3,7 @@
 #include "bnSpell.h"
 #include "bnPlayer.h"
 #include "bnTextureResourceManager.h"
+#include "bnAudioResourceManager.h"
 #include "bnField.h"
 
 #define START_X 0.0f
@@ -80,11 +81,12 @@ float Tile::GetHeight() const
 
 void Tile::SetState(TileState _state)
 {
-    state = _state;
-
-	if (state == TileState::CRACKED) {
+	if (_state == TileState::CRACKED && state != _state) {
 		cooldown = cooldownLength;
+		AudioResourceManager::GetInstance().Play(AudioType::PANEL_CRACK);
 	}
+
+	state = _state;
 }
 
 void Tile::RefreshTexture()
