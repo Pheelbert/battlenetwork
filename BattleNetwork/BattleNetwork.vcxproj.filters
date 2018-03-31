@@ -68,6 +68,9 @@
     <Filter Include="Resource\AudioResource">
       <UniqueIdentifier>{584d74c6-24b9-4e0b-b8cb-06f4e0b8a9c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Spell\ProgBomb">
+      <UniqueIdentifier>{433914da-e0ef-48b6-9930-a32468a26484}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -126,6 +129,9 @@
     </ClCompile>
     <ClCompile Include="bnTextureResourceManager.cpp">
       <Filter>Resource\TextureResource</Filter>
+    </ClCompile>
+    <ClCompile Include="bnProgBomb.cpp">
+      <Filter>Battle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -219,5 +225,6 @@
     <ClInclude Include="bnTextureResourceManager.h">
       <Filter>Resource\TextureResource</Filter>
     </ClInclude>
+    <ClInclude Include="bnProgBomb.h" />
   </ItemGroup>
 </Project>

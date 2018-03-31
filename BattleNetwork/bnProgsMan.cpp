@@ -2,6 +2,7 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnWave.h"
+#include "bnProgBomb.h"
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 #include "bnEngine.h"
@@ -233,7 +234,7 @@ void ProgsMan::Update(float _elapsed)
 		attackDelay += _elapsed;
 		if (attackDelay >= PROGS_ATTACK_DELAY)
 		{
-			// Attack();
+			Attack();
 			waitCooldown = 0;
 			attackDelay = 0.0f;
 			attackCooldown = 0;
@@ -348,23 +349,31 @@ bool ProgsMan::Move(Direction _direction)
 
 void ProgsMan::Attack()
 {
-	if (tile->GetX() + 1 <= (int)field->GetWidth() + 1)
-	{
-		Spell* spell = new Wave(field, team);
+	if (state == MobState::MOB_THROW) {
+		Spell* spell = new ProgBomb(field, team);
 		spell->SetDirection(Direction::LEFT);
 		field->AddEntity(spell, tile->GetX() - 1, tile->GetY());
+	}
+	else
+	{
+		if (tile->GetX() + 1 <= (int)field->GetWidth() + 1)
+		{
+			Spell* spell = new Wave(field, team);
+			spell->SetDirection(Direction::LEFT);
+			field->AddEntity(spell, tile->GetX() - 1, tile->GetY());
 
-		Tile* next = 0;
-		next = field->GetAt(tile->GetX() - 1, tile->GetY());
+			Tile* next = 0;
+			next = field->GetAt(tile->GetX() - 1, tile->GetY());
 
-		Entity* entity = 0;
-		
-		while (next->GetNextEntity(entity)) {
-			Player* isPlayer = dynamic_cast<Player*>(entity);
+			Entity* entity = 0;
 
-			if (isPlayer) {
-				isPlayer->Move(Direction::LEFT);
-				isPlayer->Hit(20);
+			while (next->GetNextEntity(entity)) {
+				Player* isPlayer = dynamic_cast<Player*>(entity);
+
+				if (isPlayer) {
+					isPlayer->Move(Direction::LEFT);
+					isPlayer->Hit(20);
+				}
 			}
 		}
 	}
