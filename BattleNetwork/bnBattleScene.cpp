@@ -71,7 +71,7 @@ int BattleScene::Run()
 	bool isInChipSelect = false;
 
 	// Special: Load shaders if supported 
-	double shaderCooldown = 2000;
+	double shaderCooldown = 500; // half a second
 	sf::Shader shader;
 
 	// load only the vertex shader
@@ -80,7 +80,8 @@ int BattleScene::Run()
 	}
 	else {
 		shader.setParameter("texture", sf::Shader::CurrentTexture);
-		shader.setParameter("pixel_threshold", 0); // start
+		shader.setParameter("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5); // start at full
+		Engine::GetInstance().SetShader(&shader);
 	}
 
 
@@ -142,7 +143,8 @@ int BattleScene::Run()
 			shaderCooldown = 0;
 		}
 
-		shader.setParameter("pixel_threshold", shaderCooldown);
+		// convert to millis and slow it down by 0.5
+		shader.setParameter("pixel_threshold", (float)(shaderCooldown/1000.f)*0.5);
     }
 
 	delete pauseLabel;

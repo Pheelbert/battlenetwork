@@ -359,9 +359,9 @@ void ProgsMan::Attack()
 		if (target != nullptr) {
 			Tile* targetTile = target->GetTile();
 			Tile* aimTile = field->GetAt(targetTile->GetX(), targetTile->GetY());
-			ProgBomb* spell = new ProgBomb(field, team, aimTile, 3.0);
+			ProgBomb* spell = new ProgBomb(field, team, aimTile, 1.0);
 			spell->SetDirection(Direction::LEFT);
-			field->AddEntity(spell, tile->GetX() - 1, tile->GetY());
+			field->AddEntity(spell, tile->GetX(), tile->GetY());
 			spell->PrepareThrowPath();
 		}
 	}

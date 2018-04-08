@@ -30,6 +30,8 @@ public:
     void DrawOverlay();
     void DrawUnderlay();
 
+	void SetShader(sf::Shader* _shader);
+
 private:
     Engine(void);
     ~Engine(void);
@@ -38,4 +40,5 @@ private:
     Underlay underlay;
     Layers layers;
     Overlay overlay;
+	sf::RenderStates state;
 };

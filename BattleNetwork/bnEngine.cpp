@@ -14,12 +14,12 @@ void Engine::Initialize()
 
 void Engine::Draw(Drawable& _drawable)
 {
-    window->draw(_drawable);
+    window->draw(_drawable, state);
 }
 
 void Engine::Draw(Drawable* _drawable)
 {
-    if (_drawable) window->draw(*_drawable);
+    if (_drawable) window->draw(*_drawable, state);
 }
 
 void Engine::Draw(vector<Drawable*> _drawable)
@@ -118,4 +118,8 @@ void Engine::DrawOverlay()
 void Engine::DrawUnderlay()
 {
     Draw(underlay);
+}
+
+void Engine::SetShader(sf::Shader* shader) {
+	state.shader = shader;
 }

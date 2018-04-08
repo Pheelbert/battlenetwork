@@ -80,6 +80,7 @@ void Field::RemoveEntity(Entity* _entity)
             GetAt(_entity->GetTile()->GetX(), _entity->GetTile()->GetY())->RemoveEntity(_entity);
         }
         delete *it;
+		*it = nullptr;
         entities.erase(it);
     }
 }
