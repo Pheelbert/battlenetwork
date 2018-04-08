@@ -29,6 +29,7 @@ ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, double _duration)
 	arcProgress = 0;
 	target = _target;
 
+	setOrigin(sf::Vector2f(19, 24) / 2.f);
 	AudioResourceManager::GetInstance().Play(AudioType::TOSS_ITEM);
 }
 
@@ -60,6 +61,7 @@ void ProgBomb::Update(float _elapsed)
 	setTexture(*texture);
 	setScale(2.f, 2.f);
 	setPosition(tile->getPosition().x + 5.f, tile->getPosition().y - 50.0f);
+	setRotation(-(arcProgress/arcDuration)*45.0f);
 	progress += 0.05f;
 	if (progress < 1.f)
 	{

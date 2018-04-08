@@ -83,15 +83,6 @@ int BattleScene::Run()
 		Engine::GetInstance().SetShader(&shader);
 	}
 
-	sf::Shader stunShader;
-	if (!stunShader.loadFromFile("resources/shaders/yellow.frag.txt", sf::Shader::Fragment)) {
-		// TODO: log error...
-	}
-	else {
-		stunShader.setParameter("texture", sf::Shader::CurrentTexture);
-		player->SetShader(&stunShader);
-	}
-
 	sf::Shader pauseShader;
 	if (!pauseShader.loadFromFile("resources/shaders/black_fade.frag.txt", sf::Shader::Fragment)) {
 		// TODO: log error...

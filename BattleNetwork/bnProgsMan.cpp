@@ -66,6 +66,13 @@ ProgsMan::ProgsMan(void)
 	resourceComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
 	resourceComponent.load();
 
+	if (!whiteout.loadFromFile("resources/shaders/white.frag.txt", sf::Shader::Fragment)) {
+		// TODO: log error...
+	}
+	else {
+		whiteout.setParameter("texture", sf::Shader::CurrentTexture);
+	}
+
 	target = nullptr;
 }
 
@@ -113,6 +120,7 @@ void ProgsMan::Update(float _elapsed)
 	//Explode animation then set deleted to true once it finishes
 	if (health <= 0)
 	{
+		SetShader(&whiteout);
 		blinker = 0.0f;
 		blinker += 0.01f;
 		if (blinker >= 0.5f)
@@ -145,8 +153,6 @@ void ProgsMan::Update(float _elapsed)
 			}
 			if (explosionProgress2 >= 1.f)
 			{
-				// play one more time
-				AudioResourceManager::GetInstance().Play(AudioType::EXPLODE);
 				deleted = true;
 				return;
 			}

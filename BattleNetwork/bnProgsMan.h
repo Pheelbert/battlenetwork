@@ -61,6 +61,7 @@ private:
 	TextureType textureType;
 	MobHealthUI* healthUI;
 	Animator<Sprite, MobState> animator;
+	sf::Shader whiteout;
 
 	// AI
 	Entity* target;
