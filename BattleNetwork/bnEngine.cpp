@@ -6,7 +6,7 @@ Engine& Engine::GetInstance()
     return instance;
 }
 
-void Engine::Initialise()
+void Engine::Initialize()
 {
     window = new RenderWindow(VideoMode(480, 320), "Battle Network : Prototype");
     window->setFramerateLimit(60);

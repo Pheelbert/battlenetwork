@@ -13,7 +13,7 @@ class Engine
 {
 public:
     static Engine& GetInstance();
-    void Initialise();
+    void Initialize();
     void Draw(Drawable& _drawable);
     void Draw(Drawable* _drawable);
     void Draw(vector<Drawable*> _drawable);

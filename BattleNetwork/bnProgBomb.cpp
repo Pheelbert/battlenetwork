@@ -5,7 +5,9 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 
-ProgBomb::ProgBomb(Field* _field, Team _team)
+#define GRAVITY 9.81
+
+ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, double _duration)
 {
 	SetLayer(0);
 	cooldown = 0;
@@ -23,6 +25,9 @@ ProgBomb::ProgBomb(Field* _field, Team _team)
 
 	animation.addFrame(0.3f, IntRect(0, 0, 19, 41));
 
+	arcDuration = _duration;
+	arcProgress = 0;
+	target = _target;
 
 	AudioResourceManager::GetInstance().Play(AudioType::TOSS_ITEM);
 }
@@ -31,14 +36,21 @@ ProgBomb::~ProgBomb(void)
 {
 }
 
-/* Have a target tile in mind
-	calculate the time to the tile
-	follow arc path to the tile from start height over time
-	at time x (where x is the end of the arc), attack tile
-	explode
-*/
+void ProgBomb::PrepareThrowPath() {
+	velX = velY = 0;
+	posX = tile->getPosition().x;
+	posY = tile->getPosition().y;
+
+	// Calculate projectile variables on init 
+	velX = (target->getPosition().x - posX) / arcDuration;
+	velY = -1.0 * (abs(target->getPosition().y + 0.5*GRAVITY*arcDuration*arcDuration - posY)) / arcDuration;
+	arcProgress = 0;
+}
+
 void ProgBomb::Update(float _elapsed)
 {
+	arcProgress += _elapsed/1000.0; // convert from ms to s
+
 	if (!tile->IsWalkable())
 	{
 		deleted = true;
@@ -54,41 +66,29 @@ void ProgBomb::Update(float _elapsed)
 		animation(*this, progress);
 	}
 
+	/* Have a target tile in mind
+	calculate the time to the tile
+	follow arc path to the tile from start height over time
+	at time x (where x is the end of the arc), attack tile
+	explode
+	*/
+	sf::Vector2f pos(getPosition());
+
+	pos.x = velX * arcProgress + pos.x;
+	pos.y = 0.5 * GRAVITY * arcProgress * arcProgress + velY * arcProgress + pos.y;
+
+	setPosition(pos);
+
 	// When at the end of the arc
-	// TODO: tile->AffectEntities(this);
+	if (arcProgress >= arcDuration) {
+		// update tile to target tile 
+		target->AffectEntities(this);
+		deleted = true;
+	}
 }
 
 bool ProgBomb::Move(Direction _direction)
 {
-	tile->RemoveEntity(this);
-	Tile* next = nullptr;
-	if (_direction == Direction::LEFT)
-	{
-		if (tile->GetX() - 1 > 0)
-		{
-			next = field->GetAt(tile->GetX() - 1, tile->GetY());
-			SetTile(next);
-		}
-		else
-		{
-			deleted = true;
-			return false;
-		}
-	}
-	else if (_direction == Direction::RIGHT)
-	{
-		if (tile->GetX() + 1 <= (int)field->GetWidth())
-		{
-			next = field->GetAt(tile->GetX() + 1, tile->GetY());
-			SetTile(next);
-		}
-		else
-		{
-			deleted = true;
-			return false;
-		}
-	}
-	tile->AddEntity(this);
 	return true;
 }
 

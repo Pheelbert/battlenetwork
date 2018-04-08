@@ -65,10 +65,16 @@ ProgsMan::ProgsMan(void)
 	//Components setup and load
 	resourceComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
 	resourceComponent.load();
+
+	target = nullptr;
 }
 
 ProgsMan::~ProgsMan(void)
 {
+}
+
+void ProgsMan::SetTarget(Entity* _target) {
+	target = _target;
 }
 
 int* ProgsMan::getAnimOffset() {
@@ -350,9 +356,14 @@ bool ProgsMan::Move(Direction _direction)
 void ProgsMan::Attack()
 {
 	if (state == MobState::MOB_THROW) {
-		Spell* spell = new ProgBomb(field, team);
-		spell->SetDirection(Direction::LEFT);
-		field->AddEntity(spell, tile->GetX() - 1, tile->GetY());
+		if (target != nullptr) {
+			Tile* targetTile = target->GetTile();
+			Tile* aimTile = field->GetAt(targetTile->GetX(), targetTile->GetY());
+			ProgBomb* spell = new ProgBomb(field, team, aimTile, 3.0);
+			spell->SetDirection(Direction::LEFT);
+			field->AddEntity(spell, tile->GetX() - 1, tile->GetY());
+			spell->PrepareThrowPath();
+		}
 	}
 	else
 	{

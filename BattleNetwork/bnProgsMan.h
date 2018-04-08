@@ -32,6 +32,8 @@ public:
 	int* ProgsMan::getAnimOffset();
 	void Attack();
 
+	void SetTarget(Entity*);
+
 private:
 	//Old static
 	float blinker;
@@ -59,4 +61,7 @@ private:
 	TextureType textureType;
 	MobHealthUI* healthUI;
 	Animator<Sprite, MobState> animator;
+
+	// AI
+	Entity* target;
 };

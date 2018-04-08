@@ -70,12 +70,9 @@ void Buster::Update(float _elapsed)
         return;
     }
 
-    damageCooldown += _elapsed;
-    if (damageCooldown >= DAMAGE_COOLDOWN)
-    {
-        tile->AffectEntities(this);
-        damageCooldown = 0;
-    }
+	// NOTE: This probably had a cool down because the original dev wanted it to do damage at the end of the buster frame
+	// Doing this made direct shots miss. Spawning the bullet should happen at the end frame in the player class. 
+    tile->AffectEntities(this);
 
     cooldown += _elapsed;
     if (cooldown >= COOLDOWN)
@@ -120,7 +117,7 @@ bool Buster::Move(Direction _direction)
     }
     else if (_direction == Direction::RIGHT)
     {
-        if (tile->GetX() + 1 <= (int)field->GetWidth())
+        if (tile->GetX() < (int)field->GetWidth())
         {
             next = field->GetAt(tile->GetX() + 1, tile->GetY());
             SetTile(next);

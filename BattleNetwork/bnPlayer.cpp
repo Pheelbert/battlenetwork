@@ -312,7 +312,17 @@ int Player::Hit(int _damage)
 	state = PlayerState::PLAYER_HIT;
 	AudioResourceManager::GetInstance().Play(AudioType::HURT);
 
-    return (health - _damage < 0) ? health = 0 : health -= _damage;
+	bool result = false;
+
+	if (health - _damage < 0) {
+		health = 0; deleted = true;
+		result = true;
+	}
+	else {
+		health -= _damage;
+	}
+
+	return result;
 }
 
 void Player::RefreshTexture()

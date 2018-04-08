@@ -131,7 +131,7 @@
       <Filter>Resource\TextureResource</Filter>
     </ClCompile>
     <ClCompile Include="bnProgBomb.cpp">
-      <Filter>Battle</Filter>
+      <Filter>Battle\Entity\Spell\ProgBomb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +225,8 @@
     <ClInclude Include="bnTextureResourceManager.h">
       <Filter>Resource\TextureResource</Filter>
     </ClInclude>
-    <ClInclude Include="bnProgBomb.h" />
+    <ClInclude Include="bnProgBomb.h">
+      <Filter>Battle\Entity\Spell\ProgBomb</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
