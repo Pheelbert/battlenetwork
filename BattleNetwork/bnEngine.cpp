@@ -12,14 +12,28 @@ void Engine::Initialize()
     window->setFramerateLimit(60);
 }
 
-void Engine::Draw(Drawable& _drawable)
+void Engine::Draw(Drawable& _drawable, bool applyShaders)
 {
-    window->draw(_drawable, state);
+	if (applyShaders) {
+		window->draw(_drawable, state);
+	}
+	else {
+		window->draw(_drawable);
+	}
 }
 
-void Engine::Draw(Drawable* _drawable)
+void Engine::Draw(Drawable* _drawable, bool applyShaders)
 {
-    if (_drawable) window->draw(*_drawable, state);
+	if (!_drawable) {
+		return;
+	}
+
+	if (applyShaders) {
+		window->draw(*_drawable, state);
+	}
+	else {
+		window->draw(*_drawable);
+	}
 }
 
 void Engine::Draw(vector<LayeredDrawable*> _drawable)
@@ -28,7 +42,7 @@ void Engine::Draw(vector<LayeredDrawable*> _drawable)
     for(it; it != _drawable.end(); ++it)
     {
 		/*
-		NOTE: Could add support for multiple layers:
+		NOTE: Could add support for multiple shaders:
 		sf::RenderTexture image1;
 		sf::RenderTexture image2;
 
@@ -73,12 +87,12 @@ void Engine::Draw(vector<LayeredDrawable*> _drawable)
     }
 }
 
-void Engine::Draw(vector<Drawable*> _drawable)
+void Engine::Draw(vector<Drawable*> _drawable, bool applyShaders)
 {
 	auto it = _drawable.begin();
 	for (it; it != _drawable.end(); ++it)
 	{
-		Draw(*it);
+		Draw(*it, applyShaders);
 	}
 }
 
@@ -163,7 +177,7 @@ void Engine::DrawLayers()
 
 void Engine::DrawOverlay()
 {
-    Draw(overlay);
+    Draw(overlay, false);
 }
 
 void Engine::DrawUnderlay()
@@ -172,5 +186,15 @@ void Engine::DrawUnderlay()
 }
 
 void Engine::SetShader(sf::Shader* shader) {
-	state.shader = shader;
+
+	if (shader == nullptr) {
+		state = sf::RenderStates::Default;
+	}
+	else {
+		state.shader = shader;
+	}
+}
+
+void Engine::RevokeShader() {
+	SetShader(nullptr);
 }

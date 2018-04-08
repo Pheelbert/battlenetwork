@@ -59,7 +59,7 @@ int BattleScene::Run()
 
 	sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
 	sf::Text* pauseLabel = new sf::Text("paused", *font);
-	pauseLabel->setOrigin(pauseLabel->getLocalBounds().width/2, pauseLabel->getLocalBounds().height / 2);
+	pauseLabel->setOrigin(pauseLabel->getLocalBounds().width/2, pauseLabel->getLocalBounds().height * 2);
 	pauseLabel->setPosition((sf::Vector2f)((sf::Vector2i)Engine::GetInstance().GetWindow()->getSize()/2));
 
 	// Stream battle music 
@@ -74,7 +74,6 @@ int BattleScene::Run()
 	double shaderCooldown = 500; // half a second
 	sf::Shader shader;
 
-	// load only the vertex shader
 	if (!shader.loadFromFile("resources/shaders/pixel_blur.frag.txt", sf::Shader::Fragment)) {
 		// TODO: log error...
 	}
@@ -85,14 +84,21 @@ int BattleScene::Run()
 	}
 
 	sf::Shader stunShader;
-
-	// load only the vertex shader
 	if (!stunShader.loadFromFile("resources/shaders/yellow.frag.txt", sf::Shader::Fragment)) {
 		// TODO: log error...
 	}
 	else {
 		stunShader.setParameter("texture", sf::Shader::CurrentTexture);
 		player->SetShader(&stunShader);
+	}
+
+	sf::Shader pauseShader;
+	if (!pauseShader.loadFromFile("resources/shaders/black_fade.frag.txt", sf::Shader::Fragment)) {
+		// TODO: log error...
+	}
+	else {
+		pauseShader.setParameter("texture", sf::Shader::CurrentTexture);
+		pauseShader.setParameter("opacity", 0.5);
 	}
 
 
@@ -135,7 +141,8 @@ int BattleScene::Run()
 		Engine::GetInstance().DrawOverlay();
 
 		if (isPaused) {
-			Engine::GetInstance().Draw(pauseLabel);
+			Engine::GetInstance().Draw(pauseLabel, false);
+			Engine::GetInstance().SetShader(&pauseShader);
 		}
 
 		// Write contents to screen (always last step)
@@ -144,6 +151,10 @@ int BattleScene::Run()
 		// Scene keyboard controls
 		if (ControllableComponent::GetInstance().has(PRESSED_PAUSE)) {
 			isPaused = !isPaused;
+
+			if (!isPaused) {
+				Engine::GetInstance().RevokeShader();
+			}
 		}
 
 		elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
