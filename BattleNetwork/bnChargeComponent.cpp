@@ -13,7 +13,7 @@ ChargeComponent::ChargeComponent(Entity* _entity)
     chargeSprite = Sprite();
     blueChargeAnimation = FrameAnimation();
     purpleChargeAnimation = FrameAnimation();;
-	isCharged = false;
+	isCharged = isPartiallyCharged = false;
 }
 
 ChargeComponent::~ChargeComponent()
@@ -48,6 +48,7 @@ void ChargeComponent::update(float _elapsed)
         chargeCounter = 0.0f;
         chargeSprite.setScale(0.0f, 0.0f);
 		isCharged = false;
+		isPartiallyCharged = false;
     }
     else
     {
@@ -69,6 +70,12 @@ void ChargeComponent::update(float _elapsed)
         }
         else if (chargeCounter >= CHARGE_COUNTER_MIN)
         {
+			if (isPartiallyCharged == false) {
+				// Switching states
+				AudioResourceManager::GetInstance().Play(AudioType::BUSTER_CHARGING);
+			}
+
+			isPartiallyCharged = true;
             animationProgress += 0.05f;
             (animationProgress >= 1.0f) ? animationProgress = 0.0f : animationProgress = animationProgress;
             chargeSprite.setTexture(chargeTexture);
@@ -82,12 +89,7 @@ void ChargeComponent::update(float _elapsed)
 
 void ChargeComponent::SetCharging(bool _charging)
 {
-	if (_charging && charging != _charging) {
-		// Switching states
-		AudioResourceManager::GetInstance().Play(AudioType::BUSTER_CHARGING);
-	}
-
-    charging = _charging;
+	charging = _charging;
 }
 
 float ChargeComponent::GetChargeCounter() const

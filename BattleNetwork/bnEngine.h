@@ -16,7 +16,8 @@ public:
     void Initialize();
     void Draw(Drawable& _drawable);
     void Draw(Drawable* _drawable);
-    void Draw(vector<Drawable*> _drawable);
+	void Draw(vector<Drawable*> _drawable);
+    void Draw(vector<LayeredDrawable*> _drawable);
     void Display();
     bool Running();
     void Clear();

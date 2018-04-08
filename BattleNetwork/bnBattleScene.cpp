@@ -84,6 +84,17 @@ int BattleScene::Run()
 		Engine::GetInstance().SetShader(&shader);
 	}
 
+	sf::Shader stunShader;
+
+	// load only the vertex shader
+	if (!stunShader.loadFromFile("resources/shaders/yellow.frag.txt", sf::Shader::Fragment)) {
+		// TODO: log error...
+	}
+	else {
+		stunShader.setParameter("texture", sf::Shader::CurrentTexture);
+		player->SetShader(&stunShader);
+	}
+
 
 	while (Engine::GetInstance().Running())
 	{
