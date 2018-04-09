@@ -80,6 +80,7 @@ int BattleScene::Run()
     float elapsed = 0.0f;
 	bool isPaused = false; 
 	bool isInChipSelect = false;
+	bool isChipSelectReady = false;
 	double customProgress = 0; // in mili seconds 
 	double customDuration = 10 * 1000; // 10 seconds
 
@@ -184,8 +185,19 @@ int BattleScene::Run()
 		// convert to millis and slow it down by 0.5
 		shader.setParameter("pixel_threshold", (float)(shaderCooldown/1000.f)*0.5);
 
-		// update the cust
-		customProgress += elapsed;
+		// update the cust if not paused
+		if(!isPaused) customProgress += elapsed;
+
+		if (customProgress / customDuration >= 1.0) {
+			if (isChipSelectReady == false) {
+				AudioResourceManager::GetInstance().Play(AudioType::CUSTOM_BAR_FULL);
+				isChipSelectReady = true;
+			}
+		}
+		else {
+			isChipSelectReady = false;
+		}
+
 		customBarShader.setParameter("factor", (float)(customProgress/customDuration));
     }
 
