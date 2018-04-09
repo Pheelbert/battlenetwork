@@ -11,7 +11,7 @@ void main()
       if(factor >= 1.0)
       {
           pixel.r = pixel.b = 0;
-          pixel.g = sin((pos.x+(factor*2))*100);
+          pixel.g = sin((pos.x+(factor*2))*100) + 0.5*sin(pos.x+(factor)*100);
       }
       else
       {
