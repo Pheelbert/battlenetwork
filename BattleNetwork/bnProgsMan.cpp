@@ -23,7 +23,7 @@ ProgsMan::ProgsMan(void)
 	: resourceComponent(ResourceComponent(this))
 {
 	Entity::team = Team::RED;
-	health = 100;
+	health = 20;
 	hitHeight = 0;
 	direction = Direction::DOWN;
 	state = MobState::MOB_IDLE;

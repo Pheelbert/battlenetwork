@@ -57,10 +57,21 @@ int BattleScene::Run()
 
     BackgroundUI background = BackgroundUI();
 
+	// PAUSE
 	sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
 	sf::Text* pauseLabel = new sf::Text("paused", *font);
 	pauseLabel->setOrigin(pauseLabel->getLocalBounds().width/2, pauseLabel->getLocalBounds().height * 2);
 	pauseLabel->setPosition((sf::Vector2f)((sf::Vector2i)Engine::GetInstance().GetWindow()->getSize()/2));
+
+	// CHIP CUST
+	sf::Texture* customBarTexture = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/ui/custom.png");
+	LayeredDrawable customBarSprite;
+	customBarSprite.setTexture(*customBarTexture);
+	customBarSprite.setOrigin(customBarSprite.getLocalBounds().width / 2, 0);
+	sf::Vector2f customBarPos = (sf::Vector2f)((sf::Vector2i)Engine::GetInstance().GetWindow()->getSize() / 2);
+	customBarPos.y = 0;
+	customBarSprite.setPosition(customBarPos);
+	customBarSprite.setScale(2.f, 2.f);
 
 	// Stream battle music 
 	AudioResourceManager::GetInstance().Stream("resources/loops/loop_boss_battle.ogg", true);
@@ -69,6 +80,8 @@ int BattleScene::Run()
     float elapsed = 0.0f;
 	bool isPaused = false; 
 	bool isInChipSelect = false;
+	double customProgress = 0; // in mili seconds 
+	double customDuration = 10 * 1000; // 10 seconds
 
 	// Special: Load shaders if supported 
 	double shaderCooldown = 500; // half a second
@@ -92,6 +105,15 @@ int BattleScene::Run()
 		pauseShader.setParameter("opacity", 0.5);
 	}
 
+	sf::Shader customBarShader;
+	if (!customBarShader.loadFromFile("resources/shaders/custom_bar.frag.txt", sf::Shader::Fragment)) {
+		// TODO: log error...
+	}
+	else {
+		customBarShader.setParameter("texture", sf::Shader::CurrentTexture);
+		customBarShader.setParameter("factor", 0);
+		customBarSprite.SetShader(&customBarShader);
+	}
 
 	while (Engine::GetInstance().Running())
 	{
@@ -127,14 +149,17 @@ int BattleScene::Run()
 			}
 		}
 
-		Engine::GetInstance().DrawUnderlay();
-		Engine::GetInstance().DrawLayers();
-		Engine::GetInstance().DrawOverlay();
+		// NOTE: Although HUD, it fades dark when on chip cust screen and paused.
+		Engine::GetInstance().Push(&customBarSprite);
 
 		if (isPaused) {
 			Engine::GetInstance().Draw(pauseLabel, false);
 			Engine::GetInstance().SetShader(&pauseShader);
 		}
+
+		Engine::GetInstance().DrawUnderlay();
+		Engine::GetInstance().DrawLayers();
+		Engine::GetInstance().DrawOverlay();
 
 		// Write contents to screen (always last step)
 		Engine::GetInstance().Display();
@@ -158,6 +183,10 @@ int BattleScene::Run()
 
 		// convert to millis and slow it down by 0.5
 		shader.setParameter("pixel_threshold", (float)(shaderCooldown/1000.f)*0.5);
+
+		// update the cust
+		customProgress += elapsed;
+		customBarShader.setParameter("factor", (float)(customProgress/customDuration));
     }
 
 	delete pauseLabel;
