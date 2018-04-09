@@ -8,11 +8,21 @@ void main()
 
     if(pixel.rgb == vec3(1,0,0)) 
     {
-      pixel.r = 0;
-
-      if(pos.x <= (textureSize(texture, 0).x * factor)/textureSize(texture,0).x)
+      if(factor >= 1.0)
       {
-        pixel.g = 1;
+          pixel.r = pixel.b = 0;
+          pixel.g = sin((pos.x+(factor*2))*100);
+      }
+      else
+      {
+        pixel.r = 0;
+
+        if(pos.x <= (textureSize(texture, 0).x * factor)/textureSize(texture,0).x)
+        {
+          pixel.r = 224.0/255.0;
+          pixel.g = 232.0/255.0;
+          pixel.b = 248.0/255.0;
+        }
       }
     }
 

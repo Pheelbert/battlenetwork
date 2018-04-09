@@ -191,6 +191,7 @@ int BattleScene::Run()
 
 	delete pauseLabel;
 	delete font;
+	delete customBarTexture;
 	
     return EXIT_SUCCESS;
 }
