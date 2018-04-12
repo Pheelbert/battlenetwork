@@ -4,11 +4,13 @@ at this time. They are automatically selected for you (up to 3 at a time). Retur
 Mega can also be deleted. The demo now has sound.
 
 # Controls
+```
 ARROWS -> Move
 SPACE  -> Shoot (hold to charge)
 P      -> Pause/Unpause 
 Return -> Bring up chip select GUI / Hide 
 R CTRL -> Use a chip
+```
 
 # Author TheMaverickProgrammer
 ## Update 4/12/2018
