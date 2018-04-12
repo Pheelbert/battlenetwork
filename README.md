@@ -1,3 +1,15 @@
+# Features
+In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. Note that you cannot select chips yourself
+at this time. They are automatically selected for you (up to 3 at a time). Return to battle and you can use the chips by pressing Right-Control. At this times chips do nothing in battle. They dissapear after use.
+Mega can also be deleted. The demo now has sound.
+
+# Controls
+ARROWS -> Move
+SPACE  -> Shoot (hold to charge)
+P      -> Pause/Unpause 
+Return -> Bring up chip select GUI / Hide 
+R CTRL -> Use a chip
+
 # Author TheMaverickProgrammer
 ## Update 4/12/2018
 Wrote chip library, chip cust state, and chip component system for entities.
