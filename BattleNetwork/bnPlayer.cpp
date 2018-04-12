@@ -48,6 +48,7 @@ Player::Player(void)
     setScale(2.0f, 2.0f);
 
     healthUI = new PlayerHealthUI(this);
+	chipsUI = new SelectedChipsUI(this);
 
     //Components setup and load
     chargeComponent.load();
@@ -75,6 +76,9 @@ void Player::Update(float _elapsed)
 
     //Update UI of player's health (top left corner)
     healthUI->Update();
+
+	// Update chip UI
+	// chipsUI->Update(); TODO: Forced z-ordering for some UI?
 
 	// Cant do anything if hit/stunned 
 	if (hitCoolDown < HIT_COOLDOWN) 
@@ -170,7 +174,11 @@ void Player::Update(float _elapsed)
         chargeComponent.SetCharging(false);
         attackToIdleCooldown = 0.0f;
         state = PlayerState::PLAYER_SHOOTING;
-    }
+	}
+	else if (controllableComponent->has(RELEASED_ACTION2))
+	{
+		chipsUI->UseNextChip();
+	}
 
     if (direction != Direction::NONE && state != PlayerState::PLAYER_SHOOTING)
     {
@@ -293,6 +301,11 @@ vector<Drawable*> Player::GetMiscComponents()
         drawables.push_back(component);
     }
     drawables.push_back(&chargeComponent.GetSprite());
+
+	while (chipsUI->GetNextComponent(component))
+	{
+		drawables.push_back(component);
+	}
     return drawables;
 }
 
@@ -364,6 +377,10 @@ void Player::RefreshTexture()
 PlayerHealthUI* Player::GetHealthUI() const
 {
     return healthUI;
+}
+
+SelectedChipsUI* Player::GetChipsUI() const {
+	return chipsUI;
 }
 
 int Player::GetStateFromString(string _string)

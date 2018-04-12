@@ -77,6 +77,9 @@
     <Filter Include="Battle\Chips\Cust">
       <UniqueIdentifier>{f9e71ed1-58d0-4f77-937f-5656dd5f63e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Chips\Database">
+      <UniqueIdentifier>{96b71ad6-be68-4e35-bd67-349eeadc6ac8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -141,6 +144,15 @@
     </ClCompile>
     <ClCompile Include="bnChipSelectionCust.cpp">
       <Filter>Battle\Chips\Cust</Filter>
+    </ClCompile>
+    <ClCompile Include="bnChipLibrary.cpp">
+      <Filter>Battle\Chips\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="bnChip.cpp">
+      <Filter>Battle\Chips\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="bnSelectedChipsUI.cpp">
+      <Filter>Battle\Entity\Living\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +251,15 @@
     </ClInclude>
     <ClInclude Include="bnChipSelectionCust.h">
       <Filter>Battle\Chips\Cust</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipLibrary.h">
+      <Filter>Battle\Chips\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChip.h">
+      <Filter>Battle\Chips\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSelectedChipsUI.h">
+      <Filter>Battle\Entity\Living\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

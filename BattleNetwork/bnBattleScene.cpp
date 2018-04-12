@@ -174,6 +174,12 @@ int BattleScene::Run()
 		// Draw cust GUI on top of scene. No shaders affecting.
 		chipCustGUI.Draw();
 
+		// NOTE: OUCH! Dynamic casting per frame like this is costly!! REFACTOR.
+		Player* p = dynamic_cast<Player*>(player);
+		if (p) {
+			p->GetChipsUI()->Update(); // DRAW 
+		}
+
 		// Write contents to screen (always last step)
 		Engine::GetInstance().Display();
 
@@ -217,6 +223,17 @@ int BattleScene::Run()
 			else if(isInChipSelect) { // we're leaving a state
 				// Return to game
 				isInChipSelect = false;
+
+				// Load the chips
+				chipCustGUI.GetNextChips();
+
+				Player* p = dynamic_cast<Player*>(player);
+				if (p) {
+					if (chipCustGUI.GetChipCount() > 0) {
+						p->GetChipsUI()->LoadChips(chipCustGUI.GetChips(), chipCustGUI.GetChipCount());
+					}
+				}
+
 				Engine::GetInstance().RevokeShader();
 			}
 		}

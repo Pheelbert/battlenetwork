@@ -153,6 +153,8 @@
     <ClCompile Include="bnAudioResourceManager.cpp" />
     <ClCompile Include="bnBackgroundUI.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
+    <ClCompile Include="bnChip.cpp" />
+    <ClCompile Include="bnChipLibrary.cpp" />
     <ClCompile Include="bnChipSelectionCust.cpp" />
     <ClCompile Include="bnControllableComponent.cpp" />
     <ClCompile Include="bnEntity.cpp" />
@@ -171,12 +173,15 @@
     <ClCompile Include="bnWave.cpp" />
     <ClCompile Include="bnMettaur.cpp" />
     <ClCompile Include="bnEngine.cpp" />
+    <ClCompile Include="bnSelectedChipsUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAudioResourceManager.h" />
     <ClInclude Include="bnAudioType.h" />
     <ClInclude Include="bnBackgroundUI.h" />
     <ClInclude Include="bnChargeComponent.h" />
+    <ClInclude Include="bnChip.h" />
+    <ClInclude Include="bnChipLibrary.h" />
     <ClInclude Include="bnChipSelectionCust.h" />
     <ClInclude Include="bnControllableComponent.h" />
     <ClInclude Include="bnControllableEvent.h" />
@@ -205,6 +210,7 @@
     <ClInclude Include="bnWave.h" />
     <ClInclude Include="bnMettaur.h" />
     <ClInclude Include="bnEngine.h" />
+    <ClInclude Include="bnSelectedChipsUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

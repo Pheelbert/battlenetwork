@@ -38,6 +38,7 @@ enum TextureType
 	SPELL_PROG_BOMB,
 	//Chip Select 
 	CHIP_SELECT_MENU,
+	CHIP_ICON,
 	//Background/Foreground
 	TEXTURE_TYPE_SIZE
 };

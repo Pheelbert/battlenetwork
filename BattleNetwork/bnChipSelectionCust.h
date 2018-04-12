@@ -3,13 +3,15 @@
 #include <SFML/Graphics.hpp>
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
+#include "bnChipLibrary.h"
 #include "bnEngine.h"
 
 class ChipSelectionCust
 {
 private:
 	sf::Sprite custSprite;
-
+	int chipCount;
+	Chip** selectedChips;
 public:
 	ChipSelectionCust();
 	~ChipSelectionCust();
@@ -17,10 +19,10 @@ public:
 	bool IsOutOfView();
 	bool IsInView();
 	void Move(sf::Vector2f delta);
-	bool AreChipsReady();
+	void GetNextChips();
 	void Draw();
-	// Chips* GetChips();
-	// int GetChipCount();
-	// Chip* GetNextChip();
+	Chip** GetChips();
+	void ClearChips();
+	const int GetChipCount();
 };
 
