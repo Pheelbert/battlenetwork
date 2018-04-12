@@ -24,6 +24,8 @@ public:
     void Update();
 
 private:
+	int lastHP;
+	int currHP;
     Player* player;
     Font* font;
     Text text;

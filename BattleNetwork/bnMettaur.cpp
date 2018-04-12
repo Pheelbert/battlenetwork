@@ -11,7 +11,7 @@
 #define COOLDOWN 1000.0f
 #define ATTACK_COOLDOWN 2222.f
 #define WAIT_COOLDOWN 500.0f
-#define ATTACK_DELAY 450.0f
+#define ATTACK_DELAY 400.0f
 
 #define MOVING_ANIMATION_SPRITES 2
 #define MOVING_ANIMATION_WIDTH 32
@@ -140,7 +140,7 @@ void Mettaur::Update(float _elapsed)
     //Explode animation then set deleted to true once it finishes
     if (health <= 0)
     {
-		if ((int)_elapsed*1000 % 4 == 0) {
+		if ((int)(_elapsed*5) % 2 == 0) {
 			SetShader(&whiteout);
 		}
 		else {
@@ -252,7 +252,7 @@ void Mettaur::Update(float _elapsed)
     if (state == MobState::MOB_ATTACKING)
     {
         attackDelay += _elapsed;
-        if (attackDelay >= ATTACK_DELAY)
+        if (attackDelay > ATTACK_DELAY)
         {
             Attack();
             attackDelay = 0.0f;

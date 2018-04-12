@@ -36,6 +36,8 @@ enum TextureType
 	//SPELL_CHARGED_BULLET_HIT,
 	SPELL_WAVE,
 	SPELL_PROG_BOMB,
+	//Chip Select 
+	CHIP_SELECT_MENU,
 	//Background/Foreground
 	TEXTURE_TYPE_SIZE
 };

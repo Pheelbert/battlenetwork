@@ -17,6 +17,7 @@ using sf::Font;
 #include "bnAudioResourceManager.h"
 #include "bnControllableComponent.h"
 #include "bnEngine.h"
+#include "bnChipSelectionCust.h"
 
 int main()
 {
@@ -29,6 +30,8 @@ int BattleScene::Run()
     TextureResourceManager::GetInstance().LoadAllTextures();
 	AudioResourceManager::GetInstance().LoadAllSources();
 	AudioResourceManager::GetInstance().SetStreamVolume(15); // 15% 
+
+	ChipSelectionCust chipCustGUI;
 
     Field* field(new Field(6, 3));
     //TODO: just testing states here, remove later
@@ -168,11 +171,14 @@ int BattleScene::Run()
 			Engine::GetInstance().Draw(pauseLabel, false);
 		}
 
+		// Draw cust GUI on top of scene. No shaders affecting.
+		chipCustGUI.Draw();
+
 		// Write contents to screen (always last step)
 		Engine::GetInstance().Display();
 
 		// Scene keyboard controls
-		if (ControllableComponent::GetInstance().has(PRESSED_PAUSE)) {
+		if (ControllableComponent::GetInstance().has(PRESSED_PAUSE) && !isInChipSelect) {
 			isPaused = !isPaused;
 
 			if (!isPaused) {
@@ -180,16 +186,16 @@ int BattleScene::Run()
 			}
 		}
 		else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration) {
-			isInChipSelect = !isInChipSelect;
-			isChipSelectReady = false;
+			// TODO: Move this to chip cust logic
 
-			if (isInChipSelect == true) {
-				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
-			}
 			if (isInChipSelect == false) {
-				customProgress = 0;
-				Engine::GetInstance().RevokeShader();
-				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
+				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
+				isInChipSelect = true;
+			} else if (isInChipSelect == true) {
+				if (chipCustGUI.IsInView()) {
+					AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
+					customProgress = 0; // NOTE: Hack. Need one more state boolean
+				}
 			}
 
 			// NOTE: Need a battle scene state manager to handle going to and from one controll scheme to another. 
@@ -198,6 +204,22 @@ int BattleScene::Run()
 		}
 
 		elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+
+		if (isInChipSelect && customProgress > 0.f) {
+			if (!chipCustGUI.IsInView()) {
+				chipCustGUI.Move(sf::Vector2f(150.f / elapsed, 0));
+			}
+		}
+		else {
+			if (!chipCustGUI.IsOutOfView()) {
+				chipCustGUI.Move(sf::Vector2f(-150.f / elapsed, 0));
+			}
+			else if(isInChipSelect) { // we're leaving a state
+				// Return to game
+				isInChipSelect = false;
+				Engine::GetInstance().RevokeShader();
+			}
+		}
 
 		shaderCooldown -= elapsed;
 

@@ -153,6 +153,7 @@
     <ClCompile Include="bnAudioResourceManager.cpp" />
     <ClCompile Include="bnBackgroundUI.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
+    <ClCompile Include="bnChipSelectionCust.cpp" />
     <ClCompile Include="bnControllableComponent.cpp" />
     <ClCompile Include="bnEntity.cpp" />
     <ClCompile Include="bnField.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="bnAudioType.h" />
     <ClInclude Include="bnBackgroundUI.h" />
     <ClInclude Include="bnChargeComponent.h" />
+    <ClInclude Include="bnChipSelectionCust.h" />
     <ClInclude Include="bnControllableComponent.h" />
     <ClInclude Include="bnControllableEvent.h" />
     <ClInclude Include="bnEntity.h" />

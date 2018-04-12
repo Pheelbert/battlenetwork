@@ -71,6 +71,12 @@
     <Filter Include="Battle\Entity\Spell\ProgBomb">
       <UniqueIdentifier>{433914da-e0ef-48b6-9930-a32468a26484}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Chips">
+      <UniqueIdentifier>{6552fc8f-0f57-4735-8abf-96a54c1fec10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Chips\Cust">
+      <UniqueIdentifier>{f9e71ed1-58d0-4f77-937f-5656dd5f63e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -132,6 +138,9 @@
     </ClCompile>
     <ClCompile Include="bnProgBomb.cpp">
       <Filter>Battle\Entity\Spell\ProgBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="bnChipSelectionCust.cpp">
+      <Filter>Battle\Chips\Cust</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="bnProgBomb.h">
       <Filter>Battle\Entity\Spell\ProgBomb</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipSelectionCust.h">
+      <Filter>Battle\Chips\Cust</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

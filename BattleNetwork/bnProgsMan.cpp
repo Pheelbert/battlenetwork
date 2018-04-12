@@ -120,7 +120,13 @@ void ProgsMan::Update(float _elapsed)
 	//Explode animation then set deleted to true once it finishes
 	if (health <= 0)
 	{
-		SetShader(&whiteout);
+		if ((int)_elapsed * 1000 % 2 == 0) {
+			SetShader(&whiteout);
+		}
+		else {
+			SetShader(nullptr);
+		}
+
 		blinker = 0.0f;
 		blinker += 0.01f;
 		if (blinker >= 0.5f)
@@ -256,6 +262,7 @@ void ProgsMan::Update(float _elapsed)
 
 	RefreshTexture();
 	healthUI->Update();
+	SetShader(nullptr);
 }
 
 bool ProgsMan::Move(Direction _direction)
@@ -506,6 +513,7 @@ void ProgsMan::SetHealth(int _health)
 
 int ProgsMan::Hit(int _damage)
 {
+	SetShader(&whiteout);
 	(health - _damage < 0) ? health = 0 : health -= _damage;
 	return health;
 }

@@ -100,6 +100,9 @@ TextureResourceManager::TextureResourceManager(void)
 	  //paths.push_back("resources/spells/spell_charged_bullet_hit.png");
 	paths.push_back("resources/spells/spell_wave.png");
 	paths.push_back("resources/spells/spell_prog_bomb.png");
+
+	// Chip Select 
+	paths.push_back("resources/ui/chip_select.png");
 }
 
 TextureResourceManager::~TextureResourceManager(void)
