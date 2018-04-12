@@ -2,8 +2,8 @@
 using std::to_string;
 
 #include "bnMobHealthUI.h"
-#include "bnMettaur.h"
-#include "bnResourceManager.h"
+#include "bnEntity.h"
+#include "bnTextureResourceManager.h"
 
 #include "bnLogger.h"
 
@@ -13,10 +13,10 @@ MobHealthUI::MobHealthUI(void)
 {
 }
 
-MobHealthUI::MobHealthUI(Mettaur* _mob)
+MobHealthUI::MobHealthUI(Entity* _mob)
     : mob(_mob)
 {
-    font = ResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
+    font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
     setFont(*font);
     setScale(0.8f, 0.8f);
 }
@@ -32,17 +32,17 @@ void MobHealthUI::Update()
     {
         setOrigin(getLocalBounds().width, 0);
         setString(to_string(mob->GetHealth()));
-        if (mob->GetTextureType() == TextureType::MOB_METTAUR_IDLE)
-        {
-            setPosition(mob->getPosition().x + 35.f, mob->getPosition().y + 35.f);
-        }
-        else if (mob->GetTextureType() == TextureType::MOB_METTAUR_ATTACK)
-        {
-            setPosition(mob->getPosition().x + 65.f, mob->getPosition().y + 95.f);
-        }
-        else if (mob->GetTextureType() == TextureType::MOB_MOVE)
-        {
-            setPosition(mob->getPosition().x + 45.f, mob->getPosition().y + 55.f);
-        }
-    }
+
+		int* res = mob->getAnimOffset();
+
+		if (res != nullptr) {
+			//std::cout << "res: { " << res[0] << ", " << res[1] << " } " << std::endl;
+			setPosition(mob->getPosition().x + res[0], mob->getPosition().y + res[1]);
+			delete[] res;
+		}
+		else {
+			//std::cout << "nullptr!" << std::endl;
+			setPosition(mob->getPosition().x, mob->getPosition().y);
+		}
+	}
 }

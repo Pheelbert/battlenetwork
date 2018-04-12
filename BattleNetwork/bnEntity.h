@@ -25,6 +25,7 @@ public:
     virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
     virtual int GetHealth();
     virtual TextureType GetTextureType();
+	virtual int* getAnimOffset();
 
     bool Teammate(Team _team);
 
@@ -37,6 +38,8 @@ public:
     Team GetTeam() const;
     void SetTeam(Team _team);
 
+	void SetHealth(int _health);
+
     bool IsDeleted() const;
 
 protected:
@@ -44,5 +47,6 @@ protected:
     Tile* previous;
     Field* field;
     Team team;
+	int health;
     bool deleted;
 };

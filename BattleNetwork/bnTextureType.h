@@ -1,7 +1,7 @@
 #pragma once
 /** 
  * @warning These have to be in order.
- * @see ResourceManager
+ * @see TextureResourceManager
 */
 enum TextureType
 {
@@ -24,11 +24,21 @@ enum TextureType
 	MOB_METTAUR_IDLE,
 	MOB_METTAUR_HIT,
 	MOB_METTAUR_ATTACK,
+	MOB_PROGSMAN_IDLE,
+	MOB_PROGSMAN_MOVE,
+	MOB_PROGSMAN_SHOOT,
+	MOB_PROGSMAN_HIT,
+	MOB_PROGSMAN_PUNCH,
+	MOB_PROGSMAN_THROW,
 	//Spells
 	SPELL_BULLET_HIT,
 	SPELL_BUSTER_CHARGE,
-	  //SPELL_CHARGED_BULLET_HIT,
+	//SPELL_CHARGED_BULLET_HIT,
 	SPELL_WAVE,
+	SPELL_PROG_BOMB,
+	//Chip Select 
+	CHIP_SELECT_MENU,
+	CHIP_ICON,
 	//Background/Foreground
 	TEXTURE_TYPE_SIZE
 };

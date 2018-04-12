@@ -2,7 +2,7 @@
 #include "bnEntity.h"
 #include "bnSpell.h"
 #include "bnPlayer.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
 #include "bnField.h"
 
 #define START_X 0.0f
@@ -80,11 +80,11 @@ float Tile::GetHeight() const
 
 void Tile::SetState(TileState _state)
 {
-    state = _state;
-
-	if (state == TileState::CRACKED) {
+	if (_state == TileState::CRACKED && state != _state) {
 		cooldown = cooldownLength;
 	}
+
+	state = _state;
 }
 
 void Tile::RefreshTexture()
@@ -116,11 +116,11 @@ void Tile::RefreshTexture()
     {
 		if (team == Team::BLUE)
 		{
-			textureType = ((int)(cooldown * 1) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_BLUE_NORMAL : TextureType::TILE_BLUE_BROKEN;
+			textureType = ((int)(cooldown * 5) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_BLUE_NORMAL : TextureType::TILE_BLUE_BROKEN;
 		}
 		else
 		{
-			textureType = ((int)(cooldown * 1) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_RED_NORMAL : TextureType::TILE_RED_BROKEN;
+			textureType = ((int)(cooldown * 5) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_RED_NORMAL : TextureType::TILE_RED_BROKEN;
 		}
     }
     else if (state == TileState::EMPTY)
@@ -138,7 +138,7 @@ void Tile::RefreshTexture()
     {
         assert(false && "Tile in invalid state");
     }
-    setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
+    setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
 }
 
 bool Tile::IsWalkable() const
@@ -216,7 +216,7 @@ void Tile::Update(float _elapsed)
 		cooldown -= 0.1f;
 	}
 
-	if (cooldown <= 0.0f) {
+	if (cooldown <= 0.0f && state == TileState::BROKEN) {
 		state = TileState::NORMAL;
 	}
 }

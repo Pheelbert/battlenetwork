@@ -52,8 +52,17 @@ void ControllableComponent::update()
             }
             else if (Keyboard::Space == event.key.code)
             {
-                events.push_back(PRESSED_SPACE);
-            }
+                events.push_back(PRESSED_ACTION1); // shoot 
+            } 
+			else if (Keyboard::RControl == event.key.code) {
+				events.push_back(PRESSED_ACTION2); // use chip 
+			}
+			else if (Keyboard::Return == event.key.code) {
+				events.push_back(PRESSED_ACTION3); // chip select
+			}
+			else if (Keyboard::P == event.key.code) {
+				events.push_back(PRESSED_PAUSE);
+			}
         }
 
         if (Event::KeyReleased == event.type)
@@ -76,8 +85,20 @@ void ControllableComponent::update()
             }
             else if (Keyboard::Space == event.key.code)
             {
-                events.push_back(RELEASED_SPACE);
+                events.push_back(RELEASED_ACTION1);
             }
+			else if (Keyboard::RControl == event.key.code)
+			{
+				events.push_back(RELEASED_ACTION2);
+			}
+			else if (Keyboard::Return == event.key.code)
+			{
+				events.push_back(RELEASED_ACTION3);
+			} 
+			else if (Keyboard::P == event.key.code)
+			{
+				events.push_back(RELEASED_PAUSE);
+			}
         }
     }   
 }

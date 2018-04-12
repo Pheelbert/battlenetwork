@@ -27,6 +27,7 @@ public:
     
     MobState GetMobState() const;
     void SetHealth(int _health);
+	int* getAnimOffset();
     int Hit(int _damage);
     float GetHitHeight() const;
 
@@ -57,11 +58,12 @@ private:
 
     ResourceComponent resourceComponent;
 
-    int health;
     float hitHeight;
     Direction direction;
     MobState state;
     TextureType textureType;
     MobHealthUI* healthUI;
     Animator<Sprite, MobState> animator;
+
+	sf::Shader whiteout;
 };

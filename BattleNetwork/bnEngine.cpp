@@ -6,29 +6,94 @@ Engine& Engine::GetInstance()
     return instance;
 }
 
-void Engine::Initialise()
+void Engine::Initialize()
 {
     window = new RenderWindow(VideoMode(480, 320), "Battle Network : Prototype");
     window->setFramerateLimit(60);
 }
 
-void Engine::Draw(Drawable& _drawable)
+void Engine::Draw(Drawable& _drawable, bool applyShaders)
 {
-    window->draw(_drawable);
+	if (applyShaders) {
+		window->draw(_drawable, state);
+	}
+	else {
+		window->draw(_drawable);
+	}
 }
 
-void Engine::Draw(Drawable* _drawable)
+void Engine::Draw(Drawable* _drawable, bool applyShaders)
 {
-    if (_drawable) window->draw(*_drawable);
+	if (!_drawable) {
+		return;
+	}
+
+	if (applyShaders) {
+		window->draw(*_drawable, state);
+	}
+	else {
+		window->draw(*_drawable);
+	}
 }
 
-void Engine::Draw(vector<Drawable*> _drawable)
+void Engine::Draw(vector<LayeredDrawable*> _drawable)
 {
     auto it = _drawable.begin();
     for(it; it != _drawable.end(); ++it)
     {
-        Draw(*it);
+		/*
+		NOTE: Could add support for multiple shaders:
+		sf::RenderTexture image1;
+		sf::RenderTexture image2;
+
+		sf::RenderTexture* front = &image1;
+		sf::RenderTexture* back = &image2;
+
+		// draw the initial scene into "back"
+		...
+
+		for (std::vector<sf::Shader>::iterator it = shaders.begin(); it != shaders.end(); ++it)
+		{
+		// draw "back" into "front"
+		front->clear();
+		front->draw(sf::Sprite(back->getTexture()), &*it);
+		front->display();
+
+		// swap front and back buffers
+		std::swap(back, front)
+		}
+
+		*/
+
+		// For now, support at most one shader.
+		// Grab the shader and image, apply to a new render target, pass this render target into Draw()
+
+		LayeredDrawable* context = *it;
+		sf::Shader* shader = context->GetShader();
+
+		if (shader != nullptr) {
+			sf::RenderTexture* postFX = new sf::RenderTexture();
+			const sf::Texture* original = context->getTexture();
+			postFX->create(original->getSize().x,  original->getSize().y);
+			postFX->draw(sf::Sprite(*context->getTexture()), shader); // bake
+			(*it)->setTexture(postFX->getTexture());
+			Draw(*it, true);
+			(*it)->setTexture(*original);
+			delete postFX;
+		}
+		else {
+			Draw(context);
+		}
     }
+}
+
+void Engine::Draw(vector<Drawable*> _drawable, bool applyShaders)
+{
+	auto it = _drawable.begin();
+	for (it; it != _drawable.end(); ++it)
+	{
+		Draw(*it, applyShaders);
+	}
 }
 
 void Engine::Display()
@@ -106,16 +171,30 @@ void Engine::DrawLayers()
 {
     for (int i = layers.min; i <= layers.max; i++)
     {
-        Draw(layers.At(i));
+		Draw(layers.At(i));
     }
 }
 
 void Engine::DrawOverlay()
 {
-    Draw(overlay);
+    Draw(overlay, false);
 }
 
 void Engine::DrawUnderlay()
 {
     Draw(underlay);
+}
+
+void Engine::SetShader(sf::Shader* shader) {
+
+	if (shader == nullptr) {
+		state = sf::RenderStates::Default;
+	}
+	else {
+		state.shader = shader;
+	}
+}
+
+void Engine::RevokeShader() {
+	SetShader(nullptr);
 }

@@ -73,6 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -142,34 +143,46 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)\extern\libs;C:\Program Files (x86)\Windows Kits\10\Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;Winmm.lib;OpenGL32.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;sfml-audio-s.lib;sfml-main.lib;thor-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew.lib;jpeg.lib;openal32.lib;sndfile.lib;freetype.lib;Winmm.lib;OpenGL32.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;sfml-audio.lib;sfml-main.lib;thor-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bnAudioResourceManager.cpp" />
     <ClCompile Include="bnBackgroundUI.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
+    <ClCompile Include="bnChip.cpp" />
+    <ClCompile Include="bnChipLibrary.cpp" />
+    <ClCompile Include="bnChipSelectionCust.cpp" />
     <ClCompile Include="bnControllableComponent.cpp" />
     <ClCompile Include="bnEntity.cpp" />
     <ClCompile Include="bnField.cpp" />
     <ClCompile Include="bnBattleScene.cpp" />
     <ClCompile Include="bnMobHealthUI.cpp" />
+    <ClCompile Include="bnProgBomb.cpp" />
+    <ClCompile Include="bnProgsMan.cpp" />
     <ClCompile Include="bnResourceComponent.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
     <ClCompile Include="bnSpell.cpp" />
-    <ClCompile Include="bnResourceManager.cpp" />
+    <ClCompile Include="bnTextureResourceManager.cpp" />
     <ClCompile Include="bnPlayerHealthUI.cpp" />
     <ClCompile Include="bnBuster.cpp" />
     <ClCompile Include="bnWave.cpp" />
     <ClCompile Include="bnMettaur.cpp" />
     <ClCompile Include="bnEngine.cpp" />
+    <ClCompile Include="bnSelectedChipsUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bnAudioResourceManager.h" />
+    <ClInclude Include="bnAudioType.h" />
     <ClInclude Include="bnBackgroundUI.h" />
     <ClInclude Include="bnChargeComponent.h" />
+    <ClInclude Include="bnChip.h" />
+    <ClInclude Include="bnChipLibrary.h" />
+    <ClInclude Include="bnChipSelectionCust.h" />
     <ClInclude Include="bnControllableComponent.h" />
     <ClInclude Include="bnControllableEvent.h" />
     <ClInclude Include="bnEntity.h" />
@@ -179,6 +192,8 @@
     <ClInclude Include="bnMemory.h" />
     <ClInclude Include="bnMobHealthUI.h" />
     <ClInclude Include="bnMobState.h" />
+    <ClInclude Include="bnProgBomb.h" />
+    <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnResourceComponent.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />
@@ -186,7 +201,7 @@
     <ClInclude Include="bnDirection.h" />
     <ClInclude Include="bnPlayer.h" />
     <ClInclude Include="bnSpell.h" />
-    <ClInclude Include="bnResourceManager.h" />
+    <ClInclude Include="bnTextureResourceManager.h" />
     <ClInclude Include="bnLogger.h" />
     <ClInclude Include="bnTileState.h" />
     <ClInclude Include="bnPlayerState.h" />
@@ -195,6 +210,7 @@
     <ClInclude Include="bnWave.h" />
     <ClInclude Include="bnMettaur.h" />
     <ClInclude Include="bnEngine.h" />
+    <ClInclude Include="bnSelectedChipsUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

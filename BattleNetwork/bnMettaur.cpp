@@ -2,7 +2,7 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnWave.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
 #include "bnEngine.h"
 
 #define RESOURCE_NAME "mettaur"
@@ -11,7 +11,7 @@
 #define COOLDOWN 1000.0f
 #define ATTACK_COOLDOWN 2222.f
 #define WAIT_COOLDOWN 500.0f
-#define ATTACK_DELAY 500.0f
+#define ATTACK_DELAY 400.0f
 
 #define MOVING_ANIMATION_SPRITES 2
 #define MOVING_ANIMATION_WIDTH 32
@@ -56,12 +56,12 @@ Mettaur::Mettaur(void)
     blinker = 0.0f;
     x1 = 0.0f, y1 = 0.0f, x2 = 0.0f, y2 = 0.0f;
 
-    setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
+    setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
     setScale(2.f, 2.f);
 
-    explosion.setTexture(*ResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
+    explosion.setTexture(*TextureResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
     explosion.setScale(0.0f, 0.0f);
-    explosion2.setTexture(*ResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
+    explosion2.setTexture(*TextureResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
     explosion2.setScale(0.0f, 0.0f);
     int i = 0;
     int y = 0;
@@ -76,9 +76,18 @@ Mettaur::Mettaur(void)
         i++;
     }
 
+	this->SetHealth(health);
+
     //Components setup and load
     resourceComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
     resourceComponent.load();
+
+	if (!whiteout.loadFromFile("resources/shaders/white.frag.txt", sf::Shader::Fragment)) {
+		// TODO: log error...
+	}
+	else {
+		whiteout.setParameter("texture", sf::Shader::CurrentTexture);
+	}
 	
 	Mettaur::metIDs.push_back((int)Mettaur::metIDs.size() + 1);
 	metID = (int)Mettaur::metIDs.size();
@@ -101,11 +110,43 @@ Mettaur::~Mettaur(void)
 	}
 }
 
+int* Mettaur::getAnimOffset() {
+	Mettaur* mob = this;
+
+	int* res = new int[2];
+	res[0] = res[1] = 0;
+
+	if (mob->GetTextureType() == TextureType::MOB_METTAUR_IDLE)
+	{
+		res[0] = 35.f;
+		res[1] = 35.f;
+	}
+	else if (mob->GetTextureType() == TextureType::MOB_METTAUR_ATTACK)
+	{
+		res[0] = 65.f;
+		res[1] = 95.f;
+	}
+	else if (mob->GetTextureType() == TextureType::MOB_MOVE)
+	{
+		res[0] = 45.f;
+		res[1] = 55.f;
+	}
+
+	return res;
+}
+
 void Mettaur::Update(float _elapsed)
 {
     //Explode animation then set deleted to true once it finishes
     if (health <= 0)
     {
+		if ((int)(_elapsed*5) % 2 == 0) {
+			SetShader(&whiteout);
+		}
+		else {
+			SetShader(nullptr);
+		}
+
         blinker = 0.0f;
         blinker += 0.01f;
         if (blinker >= 0.5f)
@@ -126,10 +167,10 @@ void Mettaur::Update(float _elapsed)
             x2 = tile->getPosition().x + 10.0f;
             y2 = tile->getPosition().y - 50.0f;
         }
-        explosionProgress += 0.015f;
+        explosionProgress += 0.020f;
         if (explosionProgress >= 0.3f)
         {
-            explosionProgress2 += 0.015f;
+            explosionProgress2 += 0.020f;
             if (explosionProgress >= 0.9f)
             {
                 setScale(0.0f, 0.0f);
@@ -211,7 +252,7 @@ void Mettaur::Update(float _elapsed)
     if (state == MobState::MOB_ATTACKING)
     {
         attackDelay += _elapsed;
-        if (attackDelay >= ATTACK_DELAY)
+        if (attackDelay > ATTACK_DELAY)
         {
             Attack();
             attackDelay = 0.0f;
@@ -226,6 +267,7 @@ void Mettaur::Update(float _elapsed)
 
     RefreshTexture();
     healthUI->Update();
+	SetShader(nullptr);
 }
 
 bool Mettaur::Move(Direction _direction)
@@ -338,7 +380,7 @@ void Mettaur::RefreshTexture()
         {
             textureType = TextureType::MOB_METTAUR_ATTACK;
         }
-        setTexture(*ResourceManager::GetInstance().GetTexture(textureType));
+        setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
         
         if (textureType == TextureType::MOB_METTAUR_IDLE)
         {
@@ -419,6 +461,7 @@ void Mettaur::SetHealth(int _health)
 
 int Mettaur::Hit(int _damage)
 {
+	SetShader(&whiteout);
     (health - _damage < 0) ? health = 0 : health -= _damage;
     return health;
 }

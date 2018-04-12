@@ -5,8 +5,10 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnPlayer.h"
+#include "bnProgsMan.h"
 #include "bnMettaur.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
+#include "bnAudioResourceManager.h"
 
 #define COOLDOWN 40.0f
 #define DAMAGE_COOLDOWN 50.0f
@@ -32,12 +34,12 @@ Buster::Buster(Field* _field, Team _team, bool _charged)
     {
         damage = 10;
         //TODO: make new sprite animation for charged bullet
-        texture = ResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
+        texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
     }
     else
     {
         damage = 1;
-        texture = ResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
+        texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
     }
     setScale(2.f, 2.f);
     for (int x = 0; x < BULLET_ANIMATION_SPRITES; x++)
@@ -68,12 +70,9 @@ void Buster::Update(float _elapsed)
         return;
     }
 
-    damageCooldown += _elapsed;
-    if (damageCooldown >= DAMAGE_COOLDOWN)
-    {
-        tile->AffectEntities(this);
-        damageCooldown = 0;
-    }
+	// NOTE: This probably had a cool down because the original dev wanted it to do damage at the end of the buster frame
+	// Doing this made direct shots miss. Spawning the bullet should happen at the end frame in the player class. 
+    tile->AffectEntities(this);
 
     cooldown += _elapsed;
     if (cooldown >= COOLDOWN)
@@ -118,7 +117,7 @@ bool Buster::Move(Direction _direction)
     }
     else if (_direction == Direction::RIGHT)
     {
-        if (tile->GetX() + 1 <= (int)field->GetWidth())
+        if (tile->GetX() < (int)field->GetWidth())
         {
             next = field->GetAt(tile->GetX() + 1, tile->GetY());
             SetTile(next);
@@ -135,22 +134,26 @@ bool Buster::Move(Direction _direction)
 
 void Buster::Attack(Entity* _entity)
 {
-    Player* isPlayer = dynamic_cast<Player*>(_entity);
-    if (isPlayer)
-    {
-        isPlayer->Hit(damage);
-        hitHeight = isPlayer->getLocalBounds().height * isPlayer->getScale().y - 20.0f + random/2;
-        hit = true;
-        return;
-    }
     Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
     if (isMob)
     {
         isMob->Hit(damage);
         hitHeight = isMob->GetHitHeight();
         hit = true;
-        return;
-    }
+	}
+	else {
+		ProgsMan* isProgs = dynamic_cast<ProgsMan*>(_entity);
+		if (isProgs)
+		{
+			isProgs->Hit(damage);
+			hitHeight = isProgs->GetHitHeight();
+			hit = true;
+		}
+	}
+
+	if (hit) {
+		AudioResourceManager::GetInstance().Play(AudioType::HURT);
+	}
 }
 
 vector<Drawable*> Buster::GetMiscComponents()

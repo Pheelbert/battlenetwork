@@ -41,8 +41,8 @@ void Entity::addAnimation(int _state, FrameAnimation _animation, float _duration
 
 int Entity::GetHealth()
 {
-    assert(false && "GetHealth shouldn't be called directly from Entity");
-    return 0;
+    // assert(false && "GetHealth shouldn't be called directly from Entity");
+    return health;
 }
 
 TextureType Entity::GetTextureType()
@@ -83,6 +83,15 @@ Team Entity::GetTeam() const
 void Entity::SetTeam(Team _team)
 { 
     team = _team; 
+}
+
+int* Entity::getAnimOffset() {
+	return nullptr;
+}
+
+void Entity::SetHealth(const int _health)
+{
+	health = _health;
 }
 
 bool Entity::IsDeleted() const

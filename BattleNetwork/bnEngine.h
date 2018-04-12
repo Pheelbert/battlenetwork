@@ -13,10 +13,11 @@ class Engine
 {
 public:
     static Engine& GetInstance();
-    void Initialise();
-    void Draw(Drawable& _drawable);
-    void Draw(Drawable* _drawable);
-    void Draw(vector<Drawable*> _drawable);
+    void Initialize();
+    void Draw(Drawable& _drawable, bool applyShaders=true);
+    void Draw(Drawable* _drawable, bool applyShaders=true);
+	void Draw(vector<Drawable*> _drawable, bool applyShaders=true);
+    void Draw(vector<LayeredDrawable*> _drawable);
     void Display();
     bool Running();
     void Clear();
@@ -30,6 +31,8 @@ public:
     void DrawOverlay();
     void DrawUnderlay();
 
+	void SetShader(sf::Shader* _shader);
+	void RevokeShader();
 private:
     Engine(void);
     ~Engine(void);
@@ -38,4 +41,5 @@ private:
     Underlay underlay;
     Layers layers;
     Overlay overlay;
+	sf::RenderStates state;
 };

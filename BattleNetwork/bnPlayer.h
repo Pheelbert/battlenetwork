@@ -11,6 +11,7 @@ using sf::IntRect;
 #include "bnChargeComponent.h"
 #include "bnResourceComponent.h"
 #include "bnControllableComponent.h"
+#include "bnSelectedChipsUI.h"
 
 class Player : public Entity
 {
@@ -30,6 +31,8 @@ public:
 
     PlayerHealthUI* GetHealthUI() const;
 
+	SelectedChipsUI * GetChipsUI() const;
+
     virtual int GetStateFromString(string _string);
     virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
 
@@ -46,12 +49,13 @@ private:
     TextureType textureType;
     PlayerState state;
     PlayerHealthUI* healthUI;
+	SelectedChipsUI* chipsUI;
     Animator<Sprite, PlayerState> animator;
 
     //-Animation-
     float animationProgress;
     
-    ControllableComponent controllableComponent;
+    ControllableComponent* controllableComponent;
     ChargeComponent chargeComponent;
     ResourceComponent resourceComponent;
 };

@@ -12,17 +12,20 @@ class LayeredDrawable : public Sprite
 private:
     int layer;
     int depth;
+	sf::Shader* shader;
 
 public:
     LayeredDrawable(void)
         : layer(0),
-          depth(0)
+          depth(0),
+		  shader(nullptr)
     {
     }
 
     LayeredDrawable(int _layer)
         : layer(_layer),
-          depth(0)
+          depth(0),
+		  shader(nullptr)
     {
     }
 
@@ -30,6 +33,18 @@ public:
     {
         layer = _layer;
     }
+
+	void SetShader(sf::Shader* _shader) {
+		shader = _shader;
+	}
+
+	sf::Shader* GetShader() {
+		return shader;
+	}
+
+	void RevokeShader() {
+		shader = nullptr;
+	}
 
     int GetLayer() const
     {
@@ -67,9 +82,9 @@ public:
         push_back(_layeredDrawable);
     }
 
-    vector<Drawable*> At(int _layer)
+    vector<LayeredDrawable*> At(int _layer)
     {
-        vector<Drawable*> layer = vector<Drawable*>();
+        vector<LayeredDrawable*> layer = vector<LayeredDrawable*>();
         auto it = begin();
         for(it; it != end(); ++it)
         {

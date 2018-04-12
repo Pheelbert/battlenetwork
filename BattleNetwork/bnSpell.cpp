@@ -5,7 +5,7 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnPlayer.h"
-#include "bnResourceManager.h"
+#include "bnTextureResourceManager.h"
 
 #define COOLDOWN 40.0f
 #define DAMAGE_COOLDOWN 50.0f
