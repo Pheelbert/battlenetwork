@@ -49,18 +49,18 @@ void SelectedChipsUI::Update()
 	{
 		// TODO: Move draw out of update. Utilize components.
 		for(int i = curr; i < chipCount; i++) {
-			icon.setPosition(player->getPosition() + sf::Vector2f(10.0f -(i-curr)*3, -(i-curr)*3));
+			icon.setPosition(player->getPosition() + sf::Vector2f(30.0f -(i-curr)*3, -(i-curr)*3));
 			Engine::GetInstance().Draw(icon);
 		}
 
 		if (chipCount > 0 && curr < chipCount) {
 			text = Text(sf::String(selectedChips[curr]->GetShortName()), *font);
 			text.setOrigin(0, 0);
-			text.setPosition(0.0f, (Engine::GetInstance().GetWindow()->getSize().y - text.getLocalBounds().height)-10.0f);
+			text.setPosition(3.0f, 290.0f);
 			dmg = Text(to_string(selectedChips[curr]->GetDamage()), *font);
 			dmg.setOrigin(0, 0);
-			dmg.setPosition(text.getLocalBounds().width + 10.f, (Engine::GetInstance().GetWindow()->getSize().y - text.getLocalBounds().height) - 10.0f);
-			dmg.setColor(sf::Color(225, 165, 0));
+			dmg.setPosition(text.getLocalBounds().width + 13.f,290.f);
+			dmg.setColor(sf::Color(225, 140, 0));
 		}
 		else {
 			text.setString("");
