@@ -44,16 +44,17 @@ int BattleScene::Run()
     //(for now there's only 1 battle and you start straight in it)
     Entity* player(new Player());
     field->AddEntity(player, 2, 2);
-	ProgsMan* boss = new ProgsMan();
+	
+	/*ProgsMan* boss = new ProgsMan();
 	boss->SetTarget(player);
-	field->AddEntity(boss, 5, 2);
+	field->AddEntity(boss, 5, 2);*/
 
-    /*Entity* mob(new Mettaur());
+    Entity* mob(new Mettaur());
     field->AddEntity(mob, 6, 2);
     Entity* mob2(new Mettaur());
     field->AddEntity(mob2, 4, 2);
 	Entity* mob3(new Mettaur());
-	field->AddEntity(mob3, 6, 1);*/
+	field->AddEntity(mob3, 6, 1);
 
     BackgroundUI background = BackgroundUI();
 
@@ -123,7 +124,7 @@ int BattleScene::Run()
 		// TODO: Do not update when paused or in chip select
 		ControllableComponent::GetInstance().update();
 
-		if (!isPaused) {
+		if (!(isPaused || isInChipSelect)) {
 			field->Update(elapsed);
 		}
 
@@ -153,14 +154,19 @@ int BattleScene::Run()
 		// NOTE: Although HUD, it fades dark when on chip cust screen and paused.
 		Engine::GetInstance().Push(&customBarSprite);
 
-		if (isPaused) {
-			Engine::GetInstance().Draw(pauseLabel, false);
+		if (isPaused || isInChipSelect) {
+			// apply shader on draw calls below
 			Engine::GetInstance().SetShader(&pauseShader);
 		}
 
 		Engine::GetInstance().DrawUnderlay();
 		Engine::GetInstance().DrawLayers();
 		Engine::GetInstance().DrawOverlay();
+
+		if (isPaused) {
+			// render on top 
+			Engine::GetInstance().Draw(pauseLabel, false);
+		}
 
 		// Write contents to screen (always last step)
 		Engine::GetInstance().Display();
@@ -172,6 +178,23 @@ int BattleScene::Run()
 			if (!isPaused) {
 				Engine::GetInstance().RevokeShader();
 			}
+		}
+		else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration) {
+			isInChipSelect = !isInChipSelect;
+			isChipSelectReady = false;
+
+			if (isInChipSelect == true) {
+				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
+			}
+			if (isInChipSelect == false) {
+				customProgress = 0;
+				Engine::GetInstance().RevokeShader();
+				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
+			}
+
+			// NOTE: Need a battle scene state manager to handle going to and from one controll scheme to another. 
+			// Plus would make more sense to revoke shaders once complete transition 
+
 		}
 
 		elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
@@ -186,7 +209,7 @@ int BattleScene::Run()
 		shader.setParameter("pixel_threshold", (float)(shaderCooldown/1000.f)*0.5);
 
 		// update the cust if not paused
-		if(!isPaused) customProgress += elapsed;
+		if(!(isPaused || isInChipSelect)) customProgress += elapsed;
 
 		if (customProgress / customDuration >= 1.0) {
 			if (isChipSelectReady == false) {

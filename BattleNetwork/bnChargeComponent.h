@@ -11,9 +11,9 @@ using sf::IntRect;
 class Entity;
 
 #define CHARGE_TEXTURE "resources/spells/spell_buster_charge.png"
-#define CHARGE_COUNTER_MIN 800.0f
+#define CHARGE_COUNTER_MIN 400.0f
 #define BLUE_CHARGE_FRAME_COUNT 8
-#define CHARGE_COUNTER_MAX 1400.0f
+#define CHARGE_COUNTER_MAX 2400.0f
 #define PURPLE_CHARGE_FRAME_COUNT 16
 #define CHARGE_WIDTH 65
 #define CHARGE_HEIGHT 65
