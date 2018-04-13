@@ -104,7 +104,8 @@ TextureResourceManager::TextureResourceManager(void)
 	// Chip Select 
 	paths.push_back("resources/ui/chip_select.png");
 	paths.push_back("resources/ui/chip_icon.png");
-
+	paths.push_back("resources/ui/chip_cursor_small.png");
+	paths.push_back("resources/ui/chip_cursor_big.png");
 }
 
 TextureResourceManager::~TextureResourceManager(void)

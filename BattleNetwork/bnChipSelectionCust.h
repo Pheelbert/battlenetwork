@@ -10,19 +10,37 @@ class ChipSelectionCust
 {
 private:
 	sf::Sprite custSprite;
+	sf::Sprite cursorSmall; // TODO: make these two animate
+	sf::Sprite cursorBig;
+	sf::Sprite icon;
 	int chipCount;
+	int selectCount;
+	int chipCap;
+	int cursorPos;
+	bool areChipsReady;
 	Chip** selectedChips;
+	Chip** queue;
 public:
-	ChipSelectionCust();
+	ChipSelectionCust(int);
 	~ChipSelectionCust();
+
+	// GUI ops
+	void CursorRight();
+	void CursorLeft();
+	void CursorAction(); 
+	void CursorCancel();
 
 	bool IsOutOfView();
 	bool IsInView();
 	void Move(sf::Vector2f delta);
-	void GetNextChips();
 	void Draw();
+
+	// Chip ops
+	void GetNextChips();
 	Chip** GetChips();
 	void ClearChips();
 	const int GetChipCount();
+	void ResetState();
+	bool AreChipsReady();
 };
 

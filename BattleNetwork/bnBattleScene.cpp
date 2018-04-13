@@ -31,7 +31,7 @@ int BattleScene::Run()
 	AudioResourceManager::GetInstance().LoadAllSources();
 	AudioResourceManager::GetInstance().SetStreamVolume(15); // 15% 
 
-	ChipSelectionCust chipCustGUI;
+	ChipSelectionCust chipCustGUI(4);
 
     Field* field(new Field(6, 3));
     //TODO: just testing states here, remove later
@@ -192,22 +192,37 @@ int BattleScene::Run()
 				Engine::GetInstance().RevokeShader();
 			}
 		}
-		else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration) {
+		else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect) {
 			// TODO: Move this to chip cust logic
 
 			if (isInChipSelect == false) {
 				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
 				isInChipSelect = true;
-			} else if (isInChipSelect == true) {
-				if (chipCustGUI.IsInView()) {
-					AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
-					customProgress = 0; // NOTE: Hack. Need one more state boolean
-				}
-			}
 
+				// Load the chips
+				chipCustGUI.GetNextChips();
+			} 
 			// NOTE: Need a battle scene state manager to handle going to and from one controll scheme to another. 
 			// Plus would make more sense to revoke shaders once complete transition 
 
+		}
+		else if (isInChipSelect) {
+			if (ControllableComponent::GetInstance().has(PRESSED_LEFT)) {
+				chipCustGUI.CursorLeft();
+			} else if (ControllableComponent::GetInstance().has(PRESSED_RIGHT)) {
+				chipCustGUI.CursorRight();
+			} else if (ControllableComponent::GetInstance().has(PRESSED_ACTION1)) {
+				chipCustGUI.CursorAction();
+				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
+				
+				if (chipCustGUI.AreChipsReady()) {
+
+					customProgress = 0; // NOTE: Hack. Need one more state boolean
+				}
+			}
+			else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3)) {
+				chipCustGUI.CursorCancel();
+			}
 		}
 
 		elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
@@ -224,9 +239,6 @@ int BattleScene::Run()
 			else if(isInChipSelect) { // we're leaving a state
 				// Return to game
 				isInChipSelect = false;
-
-				// Load the chips
-				chipCustGUI.GetNextChips();
 
 				Player* p = dynamic_cast<Player*>(player);
 				if (p) {

@@ -39,6 +39,8 @@ enum TextureType
 	//Chip Select 
 	CHIP_SELECT_MENU,
 	CHIP_ICON,
+	CHIP_CURSOR_SMALL,
+	CHIP_CURSOR_BIG,
 	//Background/Foreground
 	TEXTURE_TYPE_SIZE
 };
