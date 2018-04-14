@@ -8,18 +8,27 @@
 
 class ChipSelectionCust
 {
+public:
+	struct Bucket {
+		Chip* data;
+		short state;
+	};
+
 private:
 	sf::Sprite custSprite;
 	sf::Sprite cursorSmall; // TODO: make these two animate
 	sf::Sprite cursorBig;
 	sf::Sprite icon;
+	sf::Sprite currChip;
+	sf::Text label;
 	int chipCount;
 	int selectCount;
 	int chipCap;
 	int cursorPos;
 	bool areChipsReady;
 	Chip** selectedChips;
-	Chip** queue;
+	Bucket* queue;
+	Bucket** selectQueue;
 public:
 	ChipSelectionCust(int);
 	~ChipSelectionCust();

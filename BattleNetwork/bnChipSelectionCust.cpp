@@ -1,9 +1,11 @@
 #include "bnChipSelectionCust.h"
+#include "bnTextureResourceManager.h"
 
 ChipSelectionCust::ChipSelectionCust(int cap)
 {
 	chipCap = cap;
-	queue = (Chip**)malloc(sizeof(Chip*)*chipCap);
+	queue = new Bucket[chipCap];
+	selectQueue = new Bucket*[chipCap];
 
 	chipCount = selectCount = cursorPos = 0;
 
@@ -19,7 +21,10 @@ ChipSelectionCust::ChipSelectionCust(int cap)
 
 	cursorBig = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_CURSOR_BIG));
 	cursorBig.setScale(sf::Vector2f(2.f, 2.f));
-	cursorBig.setPosition(sf::Vector2f(2.f*85.f, 2.f*104.f));
+	cursorBig.setPosition(sf::Vector2f(2.f*90.f, 2.f*114.f));
+
+	sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
+	label.setFont(*font);
 
 	ChipLibrary::GetInstance().LoadLibrary();
 }
@@ -30,11 +35,14 @@ ChipSelectionCust::~ChipSelectionCust()
 	ClearChips();
 
 	for (int i = 0; i < chipCount; i++) {
-		delete queue[i];
+		selectQueue[i] = nullptr;
+		delete queue[i].data;
 	}
 
-	if(chipCount > 0)
+	if (chipCount > 0) {
 		delete[] queue;
+		delete[] selectQueue;
+	}
 
 	chipCount = 0;
 }
@@ -63,15 +71,24 @@ void ChipSelectionCust::CursorAction()
 	else {
 		// Does chip exist 
 		if (cursorPos < chipCount) {
-			// Queue this chip
-			selectedChips[selectCount++] = queue[cursorPos];
+			// Queue this chip if not selected
+			if (queue[cursorPos].state) {
+				selectQueue[selectCount++] = &queue[cursorPos];
+				queue[cursorPos].state = 0;
+			}
 		}
 	}
 }
 
 void ChipSelectionCust::CursorCancel()
 {
-	// Unqueue all chips 
+	// Unqueue all chips buckets
+	if (selectCount <= 0) {
+		selectCount = 0;
+		return;
+	}
+
+	selectQueue[selectCount-1]->state = 1;
 	selectCount--;
 }
 
@@ -106,19 +123,19 @@ void ChipSelectionCust::GetNextChips()
 {
 	ClearChips();
 
-	selectedChips = (Chip**)malloc(sizeof(Chip*)*chipCap);
-
-	std::cout << "chipCount: " << chipCount << "\n";
-
 	for (int i = chipCount; i < chipCap; i++) {
-		queue[i] = ChipLibrary::GetInstance().Next();
 
-		if (!queue[i]) {
+		queue[i].data = ChipLibrary::GetInstance().Next();
+		queue[i].state = 1;
+
+		if (!queue[i].data) {
 			// nullptr is end of list
 			return;
 		}
 		chipCount++;
 	}
+
+	areChipsReady = false;
 }
 
 void ChipSelectionCust::Draw()
@@ -126,29 +143,68 @@ void ChipSelectionCust::Draw()
 	Engine::GetInstance().Draw(custSprite, false);
 
 	if (IsInView()) {
-		cursorSmall.setPosition(2.f*(8.0f + (cursorPos*16.0f)), 2.f*104.f); // TODO: Make this relative to cust instead of screen
-
-		if (cursorPos < 5)
-			Engine::GetInstance().Draw(cursorSmall, false);
-		else
-			Engine::GetInstance().Draw(cursorBig,false);
+		cursorSmall.setPosition(2.f*(7.0f + (cursorPos*16.0f)), 2.f*103.f); // TODO: Make this relative to cust instead of screen
 
 		for (int i = 0; i < chipCount; i++) {
 			icon.setPosition(2.f*(9.0f + (i*16.0f)), 2.f*106.f);
-			Engine::GetInstance().Draw(icon,false);
+
+			if(queue[i].state)
+				Engine::GetInstance().Draw(icon,false);
 		}
+
+		for (int i = 0; i < selectCount; i++) {
+			icon.setPosition(2*97.f, 2.f*(25.0f + (i*16.0f)));
+
+			Engine::GetInstance().Draw(icon, false);
+		}
+
+
+		if (cursorPos < 5) {
+			// Draw the selected chip info
+			label.setColor(sf::Color::White);
+
+			if (cursorPos < chipCount) {
+				label.setPosition(2.f*9.f, 29.f);
+				label.setString(queue[cursorPos].data->GetShortName());
+				Engine::GetInstance().Draw(label, false);
+
+				label.setPosition(2.f*45.f, 110.f);
+				label.setString(queue[cursorPos].data->GetDamage());
+				Engine::GetInstance().Draw(label, false);
+
+				label.setPosition(2.f*9.f, 110.f);
+				label.setString(queue[cursorPos].data->GetCode());
+				label.setColor(sf::Color(225, 140, 0));
+				Engine::GetInstance().Draw(label, false);
+			}
+
+			// Draw the small cursor
+			Engine::GetInstance().Draw(cursorSmall, false); \
+		}
+		else
+			Engine::GetInstance().Draw(cursorBig, false);
 	}
 }
 
 Chip** ChipSelectionCust::GetChips()
 {
+	selectedChips = (Chip**)malloc(sizeof(Chip*)*chipCap);
+
+	for (int i = 0; i < selectCount; i++) {
+		selectedChips[i] = (*(selectQueue[i])).data;
+	}
+
 	return selectedChips;
 }
 
 void ChipSelectionCust::ClearChips()
 {
 	for (int i = 0; i < selectCount; i++) {
-		delete selectedChips[i];
+		if (selectedChips[i]) {
+			delete selectedChips[i];
+		}
+
+		selectQueue[i] = nullptr;
 		selectedChips[i] = nullptr;
 	}
 
@@ -158,9 +214,9 @@ void ChipSelectionCust::ClearChips()
 	// Restructure queue
 	for (int i = 0; i < chipCount; i++) {
 		int next = i;
-		while (!queue[next] && next < chipCount) {
-			queue[i] = queue[next + 1];
-			queue[next + 1] = nullptr;
+		while (!queue[next].data && next < chipCount) {
+			queue[i].data = queue[next + 1].data;
+			queue[next + 1].data = nullptr;
 			next++;
 		}
 	}

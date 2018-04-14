@@ -220,7 +220,7 @@ int BattleScene::Run()
 					customProgress = 0; // NOTE: Hack. Need one more state boolean
 				}
 			}
-			else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3)) {
+			else if (ControllableComponent::GetInstance().has(PRESSED_ACTION2)) {
 				chipCustGUI.CursorCancel();
 			}
 		}
