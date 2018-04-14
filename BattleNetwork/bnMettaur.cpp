@@ -3,6 +3,7 @@
 #include "bnField.h"
 #include "bnWave.h"
 #include "bnTextureResourceManager.h"
+#include "bnAudioResourceManager.h"
 #include "bnEngine.h"
 
 #define RESOURCE_NAME "mettaur"
@@ -118,18 +119,18 @@ int* Mettaur::getAnimOffset() {
 
 	if (mob->GetTextureType() == TextureType::MOB_METTAUR_IDLE)
 	{
-		res[0] = 35.f;
-		res[1] = 35.f;
+		res[0] = 35;
+		res[1] = 35;
 	}
 	else if (mob->GetTextureType() == TextureType::MOB_METTAUR_ATTACK)
 	{
-		res[0] = 65.f;
-		res[1] = 95.f;
+		res[0] = 65;
+		res[1] = 95;
 	}
 	else if (mob->GetTextureType() == TextureType::MOB_MOVE)
 	{
-		res[0] = 45.f;
-		res[1] = 55.f;
+		res[0] = 45;
+		res[1] = 55;
 	}
 
 	return res;
@@ -158,6 +159,7 @@ void Mettaur::Update(float _elapsed)
 
         if (explosionProgress == 0.0f)
         {
+			AudioResourceManager::GetInstance().Play(AudioType::EXPLODE);
             x1 = tile->getPosition().x - 10.0f;
             y1 = tile->getPosition().y - 35.f;
             healthUI->setScale(0.0f, 0.0f);

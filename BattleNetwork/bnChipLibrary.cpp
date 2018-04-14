@@ -1,7 +1,6 @@
 #include "bnChipLibrary.h"
 
 
-
 ChipLibrary::ChipLibrary()
 {
 }
@@ -38,11 +37,18 @@ Chip* ChipLibrary::Next()
 	return next;
 }
 
+// Used as the folder in battle
 void ChipLibrary::LoadLibrary()
 {
-	library.insert(library.begin(), Chip((unsigned)0, '*', 20, "TstChp\0", "test chip\0"));
-	library.insert(library.begin(), Chip((unsigned)0, '*', 40, "TstChp2\0", "test chip\0"));
-	library.insert(library.begin(), Chip((unsigned)0, '*', 100, "UltPwer\0", "test chip\0"));
-	library.insert(library.begin(), Chip((unsigned)0, '*', 10, "Barr\0", "test chip\0"));
-	library.insert(library.begin(), Chip((unsigned)0, '*', 30, "Barr2\0", "test chip\0"));
+	// NOTE: The IDs (first param) be indexed by the frames in the chip cards texture!
+	// SEE:  resources/ui/chip_cards.png
+	library.insert(library.begin(), Chip((unsigned)0, 'A', 20, "Cannon\0", "Hits anything directly in front\0"));
+	library.insert(library.begin(), Chip((unsigned)0, 'A', 20, "Cannon\0", "Hits anything directly in front\0"));
+	library.insert(library.begin(), Chip((unsigned)15, 'J', 80, "ShrtSwrd\0", "Attacks 2 steps forward front\0"));
+	library.insert(library.begin(), Chip(ChipType::CRCKPNL, '=', 0, "CrckPnl\0", "Cracks 3 panels wide\0"));
+	library.insert(library.begin(), Chip(ChipType::HP10, 'F', 10, "HP+10\0", "Restores 10 HP\0"));
+	library.insert(library.begin(), Chip(ChipType::HP10, 'E', 10, "HP+10\0", "Restores 10 HP\0"));
+	library.insert(library.begin(), Chip(ChipType::HP10, 'A', 10, "HP+10\0", "Restores 10 HP\0"));
+	library.insert(library.begin(), Chip((unsigned)115, 'I', 0, "Invsble\0", "Hide for an amount of time\0"));
+	library.insert(library.begin(), Chip((unsigned)119, 'B', 10, "Barr\0", "Prevent damage\0"));
 }

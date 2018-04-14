@@ -67,7 +67,7 @@ void Wave::Update(float _elapsed)
     if (cooldown >= COOLDOWN)
     {
         Move(direction);
-		AudioResourceManager::GetInstance().Play(AudioType::WAVE);
+		AudioResourceManager::GetInstance().Play(AudioType::WAVE, 0);
         cooldown = 0;
         progress = 0.0f;
     }

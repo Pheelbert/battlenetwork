@@ -59,6 +59,7 @@ Player::Player(void)
 Player::~Player(void)
 {
 	controllableComponent = nullptr; 
+	delete chipsUI;
     delete healthUI; 
 }
 

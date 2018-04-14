@@ -36,6 +36,28 @@ void Engine::Draw(Drawable* _drawable, bool applyShaders)
 	}
 }
 
+void Engine::Draw(LayeredDrawable* _drawable)
+{
+	// For now, support at most one shader.
+	// Grab the shader and image, apply to a new render target, pass this render target into Draw()
+
+	LayeredDrawable* context = _drawable;
+	sf::Shader* shader = context->GetShader();
+
+	if (shader != nullptr) {
+		sf::RenderTexture* postFX = new sf::RenderTexture();
+		const sf::Texture* original = context->getTexture();
+		postFX->create(original->getSize().x, original->getSize().y);
+		postFX->draw(sf::Sprite(*context->getTexture()), shader); // bake
+		context->setTexture(postFX->getTexture());
+		Draw(context, false);
+		context->setTexture(*original);
+		delete postFX;
+	}
+	else {
+		Draw(context, true);
+	}
+}
 void Engine::Draw(vector<LayeredDrawable*> _drawable)
 {
     auto it = _drawable.begin();
@@ -82,7 +104,7 @@ void Engine::Draw(vector<LayeredDrawable*> _drawable)
 			delete postFX;
 		}
 		else {
-			Draw(context);
+			Draw(context, true);
 		}
     }
 }
@@ -139,7 +161,7 @@ void Engine::Push(LayeredDrawable* _drawable)
     }
 }
 
-void Engine::Lay(Drawable* _drawable)
+void Engine::Lay(LayeredDrawable* _drawable)
 {
     if (_drawable)
     {
@@ -147,7 +169,7 @@ void Engine::Lay(Drawable* _drawable)
     }
 }
 
-void Engine::Lay(vector<Drawable*> _drawable)
+void Engine::Lay(vector<sf::Drawable*> _drawable)
 {
     auto it = _drawable.begin();
     for(it; it != _drawable.end(); ++it)
@@ -159,7 +181,7 @@ void Engine::Lay(vector<Drawable*> _drawable)
     }
 }
 
-void Engine::LayUnder(Drawable* _drawable)
+void Engine::LayUnder(sf::Drawable* _drawable)
 {
     if (_drawable)
     {

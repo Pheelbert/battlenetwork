@@ -93,23 +93,23 @@ int* ProgsMan::getAnimOffset() {
 
 	if (mob->GetTextureType() == TextureType::MOB_PROGSMAN_IDLE)
 	{
-		res[0] = 75.f;
-		res[1] = 115.f;
+		res[0] = 75;
+		res[1] = 115;
 	}
 	else if (mob->GetTextureType() == TextureType::MOB_PROGSMAN_PUNCH)
 	{
-		res[0] = 125.f;
-		res[1] = 125.f;
+		res[0] = 125;
+		res[1] = 125;
 	}
 	else if (mob->GetTextureType() == TextureType::MOB_PROGSMAN_MOVE)
 	{
-		res[0] = 75.f;
-		res[1] = 115.f;
+		res[0] = 75;
+		res[1] = 115;
 	}
 	else if (mob->GetTextureType() == TextureType::MOB_PROGSMAN_THROW)
 	{
-		res[0] = 75.f;
-		res[1] = 115.f;
+		res[0] = 75;
+		res[1] = 115;
 	}
 
 	return res;

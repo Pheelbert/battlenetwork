@@ -123,6 +123,9 @@ void Field::SetAt(int _x, int _y, Team _team)
 
 Tile* Field::GetAt(int _x, int _y) const
 {
+	if (_x <= 0 || _x > 6) return nullptr;
+	if (_y <= 0 || _y > 3) return nullptr; 
+
     return tiles[_y - 1][_x - 1];
 }
 

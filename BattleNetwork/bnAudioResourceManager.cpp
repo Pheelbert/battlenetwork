@@ -124,7 +124,7 @@ void AudioResourceManager::LoadAllSources()
 
 }
 
-int AudioResourceManager::Play(AudioType type)
+int AudioResourceManager::Play(AudioType type, int priority)
 {
 	if (type == AudioType::AUDIO_TYPE_SIZE) {
 		return -1;
@@ -137,7 +137,15 @@ int AudioResourceManager::Play(AudioType type)
 	//                             HIGH    (cancels lower rankings),
 	// Find a free channel 
 	for (int i = 0; i < NUM_OF_CHANNELS; i++) {
-		if (channels[i].getStatus() != sf::SoundSource::Status::Playing) {
+		if (priority == 0) {
+			if (channels[i].getStatus() == sf::SoundSource::Status::Playing) {
+				if (channels[i].getBuffer() == &(const sf::SoundBuffer)sources[type]) {
+					// Lowest priority sounds only play once 
+					return -1;
+				}
+			}
+
+		} else if (channels[i].getStatus() != sf::SoundSource::Status::Playing) {
 			// Check if this is the same type
 			if (channels[i].getBuffer() != &(const sf::SoundBuffer)sources[type]) {
 				channels[i].setBuffer(sources[type]);
@@ -163,6 +171,10 @@ int AudioResourceManager::Stream(std::string path, bool loop)
 	stream.setLoop(loop);
 
 	return 0;
+}
+
+void AudioResourceManager::StopStream() {
+	stream.stop();
 }
 
 void AudioResourceManager::SetStreamVolume(int volume) {
