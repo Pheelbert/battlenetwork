@@ -85,6 +85,7 @@ int BattleScene::Run()
 	bool isPaused = false; 
 	bool isInChipSelect = false;
 	bool isChipSelectReady = false;
+	bool isPlayerDeleted = false;
 	double customProgress = 0; // in mili seconds 
 	double customDuration = 10 * 1000; // 10 seconds
 
@@ -122,6 +123,11 @@ int BattleScene::Run()
 
 	while (Engine::GetInstance().Running())
 	{
+		// check evert frame 
+		if (!isPlayerDeleted) {
+			isPlayerDeleted = player->IsDeleted();
+		}
+
 		clock.restart();
 
 		// TODO: Do not update when paused or in chip select
@@ -168,9 +174,11 @@ int BattleScene::Run()
 
 
 		// NOTE: OUCH! Dynamic casting per frame like this is costly!! REFACTOR.
-		Player* p = dynamic_cast<Player*>(player);
-		if (p) {
-			p->GetChipsUI()->Update(); // DRAW 
+		if (!isPlayerDeleted) {
+			Player* p = dynamic_cast<Player*>(player);
+			if (p) {
+				p->GetChipsUI()->Update(); // DRAW 
+			}
 		}
 
 		if (isPaused) {
@@ -185,16 +193,19 @@ int BattleScene::Run()
 		Engine::GetInstance().Display();
 
 		// Scene keyboard controls
-		if (ControllableComponent::GetInstance().has(PRESSED_PAUSE) && !isInChipSelect) {
+		if (ControllableComponent::GetInstance().has(PRESSED_PAUSE) && !isInChipSelect && !isPlayerDeleted) {
 			isPaused = !isPaused;
 
 			if (!isPaused) {
 				Engine::GetInstance().RevokeShader();
 			}
+			else {
+				AudioResourceManager::GetInstance().Play(AudioType::PAUSE);
+			}
 		}
-		else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect) {
+		else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isPlayerDeleted) {
 			if (isInChipSelect == false) {
-				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
+				AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT);
 				isInChipSelect = true;
 
 				// Clear any chip UI queues. they will contain null data. 
@@ -224,7 +235,10 @@ int BattleScene::Run()
 				if (chipCustGUI.AreChipsReady()) {
 					AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
 					customProgress = 0; // NOTE: Hack. Need one more state boolean
-				} 
+				}
+				else {
+					AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
+				}
 			}
 			else if (ControllableComponent::GetInstance().has(PRESSED_ACTION2)) {
 				chipCustGUI.CursorCancel();
@@ -264,6 +278,21 @@ int BattleScene::Run()
 
 		// convert to millis and slow it down by 0.5
 		shader.setParameter("pixel_threshold", (float)(shaderCooldown/1000.f)*0.5f);
+
+		if (isPlayerDeleted) {
+			static bool doOnce = false;
+
+			if (!doOnce) {
+				AudioResourceManager::GetInstance().StopStream();
+				AudioResourceManager::GetInstance().Play(AudioType::DELETED);
+				shaderCooldown = 1000;
+				Engine::GetInstance().SetShader(&pauseShader);
+				doOnce = true;
+			}
+
+			pauseShader.setParameter("opacity", 1.f - (float)(shaderCooldown / 1000.f)*0.5f);
+
+		}
 
 		// update the cust if not paused
 		if(!(isPaused || isInChipSelect)) customProgress += elapsed;

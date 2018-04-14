@@ -99,7 +99,7 @@ void Engine::Draw(vector<LayeredDrawable*> _drawable)
 			postFX->create(original->getSize().x,  original->getSize().y);
 			postFX->draw(sf::Sprite(*context->getTexture()), shader); // bake
 			(*it)->setTexture(postFX->getTexture());
-			Draw(*it, false);
+			Draw(*it, true);
 			(*it)->setTexture(*original);
 			delete postFX;
 		}

@@ -2,6 +2,8 @@
 using std::to_string;
 
 #include "bnPlayer.h"
+#include "bnField.h"
+#include "bnTile.h"
 #include "bnSelectedChipsUI.h"
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
@@ -87,6 +89,17 @@ void SelectedChipsUI::UseNextChip()
 	if (selectedChips[curr]->GetID() == ChipType::HP10) {
 		player->SetHealth(player->GetHealth() + 10);
 		AudioResourceManager::GetInstance().Play(AudioType::RECOVER);
+	}
+	else if (selectedChips[curr]->GetID() == ChipType::CRCKPNL) {
+		Tile* top = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 1);
+		Tile* mid = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 2);
+		Tile* low = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 3);
+
+		if (top) { top->SetState(TileState::CRACKED); }
+		if (mid) { mid->SetState(TileState::CRACKED); }
+		if (low) { low->SetState(TileState::CRACKED); }
+
+		AudioResourceManager::GetInstance().Play(AudioType::PANEL_CRACK);
 	}
 
     curr++;

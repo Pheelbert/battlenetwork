@@ -1,6 +1,7 @@
 # Features
-In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. Note that you cannot select chips yourself
-at this time. They are automatically selected for you (up to 3 at a time). Return to battle and you can use the chips by pressing Right-Control. At this times chips do nothing in battle. They dissapear after use.
+In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
+The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
+At this time only two chips are implemented: HP+10 and CrckPnl.
 Mega can also be deleted. The demo now has sound.
 
 # Controls
@@ -13,20 +14,13 @@ R CTRL -> Use a chip
 ```
 
 # Author TheMaverickProgrammer
-## Update 4/12/2018
+## Update 4/14/2018
 Chip menu can now select and deselect chips in order from the menu using the SPACE bar to select and R CTRL to deselect.
 Chip cards are displayed in the menu and a greyscale shader is applied when the chip cannot be selected. 
+Added two working chips
 Added code compatibility to the chip selection and current solution was buggy. Commented it out for later review.
-One chip works in battle: "HP+10" restores health points. 
 Updated the cust bar shader to begin and end in the designated areas. Need to find a way to do this programmatically.
 Current issue: too many greyscale shaders applied to chip icons is slowing down game. Need to think about using batch render calls for items with the same shader.
-
-## Update 4/12/2018
-Wrote chip library, chip cust state, and chip component system for entities.
-As of now, the chip cust inits the library and feeds chips into the selected chip queue. 
-After the cust state is over and battle begins, the chip UI component attached to the player is loaded with the selected chip data.
-Player can then uses these chips in order by pressing the action 2 button "Right control".
-All memory is deleted and safely accounted for.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -46,6 +40,7 @@ New:
 * Broken tiles cooldown, flicker, and then restore
 * Created audio resource manager with streaming and buffering. Has support for limited channels for an authentic retro experience.
 * Provided all audio for the game
+* Added Audio priorities 
 * Added many new sprites
 * Additional keyboard events for more buttons
 * Chip library system
@@ -59,6 +54,7 @@ New:
 * Boss AI ProgsMan (work in progress)
 * Throwable Spells
 * HP+10 chip works in-battle
+* CrckPnl chip works in-battle
 
 Changes:
 

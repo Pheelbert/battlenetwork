@@ -145,8 +145,7 @@ int AudioResourceManager::Play(AudioType type, int priority)
 				}
 			}
 
-		}
-		if (channels[i].getStatus() != sf::SoundSource::Status::Playing) {
+		} else if (channels[i].getStatus() != sf::SoundSource::Status::Playing) {
 			// Check if this is the same type
 			if (channels[i].getBuffer() != &(const sf::SoundBuffer)sources[type]) {
 				channels[i].setBuffer(sources[type]);
@@ -172,6 +171,10 @@ int AudioResourceManager::Stream(std::string path, bool loop)
 	stream.setLoop(loop);
 
 	return 0;
+}
+
+void AudioResourceManager::StopStream() {
+	stream.stop();
 }
 
 void AudioResourceManager::SetStreamVolume(int volume) {

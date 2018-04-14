@@ -45,7 +45,7 @@ void ChipLibrary::LoadLibrary()
 	library.insert(library.begin(), Chip((unsigned)0, 'A', 20, "Cannon\0", "Hits anything directly in front\0"));
 	library.insert(library.begin(), Chip((unsigned)0, 'A', 20, "Cannon\0", "Hits anything directly in front\0"));
 	library.insert(library.begin(), Chip((unsigned)15, 'J', 80, "ShrtSwrd\0", "Attacks 2 steps forward front\0"));
-	library.insert(library.begin(), Chip((unsigned)70, '=', 0, "CrckPnl\0", "Cracks 3 panels wide\0"));
+	library.insert(library.begin(), Chip(ChipType::CRCKPNL, '=', 0, "CrckPnl\0", "Cracks 3 panels wide\0"));
 	library.insert(library.begin(), Chip(ChipType::HP10, 'F', 10, "HP+10\0", "Restores 10 HP\0"));
 	library.insert(library.begin(), Chip(ChipType::HP10, 'E', 10, "HP+10\0", "Restores 10 HP\0"));
 	library.insert(library.begin(), Chip(ChipType::HP10, 'A', 10, "HP+10\0", "Restores 10 HP\0"));

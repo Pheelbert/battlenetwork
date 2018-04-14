@@ -3,6 +3,7 @@
 #include "bnField.h"
 #include "bnWave.h"
 #include "bnTextureResourceManager.h"
+#include "bnAudioResourceManager.h"
 #include "bnEngine.h"
 
 #define RESOURCE_NAME "mettaur"
@@ -158,6 +159,7 @@ void Mettaur::Update(float _elapsed)
 
         if (explosionProgress == 0.0f)
         {
+			AudioResourceManager::GetInstance().Play(AudioType::EXPLODE);
             x1 = tile->getPosition().x - 10.0f;
             y1 = tile->getPosition().y - 35.f;
             healthUI->setScale(0.0f, 0.0f);
