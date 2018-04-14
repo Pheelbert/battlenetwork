@@ -183,6 +183,7 @@
     <ClInclude Include="bnChip.h" />
     <ClInclude Include="bnChipLibrary.h" />
     <ClInclude Include="bnChipSelectionCust.h" />
+    <ClInclude Include="bnChipType.h" />
     <ClInclude Include="bnControllableComponent.h" />
     <ClInclude Include="bnControllableEvent.h" />
     <ClInclude Include="bnEntity.h" />

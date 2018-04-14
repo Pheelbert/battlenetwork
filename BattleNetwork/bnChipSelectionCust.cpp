@@ -13,7 +13,7 @@ ChipSelectionCust::ChipSelectionCust(int cap)
 	custSprite.setScale(2.f, 2.f);
 	custSprite.setPosition(-custSprite.getTextureRect().width*2.f, 0);
 
-	icon = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICON));
+	icon.setTexture(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICON));
 	icon.setScale(sf::Vector2f(2.f, 2.f));
 
 	cursorSmall = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_CURSOR_SMALL));
@@ -21,7 +21,16 @@ ChipSelectionCust::ChipSelectionCust(int cap)
 
 	cursorBig = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_CURSOR_BIG));
 	cursorBig.setScale(sf::Vector2f(2.f, 2.f));
-	cursorBig.setPosition(sf::Vector2f(2.f*90.f, 2.f*114.f));
+	cursorBig.setPosition(sf::Vector2f(2.f*92.f, 2.f*111.f));
+
+	sf::Texture* card = TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_CARDS);
+	chipCard.setTexture(*card);
+	chipCard.setScale(2.f, 2.f);
+	chipCard.setPosition(2.f*16.f, 47.f);
+
+	if (!greyscale.loadFromFile("resources/shaders/greyscale.frag.txt", sf::Shader::Fragment)) {
+		// TODO: log error...
+	}
 
 	sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
 	label.setFont(*font);
@@ -66,7 +75,6 @@ void ChipSelectionCust::CursorAction()
 	if (cursorPos == 5) {
 		// End chip select
 		areChipsReady = true;
-		chipCount -= selectCount;
 	}
 	else {
 		// Does chip exist 
@@ -75,6 +83,17 @@ void ChipSelectionCust::CursorAction()
 			if (queue[cursorPos].state) {
 				selectQueue[selectCount++] = &queue[cursorPos];
 				queue[cursorPos].state = 0;
+
+				// Check chip code. If other chips are not compatible, set the bucket state flag to 0
+				/*char code = queue[cursorPos].data->GetCode();
+
+				for (int i = 0; i < chipCount; i++) {
+					if (i == cursorPos) continue;
+					char otherCode = queue[i].data->GetCode();
+
+					if (code == '*' || otherCode == code-1 || otherCode == code+1) queue[i].state = 1;
+					else queue[i].state = 0;
+				}*/
 			}
 		}
 	}
@@ -89,6 +108,7 @@ void ChipSelectionCust::CursorCancel()
 	}
 
 	selectQueue[selectCount-1]->state = 1;
+
 	selectCount--;
 }
 
@@ -134,8 +154,6 @@ void ChipSelectionCust::GetNextChips()
 		}
 		chipCount++;
 	}
-
-	areChipsReady = false;
 }
 
 void ChipSelectionCust::Draw()
@@ -148,9 +166,19 @@ void ChipSelectionCust::Draw()
 		for (int i = 0; i < chipCount; i++) {
 			icon.setPosition(2.f*(9.0f + (i*16.0f)), 2.f*106.f);
 
-			if(queue[i].state)
-				Engine::GetInstance().Draw(icon,false);
+			icon.SetShader(nullptr);
+
+			if (!queue[i].state) {
+				icon.SetShader(&greyscale);
+				Engine::GetInstance().Draw(&icon);
+			}
+			else {
+				Engine::GetInstance().Draw(icon, false);
+			}
 		}
+
+
+		icon.SetShader(nullptr);
 
 		for (int i = 0; i < selectCount; i++) {
 			icon.setPosition(2*97.f, 2.f*(25.0f + (i*16.0f)));
@@ -164,22 +192,39 @@ void ChipSelectionCust::Draw()
 			label.setColor(sf::Color::White);
 
 			if (cursorPos < chipCount) {
-				label.setPosition(2.f*9.f, 29.f);
+				// Draw the selected chip card
+				sf::IntRect cardSubFrame = TextureResourceManager::GetInstance().GetTextureRectFromChipID(queue[cursorPos].data->GetID());
+				chipCard.setTextureRect(cardSubFrame);
+
+				chipCard.SetShader(nullptr);
+
+				if (!queue[cursorPos].state) {
+					chipCard.SetShader(&greyscale);
+					Engine::GetInstance().Draw((LayeredDrawable*)&chipCard);
+				}
+				else {
+					Engine::GetInstance().Draw(chipCard, false);
+				}
+
+				label.setPosition(2.f*16.f, 16.f);
 				label.setString(queue[cursorPos].data->GetShortName());
 				Engine::GetInstance().Draw(label, false);
 
-				label.setPosition(2.f*45.f, 110.f);
-				label.setString(queue[cursorPos].data->GetDamage());
+				// the order here is very important:
+				label.setString(std::to_string(queue[cursorPos].data->GetDamage()));
+				label.setOrigin(label.getLocalBounds().width*2.f, 0);
+				label.setPosition(2.f*(label.getLocalBounds().width + 60.f), 143.f);
 				Engine::GetInstance().Draw(label, false);
 
-				label.setPosition(2.f*9.f, 110.f);
-				label.setString(queue[cursorPos].data->GetCode());
-				label.setColor(sf::Color(225, 140, 0));
+				label.setPosition(2.f*16.f, 143.f);
+				label.setOrigin(0, 0);
+				label.setString(std::string()+queue[cursorPos].data->GetCode());
+				label.setColor(sf::Color(225, 180, 0));
 				Engine::GetInstance().Draw(label, false);
 			}
 
 			// Draw the small cursor
-			Engine::GetInstance().Draw(cursorSmall, false); \
+			Engine::GetInstance().Draw(cursorSmall, false);
 		}
 		else
 			Engine::GetInstance().Draw(cursorBig, false);
@@ -188,7 +233,7 @@ void ChipSelectionCust::Draw()
 
 Chip** ChipSelectionCust::GetChips()
 {
-	selectedChips = (Chip**)malloc(sizeof(Chip*)*chipCap);
+	selectedChips = (Chip**)malloc(sizeof(Chip*)*selectCount);
 
 	for (int i = 0; i < selectCount; i++) {
 		selectedChips[i] = (*(selectQueue[i])).data;
@@ -204,7 +249,7 @@ void ChipSelectionCust::ClearChips()
 			delete selectedChips[i];
 		}
 
-		selectQueue[i] = nullptr;
+		(*(selectQueue[i])).data = nullptr;
 		selectedChips[i] = nullptr;
 	}
 
@@ -214,8 +259,9 @@ void ChipSelectionCust::ClearChips()
 	// Restructure queue
 	for (int i = 0; i < chipCount; i++) {
 		int next = i;
-		while (!queue[next].data && next < chipCount) {
+		while (!queue[i].data && next + 1 < chipCount) {
 			queue[i].data = queue[next + 1].data;
+			queue[i].state = 1;
 			queue[next + 1].data = nullptr;
 			next++;
 		}
@@ -232,6 +278,7 @@ const int ChipSelectionCust::GetChipCount()
 
 void ChipSelectionCust::ResetState()
 {
+	cursorPos = 0;
 	areChipsReady = false;
 }
 

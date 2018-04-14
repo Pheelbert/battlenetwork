@@ -29,7 +29,7 @@ int BattleScene::Run()
     Engine::GetInstance().Initialize();
     TextureResourceManager::GetInstance().LoadAllTextures();
 	AudioResourceManager::GetInstance().LoadAllSources();
-	AudioResourceManager::GetInstance().SetStreamVolume(15); // 15% 
+	AudioResourceManager::GetInstance().SetStreamVolume(10); // 10% 
 
 	ChipSelectionCust chipCustGUI(4);
 
@@ -97,7 +97,7 @@ int BattleScene::Run()
 	}
 	else {
 		shader.setParameter("texture", sf::Shader::CurrentTexture);
-		shader.setParameter("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5); // start at full
+		shader.setParameter("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f); // start at full
 		Engine::GetInstance().SetShader(&shader);
 	}
 
@@ -193,13 +193,18 @@ int BattleScene::Run()
 			}
 		}
 		else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect) {
-			// TODO: Move this to chip cust logic
-
 			if (isInChipSelect == false) {
 				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
 				isInChipSelect = true;
 
-				// Load the chips
+				// Clear any chip UI queues. they will contain null data. 
+				Player* p = dynamic_cast<Player*>(player);
+				if (p) {
+					p->GetChipsUI()->LoadChips(nullptr, 0);
+				}
+
+				// Load the next chips
+				chipCustGUI.ResetState();
 				chipCustGUI.GetNextChips();
 			} 
 			// NOTE: Need a battle scene state manager to handle going to and from one controll scheme to another. 
@@ -209,19 +214,21 @@ int BattleScene::Run()
 		else if (isInChipSelect) {
 			if (ControllableComponent::GetInstance().has(PRESSED_LEFT)) {
 				chipCustGUI.CursorLeft();
+				AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT);
 			} else if (ControllableComponent::GetInstance().has(PRESSED_RIGHT)) {
 				chipCustGUI.CursorRight();
+				AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT);
 			} else if (ControllableComponent::GetInstance().has(PRESSED_ACTION1)) {
 				chipCustGUI.CursorAction();
-				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
 				
 				if (chipCustGUI.AreChipsReady()) {
-
+					AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
 					customProgress = 0; // NOTE: Hack. Need one more state boolean
-				}
+				} 
 			}
 			else if (ControllableComponent::GetInstance().has(PRESSED_ACTION2)) {
 				chipCustGUI.CursorCancel();
+				AudioResourceManager::GetInstance().Play(AudioType::CHIP_CANCEL);
 			}
 		}
 
@@ -256,7 +263,7 @@ int BattleScene::Run()
 		}
 
 		// convert to millis and slow it down by 0.5
-		shader.setParameter("pixel_threshold", (float)(shaderCooldown/1000.f)*0.5);
+		shader.setParameter("pixel_threshold", (float)(shaderCooldown/1000.f)*0.5f);
 
 		// update the cust if not paused
 		if(!(isPaused || isInChipSelect)) customProgress += elapsed;

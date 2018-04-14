@@ -18,8 +18,9 @@ private:
 	sf::Sprite custSprite;
 	sf::Sprite cursorSmall; // TODO: make these two animate
 	sf::Sprite cursorBig;
-	sf::Sprite icon;
-	sf::Sprite currChip;
+	LayeredDrawable icon;
+	LayeredDrawable chipCard;
+	sf::Shader greyscale;
 	sf::Text label;
 	int chipCount;
 	int selectCount;

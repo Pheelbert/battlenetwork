@@ -52,9 +52,11 @@ void PlayerHealthUI::Update()
 			if (currHP > player->GetHealth()) {
 				currHP -= 1;
 			}
+			else if (currHP < player->GetHealth()) {
+				currHP += 1;
+			}
 			else {
-				lastHP = player->GetHealth();
-				currHP = lastHP;
+				lastHP = currHP;
 			}
 		}
 
@@ -62,9 +64,13 @@ void PlayerHealthUI::Update()
         text.setOrigin(text.getLocalBounds().width, 0);
         text.setPosition(80.0f, -4.f);
 
-		if (lastHP != player->GetHealth())
+		if (currHP > player->GetHealth())
 		{
 			text.setColor(sf::Color(255,165, 0));
+		}
+		else if (currHP < player->GetHealth())
+		{
+			text.setColor(sf::Color(0, 255, 80));
 		}
     }
 }

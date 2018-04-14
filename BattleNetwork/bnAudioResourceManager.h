@@ -14,7 +14,7 @@ public:
 	static AudioResourceManager& GetInstance();
 
 	void LoadAllSources();
-	int Play(AudioType type);
+	int Play(AudioType type, int priority=1);
 	int Stream(std::string path, bool loop = false);
 	void SetStreamVolume(int volume);
 	void SetChannelVolume(int volume);

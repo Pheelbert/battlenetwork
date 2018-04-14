@@ -16,8 +16,11 @@ void main()
       else
       {
         pixel.r = 0;
+  
+        vec2 size = textureSize(texture,0);
 
-        if(pos.x <= (textureSize(texture, 0).x * factor)/textureSize(texture,0).x)
+        /* Hard-coded the red bar min and max in the texture until I can do it programatically*/ 
+        if(pos.x > 9.0/size.x && pos.x <= ((size.x-10.0) * factor)/size.x)
         {
           pixel.r = 224.0/255.0;
           pixel.g = 232.0/255.0;

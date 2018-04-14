@@ -14,6 +14,14 @@ R CTRL -> Use a chip
 
 # Author TheMaverickProgrammer
 ## Update 4/12/2018
+Chip menu can now select and deselect chips in order from the menu using the SPACE bar to select and R CTRL to deselect.
+Chip cards are displayed in the menu and a greyscale shader is applied when the chip cannot be selected. 
+Added code compatibility to the chip selection and current solution was buggy. Commented it out for later review.
+One chip works in battle: "HP+10" restores health points. 
+Updated the cust bar shader to begin and end in the designated areas. Need to find a way to do this programmatically.
+Current issue: too many greyscale shaders applied to chip icons is slowing down game. Need to think about using batch render calls for items with the same shader.
+
+## Update 4/12/2018
 Wrote chip library, chip cust state, and chip component system for entities.
 As of now, the chip cust inits the library and feeds chips into the selected chip queue. 
 After the cust state is over and battle begins, the chip UI component attached to the player is loaded with the selected chip data.
@@ -25,7 +33,6 @@ Pheelbert wrote the base tile movement code, sprite resource loading, and the re
 Here are my changes and contributions in writing:
 
 New: 
-
 * Shader support in render pipeline
 * Pixelated battle intro shader effect
 * Pause & pause state shader effect
@@ -44,9 +51,14 @@ New:
 * Chip library system
 * Chip data class
 * Chip selection GUI and basic state system 
+* Chip select queue and deselect in order 
+* Chip select GUI is complete with all the data from the chip
+* Exact chip cards are rendered
+* Greyscale shader applied on currently selected or invalid chip combos
 * Chip UI component for player -> Renders chip name and attack power
 * Boss AI ProgsMan (work in progress)
 * Throwable Spells
+* HP+10 chip works in-battle
 
 Changes:
 

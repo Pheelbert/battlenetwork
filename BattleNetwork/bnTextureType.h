@@ -41,6 +41,7 @@ enum TextureType
 	CHIP_ICON,
 	CHIP_CURSOR_SMALL,
 	CHIP_CURSOR_BIG,
+	CHIP_CARDS, 
 	//Background/Foreground
 	TEXTURE_TYPE_SIZE
 };

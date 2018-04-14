@@ -261,5 +261,8 @@
     <ClInclude Include="bnSelectedChipsUI.h">
       <Filter>Battle\Entity\Living\Player</Filter>
     </ClInclude>
+    <ClInclude Include="bnChipType.h">
+      <Filter>Battle\Chips\Database</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
