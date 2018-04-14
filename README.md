@@ -1,3 +1,9 @@
+# Video w/ Sound
+Click the thumbnail to watch on youtube
+
+[![Video of engine 4/14/2018](https://img.youtube.com/vi/zztrHvrZON4/0.jpg)](https://www.youtube.com/watch?v=zztrHvrZON4)
+[![Video of engine 4/14/2018](https://img.youtube.com/vi/zztrHvrZON4/1.jpg)](https://www.youtube.com/watch?v=zztrHvrZON4)
+
 # Features
 In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
