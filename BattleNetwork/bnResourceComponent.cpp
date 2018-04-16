@@ -26,7 +26,7 @@ void ResourceComponent::load() {
   int frameAnimationIndex = -1;
   vector<FrameAnimation> animations;
   string currentState = "";
-  float currentDuration = 0.0f;
+  float currentAnimationDuration = 0.0f;
   int currentWidth = 0;
   int currentHeight = 0;
 
@@ -41,31 +41,33 @@ void ResourceComponent::load() {
       assert(name == sname && "Wrong class name specified in .animation file");
     } else if (line.find("animation") != string::npos) {
       if (!animations.empty()) {
-        entity->addAnimation(entity->GetStateFromString(currentState), animations.at(frameAnimationIndex), currentDuration);
+        entity->addAnimation(entity->GetStateFromString(currentState), animations.at(frameAnimationIndex), currentAnimationDuration);
+        currentAnimationDuration = 0.0f;
       }
       string state = valueOf("state", line);
-      string duration = valueOf("duration", line);
       string width = valueOf("width", line);
       string height = valueOf("height", line);
       currentState = state;
-      currentDuration = (float)atof(duration.c_str());
       currentWidth = atoi(width.c_str());
       currentHeight = atoi(height.c_str());
       animations.push_back(FrameAnimation());
       frameAnimationIndex++;
     } else if (line.find("frame") != string::npos) {
-      string relative = valueOf("relative", line);
+      string duration = valueOf("duration", line);
       string startx = valueOf("startx", line);
       string starty = valueOf("starty", line);
-      float currentRelative = (float)atof(relative.c_str());
+      float currentFrameDuration = (float)atof(duration.c_str());
+      currentAnimationDuration += currentFrameDuration;
       int currentStartx = atoi(startx.c_str());
       int currentStarty = atoi(starty.c_str());
-      animations.at(frameAnimationIndex).addFrame(currentRelative, IntRect(currentStartx, currentStarty, currentWidth, currentHeight));
+      animations.at(frameAnimationIndex).addFrame(currentFrameDuration, IntRect(currentStartx, currentStarty, currentWidth, currentHeight));
     }
 
     data = data.substr(endline + 1);
   } while (endline > -1);
-  entity->addAnimation(entity->GetStateFromString(currentState), animations.at(frameAnimationIndex), currentDuration);
+
+  // One more addAnimation to do
+  entity->addAnimation(entity->GetStateFromString(currentState), animations.at(frameAnimationIndex), currentAnimationDuration);
 }
 
 string ResourceComponent::valueOf(string _key, string _line) {
