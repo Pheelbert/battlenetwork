@@ -5,15 +5,14 @@
 
 using std::list;
 
-class ChipLibrary
-{
+class ChipLibrary {
 public:
-	ChipLibrary();
-	~ChipLibrary();
-	static ChipLibrary & GetInstance();
-	void LoadLibrary();
-	Chip* Next();
+  ChipLibrary();
+  ~ChipLibrary();
+  static ChipLibrary & GetInstance();
+  void LoadLibrary();
+  Chip* Next();
 private:
-	list<Chip> library;
+  list<Chip> library;
 };
 

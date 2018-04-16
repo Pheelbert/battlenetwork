@@ -8,26 +8,25 @@
 // For more authentic retro experience, decrease available channels.
 #define NUM_OF_CHANNELS 5
 
-class AudioResourceManager
-{
+class AudioResourceManager {
 public:
-	static AudioResourceManager& GetInstance();
+  static AudioResourceManager& GetInstance();
 
-	void LoadAllSources();
-	int Play(AudioType type, int priority=1);
-	int Stream(std::string path, bool loop = false);
-	void StopStream();
-	void SetStreamVolume(int volume);
-	void SetChannelVolume(int volume);
+  void LoadAllSources();
+  int Play(AudioType type, int priority = 1);
+  int Stream(std::string path, bool loop = false);
+  void StopStream();
+  void SetStreamVolume(int volume);
+  void SetChannelVolume(int volume);
 
-	AudioResourceManager();
-	~AudioResourceManager();
+  AudioResourceManager();
+  ~AudioResourceManager();
 
 private:
-	sf::Sound* channels;
-	sf::SoundBuffer* sources;
-	sf::Music stream;
-	int channelVolume;
-	int streamVolume;
+  sf::Sound* channels;
+  sf::SoundBuffer* sources;
+  sf::Music stream;
+  int channelVolume;
+  int streamVolume;
 };
 

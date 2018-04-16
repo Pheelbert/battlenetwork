@@ -21,27 +21,26 @@ class Entity;
 /*!
  * @brief For player only right now
 */
-class ChargeComponent
-{
+class ChargeComponent {
 public:
-    ChargeComponent(Entity* _entity);
-    ~ChargeComponent();
+  ChargeComponent(Entity* _entity);
+  ~ChargeComponent();
 
-    void load();
-    void update(float _elapsed);
-    void SetCharging(bool _charging);
-    float GetChargeCounter() const;
-    Sprite& GetSprite();
+  void load();
+  void update(float _elapsed);
+  void SetCharging(bool _charging);
+  float GetChargeCounter() const;
+  Sprite& GetSprite();
 
 private:
-    Entity* entity;
-    bool charging;
-	bool isCharged;
-	bool isPartiallyCharged;
-    float chargeCounter;
-    float animationProgress;
-    Texture chargeTexture;
-    Sprite chargeSprite;
-    FrameAnimation blueChargeAnimation;
-    FrameAnimation purpleChargeAnimation;
+  Entity * entity;
+  bool charging;
+  bool isCharged;
+  bool isPartiallyCharged;
+  float chargeCounter;
+  float animationProgress;
+  Texture chargeTexture;
+  Sprite chargeSprite;
+  FrameAnimation blueChargeAnimation;
+  FrameAnimation purpleChargeAnimation;
 };

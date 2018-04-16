@@ -7,18 +7,17 @@ class Entity;
 
 #define ANIMATION_EXTENSION ".animation"
 
-class ResourceComponent
-{
+class ResourceComponent {
 public:
-    ResourceComponent(Entity* _entity);
-    ~ResourceComponent();
+  ResourceComponent(Entity* _entity);
+  ~ResourceComponent();
 
-    void setup(string _name, string _path);
-    void load();
-    string valueOf(string _key, string _line);
+  void setup(string _name, string _path);
+  void load();
+  string valueOf(string _key, string _line);
 
 private:
-    Entity* entity;
-    string name;
-    string path;
+  Entity * entity;
+  string name;
+  string path;
 };

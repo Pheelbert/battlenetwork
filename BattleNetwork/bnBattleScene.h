@@ -1,6 +1,5 @@
 #pragma once
-class BattleScene
-{
+class BattleScene {
 public:
-    static int Run();
+  static int Run();
 };
