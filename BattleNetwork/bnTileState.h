@@ -1,8 +1,7 @@
 #pragma once
-enum TileState
-{
-    NORMAL,
-    CRACKED,
-    BROKEN,
-    EMPTY
+enum TileState {
+  NORMAL,
+  CRACKED,
+  BROKEN,
+  EMPTY
 };

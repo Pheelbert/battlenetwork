@@ -9,21 +9,20 @@ using thor::FrameAnimation;
 #include <vector>
 using std::vector;
 
-class BackgroundUI
-{
+class BackgroundUI {
 public:
-    BackgroundUI(void);
-    ~BackgroundUI(void);
+  BackgroundUI(void);
+  ~BackgroundUI(void);
 
-    void Draw();
+  void Draw();
 
 private:
-    Sprite component;
-    Sprite background;
-    Texture* bgTexture;
-    Texture* cmTexture;
-    FrameAnimation animation;
+  Sprite component;
+  Sprite background;
+  Texture* bgTexture;
+  Texture* cmTexture;
+  FrameAnimation animation;
 
-    //Animation
-    float progress;
+  //Animation
+  float progress;
 };

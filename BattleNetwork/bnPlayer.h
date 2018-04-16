@@ -13,49 +13,48 @@ using sf::IntRect;
 #include "bnControllableComponent.h"
 #include "bnSelectedChipsUI.h"
 
-class Player : public Entity
-{
+class Player : public Entity {
 public:
-    Player(void);
-    virtual ~Player(void);
+  Player(void);
+  virtual ~Player(void);
 
-    virtual void Update(float _elapsed);
-    virtual bool Move(Direction _direction);
-    void Attack(float _charge);
-    virtual vector<Drawable*> GetMiscComponents();
-    void RefreshTexture();
+  virtual void Update(float _elapsed);
+  virtual bool Move(Direction _direction);
+  void Attack(float _charge);
+  virtual vector<Drawable*> GetMiscComponents();
+  void RefreshTexture();
 
-    int GetHealth() const;
-    void SetHealth(int _health);
-    int Hit(int _damage);
+  int GetHealth() const;
+  void SetHealth(int _health);
+  int Hit(int _damage);
 
-    PlayerHealthUI* GetHealthUI() const;
+  PlayerHealthUI* GetHealthUI() const;
 
-	SelectedChipsUI * GetChipsUI() const;
+  SelectedChipsUI * GetChipsUI() const;
 
-    virtual int GetStateFromString(string _string);
-    virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
+  virtual int GetStateFromString(string _string);
+  virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
 
 private:
-    int health;
+  int health;
 
-    //Cooldowns
-    float moveKeyPressCooldown;
-    float moveLagCooldown;
-    float attackKeyPressCooldown;
-    float attackToIdleCooldown;
-	float hitCoolDown;
+  //Cooldowns
+  float moveKeyPressCooldown;
+  float moveLagCooldown;
+  float attackKeyPressCooldown;
+  float attackToIdleCooldown;
+  float hitCoolDown;
 
-    TextureType textureType;
-    PlayerState state;
-    PlayerHealthUI* healthUI;
-	SelectedChipsUI* chipsUI;
-    Animator<Sprite, PlayerState> animator;
+  TextureType textureType;
+  PlayerState state;
+  PlayerHealthUI* healthUI;
+  SelectedChipsUI* chipsUI;
+  Animator<Sprite, PlayerState> animator;
 
-    //-Animation-
-    float animationProgress;
-    
-    ControllableComponent* controllableComponent;
-    ChargeComponent chargeComponent;
-    ResourceComponent resourceComponent;
+  //-Animation-
+  float animationProgress;
+
+  ControllableComponent* controllableComponent;
+  ChargeComponent chargeComponent;
+  ResourceComponent resourceComponent;
 };

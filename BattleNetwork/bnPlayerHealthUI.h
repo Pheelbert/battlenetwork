@@ -13,23 +13,22 @@ using std::vector;
 class Entity;
 class Player;
 
-class PlayerHealthUI
-{
+class PlayerHealthUI {
 public:
-    PlayerHealthUI(Entity* _entity);
-    PlayerHealthUI(Player* _player);
-    ~PlayerHealthUI(void);
+  PlayerHealthUI(Entity* _entity);
+  PlayerHealthUI(Player* _player);
+  ~PlayerHealthUI(void);
 
-    bool GetNextComponent(Drawable*& out);
-    void Update();
+  bool GetNextComponent(Drawable*& out);
+  void Update();
 
 private:
-	int lastHP;
-	int currHP;
-    Player* player;
-    Font* font;
-    Text text;
-    Sprite sprite;
-    Texture* texture;
-    vector<Drawable*> components;
+  int lastHP;
+  int currHP;
+  Player* player;
+  Font* font;
+  Text text;
+  Sprite sprite;
+  Texture* texture;
+  vector<Drawable*> components;
 };

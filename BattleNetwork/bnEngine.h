@@ -9,38 +9,37 @@ using std::vector;
 
 #include "bnLayered.h"
 
-class Engine
-{
+class Engine {
 public:
-    static Engine& GetInstance();
-    void Initialize();
-    void Draw(Drawable& _drawable, bool applyShaders=true);
-    void Draw(Drawable* _drawable, bool applyShaders=true);
-	void Draw(vector<Drawable*> _drawable, bool applyShaders=true);
-	void Draw(LayeredDrawable * _drawable);
-	void Draw(vector<LayeredDrawable*> _drawable);
-    void Display();
-    bool Running();
-    void Clear();
-    RenderWindow* GetWindow() const;
+  static Engine& GetInstance();
+  void Initialize();
+  void Draw(Drawable& _drawable, bool applyShaders = true);
+  void Draw(Drawable* _drawable, bool applyShaders = true);
+  void Draw(vector<Drawable*> _drawable, bool applyShaders = true);
+  void Draw(LayeredDrawable * _drawable);
+  void Draw(vector<LayeredDrawable*> _drawable);
+  void Display();
+  bool Running();
+  void Clear();
+  RenderWindow* GetWindow() const;
 
-    void Push(LayeredDrawable* _drawable);
-    void Lay(LayeredDrawable* _drawable);
-    void Lay(vector<sf::Drawable*> _drawable);
-    void LayUnder(sf::Drawable* _drawable);
-    void DrawLayers();
-    void DrawOverlay();
-    void DrawUnderlay();
+  void Push(LayeredDrawable* _drawable);
+  void Lay(LayeredDrawable* _drawable);
+  void Lay(vector<sf::Drawable*> _drawable);
+  void LayUnder(sf::Drawable* _drawable);
+  void DrawLayers();
+  void DrawOverlay();
+  void DrawUnderlay();
 
-	void SetShader(sf::Shader* _shader);
-	void RevokeShader();
+  void SetShader(sf::Shader* _shader);
+  void RevokeShader();
 private:
-    Engine(void);
-    ~Engine(void);
+  Engine(void);
+  ~Engine(void);
 
-    RenderWindow* window;
-    Underlay underlay;
-    Layers layers;
-    Overlay overlay;
-	sf::RenderStates state;
+  RenderWindow* window;
+  Underlay underlay;
+  Layers layers;
+  Overlay overlay;
+  sf::RenderStates state;
 };

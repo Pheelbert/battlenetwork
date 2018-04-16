@@ -16,20 +16,19 @@ using std::vector;
 using std::cerr;
 using std::endl;
 
-class TextureResourceManager
-{
+class TextureResourceManager {
 public:
-	static TextureResourceManager& GetInstance();
-	void LoadAllTextures();
-	Texture* LoadTextureFromFile(string _path);
-	Texture* GetTexture(TextureType _ttype);
-	sf::IntRect GetTextureRectFromChipID(unsigned ID);
-	Font* LoadFontFromFile(string _path);
-    string LoadDataFromFile(string _path);
+  static TextureResourceManager& GetInstance();
+  void LoadAllTextures();
+  Texture* LoadTextureFromFile(string _path);
+  Texture* GetTexture(TextureType _ttype);
+  sf::IntRect GetTextureRectFromChipID(unsigned ID);
+  Font* LoadFontFromFile(string _path);
+  string LoadDataFromFile(string _path);
 
 private:
-	TextureResourceManager(void);
-	~TextureResourceManager(void);
-	vector<string> paths;
-	map<TextureType, Texture*> textures;
+  TextureResourceManager(void);
+  ~TextureResourceManager(void);
+  vector<string> paths;
+  map<TextureType, Texture*> textures;
 };
