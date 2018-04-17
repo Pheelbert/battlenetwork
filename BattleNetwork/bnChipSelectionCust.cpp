@@ -12,7 +12,7 @@ ChipSelectionCust::ChipSelectionCust(int cap) {
   custSprite.setScale(2.f, 2.f);
   custSprite.setPosition(-custSprite.getTextureRect().width*2.f, 0);
 
-  icon.setTexture(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICON));
+  icon.setTexture(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICONS));
   icon.setScale(sf::Vector2f(2.f, 2.f));
 
   cursorSmall = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_CURSOR_SMALL));
@@ -25,7 +25,7 @@ ChipSelectionCust::ChipSelectionCust(int cap) {
   sf::Texture* card = TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_CARDS);
   chipCard.setTexture(*card);
   chipCard.setScale(2.f, 2.f);
-  chipCard.setPosition(2.f*16.f, 47.f);
+  chipCard.setPosition(2.f*16.f, 48.f);
 
   if (!greyscale.loadFromFile("resources/shaders/greyscale.frag.txt", sf::Shader::Fragment)) {
     // TODO: log error...
@@ -74,20 +74,20 @@ void ChipSelectionCust::CursorAction() {
     // Does chip exist 
     if (cursorPos < chipCount) {
       // Queue this chip if not selected
-      if (queue[cursorPos].state) {
+      if (queue[cursorPos].state == 1) {
         selectQueue[selectCount++] = &queue[cursorPos];
-        queue[cursorPos].state = 0;
+        queue[cursorPos].state = 2;
 
-        // Check chip code. If other chips are not compatible, set the bucket state flag to 0
-        /*char code = queue[cursorPos].data->GetCode();
+        // Check chip code. If other chips are not compatible, set their bucket state flag to 0
+        char code = queue[cursorPos].data->GetCode();
 
         for (int i = 0; i < chipCount; i++) {
-          if (i == cursorPos) continue;
+          if (i == cursorPos || queue[i].state == 0 || queue[i].state == 2) continue;
           char otherCode = queue[i].data->GetCode();
 
-          if (code == '*' || otherCode == code-1 || otherCode == code+1) queue[i].state = 1;
-          else queue[i].state = 0;
-        }*/
+          if (code == '=' || otherCode == '=' || otherCode == code || otherCode == code - 1 || otherCode == code + 1) { queue[i].state = 1; }
+          else { queue[i].state = 0; }
+        }
       }
     }
   }
@@ -100,9 +100,42 @@ void ChipSelectionCust::CursorCancel() {
     return;
   }
 
-  selectQueue[selectCount - 1]->state = 1;
+  selectQueue[selectCount-1]->state = 1;
 
   selectCount--;
+
+  if (selectCount == 0) {
+    // Everything is selectable again
+    for (int i = 0; i < chipCount; i++) {
+      queue[i].state = 1;
+    }
+
+    return;
+  }
+
+  /*
+    Compatible chip states are built upon adding chips from the last available chip states. 
+    The only way to "revert" to the last compatible chip states is to step through the already selected 
+    chip queue and build up the state again. 
+  */
+
+
+  for(int i = 0; i < selectCount; i++) {
+    char code = selectQueue[i]->data->GetCode();
+
+    for (int j = 0; j < chipCount; j++) {
+      if (i > 0) {
+        if (queue[j].state == 0) continue; // already checked
+      }
+
+      if (queue[j].state == 2) continue; // skip  
+
+      char otherCode = queue[j].data->GetCode();
+
+      if (code == '=' || otherCode == '=' || otherCode == code || otherCode == code - 1 || otherCode == code + 1) { queue[j].state = 1; }
+      else { queue[j].state = 0; }
+    }
+  }
 }
 
 bool ChipSelectionCust::IsOutOfView() {
@@ -152,14 +185,15 @@ void ChipSelectionCust::Draw() {
     cursorSmall.setPosition(2.f*(7.0f + (cursorPos*16.0f)), 2.f*103.f); // TODO: Make this relative to cust instead of screen
 
     for (int i = 0; i < chipCount; i++) {
-      icon.setPosition(2.f*(9.0f + (i*16.0f)), 2.f*106.f);
-
+      icon.setPosition(2.f*(9.0f + (i*16.0f)), 2.f*105.f);
+      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromChipID(queue[i].data->GetID());
+      icon.setTextureRect(iconSubFrame);
       icon.SetShader(nullptr);
 
-      if (!queue[i].state) {
+      if (queue[i].state == 0) {
         icon.SetShader(&greyscale);
         Engine::GetInstance().Draw(&icon);
-      } else {
+      } else if (queue[i].state == 1) {
         Engine::GetInstance().Draw(icon, false);
       }
     }
@@ -169,7 +203,8 @@ void ChipSelectionCust::Draw() {
 
     for (int i = 0; i < selectCount; i++) {
       icon.setPosition(2 * 97.f, 2.f*(25.0f + (i*16.0f)));
-
+      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromChipID((*selectQueue[i]).data->GetID());
+      icon.setTextureRect(iconSubFrame);
       Engine::GetInstance().Draw(icon, false);
     }
 
@@ -180,7 +215,7 @@ void ChipSelectionCust::Draw() {
 
       if (cursorPos < chipCount) {
         // Draw the selected chip card
-        sf::IntRect cardSubFrame = TextureResourceManager::GetInstance().GetTextureRectFromChipID(queue[cursorPos].data->GetID());
+        sf::IntRect cardSubFrame = TextureResourceManager::GetInstance().GetCardRectFromChipID(queue[cursorPos].data->GetID());
         chipCard.setTextureRect(cardSubFrame);
 
         chipCard.SetShader(nullptr);
@@ -241,10 +276,10 @@ void ChipSelectionCust::ClearChips() {
 
   // Restructure queue
   for (int i = 0; i < chipCount; i++) {
+    queue[i].state = 1;
     int next = i;
     while (!queue[i].data && next + 1 < chipCount) {
       queue[i].data = queue[next + 1].data;
-      queue[i].state = 1;
       queue[next + 1].data = nullptr;
       next++;
     }

@@ -20,7 +20,7 @@ SelectedChipsUI::SelectedChipsUI(Entity* _entity)
 SelectedChipsUI::SelectedChipsUI(Player* _player)
   : player(_player) {
   chipCount = curr = 0;
-  icon = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICON));
+  icon = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICONS));
   icon.setScale(sf::Vector2f(2.f, 2.f));
 
   font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
@@ -45,8 +45,11 @@ bool SelectedChipsUI::GetNextComponent(Drawable*& out) {
 void SelectedChipsUI::Update() {
   if (player) {
     // TODO: Move draw out of update. Utilize components.
+    int chipOrder = 0;
     for (int i = curr; i < chipCount; i++) {
       icon.setPosition(player->getPosition() + sf::Vector2f(30.0f - (i - curr) * 3, -(i - curr) * 3));
+      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromChipID(selectedChips[curr]->GetID());
+      icon.setTextureRect(iconSubFrame);
       Engine::GetInstance().Draw(icon);
     }
 
