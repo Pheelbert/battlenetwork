@@ -171,11 +171,11 @@ void AudioResourceManager::StopStream() {
   stream.stop();
 }
 
-void AudioResourceManager::SetStreamVolume(int volume) {
+void AudioResourceManager::SetStreamVolume(float volume) {
   stream.setVolume(volume);
 }
 
-void AudioResourceManager::SetChannelVolume(int volume) {
+void AudioResourceManager::SetChannelVolume(float volume) {
   for (int i = 0; i < NUM_OF_CHANNELS; i++) {
     channels[i].setVolume(volume);
   }

@@ -5,9 +5,9 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 
-#define GRAVITY 9.81
+#define GRAVITY 9.81f
 
-ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, double _duration) {
+ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, float _duration) {
   SetLayer(0);
   cooldown = 0;
   damageCooldown = 0;
@@ -42,12 +42,12 @@ void ProgBomb::PrepareThrowPath() {
 
   // Calculate projectile variables on init 
   velX = (target->getPosition().x - posX) / arcDuration;
-  velY = -1.0 * (abs(target->getPosition().y + 0.5*GRAVITY*arcDuration*arcDuration - posY)) / arcDuration;
+  velY = -1.0f * ((float) abs(target->getPosition().y + 0.5f * GRAVITY * arcDuration * arcDuration - posY)) / arcDuration;
   arcProgress = 0;
 }
 
 void ProgBomb::Update(float _elapsed) {
-  arcProgress += _elapsed / 1000.0; // convert from ms to s
+  arcProgress += _elapsed / 1000.0f; // convert from ms to s
 
   if (!tile->IsWalkable()) {
     deleted = true;
@@ -72,7 +72,7 @@ void ProgBomb::Update(float _elapsed) {
   sf::Vector2f pos(getPosition());
 
   pos.x = velX * arcProgress + pos.x;
-  pos.y = 0.5 * GRAVITY * arcProgress * arcProgress + velY * arcProgress + pos.y;
+  pos.y = 0.5f * GRAVITY * arcProgress * arcProgress + velY * arcProgress + pos.y;
 
   setPosition(pos);
 

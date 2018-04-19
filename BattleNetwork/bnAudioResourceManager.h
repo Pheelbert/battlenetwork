@@ -16,8 +16,8 @@ public:
   int Play(AudioType type, int priority = 1);
   int Stream(std::string path, bool loop = false);
   void StopStream();
-  void SetStreamVolume(int volume);
-  void SetChannelVolume(int volume);
+  void SetStreamVolume(float volume);
+  void SetChannelVolume(float volume);
 
   AudioResourceManager();
   ~AudioResourceManager();

@@ -46,7 +46,7 @@ void SelectedChipsUI::Update() {
   if (player) {
     // TODO: Move draw out of update. Utilize components.
     for (int i = curr; i < chipCount; i++) {
-      icon.setPosition(player->getPosition() + sf::Vector2f(30.0f - (i - curr) * 3, -(i - curr) * 3));
+      icon.setPosition(player->getPosition() + sf::Vector2f(30.0f - (i - curr) * 3.0f, -(i - curr) * 3.0f));
       Engine::GetInstance().Draw(icon);
     }
 

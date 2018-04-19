@@ -33,7 +33,7 @@ void AnimationComponent::load() {
   string data = TextureResourceManager::GetInstance().LoadDataFromFile(path);
   int endline = 0;
   do {
-    endline = data.find("\n");
+    endline = (int) data.find("\n");
     string line = data.substr(0, endline);
 
     if (line.find("entity") != string::npos) {
@@ -71,7 +71,7 @@ void AnimationComponent::load() {
 }
 
 string AnimationComponent::valueOf(string _key, string _line) {
-  int keyIndex = _line.find(_key);
+  int keyIndex = (int) _line.find(_key);
   assert(keyIndex > -1 && "Key was not found in .animation file.");
   string s = _line.substr(keyIndex + _key.size() + 2);
   return s.substr(0, s.find("\""));
