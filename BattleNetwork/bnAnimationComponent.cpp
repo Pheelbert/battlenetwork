@@ -5,24 +5,24 @@ using thor::Animator;
 using sf::Sprite;
 using sf::IntRect;
 
-#include "bnResourceComponent.h"
+#include "bnAnimationComponent.h"
 #include "bnTextureResourceManager.h"
 #include "bnLogger.h"
 #include "bnEntity.h"
 
-ResourceComponent::ResourceComponent(Entity* _entity) {
+AnimationComponent::AnimationComponent(Entity* _entity) {
   entity = _entity;
 }
 
-ResourceComponent::~ResourceComponent() {
+AnimationComponent::~AnimationComponent() {
 }
 
-void ResourceComponent::setup(string _name, string _path) {
+void AnimationComponent::setup(string _name, string _path) {
   name = _name;
   path = _path;
 }
 
-void ResourceComponent::load() {
+void AnimationComponent::load() {
   int frameAnimationIndex = -1;
   vector<FrameAnimation> animations;
   string currentState = "";
@@ -70,7 +70,7 @@ void ResourceComponent::load() {
   entity->addAnimation(entity->GetStateFromString(currentState), animations.at(frameAnimationIndex), currentAnimationDuration);
 }
 
-string ResourceComponent::valueOf(string _key, string _line) {
+string AnimationComponent::valueOf(string _key, string _line) {
   int keyIndex = _line.find(_key);
   assert(keyIndex > -1 && "Key was not found in .animation file.");
   string s = _line.substr(keyIndex + _key.size() + 2);

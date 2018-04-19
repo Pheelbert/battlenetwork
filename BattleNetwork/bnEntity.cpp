@@ -30,6 +30,7 @@ int Entity::GetStateFromString(string _string) {
 }
 
 void Entity::addAnimation(int _state, FrameAnimation _animation, float _duration) {
+  assert(false && "addAnimation shouldn't be called directly from Entity");
 }
 
 int Entity::GetHealth() {

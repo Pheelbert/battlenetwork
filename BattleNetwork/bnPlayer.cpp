@@ -31,7 +31,7 @@ Player::Player(void)
   textureType(TextureType::NAVI_MEGAMAN_MOVE),
   controllableComponent(&ControllableComponent::GetInstance()),
   chargeComponent(ChargeComponent(this)),
-  resourceComponent(ResourceComponent(this)) {
+  animationComponent(AnimationComponent(this)) {
   SetLayer(0);
   team = Team::BLUE;
 
@@ -51,8 +51,8 @@ Player::Player(void)
 
   //Components setup and load
   chargeComponent.load();
-  resourceComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
-  resourceComponent.load();
+  animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
+  animationComponent.load();
 }
 
 Player::~Player(void) {

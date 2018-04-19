@@ -37,7 +37,7 @@ vector<int> Mettaur::metIDs = vector<int>();
 int Mettaur::currMetIndex = 0;
 
 Mettaur::Mettaur(void)
-  : resourceComponent(ResourceComponent(this)) {
+  : animationComponent(AnimationComponent(this)) {
   Entity::team = Team::RED;
   health = 20;
   hitHeight = 0;
@@ -77,8 +77,8 @@ Mettaur::Mettaur(void)
   this->SetHealth(health);
 
   //Components setup and load
-  resourceComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
-  resourceComponent.load();
+  animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
+  animationComponent.load();
 
   if (!whiteout.loadFromFile("resources/shaders/white.frag.txt", sf::Shader::Fragment)) {
     // TODO: log error...

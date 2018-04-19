@@ -41,9 +41,6 @@
     <Filter Include="Battle\Component">
       <UniqueIdentifier>{dfa2cbcd-8575-45f2-93b6-c5d98a64e469}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Component\Resource">
-      <UniqueIdentifier>{32f5b123-7c10-4d87-abfc-a9326380e103}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Component\Charge">
       <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
     </Filter>
@@ -80,6 +77,9 @@
     <Filter Include="Battle\Chips\Database">
       <UniqueIdentifier>{96b71ad6-be68-4e35-bd67-349eeadc6ac8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Component\Animation">
+      <UniqueIdentifier>{32f5b123-7c10-4d87-abfc-a9326380e103}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -105,9 +105,6 @@
     </ClCompile>
     <ClCompile Include="bnMettaur.cpp">
       <Filter>Battle\Entity\Living\Mettaur</Filter>
-    </ClCompile>
-    <ClCompile Include="bnResourceComponent.cpp">
-      <Filter>Battle\Component\Resource</Filter>
     </ClCompile>
     <ClCompile Include="bnChargeComponent.cpp">
       <Filter>Battle\Component\Charge</Filter>
@@ -154,6 +151,9 @@
     <ClCompile Include="bnSelectedChipsUI.cpp">
       <Filter>Battle\Entity\Living\Player</Filter>
     </ClCompile>
+    <ClCompile Include="bnAnimationComponent.cpp">
+      <Filter>Battle\Component\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -191,9 +191,6 @@
     </ClInclude>
     <ClInclude Include="bnLayered.h">
       <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="bnResourceComponent.h">
-      <Filter>Battle\Component\Resource</Filter>
     </ClInclude>
     <ClInclude Include="bnChargeComponent.h">
       <Filter>Battle\Component\Charge</Filter>
@@ -263,6 +260,9 @@
     </ClInclude>
     <ClInclude Include="bnChipType.h">
       <Filter>Battle\Chips\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="bnAnimationComponent.h">
+      <Filter>Battle\Component\Animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

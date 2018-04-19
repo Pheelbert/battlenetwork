@@ -8,7 +8,7 @@ using sf::IntRect;
 #include "bnMobState.h"
 #include "bnTextureType.h"
 #include "bnMobHealthUI.h"
-#include "bnResourceComponent.h"
+#include "bnAnimationComponent.h"
 
 class Mettaur : public Entity {
 public:
@@ -55,7 +55,7 @@ private:
   Sprite explosion2;
   FrameAnimation explode;
 
-  ResourceComponent resourceComponent;
+  AnimationComponent animationComponent;
 
   float hitHeight;
   Direction direction;

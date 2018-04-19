@@ -163,7 +163,7 @@
     <ClCompile Include="bnMobHealthUI.cpp" />
     <ClCompile Include="bnProgBomb.cpp" />
     <ClCompile Include="bnProgsMan.cpp" />
-    <ClCompile Include="bnResourceComponent.cpp" />
+    <ClCompile Include="bnAnimationComponent.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
     <ClCompile Include="bnSpell.cpp" />
@@ -195,7 +195,7 @@
     <ClInclude Include="bnMobState.h" />
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
-    <ClInclude Include="bnResourceComponent.h" />
+    <ClInclude Include="bnAnimationComponent.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />
     <ClInclude Include="bnTile.h" />
