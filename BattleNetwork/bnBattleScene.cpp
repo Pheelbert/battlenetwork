@@ -43,18 +43,18 @@ int BattleScene::Run() {
 
   //TODO: More dynamic way of handling entities
   //(for now there's only 1 battle and you start straight in it)
-  Entity* player(new Player());
+  Player* player(new Player());
   field->AddEntity(player, 2, 2);
 
   /*ProgsMan* boss = new ProgsMan();
   boss->SetTarget(player);
   field->AddEntity(boss, 5, 2);*/
 
-  Entity* mob(new Mettaur());
+  Mettaur* mob(new Mettaur());
   field->AddEntity(mob, 6, 2);
-  Entity* mob2(new Mettaur());
+  Mettaur* mob2(new Mettaur());
   field->AddEntity(mob2, 4, 2);
-  Entity* mob3(new Mettaur());
+  Mettaur* mob3(new Mettaur());
   field->AddEntity(mob3, 6, 1);
 
   BackgroundUI background = BackgroundUI();
@@ -162,13 +162,8 @@ int BattleScene::Run() {
     Engine::GetInstance().DrawLayers();
     Engine::GetInstance().DrawOverlay();
 
-
-    // NOTE: OUCH! Dynamic casting per frame like this is costly!! REFACTOR.
     if (!isPlayerDeleted) {
-      Player* p = dynamic_cast<Player*>(player);
-      if (p) {
-        p->GetChipsUI()->Update(); // DRAW 
-      }
+      player->GetChipsUI()->Update(); // DRAW 
     }
 
     if (isPaused) {
@@ -197,10 +192,7 @@ int BattleScene::Run() {
         isInChipSelect = true;
 
         // Clear any chip UI queues. they will contain null data. 
-        Player* p = dynamic_cast<Player*>(player);
-        if (p) {
-          p->GetChipsUI()->LoadChips(nullptr, 0);
-        }
+        player->GetChipsUI()->LoadChips(nullptr, 0);
 
         // Load the next chips
         chipCustGUI.ResetState();
@@ -243,12 +235,7 @@ int BattleScene::Run() {
       } else if (isInChipSelect) { // we're leaving a state
         // Return to game
         isInChipSelect = false;
-
-        Player* p = dynamic_cast<Player*>(player);
-        if (p) {
-          p->GetChipsUI()->LoadChips(chipCustGUI.GetChips(), chipCustGUI.GetChipCount());
-        }
-
+        player->GetChipsUI()->LoadChips(chipCustGUI.GetChips(), chipCustGUI.GetChipCount());
         Engine::GetInstance().RevokeShader();
       }
     }
