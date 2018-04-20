@@ -19,6 +19,10 @@ using sf::Font;
 #include "bnEngine.h"
 #include "bnChipSelectionCust.h"
 
+#define SHADER_FRAG_PIXEL_PATH "resources/shaders/pixel_blur.frag.txt"
+#define SHADER_FRAG_BLACK_PATH "resources/shaders/black_fade.frag.txt"
+#define SHADER_FRAG_BAR_PATH "resources/shaders/custom_bar.frag.txt"
+
 int main() {
   return BattleScene::Run();
 }
@@ -43,18 +47,18 @@ int BattleScene::Run() {
 
   //TODO: More dynamic way of handling entities
   //(for now there's only 1 battle and you start straight in it)
-  Entity* player(new Player());
+  Player* player(new Player());
   field->AddEntity(player, 2, 2);
 
   /*ProgsMan* boss = new ProgsMan();
   boss->SetTarget(player);
   field->AddEntity(boss, 5, 2);*/
 
-  Entity* mob(new Mettaur());
+  Mettaur* mob(new Mettaur());
   field->AddEntity(mob, 6, 2);
-  Entity* mob2(new Mettaur());
+  Mettaur* mob2(new Mettaur());
   field->AddEntity(mob2, 4, 2);
-  Entity* mob3(new Mettaur());
+  Mettaur* mob3(new Mettaur());
   field->AddEntity(mob3, 6, 1);
 
   BackgroundUI background = BackgroundUI();
@@ -91,8 +95,8 @@ int BattleScene::Run() {
   double shaderCooldown = 500; // half a second
   sf::Shader shader;
 
-  if (!shader.loadFromFile("resources/shaders/pixel_blur.frag.txt", sf::Shader::Fragment)) {
-    // TODO: log error...
+  if (!shader.loadFromFile(SHADER_FRAG_PIXEL_PATH, sf::Shader::Fragment)) {
+    Logger::Log("Error loading shader: " SHADER_FRAG_PIXEL_PATH);
   } else {
     shader.setParameter("texture", sf::Shader::CurrentTexture);
     shader.setParameter("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f); // start at full
@@ -100,16 +104,16 @@ int BattleScene::Run() {
   }
 
   sf::Shader pauseShader;
-  if (!pauseShader.loadFromFile("resources/shaders/black_fade.frag.txt", sf::Shader::Fragment)) {
-    // TODO: log error...
+  if (!pauseShader.loadFromFile(SHADER_FRAG_BLACK_PATH, sf::Shader::Fragment)) {
+    Logger::Log("Error loading shader: " SHADER_FRAG_BLACK_PATH);
   } else {
     pauseShader.setParameter("texture", sf::Shader::CurrentTexture);
     pauseShader.setParameter("opacity", 0.5);
   }
 
   sf::Shader customBarShader;
-  if (!customBarShader.loadFromFile("resources/shaders/custom_bar.frag.txt", sf::Shader::Fragment)) {
-    // TODO: log error...
+  if (!customBarShader.loadFromFile(SHADER_FRAG_BAR_PATH, sf::Shader::Fragment)) {
+    Logger::Log("Error loading shader: " SHADER_FRAG_BAR_PATH);
   } else {
     customBarShader.setParameter("texture", sf::Shader::CurrentTexture);
     customBarShader.setParameter("factor", 0);
@@ -162,13 +166,8 @@ int BattleScene::Run() {
     Engine::GetInstance().DrawLayers();
     Engine::GetInstance().DrawOverlay();
 
-
-    // NOTE: OUCH! Dynamic casting per frame like this is costly!! REFACTOR.
     if (!isPlayerDeleted) {
-      Player* p = dynamic_cast<Player*>(player);
-      if (p) {
-        p->GetChipsUI()->Update(); // DRAW 
-      }
+      player->GetChipsUI()->Update(); // DRAW 
     }
 
     if (isPaused) {
@@ -197,10 +196,7 @@ int BattleScene::Run() {
         isInChipSelect = true;
 
         // Clear any chip UI queues. they will contain null data. 
-        Player* p = dynamic_cast<Player*>(player);
-        if (p) {
-          p->GetChipsUI()->LoadChips(nullptr, 0);
-        }
+        player->GetChipsUI()->LoadChips(nullptr, 0);
 
         // Load the next chips
         chipCustGUI.ResetState();
@@ -243,12 +239,7 @@ int BattleScene::Run() {
       } else if (isInChipSelect) { // we're leaving a state
         // Return to game
         isInChipSelect = false;
-
-        Player* p = dynamic_cast<Player*>(player);
-        if (p) {
-          p->GetChipsUI()->LoadChips(chipCustGUI.GetChips(), chipCustGUI.GetChipCount());
-        }
-
+        player->GetChipsUI()->LoadChips(chipCustGUI.GetChips(), chipCustGUI.GetChipCount());
         Engine::GetInstance().RevokeShader();
       }
     }

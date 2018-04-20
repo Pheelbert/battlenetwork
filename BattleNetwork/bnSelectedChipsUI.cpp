@@ -47,7 +47,7 @@ void SelectedChipsUI::Update() {
     // TODO: Move draw out of update. Utilize components.
     int chipOrder = 0;
     for (int i = curr; i < chipCount; i++) {
-      icon.setPosition(player->getPosition() + sf::Vector2f(30.0f - (i - curr) * 3, -(i - curr) * 3));
+      icon.setPosition(player->getPosition() + sf::Vector2f(30.0f - (i - curr) * 3.0f, - (i - curr) * 3.0f));
       sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromChipID(selectedChips[curr]->GetID());
       icon.setTextureRect(iconSubFrame);
       Engine::GetInstance().Draw(icon);

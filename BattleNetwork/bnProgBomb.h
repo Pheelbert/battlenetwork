@@ -4,14 +4,14 @@
 class ProgBomb : public Spell {
 private:
   Tile * target;
-  double posX;
-  double posY;
-  double velX;
-  double velY;
-  double arcDuration;
-  double arcProgress;
+  float posX;
+  float posY;
+  float velX;
+  float velY;
+  float arcDuration;
+  float arcProgress;
 public:
-  ProgBomb(Field* _field, Team _team, Tile* _target, double _duration);
+  ProgBomb(Field* _field, Team _team, Tile* _target, float _duration);
   virtual ~ProgBomb(void);
 
   virtual void Update(float _elapsed);

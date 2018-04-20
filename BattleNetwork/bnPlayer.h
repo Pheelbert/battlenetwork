@@ -9,7 +9,7 @@ using sf::IntRect;
 #include "bnTextureType.h"
 #include "bnPlayerHealthUI.h"
 #include "bnChargeComponent.h"
-#include "bnResourceComponent.h"
+#include "bnAnimationComponent.h"
 #include "bnControllableComponent.h"
 #include "bnSelectedChipsUI.h"
 
@@ -56,5 +56,5 @@ private:
 
   ControllableComponent* controllableComponent;
   ChargeComponent chargeComponent;
-  ResourceComponent resourceComponent;
+  AnimationComponent animationComponent;
 };

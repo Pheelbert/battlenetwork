@@ -15,8 +15,6 @@
 #define ATTACK_TO_IDLE_COOLDOWN 150.0f
 #define HIT_COOLDOWN 300.0f
 
-#define CHARGE_COUNTER_MAX 1400.0f
-
 #define MOVE_ANIMATION_SPRITES 4
 #define MOVE_ANIMATION_WIDTH 38
 #define MOVE_ANIMATION_HEIGHT 58
@@ -31,7 +29,7 @@ Player::Player(void)
   textureType(TextureType::NAVI_MEGAMAN_MOVE),
   controllableComponent(&ControllableComponent::GetInstance()),
   chargeComponent(ChargeComponent(this)),
-  resourceComponent(ResourceComponent(this)) {
+  animationComponent(AnimationComponent(this)) {
   SetLayer(0);
   team = Team::BLUE;
 
@@ -51,8 +49,8 @@ Player::Player(void)
 
   //Components setup and load
   chargeComponent.load();
-  resourceComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
-  resourceComponent.load();
+  animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
+  animationComponent.load();
 }
 
 Player::~Player(void) {
@@ -220,7 +218,7 @@ bool Player::Move(Direction _direction) {
 
 void Player::Attack(float _charge) {
   if (tile->GetX() <= static_cast<int>(field->GetWidth())) {
-    Spell* spell = new Buster(field, team, (_charge >= CHARGE_COUNTER_MAX));
+    Spell* spell = new Buster(field, team, chargeComponent.IsFullyCharged());
     spell->SetDirection(Direction::RIGHT);
     field->AddEntity(spell, tile->GetX(), tile->GetY());
   }

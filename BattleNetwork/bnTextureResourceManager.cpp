@@ -1,6 +1,4 @@
 #include <stdlib.h>
-#include <iostream>
-using std::cin;
 #include <sstream>
 using std::stringstream;
 #include <fstream>
@@ -26,7 +24,7 @@ void TextureResourceManager::LoadAllTextures() {
 Texture* TextureResourceManager::LoadTextureFromFile(string _path) {
   Texture* texture = new Texture();
   if (!texture->loadFromFile(_path)) {
-    cin.ignore();
+    Logger::Log("Failed loading texture: " + _path);
     exit(EXIT_FAILURE);
     return nullptr;
   }
@@ -51,7 +49,7 @@ sf::IntRect TextureResourceManager::GetIconRectFromChipID(unsigned ID) {
 Font* TextureResourceManager::LoadFontFromFile(string _path) {
   Font* font = new Font();
   if (!font->loadFromFile(_path)) {
-    cin.ignore();
+    Logger::Log("Failed loading font: " + _path);
     exit(EXIT_FAILURE);
     return nullptr;
   }
