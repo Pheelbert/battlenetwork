@@ -1,4 +1,5 @@
 #include "bnAudioResourceManager.h"
+#include "bnLogger.h"
 
 AudioResourceManager& AudioResourceManager::GetInstance() {
   static AudioResourceManager instance;
@@ -35,89 +36,43 @@ AudioResourceManager::~AudioResourceManager() {
   delete[] sources;
 }
 
-// TODO: Use logger to log these paths for debugging 
 void AudioResourceManager::LoadAllSources() {
-  // APPEAR
-  sources[AudioType::APPEAR].loadFromFile("resources/sfx/appear.ogg");
+  LoadSource(AudioType::APPEAR, "resources/sfx/appear.ogg");
+  LoadSource(AudioType::AREA_GRAB, "resources/sfx/area_grab.ogg");
+  LoadSource(AudioType::AREA_GRAB_TOUCHDOWN, "resources/sfx/area_grab_touchdown.ogg");
+  LoadSource(AudioType::BUSTER_CHARGED, "resources/sfx/buster_charged.ogg");
+  LoadSource(AudioType::BUSTER_CHARGING, "resources/sfx/buster_charging.ogg");
+  LoadSource(AudioType::CANNON, "resources/sfx/cannon.ogg");
+  LoadSource(AudioType::CHIP_CANCEL, "resources/sfx/chip_cancel.ogg");
+  LoadSource(AudioType::CHIP_CHOOSE, "resources/sfx/chip_choose.ogg");
+  LoadSource(AudioType::CHIP_CONFIRM, "resources/sfx/chip_confirm.ogg");
+  LoadSource(AudioType::CHIP_DESC, "resources/sfx/chip_desc.ogg");
+  LoadSource(AudioType::CHIP_DESC_CLOSE, "resources/sfx/chip_desc_close.ogg");
+  LoadSource(AudioType::CHIP_SELECT, "resources/sfx/chip_select.ogg");
+  LoadSource(AudioType::CUSTOM_BAR_FULL, "resources/sfx/custom_bar_full.ogg");
+  LoadSource(AudioType::DELETED, "resources/sfx/deleted.ogg");
+  LoadSource(AudioType::EXPLODE, "resources/sfx/explode.ogg");
+  LoadSource(AudioType::GUN, "resources/sfx/gun.ogg");
+  LoadSource(AudioType::HEALTH_ALERT, "resources/sfx/health_alert.ogg");
+  LoadSource(AudioType::HURT, "resources/sfx/hurt.ogg");
+  LoadSource(AudioType::PANEL_CRACK, "resources/sfx/panel_crack.ogg");
+  LoadSource(AudioType::PANEL_RETURN, "resources/sfx/panel_return.ogg");
+  LoadSource(AudioType::PAUSE, "resources/sfx/pause.ogg");
+  LoadSource(AudioType::PRE_BATTLE, "resources/sfx/pre_battle.ogg");
+  LoadSource(AudioType::RECOVER, "resources/sfx/recover.ogg");
+  LoadSource(AudioType::SPREADER, "resources/sfx/spreader.ogg");
+  LoadSource(AudioType::SWORD_SWING, "resources/sfx/sword_swing.ogg");
+  LoadSource(AudioType::TOSS_ITEM, "resources/sfx/toss_item.ogg");
+  LoadSource(AudioType::WAVE, "resources/sfx/wave.ogg");
+}
 
-  // AREA_GRAB
-  sources[AudioType::AREA_GRAB].loadFromFile("resources/sfx/area_grab.ogg");
-
-  // AREA_GRAB_TOUCHDOW
-  sources[AudioType::AREA_GRAB_TOUCHDOWN].loadFromFile("resources/sfx/area_grab_touchdown.ogg");
-
-  // BUSTER_CHARGED
-  sources[AudioType::BUSTER_CHARGED].loadFromFile("resources/sfx/buster_charged.ogg");
-
-  // BUSTER_CHARGING
-  sources[AudioType::BUSTER_CHARGING].loadFromFile("resources/sfx/buster_charging.ogg");
-
-  // CANNON
-  sources[AudioType::CANNON].loadFromFile("resources/sfx/cannon.ogg");
-
-  // CHIP_CANCEL
-  sources[AudioType::CHIP_CANCEL].loadFromFile("resources/sfx/chip_cancel.ogg");
-
-  // CHIP_CHOOSE
-  sources[AudioType::CHIP_CHOOSE].loadFromFile("resources/sfx/chip_choose.ogg");
-
-  // CHIP_CONFIRM
-  sources[AudioType::CHIP_CONFIRM].loadFromFile("resources/sfx/chip_confirm.ogg");
-
-  // CHIP_DESC
-  sources[AudioType::CHIP_DESC].loadFromFile("resources/sfx/chip_desc.ogg");
-
-  // CHIP_DESC_CLOSE
-  sources[AudioType::CHIP_DESC_CLOSE].loadFromFile("resources/sfx/chip_desc_close.ogg");
-
-  // CHIP_SELECT
-  sources[AudioType::CHIP_SELECT].loadFromFile("resources/sfx/chip_select.ogg");
-
-  // CUSTOM_BAR_FULL
-  sources[AudioType::CUSTOM_BAR_FULL].loadFromFile("resources/sfx/custom_bar_full.ogg");
-
-  // DELETED
-  sources[AudioType::DELETED].loadFromFile("resources/sfx/deleted.ogg");
-
-  // EXPLODE
-  sources[AudioType::EXPLODE].loadFromFile("resources/sfx/explode.ogg");
-
-  // GUN
-  sources[AudioType::GUN].loadFromFile("resources/sfx/gun.ogg");
-
-  // HEALTH_ALERT
-  sources[AudioType::HEALTH_ALERT].loadFromFile("resources/sfx/health_alert.ogg");
-
-  // HURT
-  sources[AudioType::HURT].loadFromFile("resources/sfx/hurt.ogg");
-
-  // PANEL_CRACK
-  sources[AudioType::PANEL_CRACK].loadFromFile("resources/sfx/panel_crack.ogg");
-
-  // PANEL_RETURN
-  sources[AudioType::PANEL_RETURN].loadFromFile("resources/sfx/panel_return.ogg");
-
-  // PAUSE
-  sources[AudioType::PAUSE].loadFromFile("resources/sfx/pause.ogg");
-
-  // PRE_BATTLE
-  sources[AudioType::PRE_BATTLE].loadFromFile("resources/sfx/pre_battle.ogg");
-
-  // RECOVER
-  sources[AudioType::RECOVER].loadFromFile("resources/sfx/recover.ogg");
-
-  // SPREADER
-  sources[AudioType::SPREADER].loadFromFile("resources/sfx/spreader.ogg");
-
-  // SWORD_SWING
-  sources[AudioType::SWORD_SWING].loadFromFile("resources/sfx/sword_swing.ogg");
-
-  // TOSS_ITEM
-  sources[AudioType::TOSS_ITEM].loadFromFile("resources/sfx/toss_item.ogg");
-
-  // WAVE
-  sources[AudioType::WAVE].loadFromFile("resources/sfx/wave.ogg");
-
+void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {
+  if (!sources[type].loadFromFile(path)) {
+    Logger::Log("Failed loading audio: " + path);
+    exit(EXIT_FAILURE);
+  } else {
+    Logger::Log("Loaded audio: " + path);
+  }
 }
 
 int AudioResourceManager::Play(AudioType type, int priority) {

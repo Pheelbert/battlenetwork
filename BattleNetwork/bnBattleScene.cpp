@@ -19,6 +19,10 @@ using sf::Font;
 #include "bnEngine.h"
 #include "bnChipSelectionCust.h"
 
+#define SHADER_FRAG_PIXEL_PATH "resources/shaders/pixel_blur.frag.txt"
+#define SHADER_FRAG_BLACK_PATH "resources/shaders/black_fade.frag.txt"
+#define SHADER_FRAG_BAR_PATH "resources/shaders/custom_bar.frag.txt"
+
 int main() {
   return BattleScene::Run();
 }
@@ -91,8 +95,8 @@ int BattleScene::Run() {
   double shaderCooldown = 500; // half a second
   sf::Shader shader;
 
-  if (!shader.loadFromFile("resources/shaders/pixel_blur.frag.txt", sf::Shader::Fragment)) {
-    // TODO: log error...
+  if (!shader.loadFromFile(SHADER_FRAG_PIXEL_PATH, sf::Shader::Fragment)) {
+    Logger::Log("Error loading shader: " SHADER_FRAG_PIXEL_PATH);
   } else {
     shader.setParameter("texture", sf::Shader::CurrentTexture);
     shader.setParameter("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f); // start at full
@@ -100,16 +104,16 @@ int BattleScene::Run() {
   }
 
   sf::Shader pauseShader;
-  if (!pauseShader.loadFromFile("resources/shaders/black_fade.frag.txt", sf::Shader::Fragment)) {
-    // TODO: log error...
+  if (!pauseShader.loadFromFile(SHADER_FRAG_BLACK_PATH, sf::Shader::Fragment)) {
+    Logger::Log("Error loading shader: " SHADER_FRAG_BLACK_PATH);
   } else {
     pauseShader.setParameter("texture", sf::Shader::CurrentTexture);
     pauseShader.setParameter("opacity", 0.5);
   }
 
   sf::Shader customBarShader;
-  if (!customBarShader.loadFromFile("resources/shaders/custom_bar.frag.txt", sf::Shader::Fragment)) {
-    // TODO: log error...
+  if (!customBarShader.loadFromFile(SHADER_FRAG_BAR_PATH, sf::Shader::Fragment)) {
+    Logger::Log("Error loading shader: " SHADER_FRAG_BAR_PATH);
   } else {
     customBarShader.setParameter("texture", sf::Shader::CurrentTexture);
     customBarShader.setParameter("factor", 0);

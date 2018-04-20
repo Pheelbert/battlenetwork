@@ -8,6 +8,7 @@
 
 #define RESOURCE_NAME "mettaur"
 #define RESOURCE_PATH "resources/mobs/mettaur/mettaur.animation"
+#define SHADER_FRAG_PATH "resources/shaders/white.frag.txt"
 
 #define COOLDOWN 1000.0f
 #define ATTACK_COOLDOWN 2222.f
@@ -80,8 +81,8 @@ Mettaur::Mettaur(void)
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
 
-  if (!whiteout.loadFromFile("resources/shaders/white.frag.txt", sf::Shader::Fragment)) {
-    // TODO: log error...
+  if (!whiteout.loadFromFile(SHADER_FRAG_PATH, sf::Shader::Fragment)) {
+    Logger::Log("Error loading shader: " SHADER_FRAG_PATH);
   } else {
     whiteout.setParameter("texture", sf::Shader::CurrentTexture);
   }
