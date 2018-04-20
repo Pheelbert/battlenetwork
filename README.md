@@ -20,13 +20,10 @@ R CTRL -> Use a chip
 ```
 
 # Author TheMaverickProgrammer
-## Update 4/14/2018
-Chip menu can now select and deselect chips in order from the menu using the SPACE bar to select and R CTRL to deselect.
-Chip cards are displayed in the menu and a greyscale shader is applied when the chip cannot be selected. 
-Added two working chips
-Added code compatibility to the chip selection and current solution was buggy. Commented it out for later review.
-Updated the cust bar shader to begin and end in the designated areas. Need to find a way to do this programmatically.
-Current issue: too many greyscale shaders applied to chip icons is slowing down game. Need to think about using batch render calls for items with the same shader.
+## Update 4/17/2018
+Chip icons are read from a file and correspond to their chip ID. Chips can only be selected if they're compatible with the currently selected chip codes. Compatible codes are code+1, code-1, code==code, and \*. All other codes will be greyed out. The currently selected chip renders the corresponding icon in-battle. This compatibility system works alongsdide the queueing system quite well. 
+
+TODO: The chip icons and chip cards do not map equally. Some icon rows have bombs while the cards have a completely different item type in the image. Someone will have to manually type out each card and icon ID pair or rearrange the sprites to stream them mathematically like I have done in `TextureResourceManager`.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -61,6 +58,9 @@ New:
 * Throwable Spells
 * HP+10 chip works in-battle
 * CrckPnl chip works in-battle
+* Chip icons are rendered in battle
+* Chip icons are rendered in select
+* Chip combo select system is now working
 
 Changes:
 
