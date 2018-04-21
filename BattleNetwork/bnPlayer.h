@@ -33,8 +33,7 @@ public:
   SelectedChipsUI * GetChipsUI() const;
 
   virtual int GetStateFromString(string _string);
-  virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
-
+  virtual void SetAnimation(int _state);
 private:
   int health;
 
@@ -49,7 +48,6 @@ private:
   PlayerState state;
   PlayerHealthUI* healthUI;
   SelectedChipsUI* chipsUI;
-  Animator<Sprite, PlayerState> animator;
 
   //-Animation-
   float animationProgress;

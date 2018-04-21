@@ -41,9 +41,6 @@
     <Filter Include="Battle\Component">
       <UniqueIdentifier>{dfa2cbcd-8575-45f2-93b6-c5d98a64e469}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Component\Charge">
-      <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Enumerations">
       <UniqueIdentifier>{5c9d2cbc-eb6d-4112-b2aa-bafcdf47830a}</UniqueIdentifier>
     </Filter>
@@ -80,6 +77,15 @@
     <Filter Include="Battle\Component\Animation">
       <UniqueIdentifier>{32f5b123-7c10-4d87-abfc-a9326380e103}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Living\Mettaur\States">
+      <UniqueIdentifier>{0edefaae-8923-437f-9711-2ae3d410892b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\AI">
+      <UniqueIdentifier>{b0e97f40-0be3-48ff-a3c0-924576c7938e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Component\Animation\Charge">
+      <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -107,7 +113,7 @@
       <Filter>Battle\Entity\Living\Mettaur</Filter>
     </ClCompile>
     <ClCompile Include="bnChargeComponent.cpp">
-      <Filter>Battle\Component\Charge</Filter>
+      <Filter>Battle\Component\Animation\Charge</Filter>
     </ClCompile>
     <ClCompile Include="bnEntity.cpp">
       <Filter>Battle\Entity</Filter>
@@ -154,6 +160,15 @@
     <ClCompile Include="bnAnimationComponent.cpp">
       <Filter>Battle\Component\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="bnMettaurIdleState.cpp">
+      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnMettaurAttackState.cpp">
+      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnMettaurMoveState.cpp">
+      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -193,7 +208,7 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="bnChargeComponent.h">
-      <Filter>Battle\Component\Charge</Filter>
+      <Filter>Battle\Component\Animation\Charge</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerState.h">
       <Filter>Battle\Enumerations</Filter>
@@ -263,6 +278,21 @@
     </ClInclude>
     <ClInclude Include="bnAnimationComponent.h">
       <Filter>Battle\Component\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="bnAIState.h">
+      <Filter>Battle\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="bnAI.h">
+      <Filter>Battle\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMettaurAttackState.h">
+      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMettaurIdleState.h">
+      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMettaurMoveState.h">
+      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

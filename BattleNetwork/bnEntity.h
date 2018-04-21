@@ -21,10 +21,11 @@ public:
   virtual bool Move(Direction _direction);
   virtual vector<Drawable*> GetMiscComponents();
   virtual int GetStateFromString(string _string);
-  virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
+  virtual void AddAnimation(int _state, FrameAnimation _animation, float _duration);
+  virtual void SetAnimation(int _state);
   virtual int GetHealth();
   virtual TextureType GetTextureType();
-  virtual int* getAnimOffset();
+  virtual int* GetAnimOffset();
 
   bool Teammate(Team _team);
 

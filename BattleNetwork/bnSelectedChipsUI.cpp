@@ -60,7 +60,7 @@ void SelectedChipsUI::Update() {
       dmg = Text(to_string(selectedChips[curr]->GetDamage()), *font);
       dmg.setOrigin(0, 0);
       dmg.setPosition(text.getLocalBounds().width + 13.f, 290.f);
-      dmg.setColor(sf::Color(225, 140, 0));
+      dmg.setFillColor(sf::Color(225, 140, 0));
     } else {
       text.setString("");
       dmg.setString("");

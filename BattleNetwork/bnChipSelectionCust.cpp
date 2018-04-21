@@ -213,7 +213,7 @@ void ChipSelectionCust::Draw() {
 
     if (cursorPos < 5) {
       // Draw the selected chip info
-      label.setColor(sf::Color::White);
+      label.setFillColor(sf::Color::White);
 
       if (cursorPos < chipCount) {
         // Draw the selected chip card
@@ -242,7 +242,7 @@ void ChipSelectionCust::Draw() {
         label.setPosition(2.f*16.f, 143.f);
         label.setOrigin(0, 0);
         label.setString(std::string() + queue[cursorPos].data->GetCode());
-        label.setColor(sf::Color(225, 180, 0));
+        label.setFillColor(sf::Color(225, 180, 0));
         Engine::GetInstance().Draw(label, false);
       }
 

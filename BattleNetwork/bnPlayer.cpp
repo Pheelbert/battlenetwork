@@ -51,6 +51,8 @@ Player::Player(void)
   chargeComponent.load();
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
+
+  this->SetAnimation(PlayerState::PLAYER_IDLE);
 }
 
 Player::~Player(void) {
@@ -66,9 +68,6 @@ void Player::Update(float _elapsed) {
   attackKeyPressCooldown += _elapsed;
   attackToIdleCooldown += _elapsed;
   hitCoolDown += _elapsed;
-
-  //Components updates
-  chargeComponent.update(_elapsed);
 
   //Update UI of player's health (top left corner)
   healthUI->Update();
@@ -163,6 +162,10 @@ void Player::Update(float _elapsed) {
   }
 
   RefreshTexture();
+
+  //Components updates
+  chargeComponent.update(_elapsed);
+  animationComponent.update(_elapsed);
 }
 
 bool Player::Move(Direction _direction) {
@@ -264,9 +267,6 @@ int Player::Hit(int _damage) {
 }
 
 void Player::RefreshTexture() {
-  static sf::Clock clock;
-  animator.update(clock.restart());
-
   switch (state) {
   case PlayerState::PLAYER_IDLE:
     textureType = TextureType::NAVI_MEGAMAN_MOVE;
@@ -284,15 +284,14 @@ void Player::RefreshTexture() {
     assert(false && "Invalid player state.");
   }
 
-  if (!animator.isPlayingAnimation()) {
-    setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
-    animator.playAnimation(state);
-  }
+  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
 
   if (tile != nullptr) {
     setPosition(tile->getPosition().x + 2.f, tile->getPosition().y - 76.f);
   }
-  animator.animate(*this);
+
+  animationComponent.setAnimation(state);
+
 }
 
 PlayerHealthUI* Player::GetHealthUI() const {
@@ -316,6 +315,8 @@ int Player::GetStateFromString(string _string) {
   return -1;
 }
 
-void Player::addAnimation(int _state, FrameAnimation _animation, float _duration) {
-  animator.addAnimation(static_cast<PlayerState>(_state), _animation, sf::seconds(_duration));
+void Player::SetAnimation(int _state)
+{
+  this->state = static_cast<PlayerState>(_state);
+  animationComponent.setAnimation(_state);
 }
