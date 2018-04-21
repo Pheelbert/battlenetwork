@@ -85,7 +85,7 @@ string AnimationComponent::valueOf(string _key, string _line) {
 }
 
 void AnimationComponent::update(float elapsed) {
-  animator->update(sf::milliseconds(elapsed));
+  animator->update(sf::milliseconds((sf::Int32)elapsed));
   animator->animate(*entity);
 }
 

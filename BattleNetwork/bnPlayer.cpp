@@ -290,7 +290,12 @@ void Player::RefreshTexture() {
     setPosition(tile->getPosition().x + 2.f, tile->getPosition().y - 76.f);
   }
 
-  animationComponent.setAnimation(state);
+  static PlayerState lastState = PlayerState::PLAYER_IDLE;
+
+  if (lastState != state) {
+    animationComponent.setAnimation(state);
+    lastState = state;
+  }
 
 }
 

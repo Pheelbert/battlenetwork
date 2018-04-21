@@ -130,7 +130,15 @@ int BattleScene::Run() {
       isPlayerDeleted = player->IsDeleted();
     }
 
-    clock.restart();
+    float elapsedSeconds = clock.restart().asSeconds();
+    float FPS = 0.f;
+
+    if (elapsedSeconds > 0.f) {
+      FPS = 1.0f / elapsedSeconds;
+      std::string fpsStr = std::to_string(FPS);
+      fpsStr.resize(4);
+      Engine::GetInstance().GetWindow()->setTitle(sf::String(std::string("FPS: ") + fpsStr));
+    }
 
     // TODO: Do not update when paused or in chip select
     ControllableComponent::GetInstance().update();
