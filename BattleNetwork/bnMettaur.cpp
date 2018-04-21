@@ -135,8 +135,6 @@ void Mettaur::RefreshTexture() {
     setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 55.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 105.0f);
     hitHeight = getLocalBounds().height;
   }
-
-  //animationComponent.setAnimation(state);
 }
 
 vector<Drawable*> Mettaur::GetMiscComponents() {
@@ -189,7 +187,7 @@ float Mettaur::GetHitHeight() const {
 
 const bool Mettaur::IsMettaurTurn() const
 {
-  return (Mettaur::currMetIndex == this->metID);
+  return (Mettaur::metIDs.at(Mettaur::currMetIndex) == this->metID);
 }
 
 void Mettaur::NextMettaurTurn() {

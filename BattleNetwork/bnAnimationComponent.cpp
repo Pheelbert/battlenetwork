@@ -45,6 +45,7 @@ void AnimationComponent::load() {
       assert(name == sname && "Wrong class name specified in .animation file");
     } else if (line.find("animation") != string::npos) {
       if (!frames.empty()) {
+        // std::cout << "animation total seconds: " << sf::seconds(currentAnimationDuration).asSeconds() << "\n";
         animations.addAnimation(entity->GetStateFromString(currentState), frames.at(frameAnimationIndex), sf::seconds(currentAnimationDuration));
         currentAnimationDuration = 0.0f;
       }
@@ -61,6 +62,8 @@ void AnimationComponent::load() {
       string startx = valueOf("startx", line);
       string starty = valueOf("starty", line);
       float currentFrameDuration = (float)atof(duration.c_str());
+      // std::cout << "seconds: " << sf::seconds(currentFrameDuration).asSeconds() << "\n";
+
       currentAnimationDuration += currentFrameDuration;
       int currentStartx = atoi(startx.c_str());
       int currentStarty = atoi(starty.c_str());
@@ -82,16 +85,26 @@ string AnimationComponent::valueOf(string _key, string _line) {
 }
 
 void AnimationComponent::update(float elapsed) {
-  animator->update(sf::seconds(elapsed));
+  animator->update(sf::milliseconds(elapsed));
   animator->animate(*entity);
 }
 
 void AnimationComponent::setAnimation(int state, std::function<void()> onFinish)
 {
+  /*
+    NOTE: Very hack-ish to use thor::Playback::loop() like this. We queue the animation 
+    along with a callback after the animation completes. Then we make it play again and loop forever. 
+    This is because some animations are short, single frames (like IDLE states) and while we'd like 
+    them to stop on end, Thor gives us no immediate way to do this. In fact Thor dequeues the animation 
+    completely and our Entitys draw empty. 
+
+    There might be a way we can add an onFinish event notifier for one-frame animations to prevent the update() 
+    timer for the animator. No further work has been done to confirm this solution.
+  */
   if (onFinish) {
-    animator->play() << state << thor::Playback::notify(onFinish);
+    animator->play() << state << thor::Playback::notify(onFinish) << thor::Playback::loop(state);
   }
   else {
-    animator->play() << state;
+    animator->play() << state << thor::Playback::loop(state);
   }
 }

@@ -22,6 +22,5 @@ void MettaurIdleState::OnUpdate(float _elapsed, Mettaur& met) {
 }
 
 void MettaurIdleState::OnLeave(Mettaur& met) {
-  met.SetAnimation(MobState::MOB_MOVING);
 }
 

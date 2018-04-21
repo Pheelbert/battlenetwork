@@ -8,6 +8,7 @@ class MettaurMoveState : public AIState<Mettaur>
 {
 private:
   Direction nextDirection;
+  bool isMoving;
 public:
   MettaurMoveState();
   ~MettaurMoveState();

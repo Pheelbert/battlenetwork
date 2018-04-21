@@ -6,20 +6,21 @@
 #include "bnMettaurAttackState.h"
 #include "bnMettaurIdleState.h"
 
-MettaurMoveState::MettaurMoveState() : AIState<Mettaur>() { ; }
+MettaurMoveState::MettaurMoveState() : isMoving(false), AIState<Mettaur>() { ; }
 MettaurMoveState::~MettaurMoveState() { ; }
 
 void MettaurMoveState::OnEnter(Mettaur& met) {
 }
 
 void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
+  if (isMoving) return; // We're already moving (animations take time)
 
   Tile* temp = met.tile;
   Tile* next = nullptr;
 
   Entity* target = met.GetTarget();
 
-  if (target) {
+  if (target && target->GetTile()) {
     if (target->GetTile()->GetY() < met.GetTile()->GetY()) {
       nextDirection = Direction::UP;
     }
@@ -31,7 +32,7 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
       met.StateChange(new MettaurAttackState());
       return;
     }
-  } 
+  }
 
   if (nextDirection == Direction::UP) {
     if (met.tile->GetY() - 1 > 0) {
@@ -92,13 +93,15 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
   if (next) {
     met.tile->AddEntity((Entity*)&met);
     temp->RemoveEntity((Entity*)&met);
+    auto onFinish = [&met]() { met.StateChange(new MettaurIdleState()); };
+    met.SetAnimation(MobState::MOB_MOVING, onFinish);
+    isMoving = true;
   }
   else {
-    // Cannot do a thing
+    // Cannot more or attack. Forfeit turn.
+    met.StateChange(new MettaurIdleState());
     met.NextMettaurTurn();
   }
-
-   met.StateChange(new MettaurIdleState());
 }
 
 void MettaurMoveState::OnLeave(Mettaur& met) {
