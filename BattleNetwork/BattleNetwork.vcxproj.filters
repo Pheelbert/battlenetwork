@@ -95,6 +95,9 @@
     <Filter Include="Battle\Entity\Living\Any\States">
       <UniqueIdentifier>{c05712c6-7f52-4d6d-a5ce-4d887bc75117}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Living\Player\States">
+      <UniqueIdentifier>{ce04f5a8-3636-4a36-8ba1-192b3f0785eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -180,6 +183,12 @@
     </ClCompile>
     <ClCompile Include="bnLongExplosion.cpp">
       <Filter>Battle\Entity\Artifact</Filter>
+    </ClCompile>
+    <ClCompile Include="bnPlayerControlledState.cpp">
+      <Filter>Battle\Entity\Living\Player\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnPlayerHitState.cpp">
+      <Filter>Battle\Entity\Living\Player\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +320,12 @@
     </ClInclude>
     <ClInclude Include="bnExplodeState.h">
       <Filter>Battle\Entity\Living\Any\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerControlledState.h">
+      <Filter>Battle\Entity\Living\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerHitState.h">
+      <Filter>Battle\Entity\Living\Player\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

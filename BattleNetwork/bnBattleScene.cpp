@@ -21,6 +21,7 @@ using sf::Font;
 
 #define SHADER_FRAG_PIXEL_PATH "resources/shaders/pixel_blur.frag.txt"
 #define SHADER_FRAG_BLACK_PATH "resources/shaders/black_fade.frag.txt"
+#define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
 #define SHADER_FRAG_BAR_PATH "resources/shaders/custom_bar.frag.txt"
 
 int main() {
@@ -115,6 +116,15 @@ int BattleScene::Run() {
     pauseShader.setUniform("opacity", 0.5f);
   }
 
+  sf::Shader whiteShader;
+  if (!whiteShader.loadFromFile(SHADER_FRAG_WHITE_PATH, sf::Shader::Fragment)) {
+    Logger::Log("Error loading shader: " SHADER_FRAG_WHITE_PATH);
+  }
+  else {
+    whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
+    whiteShader.setUniform("opacity", 0.5f);
+  }
+
   sf::Shader customBarShader;
   if (!customBarShader.loadFromFile(SHADER_FRAG_BAR_PATH, sf::Shader::Fragment)) {
     Logger::Log("Error loading shader: " SHADER_FRAG_BAR_PATH);
@@ -167,7 +177,8 @@ int BattleScene::Run() {
     }
 
     // NOTE: Although HUD, it fades dark when on chip cust screen and paused.
-    Engine::GetInstance().Push(&customBarSprite);
+    if(!isPlayerDeleted)
+      Engine::GetInstance().Push(&customBarSprite);
 
     if (isPaused || isInChipSelect) {
       // apply shader on draw calls below
@@ -179,7 +190,9 @@ int BattleScene::Run() {
     Engine::GetInstance().DrawOverlay();
 
     if (!isPlayerDeleted) {
-      player->GetChipsUI()->Update(); // DRAW 
+      if (player->GetChipsUI()) {
+        player->GetChipsUI()->Update(); // DRAW 
+      }
     }
 
     if (isPaused) {
@@ -272,11 +285,11 @@ int BattleScene::Run() {
         AudioResourceManager::GetInstance().StopStream();
         AudioResourceManager::GetInstance().Play(AudioType::DELETED);
         shaderCooldown = 1000;
-        Engine::GetInstance().SetShader(&pauseShader);
+        Engine::GetInstance().SetShader(&whiteShader);
         doOnce = true;
       }
 
-      pauseShader.setUniform("opacity", 1.f - (float)(shaderCooldown / 1000.f)*0.5f);
+      whiteShader.setUniform("opacity", 1.f - (float)(shaderCooldown / 1000.f)*0.5f);
 
     }
 

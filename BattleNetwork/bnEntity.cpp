@@ -2,6 +2,7 @@
 
 Entity::Entity(void)
   : tile(nullptr),
+  next(nullptr),
   previous(nullptr),
   field(nullptr),
   team(Team::UNKNOWN),

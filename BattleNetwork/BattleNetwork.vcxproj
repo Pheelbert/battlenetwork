@@ -165,6 +165,7 @@
     <ClCompile Include="bnMettaurIdleState.cpp" />
     <ClCompile Include="bnMettaurMoveState.cpp" />
     <ClCompile Include="bnMobHealthUI.cpp" />
+    <ClCompile Include="bnPlayerHitState.cpp" />
     <ClCompile Include="bnProgBomb.cpp" />
     <ClCompile Include="bnProgsMan.cpp" />
     <ClCompile Include="bnAnimationComponent.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="bnEngine.cpp" />
     <ClCompile Include="bnSelectedChipsUI.cpp" />
     <ClCompile Include="bnLongExplosion.cpp" />
+    <ClCompile Include="bnPlayerControlledState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAI.h" />
@@ -204,6 +206,8 @@
     <ClInclude Include="bnMettaurMoveState.h" />
     <ClInclude Include="bnMobHealthUI.h" />
     <ClInclude Include="bnMobState.h" />
+    <ClInclude Include="bnPlayerControlledState.h" />
+    <ClInclude Include="bnPlayerHitState.h" />
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnAnimationComponent.h" />

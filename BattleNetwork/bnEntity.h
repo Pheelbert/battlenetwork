@@ -44,7 +44,8 @@ public:
   void TryDelete();
 
 protected:
-  Tile * tile;
+  Tile* next;
+  Tile* tile;
   Tile* previous;
   Field* field;
   Team team;
