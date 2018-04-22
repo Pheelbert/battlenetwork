@@ -47,10 +47,10 @@ void LongExplosion::Update(float _elapsed) {
     x2 = tile->getPosition().x + 10.0f;
     y2 = tile->getPosition().y - 50.0f;
   }
-  explosionProgress += 0.030f;
+  explosionProgress += 0.020f;
   if (explosionProgress >= 0.3f) {
-    explosionProgress2 += 0.030f;
-    if (explosionProgress >= 0.9f) {
+    explosionProgress2 += 0.020f;
+    if (explosionProgress >= 1.0f) {
     }
     if (explosionProgress2 >= 0.8f) {
       deleted = true;

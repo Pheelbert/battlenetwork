@@ -83,7 +83,7 @@ void ExplodeState<Any>::OnEnter(Any& e) {
 template<typename Any>
 void ExplodeState<Any>::OnUpdate(float _elapsed, Any& e) {
   /* freeze frame, flash white */
-  if ((int)((_elapsed/10.f) * 5) % 2 == 0) {
+  if ((int)((_elapsed) * 5) % 2 == 0) {
     e.SetShader(&whiteout);
   }
   else {

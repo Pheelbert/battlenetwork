@@ -42,4 +42,5 @@ private:
   Layers layers;
   Overlay overlay;
   sf::RenderStates state;
+  sf::RenderTexture postprocessing;
 };

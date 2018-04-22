@@ -8,13 +8,14 @@ Engine& Engine::GetInstance() {
 void Engine::Initialize() {
   window = new RenderWindow(VideoMode(480, 320), "Battle Network : Prototype");
   window->setFramerateLimit(60);
+  postprocessing.create(480, 320); // Same as display
 }
 
 void Engine::Draw(Drawable& _drawable, bool applyShaders) {
   if (applyShaders) {
-    window->draw(_drawable, state);
+    postprocessing.draw(_drawable, state);
   } else {
-    window->draw(_drawable);
+    postprocessing.draw(_drawable);
   }
 }
 
@@ -24,9 +25,9 @@ void Engine::Draw(Drawable* _drawable, bool applyShaders) {
   }
 
   if (applyShaders) {
-    window->draw(*_drawable, state);
+    postprocessing.draw(*_drawable, state);
   } else {
-    window->draw(*_drawable);
+    postprocessing.draw(*_drawable);
   }
 }
 
@@ -38,14 +39,8 @@ void Engine::Draw(LayeredDrawable* _drawable) {
   sf::Shader* shader = context->GetShader();
 
   if (shader != nullptr) {
-    sf::RenderTexture* postFX = new sf::RenderTexture();
     const sf::Texture* original = context->getTexture();
-    postFX->create(original->getSize().x, original->getSize().y);
-    postFX->draw(sf::Sprite(*context->getTexture()), shader); // bake
-    context->setTexture(postFX->getTexture());
-    Draw(context, false);
-    context->setTexture(*original);
-    delete postFX;
+    postprocessing.draw(*context, shader); // bake
   } else {
     Draw(context, true);
   }
@@ -82,16 +77,9 @@ void Engine::Draw(vector<LayeredDrawable*> _drawable) {
 
     LayeredDrawable* context = *it;
     sf::Shader* shader = context->GetShader();
-
     if (shader != nullptr) {
-      sf::RenderTexture* postFX = new sf::RenderTexture();
       const sf::Texture* original = context->getTexture();
-      postFX->create(original->getSize().x, original->getSize().y);
-      postFX->draw(sf::Sprite(*context->getTexture()), shader); // bake
-      (*it)->setTexture(postFX->getTexture());
-      Draw(*it, true);
-      (*it)->setTexture(*original);
-      delete postFX;
+      postprocessing.draw(*context, shader); // bake
     } else {
       Draw(context, true);
     }
@@ -106,7 +94,16 @@ void Engine::Draw(vector<Drawable*> _drawable, bool applyShaders) {
 }
 
 void Engine::Display() {
+  // flip and ready buffer
+  postprocessing.display();
+  // Capture buffer in a drawable context
+  sf::Sprite postFX(postprocessing.getTexture());
+  // drawbuffer on top of the scene
+  window->draw(postFX);
+  // show final result
   window->display();
+  // Prepare buffer for next cycle
+  postprocessing.clear(sf::Color::Transparent);
 }
 
 bool Engine::Running() {
