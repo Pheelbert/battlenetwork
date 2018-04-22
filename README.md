@@ -24,9 +24,14 @@ R CTRL -> Use a chip
 Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki)? 
 
 # Author TheMaverickProgrammer
-## Update 4/21/2018
-Upgraded SFML and Thor to latest versions. Built new DLLs and libs for Thor against x64 arch and latest SFML. Rewrote AnimationComponent to use the new Thor API changes. Refactored the Mettaur AI into its own resuable classes: AI<Type> and AIState<Type>. Each enemy will inherit the AI<Type> class and set states to better manage AI. See the new and improved Mettaur class. Created a special state called ExplodeState<Any> that takes in any Entity type for each virus to be implemented.
- Rewrote shader pipeline to bake into one target texture and display that on the screen. The speed was astronimcal. The game stays between 59-62 FPS for me no matter how many shaders are now applied.
+## Update 4/22/2018
+Upgraded SFML and Thor to latest versions. Built new DLLs and libs for Thor against x64 arch and latest SFML. Rewrote AnimationComponent to use the new Thor API changes. 
+
+Refactored the Mettaur AI into its own resuable classes: AI<Type> and AIState<Type>. Each enemy will inherit the AI<Type> class and set states to better manage AI. See the new and improved Mettaur class. Created a special state called ExplodeState<Any> that takes in any Entity type for each virus to be implemented.
+ 
+Refatored player to use new AI and state system via PlayerControlledState. Player will move onto PlayerHurtState when hit and revoke all charger status and ignore input. Reintegrated original move-lag timer with newest API to wait until the move animation ended before switching tiles. The overal result is incredibly smooth. Finally for the player I demonstrated the power of ExplodeState<Any> by pushing it onto the player state when the player dies. It works well.
+
+Rewrote shader pipeline to bake into one target texture and display that on the screen. The speed was astronimcal. The game stays between 59-62 FPS for me no matter how many shaders are now applied.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -65,6 +70,7 @@ New:
 * Chip icons are rendered in select
 * Chip combo select system is now working
 * Enemy AI and state system
+* Player AI, state, and integrated keyboard control system
 * Artifacts
 
 Changes from original author:
@@ -77,6 +83,7 @@ Changes from original author:
 * Moved origin logic for health UI components into its own function in Entity class Entity::getAnimOffset()
 * Upgraded Thor and SFML
 * Rewrote AnimationComponent to use latest Thor API
+* Rewrote player movement code to use latest AnimationComponent features
 
 # Author Pheelbert
 Wrote the foundation for the battle engine. He wrote the tile-based movement and update system emulating an authentic mmbn player experience.
