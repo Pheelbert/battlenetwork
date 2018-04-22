@@ -106,6 +106,6 @@ int ProgBomb::GetStateFromString(string _string) {
   return 0;
 }
 
-void ProgBomb::addAnimation(int _state, FrameAnimation _animation, float _duration) {
+void ProgBomb::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
   assert(false && "Wave does not have an animator");
 }

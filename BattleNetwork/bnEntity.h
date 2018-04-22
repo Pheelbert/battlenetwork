@@ -41,6 +41,7 @@ public:
   void SetHealth(int _health);
 
   bool IsDeleted() const;
+  void TryDelete();
 
 protected:
   Tile * tile;

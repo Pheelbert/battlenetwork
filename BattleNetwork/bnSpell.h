@@ -15,7 +15,7 @@ public:
   virtual void Attack(Entity* _entity) = 0;
   virtual vector<Drawable*> GetMiscComponents() = 0;
   virtual int GetStateFromString(string _string) = 0;
-  virtual void addAnimation(int _state, FrameAnimation _animation, float _duration) = 0;
+  virtual void AddAnimation(int _state, FrameAnimation _animation, float _duration) = 0;
 
   void SetDirection(Direction _direction);
   Direction GetDirection() const;

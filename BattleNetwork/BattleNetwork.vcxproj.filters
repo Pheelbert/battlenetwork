@@ -86,6 +86,15 @@
     <Filter Include="Battle\Component\Animation\Charge">
       <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Artifact">
+      <UniqueIdentifier>{9be22663-7ffb-4d72-afb7-0ae8f6b0b8d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Living\Any">
+      <UniqueIdentifier>{7e781496-123e-40b5-af0b-4f433296b3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Living\Any\States">
+      <UniqueIdentifier>{c05712c6-7f52-4d6d-a5ce-4d887bc75117}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -168,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="bnMettaurMoveState.cpp">
       <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnLongExplosion.cpp">
+      <Filter>Battle\Entity\Artifact</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -293,6 +305,12 @@
     </ClInclude>
     <ClInclude Include="bnMettaurMoveState.h">
       <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnLongExplosion.h">
+      <Filter>Battle\Entity\Artifact</Filter>
+    </ClInclude>
+    <ClInclude Include="bnExplodeState.h">
+      <Filter>Battle\Entity\Living\Any\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

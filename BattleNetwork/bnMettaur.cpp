@@ -2,6 +2,7 @@
 #include "bnMettaurIdleState.h"
 #include "bnMettaurAttackState.h"
 #include "bnMettaurMoveState.h"
+#include "bnExplodeState.h"
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnWave.h"
@@ -11,7 +12,6 @@
 
 #define RESOURCE_NAME "mettaur"
 #define RESOURCE_PATH "resources/mobs/mettaur/mettaur.animation"
-#define SHADER_FRAG_PATH "resources/shaders/white.frag.txt"
 
 #define MOVING_ANIMATION_SPRITES 2
 #define MOVING_ANIMATION_WIDTH 32
@@ -55,12 +55,6 @@ Mettaur::Mettaur(void)
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
 
-  if (!whiteout.loadFromFile(SHADER_FRAG_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_PATH);
-  } else {
-    whiteout.setUniform("texture", sf::Shader::CurrentTexture);
-  }
-
   metID = (int)Mettaur::metIDs.size();
   Mettaur::metIDs.push_back((int)Mettaur::metIDs.size());
 }
@@ -101,15 +95,18 @@ int* Mettaur::GetAnimOffset() {
 }
 
 void Mettaur::Update(float _elapsed) {
-  //TODO: Explode animation then set deleted to true once it finishes
-  if (health <= 0) {
-    deleted = true;
+  healthUI->Update();
+
+  // Explode if health depleted
+  if (GetHealth() <= 0) {
+    this->StateChange(new ExplodeState<Mettaur>());
+    this->StateUpdate(_elapsed);
+    return;
   }
 
   this->StateUpdate(_elapsed);
 
   RefreshTexture();
-  healthUI->Update();
   SetShader(nullptr);
   animationComponent.update(_elapsed);
 
@@ -176,7 +173,6 @@ void Mettaur::SetHealth(int _health) {
 }
 
 int Mettaur::Hit(int _damage) {
-  SetShader(&whiteout);
   (health - _damage < 0) ? health = 0 : health -= _damage;
   return health;
 }

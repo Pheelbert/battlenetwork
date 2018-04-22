@@ -178,6 +178,7 @@
     <ClCompile Include="bnMettaur.cpp" />
     <ClCompile Include="bnEngine.cpp" />
     <ClCompile Include="bnSelectedChipsUI.cpp" />
+    <ClCompile Include="bnLongExplosion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAI.h" />
@@ -193,9 +194,11 @@
     <ClInclude Include="bnControllableEvent.h" />
     <ClInclude Include="bnEntity.h" />
     <ClInclude Include="bnAIState.h" />
+    <ClInclude Include="bnExplodeState.h" />
     <ClInclude Include="bnField.h" />
     <ClInclude Include="bnBattleScene.h" />
     <ClInclude Include="bnLayered.h" />
+    <ClInclude Include="bnLongExplosion.h" />
     <ClInclude Include="bnMemory.h" />
     <ClInclude Include="bnMettaurIdleState.h" />
     <ClInclude Include="bnMettaurMoveState.h" />

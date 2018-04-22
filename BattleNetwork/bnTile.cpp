@@ -154,7 +154,7 @@ void Tile::Update(float _elapsed) {
   vector<Entity*> copy = this->entities;
   for (auto entity = copy.begin(); entity < copy.end(); ++entity) {
     (*entity)->Update(_elapsed);
-    if ((*entity)->IsDeleted()) {
+      if ((*entity)->IsDeleted()) {
       this->RemoveEntity(*entity);
       field->RemoveEntity(*entity);
     }

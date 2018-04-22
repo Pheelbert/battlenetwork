@@ -85,3 +85,9 @@ void Entity::SetHealth(const int _health) {
 bool Entity::IsDeleted() const {
   return deleted;
 }
+
+void Entity::TryDelete()
+{
+  deleted = (health <= 0);
+  return;
+}

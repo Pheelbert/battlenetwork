@@ -55,6 +55,4 @@ private:
   Direction direction;
   TextureType textureType;
   MobHealthUI* healthUI;
-
-  sf::Shader whiteout;
 };
