@@ -2,6 +2,7 @@
 
 Entity::Entity(void)
   : tile(nullptr),
+  next(nullptr),
   previous(nullptr),
   field(nullptr),
   team(Team::UNKNOWN),
@@ -29,8 +30,12 @@ int Entity::GetStateFromString(string _string) {
   return 0;
 }
 
-void Entity::addAnimation(int _state, FrameAnimation _animation, float _duration) {
-  assert(false && "addAnimation shouldn't be called directly from Entity");
+void Entity::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
+  assert(false && "AddAnimation shouldn't be called directly from Entity");
+}
+
+void Entity::SetAnimation(int _state) {
+  assert(false && "SetAnimation shouldn't be called directly from Entity");
 }
 
 int Entity::GetHealth() {
@@ -70,7 +75,7 @@ void Entity::SetTeam(Team _team) {
   team = _team;
 }
 
-int* Entity::getAnimOffset() {
+int* Entity::GetAnimOffset() {
   return nullptr;
 }
 
@@ -80,4 +85,10 @@ void Entity::SetHealth(const int _health) {
 
 bool Entity::IsDeleted() const {
   return deleted;
+}
+
+void Entity::TryDelete()
+{
+  deleted = (health <= 0);
+  return;
 }

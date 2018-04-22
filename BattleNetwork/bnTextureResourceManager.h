@@ -22,7 +22,8 @@ public:
   void LoadAllTextures();
   Texture* LoadTextureFromFile(string _path);
   Texture* GetTexture(TextureType _ttype);
-  sf::IntRect GetTextureRectFromChipID(unsigned ID);
+  sf::IntRect GetCardRectFromChipID(unsigned ID);
+  sf::IntRect GetIconRectFromChipID(unsigned ID);
   Font* LoadFontFromFile(string _path);
   string LoadDataFromFile(string _path);
 

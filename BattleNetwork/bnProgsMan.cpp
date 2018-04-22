@@ -67,7 +67,7 @@ ProgsMan::ProgsMan(void)
   if (!whiteout.loadFromFile(SHADER_FRAG_PATH, sf::Shader::Fragment)) {
     Logger::Log("Error loading shader: " SHADER_FRAG_PATH);
   } else {
-    whiteout.setParameter("texture", sf::Shader::CurrentTexture);
+    whiteout.setUniform("texture", sf::Shader::CurrentTexture);
   }
 
   target = nullptr;
@@ -339,37 +339,30 @@ void ProgsMan::Attack() {
 }
 
 void ProgsMan::RefreshTexture() {
-  animator.update(clock.restart());
-
-  if (!animator.isPlayingAnimation()) {
-    if (state == MobState::MOB_IDLE) {
-      textureType = TextureType::MOB_PROGSMAN_IDLE;
-    } else if (state == MobState::MOB_MOVING) {
-      textureType = TextureType::MOB_PROGSMAN_MOVE;
-    } else if (state == MobState::MOB_ATTACKING) {
-      textureType = TextureType::MOB_PROGSMAN_PUNCH;
-    } else if (state == MobState::MOB_THROW) {
-      textureType = TextureType::MOB_PROGSMAN_THROW;
-    }
-
-    setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
-
-    if (textureType == TextureType::MOB_PROGSMAN_IDLE) {
-      setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 65.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 115.0f);
-      hitHeight = getLocalBounds().height;
-    } else if (textureType == TextureType::MOB_PROGSMAN_MOVE) {
-      setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 65.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
-    } else if (textureType == TextureType::MOB_PROGSMAN_PUNCH) {
-      setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 115.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
-      hitHeight = getLocalBounds().height;
-    } else if (textureType == TextureType::MOB_PROGSMAN_THROW) {
-      setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 115.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
-      hitHeight = getLocalBounds().height;
-    }
-
-    animator.playAnimation(state);
+  if (state == MobState::MOB_IDLE) {
+    textureType = TextureType::MOB_PROGSMAN_IDLE;
+  } else if (state == MobState::MOB_MOVING) {
+    textureType = TextureType::MOB_PROGSMAN_MOVE;
+  } else if (state == MobState::MOB_ATTACKING) {
+    textureType = TextureType::MOB_PROGSMAN_PUNCH;
+  } else if (state == MobState::MOB_THROW) {
+    textureType = TextureType::MOB_PROGSMAN_THROW;
   }
-  animator.animate(*this);
+
+  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
+
+  if (textureType == TextureType::MOB_PROGSMAN_IDLE) {
+    setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 65.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 115.0f);
+    hitHeight = getLocalBounds().height;
+  } else if (textureType == TextureType::MOB_PROGSMAN_MOVE) {
+    setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 65.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
+  } else if (textureType == TextureType::MOB_PROGSMAN_PUNCH) {
+    setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 115.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
+    hitHeight = getLocalBounds().height;
+  } else if (textureType == TextureType::MOB_PROGSMAN_THROW) {
+    setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 115.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 125.0f);
+    hitHeight = getLocalBounds().height;
+  }
 }
 
 vector<Drawable*> ProgsMan::GetMiscComponents() {
@@ -398,10 +391,6 @@ int ProgsMan::GetStateFromString(string _string) {
   Logger::Log(string("Failed to find corresponding enum: " + _string));
   assert(false);
   return -1;
-}
-
-void ProgsMan::addAnimation(int _state, FrameAnimation _animation, float _duration) {
-  animator.addAnimation(static_cast<MobState>(_state), _animation, sf::seconds(_duration));
 }
 
 TextureType ProgsMan::GetTextureType() const {

@@ -20,7 +20,7 @@ SelectedChipsUI::SelectedChipsUI(Entity* _entity)
 SelectedChipsUI::SelectedChipsUI(Player* _player)
   : player(_player) {
   chipCount = curr = 0;
-  icon = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICON));
+  icon = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICONS));
   icon.setScale(sf::Vector2f(2.f, 2.f));
 
   font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
@@ -45,8 +45,11 @@ bool SelectedChipsUI::GetNextComponent(Drawable*& out) {
 void SelectedChipsUI::Update() {
   if (player) {
     // TODO: Move draw out of update. Utilize components.
+    int chipOrder = 0;
     for (int i = curr; i < chipCount; i++) {
-      icon.setPosition(player->getPosition() + sf::Vector2f(30.0f - (i - curr) * 3.0f, -(i - curr) * 3.0f));
+      icon.setPosition(player->getPosition() + sf::Vector2f(30.0f - (i - curr) * 3.0f, - (i - curr) * 3.0f));
+      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromChipID(selectedChips[curr]->GetID());
+      icon.setTextureRect(iconSubFrame);
       Engine::GetInstance().Draw(icon);
     }
 
@@ -57,7 +60,7 @@ void SelectedChipsUI::Update() {
       dmg = Text(to_string(selectedChips[curr]->GetDamage()), *font);
       dmg.setOrigin(0, 0);
       dmg.setPosition(text.getLocalBounds().width + 13.f, 290.f);
-      dmg.setColor(sf::Color(225, 140, 0));
+      dmg.setFillColor(sf::Color(225, 140, 0));
     } else {
       text.setString("");
       dmg.setString("");

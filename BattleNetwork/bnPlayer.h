@@ -10,11 +10,13 @@ using sf::IntRect;
 #include "bnPlayerHealthUI.h"
 #include "bnChargeComponent.h"
 #include "bnAnimationComponent.h"
-#include "bnControllableComponent.h"
 #include "bnSelectedChipsUI.h"
+#include "bnAI.h"
 
-class Player : public Entity {
+class Player : public Entity, public AI<Player> {
 public:
+  friend class PlayerControlledState;
+
   Player(void);
   virtual ~Player(void);
 
@@ -29,32 +31,21 @@ public:
   int Hit(int _damage);
 
   PlayerHealthUI* GetHealthUI() const;
-
   SelectedChipsUI * GetChipsUI() const;
 
   virtual int GetStateFromString(string _string);
-  virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
-
+  virtual void SetAnimation(int _state, std::function<void()> onFinish = nullptr);
 private:
   int health;
-
-  //Cooldowns
-  float moveKeyPressCooldown;
-  float moveLagCooldown;
-  float attackKeyPressCooldown;
-  float attackToIdleCooldown;
-  float hitCoolDown;
 
   TextureType textureType;
   PlayerState state;
   PlayerHealthUI* healthUI;
   SelectedChipsUI* chipsUI;
-  Animator<Sprite, PlayerState> animator;
 
   //-Animation-
   float animationProgress;
 
-  ControllableComponent* controllableComponent;
   ChargeComponent chargeComponent;
   AnimationComponent animationComponent;
 };

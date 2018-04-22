@@ -1,4 +1,7 @@
 #include "bnPlayer.h"
+#include "bnPlayerControlledState.h"
+#include "bnPlayerHitState.h"
+#include "bnExplodeState.h"
 #include "bnField.h"
 #include "bnBuster.h"
 #include "bnTextureResourceManager.h"
@@ -8,14 +11,6 @@
 
 #define RESOURCE_NAME "megaman"
 #define RESOURCE_PATH "resources/navis/megaman/megaman.animation"
-
-#define MOVE_KEY_PRESS_COOLDOWN 200.0f
-#define MOVE_LAG_COOLDOWN 40.0f
-#define ATTACK_KEY_PRESS_COOLDOWN 300.0f
-#define ATTACK_TO_IDLE_COOLDOWN 150.0f
-#define HIT_COOLDOWN 300.0f
-
-#define CHARGE_COUNTER_MAX 1400.0f
 
 #define MOVE_ANIMATION_SPRITES 4
 #define MOVE_ANIMATION_WIDTH 38
@@ -29,18 +24,14 @@ Player::Player(void)
   : health(99),
   state(PlayerState::PLAYER_IDLE),
   textureType(TextureType::NAVI_MEGAMAN_MOVE),
-  controllableComponent(&ControllableComponent::GetInstance()),
-  chargeComponent(ChargeComponent(this)),
-  animationComponent(AnimationComponent(this)) {
+  chargeComponent(this),
+  animationComponent(this),
+  AI<Player>(this) 
+{
+  this->StateChange(new PlayerControlledState());
+
   SetLayer(0);
   team = Team::BLUE;
-
-  //Cooldowns
-  moveKeyPressCooldown = 0.0f;
-  moveLagCooldown = 0.0f;
-  attackKeyPressCooldown = 0.0f;
-  attackToIdleCooldown = 0.0f;
-  hitCoolDown = 0.0f;
 
   //Animation
   animationProgress = 0.0f;
@@ -51,131 +42,50 @@ Player::Player(void)
 
   //Components setup and load
   chargeComponent.load();
+
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
+
+  previous = nullptr;
 }
 
 Player::~Player(void) {
-  controllableComponent = nullptr;
   delete chipsUI;
   delete healthUI;
 }
 
 void Player::Update(float _elapsed) {
-
-  moveKeyPressCooldown += _elapsed;
-  moveLagCooldown += _elapsed;
-  attackKeyPressCooldown += _elapsed;
-  attackToIdleCooldown += _elapsed;
-  hitCoolDown += _elapsed;
-
-  //Components updates
-  chargeComponent.update(_elapsed);
-
   //Update UI of player's health (top left corner)
   healthUI->Update();
 
-  // Update chip UI
-  // chipsUI->Update(); TODO: Forced z-ordering for some UI?
-
-  // Cant do anything if hit/stunned 
-  if (hitCoolDown < HIT_COOLDOWN) {
-    RefreshTexture();
+  // Explode if health depleted
+  if (GetHealth() <= 0) {
+    if (chipsUI) {
+      delete chipsUI;
+      chipsUI = nullptr;
+    }
+    this->StateChange(new ExplodeState<Player>());
+    this->StateUpdate(_elapsed);
     return;
-  } else {
-    // we're just now leaving the hit state
-    if (state == PlayerState::PLAYER_HIT) {
-      state = PlayerState::PLAYER_IDLE;
-    }
   }
 
-  //Cooldown until player's movement catches up to actual position (avoid walking through spells)
-  if (moveLagCooldown >= MOVE_LAG_COOLDOWN) {
-    if (previous) {
-      if (previous->IsCracked()) {
-        AudioResourceManager::GetInstance().Play(AudioType::PANEL_CRACK);
-        previous->SetState(TileState::BROKEN);
-      }
-
-      previous->RemoveEntity(this);
-      previous = nullptr;
-    }
-  }
-
-  Direction direction = Direction::NONE;
-  if (moveKeyPressCooldown >= MOVE_KEY_PRESS_COOLDOWN) {
-    if (controllableComponent->has(PRESSED_UP)) {
-      direction = Direction::UP;
-    } else if (controllableComponent->has(PRESSED_LEFT)) {
-      direction = Direction::LEFT;
-    } else if (controllableComponent->has(PRESSED_DOWN)) {
-      direction = Direction::DOWN;
-    } else if (controllableComponent->has(PRESSED_RIGHT)) {
-      direction = Direction::RIGHT;
-    }
-  } else {
-    state = PlayerState::PLAYER_IDLE;
-  }
-
-  if (attackKeyPressCooldown >= ATTACK_KEY_PRESS_COOLDOWN) {
-    if (controllableComponent->has(PRESSED_ACTION1)) {
-      attackKeyPressCooldown = 0.0f;
-      chargeComponent.SetCharging(true);
-    }
-  }
-
-  if (controllableComponent->empty()) {
-    if (state != PlayerState::PLAYER_SHOOTING) {
-      state = PlayerState::PLAYER_IDLE;
-    }
-  }
-
-  if (controllableComponent->has(RELEASED_UP)) {
-    direction = Direction::NONE;
-  } else if (controllableComponent->has(RELEASED_LEFT)) {
-    direction = Direction::NONE;
-  } else if (controllableComponent->has(RELEASED_DOWN)) {
-    direction = Direction::NONE;
-  } else if (controllableComponent->has(RELEASED_RIGHT)) {
-    direction = Direction::NONE;
-  } else if (controllableComponent->has(RELEASED_ACTION1)) {
-    Attack(chargeComponent.GetChargeCounter());
-    chargeComponent.SetCharging(false);
-    attackToIdleCooldown = 0.0f;
-    state = PlayerState::PLAYER_SHOOTING;
-  } else if (controllableComponent->has(RELEASED_ACTION2)) {
-    chipsUI->UseNextChip();
-  }
-
-  if (direction != Direction::NONE && state != PlayerState::PLAYER_SHOOTING) {
-    bool moved = Move(direction);
-    if (moved) {
-      state = PlayerState::PLAYER_MOVING;
-    } else {
-      state = PlayerState::PLAYER_IDLE;
-    }
-    moveKeyPressCooldown = 0.0f;
-    moveLagCooldown = 0.0f;
-  }
-
-  if (attackToIdleCooldown >= ATTACK_TO_IDLE_COOLDOWN) {
-    if (state == PlayerState::PLAYER_SHOOTING) {
-      state = PlayerState::PLAYER_IDLE;
-    }
-  }
+  this->StateUpdate(_elapsed);
 
   RefreshTexture();
+
+  //Components updates
+  chargeComponent.update(_elapsed);
+  animationComponent.update(_elapsed);
 }
 
 bool Player::Move(Direction _direction) {
   bool moved = false;
   Tile* temp = tile;
-  Tile* next = nullptr;
   if (_direction == Direction::UP) {
     if (tile->GetY() - 1 > 0) {
       next = field->GetAt(tile->GetX(), tile->GetY() - 1);
       if (Teammate(next->GetTeam()) && next->IsWalkable()) {
-        SetTile(next);
+        ;
       } else {
         next = nullptr;
       }
@@ -184,7 +94,7 @@ bool Player::Move(Direction _direction) {
     if (tile->GetX() - 1 > 0) {
       next = field->GetAt(tile->GetX() - 1, tile->GetY());
       if (Teammate(next->GetTeam()) && next->IsWalkable()) {
-        SetTile(next);
+        ;
       } else {
         next = nullptr;
       }
@@ -193,7 +103,7 @@ bool Player::Move(Direction _direction) {
     if (tile->GetY() + 1 <= (int)field->GetHeight()) {
       next = field->GetAt(tile->GetX(), tile->GetY() + 1);
       if (Teammate(next->GetTeam()) && next->IsWalkable()) {
-        SetTile(next);
+        ;
       } else {
         next = nullptr;
       }
@@ -202,7 +112,7 @@ bool Player::Move(Direction _direction) {
     if (tile->GetX() + 1 <= static_cast<int>(field->GetWidth())) {
       next = field->GetAt(tile->GetX() + 1, tile->GetY());
       if (Teammate(next->GetTeam()) && next->IsWalkable()) {
-        SetTile(next);
+        ;
       } else {
         next = nullptr;
       }
@@ -213,14 +123,12 @@ bool Player::Move(Direction _direction) {
     previous = temp;
     moved = true;
   }
-
-  tile->AddEntity(this);
   return moved;
 }
 
 void Player::Attack(float _charge) {
   if (tile->GetX() <= static_cast<int>(field->GetWidth())) {
-    Spell* spell = new Buster(field, team, (_charge >= CHARGE_COUNTER_MAX));
+    Spell* spell = new Buster(field, team, chargeComponent.IsFullyCharged());
     spell->SetDirection(Direction::RIGHT);
     field->AddEntity(spell, tile->GetX(), tile->GetY());
   }
@@ -234,9 +142,12 @@ vector<Drawable*> Player::GetMiscComponents() {
   }
   drawables.push_back(&chargeComponent.GetSprite());
 
-  while (chipsUI->GetNextComponent(component)) {
-    drawables.push_back(component);
+  if (chipsUI) {
+    while (chipsUI->GetNextComponent(component)) {
+      drawables.push_back(component);
+    }
   }
+
   return drawables;
 }
 
@@ -249,26 +160,28 @@ int Player::GetHealth() const {
 }
 
 int Player::Hit(int _damage) {
-  hitCoolDown = 0.0f; // start the timer 
-  state = PlayerState::PLAYER_HIT;
-  AudioResourceManager::GetInstance().Play(AudioType::HURT);
-
   bool result = false;
 
   if (health - _damage < 0) {
-    health = 0; deleted = true;
+    health = 0;
     result = true;
   } else {
     health -= _damage;
+    if (previous) {
+      // Go back where we were hit
+      this->tile->RemoveEntity(this);
+      this->SetTile(previous);
+      previous->AddEntity(this);
+      previous = nullptr;
+      next = nullptr;
+    }
+    this->StateChange(new PlayerHitState(600.0f));
   }
 
   return result;
 }
 
 void Player::RefreshTexture() {
-  static sf::Clock clock;
-  animator.update(clock.restart());
-
   switch (state) {
   case PlayerState::PLAYER_IDLE:
     textureType = TextureType::NAVI_MEGAMAN_MOVE;
@@ -286,15 +199,11 @@ void Player::RefreshTexture() {
     assert(false && "Invalid player state.");
   }
 
-  if (!animator.isPlayingAnimation()) {
-    setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
-    animator.playAnimation(state);
-  }
+  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
 
   if (tile != nullptr) {
     setPosition(tile->getPosition().x + 2.f, tile->getPosition().y - 76.f);
   }
-  animator.animate(*this);
 }
 
 PlayerHealthUI* Player::GetHealthUI() const {
@@ -318,6 +227,7 @@ int Player::GetStateFromString(string _string) {
   return -1;
 }
 
-void Player::addAnimation(int _state, FrameAnimation _animation, float _duration) {
-  animator.addAnimation(static_cast<PlayerState>(_state), _animation, sf::seconds(_duration));
+void Player::SetAnimation(int _state, std::function<void()> onFinish) {
+  this->state = static_cast<PlayerState>(_state);
+  animationComponent.setAnimation(_state, onFinish);
 }

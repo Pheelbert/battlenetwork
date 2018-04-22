@@ -28,7 +28,7 @@ void MobHealthUI::Update() {
     setOrigin(getLocalBounds().width, 0);
     setString(to_string(mob->GetHealth()));
 
-    int* res = mob->getAnimOffset();
+    int* res = mob->GetAnimOffset();
 
     if (res != nullptr) {
       //std::cout << "res: { " << res[0] << ", " << res[1] << " } " << std::endl;

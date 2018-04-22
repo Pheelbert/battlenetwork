@@ -1,7 +1,7 @@
 #pragma once
 #include <Thor/Animations.hpp>
 using thor::FrameAnimation;
-using thor::Animator;
+using thor::AnimationMap;
 using sf::IntRect;
 
 #include "bnEntity.h"
@@ -20,7 +20,6 @@ public:
   virtual void RefreshTexture();
   virtual vector<Drawable*> GetMiscComponents();
   virtual int GetStateFromString(string _string);
-  virtual void addAnimation(int _state, FrameAnimation _animation, float _duration);
   virtual int GetHealth() const;
   virtual TextureType GetTextureType() const;
 
@@ -59,7 +58,7 @@ private:
   MobState state;
   TextureType textureType;
   MobHealthUI* healthUI;
-  Animator<Sprite, MobState> animator;
+  AnimationMap<Sprite, MobState> animator;
   sf::Shader whiteout;
 
   // AI

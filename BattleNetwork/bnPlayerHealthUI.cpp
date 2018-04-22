@@ -55,9 +55,9 @@ void PlayerHealthUI::Update() {
     text.setPosition(80.0f, -4.f);
 
     if (currHP > player->GetHealth()) {
-      text.setColor(sf::Color(255, 165, 0));
+      text.setFillColor(sf::Color(255, 165, 0));
     } else if (currHP < player->GetHealth()) {
-      text.setColor(sf::Color(0, 255, 80));
+      text.setFillColor(sf::Color(0, 255, 80));
     }
   }
 }

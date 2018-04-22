@@ -1,4 +1,5 @@
 # Video w/ Sound
+#### Video outdated (since 4/17/2018)
 Click the thumbnail to watch on youtube
 
 [![Video of engine 4/14/2018](https://img.youtube.com/vi/zztrHvrZON4/0.jpg)](https://www.youtube.com/watch?v=zztrHvrZON4)
@@ -19,21 +20,25 @@ Return -> Bring up chip select GUI / Hide
 R CTRL -> Use a chip
 ```
 
+# Wiki
+Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki)? 
+
 # Author TheMaverickProgrammer
-## Update 4/14/2018
-Chip menu can now select and deselect chips in order from the menu using the SPACE bar to select and R CTRL to deselect.
-Chip cards are displayed in the menu and a greyscale shader is applied when the chip cannot be selected. 
-Added two working chips
-Added code compatibility to the chip selection and current solution was buggy. Commented it out for later review.
-Updated the cust bar shader to begin and end in the designated areas. Need to find a way to do this programmatically.
-Current issue: too many greyscale shaders applied to chip icons is slowing down game. Need to think about using batch render calls for items with the same shader.
+## Update 4/22/2018
+Upgraded SFML and Thor to latest versions. Built new DLLs and libs for Thor against x64 arch and latest SFML. Rewrote AnimationComponent to use the new Thor API changes. 
+
+Refactored the Mettaur AI into its own resuable classes: AI<Type> and AIState<Type>. Each enemy will inherit the AI<Type> class and set states to better manage AI. See the new and improved Mettaur class. Created a special state called ExplodeState<Any> that takes in any Entity type for each virus to be implemented.
+ 
+Refatored player to use new AI and state system via PlayerControlledState. Player will move onto PlayerHurtState when hit and revoke all charger status and ignore input. Reintegrated original move-lag timer with newest API to wait until the move animation ended before switching tiles. The overal result is incredibly smooth. Finally for the player I demonstrated the power of ExplodeState<Any> by pushing it onto the player state when the player dies. It works well.
+
+Rewrote shader pipeline to bake into one target texture and display that on the screen. The speed was astronimcal. The game stays between 59-62 FPS for me no matter how many shaders are now applied.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
 Here are my changes and contributions in writing:
 
 New: 
-* Shader support in render pipeline
+* Optimized Shader support in render pipeline
 * Pixelated battle intro shader effect
 * Pause & pause state shader effect
 * Flash white when hit and shader
@@ -61,8 +66,14 @@ New:
 * Throwable Spells
 * HP+10 chip works in-battle
 * CrckPnl chip works in-battle
+* Chip icons are rendered in battle
+* Chip icons are rendered in select
+* Chip combo select system is now working
+* Enemy AI and state system
+* Player AI, state, and integrated keyboard control system
+* Artifacts
 
-Changes:
+Changes from original author:
 
 * Fixed bullet bug -> Bullets would never make it to back row (index error)
 * Fixed wave bug -> Metts in back row could not spawn spell ^
@@ -70,6 +81,9 @@ Changes:
 * Fixed mega death bug -> Game no longer freezes on close
 * Keyboard names and controls
 * Moved origin logic for health UI components into its own function in Entity class Entity::getAnimOffset()
+* Upgraded Thor and SFML
+* Rewrote AnimationComponent to use latest Thor API
+* Rewrote player movement code to use latest AnimationComponent features
 
 # Author Pheelbert
 Wrote the foundation for the battle engine. He wrote the tile-based movement and update system emulating an authentic mmbn player experience.

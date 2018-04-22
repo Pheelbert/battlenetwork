@@ -21,6 +21,7 @@ using sf::Font;
 
 #define SHADER_FRAG_PIXEL_PATH "resources/shaders/pixel_blur.frag.txt"
 #define SHADER_FRAG_BLACK_PATH "resources/shaders/black_fade.frag.txt"
+#define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
 #define SHADER_FRAG_BAR_PATH "resources/shaders/custom_bar.frag.txt"
 
 int main() {
@@ -61,6 +62,10 @@ int BattleScene::Run() {
   Mettaur* mob3(new Mettaur());
   field->AddEntity(mob3, 6, 1);
 
+  mob->SetTarget(player);
+  mob2->SetTarget(player);
+  mob3->SetTarget(player);
+
   BackgroundUI background = BackgroundUI();
 
   // PAUSE
@@ -98,8 +103,8 @@ int BattleScene::Run() {
   if (!shader.loadFromFile(SHADER_FRAG_PIXEL_PATH, sf::Shader::Fragment)) {
     Logger::Log("Error loading shader: " SHADER_FRAG_PIXEL_PATH);
   } else {
-    shader.setParameter("texture", sf::Shader::CurrentTexture);
-    shader.setParameter("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f); // start at full
+    shader.setUniform("texture", sf::Shader::CurrentTexture);
+    shader.setUniform("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f); // start at full
     Engine::GetInstance().SetShader(&shader);
   }
 
@@ -107,16 +112,25 @@ int BattleScene::Run() {
   if (!pauseShader.loadFromFile(SHADER_FRAG_BLACK_PATH, sf::Shader::Fragment)) {
     Logger::Log("Error loading shader: " SHADER_FRAG_BLACK_PATH);
   } else {
-    pauseShader.setParameter("texture", sf::Shader::CurrentTexture);
-    pauseShader.setParameter("opacity", 0.5);
+    pauseShader.setUniform("texture", sf::Shader::CurrentTexture);
+    pauseShader.setUniform("opacity", 0.5f);
+  }
+
+  sf::Shader whiteShader;
+  if (!whiteShader.loadFromFile(SHADER_FRAG_WHITE_PATH, sf::Shader::Fragment)) {
+    Logger::Log("Error loading shader: " SHADER_FRAG_WHITE_PATH);
+  }
+  else {
+    whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
+    whiteShader.setUniform("opacity", 0.5f);
   }
 
   sf::Shader customBarShader;
   if (!customBarShader.loadFromFile(SHADER_FRAG_BAR_PATH, sf::Shader::Fragment)) {
     Logger::Log("Error loading shader: " SHADER_FRAG_BAR_PATH);
   } else {
-    customBarShader.setParameter("texture", sf::Shader::CurrentTexture);
-    customBarShader.setParameter("factor", 0);
+    customBarShader.setUniform("texture", sf::Shader::CurrentTexture);
+    customBarShader.setUniform("factor", 0);
     customBarSprite.SetShader(&customBarShader);
   }
 
@@ -126,7 +140,15 @@ int BattleScene::Run() {
       isPlayerDeleted = player->IsDeleted();
     }
 
-    clock.restart();
+    float elapsedSeconds = clock.restart().asSeconds();
+    float FPS = 0.f;
+
+    if (elapsedSeconds > 0.f) {
+      FPS = 1.0f / elapsedSeconds;
+      std::string fpsStr = std::to_string(FPS);
+      fpsStr.resize(4);
+      Engine::GetInstance().GetWindow()->setTitle(sf::String(std::string("FPS: ") + fpsStr));
+    }
 
     // TODO: Do not update when paused or in chip select
     ControllableComponent::GetInstance().update();
@@ -155,7 +177,8 @@ int BattleScene::Run() {
     }
 
     // NOTE: Although HUD, it fades dark when on chip cust screen and paused.
-    Engine::GetInstance().Push(&customBarSprite);
+    if(!isPlayerDeleted)
+      Engine::GetInstance().Push(&customBarSprite);
 
     if (isPaused || isInChipSelect) {
       // apply shader on draw calls below
@@ -167,7 +190,9 @@ int BattleScene::Run() {
     Engine::GetInstance().DrawOverlay();
 
     if (!isPlayerDeleted) {
-      player->GetChipsUI()->Update(); // DRAW 
+      if (player->GetChipsUI()) {
+        player->GetChipsUI()->Update(); // DRAW 
+      }
     }
 
     if (isPaused) {
@@ -251,7 +276,7 @@ int BattleScene::Run() {
     }
 
     // convert to millis and slow it down by 0.5
-    shader.setParameter("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f);
+    shader.setUniform("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f);
 
     if (isPlayerDeleted) {
       static bool doOnce = false;
@@ -260,11 +285,11 @@ int BattleScene::Run() {
         AudioResourceManager::GetInstance().StopStream();
         AudioResourceManager::GetInstance().Play(AudioType::DELETED);
         shaderCooldown = 1000;
-        Engine::GetInstance().SetShader(&pauseShader);
+        Engine::GetInstance().SetShader(&whiteShader);
         doOnce = true;
       }
 
-      pauseShader.setParameter("opacity", 1.f - (float)(shaderCooldown / 1000.f)*0.5f);
+      whiteShader.setUniform("opacity", 1.f - (float)(shaderCooldown / 1000.f)*0.5f);
 
     }
 
@@ -280,7 +305,7 @@ int BattleScene::Run() {
       isChipSelectReady = false;
     }
 
-    customBarShader.setParameter("factor", (float)(customProgress / customDuration));
+    customBarShader.setUniform("factor", (float)(customProgress / customDuration));
   }
 
   delete pauseLabel;

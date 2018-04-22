@@ -114,7 +114,7 @@ int Wave::GetStateFromString(string _string) {
   return 0;
 }
 
-void Wave::addAnimation(int _state, FrameAnimation _animation, float _duration) {
+void Wave::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
   //animator.addAnimation(static_cast<Buster>(_state), _animation, sf::seconds(_duration));
   assert(false && "Wave does not have an animator");
 }

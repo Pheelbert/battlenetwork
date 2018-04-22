@@ -134,7 +134,7 @@ int Buster::GetStateFromString(string _string) {
   return 0;
 }
 
-void Buster::addAnimation(int _state, FrameAnimation _animation, float _duration) {
+void Buster::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
   //animator.addAnimation(static_cast<Buster>(_state), _animation, sf::seconds(_duration));
   assert(false && "Buster does not have an animator");
 }

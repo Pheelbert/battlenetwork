@@ -82,6 +82,11 @@ float ChargeComponent::GetChargeCounter() const {
   return chargeCounter;
 }
 
+const bool ChargeComponent::IsFullyCharged() const
+{
+  return isCharged;
+}
+
 Sprite& ChargeComponent::GetSprite() {
   return chargeSprite;
 }

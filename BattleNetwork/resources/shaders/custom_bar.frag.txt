@@ -4,7 +4,7 @@ uniform float factor;
 void main()
 {
     vec2 pos = gl_TexCoord[0].xy;
-    vec4 pixel = texture2D(texture, vec2(gl_TexCoord[0].x, 1 - gl_TexCoord[0].y));
+    vec4 pixel = texture2D(texture, vec2(gl_TexCoord[0].x, gl_TexCoord[0].y));
 
     if(pixel.rgb == vec3(1,0,0)) 
     {

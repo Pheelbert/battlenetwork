@@ -30,6 +30,7 @@ public:
   void update(float _elapsed);
   void SetCharging(bool _charging);
   float GetChargeCounter() const;
+  const bool IsFullyCharged() const;
   Sprite& GetSprite();
 
 private:
