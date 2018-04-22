@@ -20,17 +20,16 @@ R CTRL -> Use a chip
 ```
 
 # Author TheMaverickProgrammer
-## Update 4/17/2018
-Chip icons are read from a file and correspond to their chip ID. Chips can only be selected if they're compatible with the currently selected chip codes. Compatible codes are code+1, code-1, code==code, and \*. All other codes will be greyed out. The currently selected chip renders the corresponding icon in-battle. This compatibility system works alongsdide the queueing system quite well. 
-
-TODO: The chip icons and chip cards do not map equally. Some icon rows have bombs while the cards have a completely different item type in the image. Someone will have to manually type out each card and icon ID pair or rearrange the sprites to stream them mathematically like I have done in `TextureResourceManager`.
+## Update 4/21/2018
+Upgraded SFML and Thor to latest versions. Built new DLLs and libs for Thor against x64 arch and latest SFML. Rewrote AnimationComponent to use the new Thor API changes. Refactored the Mettaur AI into its own resuable classes: AI<Type> and AIState<Type>. Each enemy will inherit the AI<Type> class and set states to better manage AI. See the new and improved Mettaur class. Created a special state called ExplodeState<Any> that takes in any Entity type for each virus to be implemented.
+ Rewrote shader pipeline to bake into one target texture and display that on the screen. The speed was astronimcal. The game stays between 59-62 FPS for me no matter how many shaders are now applied.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
 Here are my changes and contributions in writing:
 
 New: 
-* Shader support in render pipeline
+* Optimized Shader support in render pipeline
 * Pixelated battle intro shader effect
 * Pause & pause state shader effect
 * Flash white when hit and shader
@@ -61,8 +60,10 @@ New:
 * Chip icons are rendered in battle
 * Chip icons are rendered in select
 * Chip combo select system is now working
+* Enemy AI and state system
+* Artifacts
 
-Changes:
+Changes from original author:
 
 * Fixed bullet bug -> Bullets would never make it to back row (index error)
 * Fixed wave bug -> Metts in back row could not spawn spell ^
@@ -70,6 +71,8 @@ Changes:
 * Fixed mega death bug -> Game no longer freezes on close
 * Keyboard names and controls
 * Moved origin logic for health UI components into its own function in Entity class Entity::getAnimOffset()
+* Upgraded Thor and SFML
+* Rewrote AnimationComponent to use latest Thor API
 
 # Author Pheelbert
 Wrote the foundation for the battle engine. He wrote the tile-based movement and update system emulating an authentic mmbn player experience.
