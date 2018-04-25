@@ -5,6 +5,8 @@ using sf::Clock;
 using sf::Event;
 using sf::Font;
 
+#include <time.h>
+
 #include "bnBattleScene.h"
 #include "bnField.h"
 #include "bnPlayer.h"
@@ -29,10 +31,26 @@ int main() {
 }
 
 int BattleScene::Run() {
-  Engine::GetInstance().Initialize();
-  TextureResourceManager::GetInstance().LoadAllTextures();
-  AudioResourceManager::GetInstance().LoadAllSources();
-  AudioResourceManager::GetInstance().SetStreamVolume(10); // 10% 
+  {
+    const clock_t begin_time = clock();
+    Engine::GetInstance().Initialize();
+    Logger::Logf("Engine initialized: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  }
+
+  {
+    const clock_t begin_time = clock();
+    TextureResourceManager::GetInstance().LoadAllTextures();
+    Logger::Logf("Loaded textures: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  }
+  
+  {
+    const clock_t begin_time = clock();
+    AudioResourceManager::GetInstance().LoadAllSources();
+    Logger::Logf("Loaded audio sources: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  }
+  
+  AudioResourceManager::GetInstance().SetStreamVolume(10);
+  // AudioResourceManager::GetInstance().SetChannelVolume(0);
 
   ChipSelectionCust chipCustGUI(4);
 
@@ -252,8 +270,6 @@ int BattleScene::Run() {
       }
     }
 
-    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
-
     if (isInChipSelect && customProgress > 0.f) {
       if (!chipCustGUI.IsInView()) {
         chipCustGUI.Move(sf::Vector2f(150.f / elapsed, 0));
@@ -306,6 +322,8 @@ int BattleScene::Run() {
     }
 
     customBarShader.setUniform("factor", (float)(customProgress / customDuration));
+
+    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
   }
 
   delete pauseLabel;
