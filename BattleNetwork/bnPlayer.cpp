@@ -76,6 +76,8 @@ void Player::Update(float _elapsed) {
   //Components updates
   chargeComponent.update(_elapsed);
   animationComponent.update(_elapsed);
+
+  Entity::Update(_elapsed);
 }
 
 bool Player::Move(Direction _direction) {

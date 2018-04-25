@@ -38,35 +38,34 @@ LongExplosion::LongExplosion(Field* _field, Team _team)
 }
 
 void LongExplosion::Update(float _elapsed) {
-  if (explosionProgress == 0.0f) {
+  if (explosionProgress <= 0.0f) {
     AudioResourceManager::GetInstance().Play(AudioType::EXPLODE);
     x1 = tile->getPosition().x - 10.0f;
     y1 = tile->getPosition().y - 35.f;
   }
-  if (explosionProgress2 == 0.0f) {
+
+  if (explosionProgress2 <= 0.0f) {
     x2 = tile->getPosition().x + 10.0f;
     y2 = tile->getPosition().y - 50.0f;
   }
-  explosionProgress += 0.020f;
+
+  explosionProgress += 0.02f;
   if (explosionProgress >= 0.3f) {
-    explosionProgress2 += 0.020f;
-    if (explosionProgress >= 1.0f) {
-    }
-    if (explosionProgress2 >= 0.8f) {
-      deleted = true;
-      return;
-    }
+    explosionProgress2 += 0.02f;
     explosion2.setScale(2.f, 2.f);
     explosion2.setPosition(x2, y2);
-    explode(explosion2, explosionProgress2);
+    explode(explosion2, fmin(explosionProgress2, 1.0f));
   }
 
   if (explosionProgress <= 1.f) {
     explosion.setScale(2.f, 2.f);
     explosion.setPosition(x1, y1);
-    explode(explosion, explosionProgress);
+    explode(explosion, fmin(explosionProgress, 1.0f));
   }
-  return;
+
+  if (explosionProgress2 >= 0.8f) {
+    deleted = true;
+  }
 }
 
 vector<Drawable*> LongExplosion::GetMiscComponents() {
