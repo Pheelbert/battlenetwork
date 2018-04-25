@@ -226,6 +226,7 @@ void ProgsMan::Update(float _elapsed) {
   RefreshTexture();
   healthUI->Update();
   SetShader(nullptr);
+  Entity::Update(_elapsed);
 }
 
 bool ProgsMan::Move(Direction _direction) {

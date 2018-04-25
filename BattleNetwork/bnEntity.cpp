@@ -1,4 +1,6 @@
 #include "bnEntity.h"
+#include "bnTile.h"
+#include "bnField.h"
 
 Entity::Entity(void)
   : tile(nullptr),
@@ -6,6 +8,7 @@ Entity::Entity(void)
   previous(nullptr),
   field(nullptr),
   team(Team::UNKNOWN),
+  health(0),
   deleted(false) {
 }
 
@@ -13,6 +16,10 @@ Entity::~Entity(void) {
 }
 
 void Entity::Update(float _elapsed) {
+  if (IsDeleted()) {
+    tile->RemoveEntity(this);
+    field->RemoveEntity(this);
+  }
 }
 
 bool Entity::Move(Direction _direction) {
@@ -87,8 +94,6 @@ bool Entity::IsDeleted() const {
   return deleted;
 }
 
-void Entity::TryDelete()
-{
+void Entity::TryDelete() {
   deleted = (health <= 0);
-  return;
 }

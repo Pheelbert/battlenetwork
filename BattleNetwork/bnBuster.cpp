@@ -53,7 +53,7 @@ void Buster::Update(float _elapsed) {
       setPosition(tile->getPosition().x + tile->GetWidth() / 2.f + random, tile->getPosition().y + tile->GetHeight() / 2.f - hitHeight);
     }
     progress += 0.2f;
-    animation(*this, progress);
+    animation(*this, fmin(progress, 1.0f));
     if (progress >= 1.f) {
       deleted = true;
     }

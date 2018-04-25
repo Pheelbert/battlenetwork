@@ -29,7 +29,7 @@ template<typename Any>
 class ExplodeState : public AIState<Any>
 {
 private:
-  Entity * explosion;
+  Entity* explosion;
   sf::Shader whiteout;
 
 public:
