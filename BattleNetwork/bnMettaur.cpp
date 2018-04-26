@@ -34,7 +34,7 @@ int Mettaur::currMetIndex = 0;
 Mettaur::Mettaur(void)
   : animationComponent(this), AI<Mettaur>(this) {
   // Start AI
-  this->StateChange(new MettaurIdleState());
+  this->StateChange<MettaurIdleState>();
 
   Entity::team = Team::RED;
   health = 20;
@@ -100,7 +100,7 @@ void Mettaur::Update(float _elapsed) {
 
   // Explode if health depleted
   if (GetHealth() <= 0) {
-    this->StateChange(new ExplodeState<Mettaur>()); // TODO: Do not call this every frame, only once would be better
+    this->StateChange<ExplodeState<Mettaur>>(); // TODO: Do not call this every frame, only once would be better
     this->Lock();
   } else {
     this->RefreshTexture();

@@ -28,7 +28,7 @@ Player::Player(void)
   animationComponent(this),
   AI<Player>(this) 
 {
-  this->StateChange(new PlayerControlledState());
+  this->StateChange<PlayerControlledState>();
 
   SetLayer(0);
   team = Team::BLUE;
@@ -64,7 +64,7 @@ void Player::Update(float _elapsed) {
       delete chipsUI;
       chipsUI = nullptr;
     }
-    this->StateChange(new ExplodeState<Player>());
+    this->StateChange<ExplodeState<Player>>();
     this->StateUpdate(_elapsed);
     return;
   }
@@ -177,7 +177,7 @@ int Player::Hit(int _damage) {
       previous = nullptr;
       next = nullptr;
     }
-    this->StateChange(new PlayerHitState(600.0f));
+    this->StateChange<PlayerHitState, float>({ 600.0f });
   }
 
   return result;

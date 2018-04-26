@@ -22,7 +22,7 @@ void PlayerHitState::OnUpdate(float _elapsed, Player& player) {
 
   // Cant do anything if hit/stunned
   if (cooldown < 0) {
-    player.StateChange(new PlayerControlledState());
+    player.StateChange<PlayerControlledState>();
   }
 }
 

@@ -25,5 +25,5 @@ void MettaurAttackState::Attack(Mettaur& met) {
   Spell* spell = new Wave(met.field, met.team);
   spell->SetDirection(Direction::LEFT);
   met.field->AddEntity(spell, met.tile->GetX() - 1, met.tile->GetY());
-  met.StateChange(new MettaurIdleState());
+  met.StateChange<MettaurIdleState>();
 }

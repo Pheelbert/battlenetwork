@@ -98,6 +98,9 @@
     <Filter Include="Battle\Entity\Living\Player\States">
       <UniqueIdentifier>{ce04f5a8-3636-4a36-8ba1-192b3f0785eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Artifact\Explosion">
+      <UniqueIdentifier>{586087ad-200c-42d9-a4d9-72203f62831f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -181,14 +184,17 @@
     <ClCompile Include="bnMettaurMoveState.cpp">
       <Filter>Battle\Entity\Living\Mettaur\States</Filter>
     </ClCompile>
-    <ClCompile Include="bnLongExplosion.cpp">
-      <Filter>Battle\Entity\Artifact</Filter>
-    </ClCompile>
     <ClCompile Include="bnPlayerControlledState.cpp">
       <Filter>Battle\Entity\Living\Player\States</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayerHitState.cpp">
       <Filter>Battle\Entity\Living\Player\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnLongExplosion.cpp">
+      <Filter>Battle\Entity\Artifact\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="bnArtifact.cpp">
+      <Filter>Battle\Entity\Artifact</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,9 +321,6 @@
     <ClInclude Include="bnMettaurMoveState.h">
       <Filter>Battle\Entity\Living\Mettaur\States</Filter>
     </ClInclude>
-    <ClInclude Include="bnLongExplosion.h">
-      <Filter>Battle\Entity\Artifact</Filter>
-    </ClInclude>
     <ClInclude Include="bnExplodeState.h">
       <Filter>Battle\Entity\Living\Any\States</Filter>
     </ClInclude>
@@ -326,6 +329,15 @@
     </ClInclude>
     <ClInclude Include="bnPlayerHitState.h">
       <Filter>Battle\Entity\Living\Player\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMeta.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="bnArtifact.h">
+      <Filter>Battle\Entity\Artifact</Filter>
+    </ClInclude>
+    <ClInclude Include="bnLongExplosion.h">
+      <Filter>Battle\Entity\Artifact\Explosion</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

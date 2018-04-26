@@ -17,7 +17,7 @@ void MettaurIdleState::OnUpdate(float _elapsed, Mettaur& met) {
   cooldown -= _elapsed;
 
   if (cooldown < 0) {
-    met.StateChange(new MettaurMoveState());
+    met.StateChange<MettaurMoveState>();
   }
 }
 
