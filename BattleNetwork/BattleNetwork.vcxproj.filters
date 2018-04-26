@@ -327,5 +327,8 @@
     <ClInclude Include="bnPlayerHitState.h">
       <Filter>Battle\Entity\Living\Player\States</Filter>
     </ClInclude>
+    <ClInclude Include="bnMeta.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

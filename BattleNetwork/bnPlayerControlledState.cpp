@@ -32,6 +32,20 @@ void PlayerControlledState::OnEnter(Player& player) {
 
 void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
 
+  // Action controls take priority over movement
+  if (controllableComponent->has(RELEASED_ACTION1)) {
+    player.Attack(player.chargeComponent.GetChargeCounter());
+    player.chargeComponent.SetCharging(false);
+    attackToIdleCooldown = 0.0f;
+
+    auto onFinish = [&player]() {player.SetAnimation(PlayerState::PLAYER_IDLE); };
+    player.SetAnimation(PlayerState::PLAYER_SHOOTING, onFinish);
+  }
+  else if (controllableComponent->has(RELEASED_ACTION2)) {
+    player.GetChipsUI()->UseNextChip();
+  }
+
+  // Movement increments are restricted based on anim speed
   if (player.state == PlayerState::PLAYER_MOVING)
     return;
 
@@ -81,24 +95,12 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
   else if (controllableComponent->has(RELEASED_RIGHT)) {
     direction = Direction::NONE;
   }
-  else if (controllableComponent->has(RELEASED_ACTION1)) {
-    player.Attack(player.chargeComponent.GetChargeCounter());
-    player.chargeComponent.SetCharging(false);
-    attackToIdleCooldown = 0.0f;
-
-    auto onFinish = [&player]() {player.SetAnimation(PlayerState::PLAYER_IDLE); };
-    player.SetAnimation(PlayerState::PLAYER_SHOOTING, onFinish);
-  }
-  else if (controllableComponent->has(RELEASED_ACTION2)) {
-    player.GetChipsUI()->UseNextChip();
-  }
 
   if (direction != Direction::NONE && player.state != PlayerState::PLAYER_SHOOTING) {
     bool moved = player.Move(direction);
     if (moved) {
       auto onFinish = [&player]() {
-        std::cout << "finished move\n";
-
+ 
         //Cooldown until player's movement catches up to actual position (avoid walking through spells)
         if (player.previous) {
           if (player.previous->IsCracked()) {

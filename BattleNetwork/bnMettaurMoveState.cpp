@@ -29,7 +29,7 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
     }
     else {
       // Just attack
-      met.StateChange(new MettaurAttackState());
+      met.StateChange<MettaurAttackState>();
       return;
     }
   }
@@ -93,13 +93,13 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
   if (next) {
     met.tile->AddEntity((Entity*)&met);
     temp->RemoveEntity((Entity*)&met);
-    auto onFinish = [&met]() { met.StateChange(new MettaurIdleState()); };
+    auto onFinish = [&met]() { met.StateChange<MettaurIdleState>(); };
     met.SetAnimation(MobState::MOB_MOVING, onFinish);
     isMoving = true;
   }
   else {
     // Cannot more or attack. Forfeit turn.
-    met.StateChange(new MettaurIdleState());
+    met.StateChange<MettaurIdleState>();
     met.NextMettaurTurn();
   }
 }

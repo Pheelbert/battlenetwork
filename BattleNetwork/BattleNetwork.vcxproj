@@ -228,6 +228,7 @@
     <ClInclude Include="bnEngine.h" />
     <ClInclude Include="bnSelectedChipsUI.h" />
     <ClInclude Include="bnMettaurAttackState.h" />
+    <ClInclude Include="bnMeta.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

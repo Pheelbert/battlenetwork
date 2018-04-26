@@ -1,18 +1,10 @@
 #pragma once
+#include "bnMeta.h"
 #include "bnEntity.h"
 #include "bnAIState.h"
 #include "bnLongExplosion.h"
 
 #include <iostream>
-
-/*
-Define constraints on template
-*/
-
-template<class Any, class Super> struct Derived_from {
-  static void constraints(Any* p) { Super* pb = p; }
-  Derived_from() { void(*p)(Any*) = constraints; }
-};
 
 /*
   This state can be used by any Entity in the engine. 
@@ -50,8 +42,8 @@ public:
 
 template<typename Any>
 ExplodeState<Any>::ExplodeState() : AIState<Any>() {
-  // Enforce constraints on class
-  Derived_from<Any, Entity>();
+  // Enforce template constraints on class
+  _DerivedFrom<Any, Entity>();
 
   // If we make it here, we are the proper type
   explosion = nullptr;
