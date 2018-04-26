@@ -177,7 +177,7 @@ int Player::Hit(int _damage) {
       previous = nullptr;
       next = nullptr;
     }
-    this->StateChange<PlayerHitState, float>(600.0f);
+    this->StateChange<PlayerHitState, float>({ 600.0f });
   }
 
   return result;

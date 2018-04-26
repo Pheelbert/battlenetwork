@@ -7,7 +7,8 @@ private:
   float cooldown;
 
 public:
-  PlayerHitState(float _cooldown);
+
+  PlayerHitState(float);
   ~PlayerHitState();
 
   void OnEnter(Player& player);

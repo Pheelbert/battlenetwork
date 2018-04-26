@@ -1,17 +1,8 @@
 #pragma once
-#include "bnSpell.h"
+#include "bnArtifact.h"
 #include "bnField.h"
 
-/*
-TODO:
-  Write a subclass of Entity called "Artifact".
-  Artifacts are just effects and animations that appear in battle.
-  They affiliate with no action, attack, or team
-
-  e.g. class LongExplosion : public Artifact { .... }
- */
-
-class LongExplosion : public Spell
+class LongExplosion : public Artifact
 {
 private:
   //Animation
@@ -29,7 +20,6 @@ public:
   virtual int GetStateFromString(string _string);
   virtual void AddAnimation(int _state, FrameAnimation _animation, float _duration);
   virtual bool Move(Direction _direction) { return false; }
-  virtual void Attack(Entity* _entity) { ; }
   vector<Drawable*> GetMiscComponents();
 
 };
