@@ -6,6 +6,7 @@ using std::endl;
 using std::string;
 using std::to_string;
 #include <cstdarg>
+#include <queue>
 
 class Logger {
 public:

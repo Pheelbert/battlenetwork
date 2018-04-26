@@ -182,6 +182,7 @@
     <ClCompile Include="bnSelectedChipsUI.cpp" />
     <ClCompile Include="bnLongExplosion.cpp" />
     <ClCompile Include="bnPlayerControlledState.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAI.h" />

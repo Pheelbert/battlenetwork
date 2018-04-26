@@ -11,9 +11,12 @@ TextureResourceManager& TextureResourceManager::GetInstance() {
   return instance;
 }
 
-void TextureResourceManager::LoadAllTextures() {
+void TextureResourceManager::LoadAllTextures(unsigned &status) {
   TextureType textureType = static_cast<TextureType>(0);
   while (textureType != TEXTURE_TYPE_SIZE) {
+    status++;
+
+    // TODO: Catch failed resources and try again
     Texture* texture = nullptr;
     texture = LoadTextureFromFile(paths[static_cast<int>(textureType)]);
     if (texture) textures.insert(pair<TextureType, Texture*>(textureType, texture));
@@ -106,6 +109,9 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/ui/chip_cursor_big.png");
   paths.push_back("resources/ui/chip_cards.png");
   paths.push_back("resources/ui/chip_icons.png");
+
+  // Background/foreground
+  paths.push_back("resources/backgrounds/title/frame4.png");
 }
 
 TextureResourceManager::~TextureResourceManager(void) {

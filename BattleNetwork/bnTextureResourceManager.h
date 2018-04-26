@@ -19,7 +19,7 @@ using std::endl;
 class TextureResourceManager {
 public:
   static TextureResourceManager& GetInstance();
-  void LoadAllTextures();
+  void LoadAllTextures(unsigned &status);
   Texture* LoadTextureFromFile(string _path);
   Texture* GetTexture(TextureType _ttype);
   sf::IntRect GetCardRectFromChipID(unsigned ID);

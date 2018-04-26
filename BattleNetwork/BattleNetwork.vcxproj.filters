@@ -101,6 +101,9 @@
     <Filter Include="Battle\Entity\Artifact\Explosion">
       <UniqueIdentifier>{586087ad-200c-42d9-a4d9-72203f62831f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entry">
+      <UniqueIdentifier>{99da17ce-caae-4583-a7c2-d4d60a27fba6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -195,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="bnArtifact.cpp">
       <Filter>Battle\Entity\Artifact</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Entry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
