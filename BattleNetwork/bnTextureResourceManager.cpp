@@ -111,7 +111,8 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/ui/chip_icons.png");
 
   // Background/foreground
-  paths.push_back("resources/backgrounds/title/frame4.png");
+  paths.push_back("resources/backgrounds/title/bg_blue.png");
+  paths.push_back("resources/backgrounds/title/prog-pulse.png");
 }
 
 TextureResourceManager::~TextureResourceManager(void) {

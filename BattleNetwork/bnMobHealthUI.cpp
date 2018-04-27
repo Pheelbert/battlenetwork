@@ -16,6 +16,8 @@ MobHealthUI::MobHealthUI(Entity* _mob)
   : mob(_mob) {
   font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
   setFont(*font);
+  setOutlineColor(sf::Color(48,56,80));
+  setOutlineThickness(2.f);
   setScale(0.8f, 0.8f);
 }
 

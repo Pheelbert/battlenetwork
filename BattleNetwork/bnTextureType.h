@@ -42,6 +42,7 @@ enum TextureType {
   CHIP_CARDS,
   CHIP_ICONS,
   //Background/Foreground
-  BACKGROUND_TITLE,
+  BACKGROUND_BLUE,
+  TITLE_ANIM_CHAR,
   TEXTURE_TYPE_SIZE
 };
