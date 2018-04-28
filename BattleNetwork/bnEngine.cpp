@@ -6,9 +6,11 @@ Engine& Engine::GetInstance() {
 }
 
 void Engine::Initialize() {
-  window = new RenderWindow(VideoMode(480, 320), "Battle Network : Prototype");
+  camera = sf::View(sf::Vector2f(240, 160), sf::Vector2f(480, 320));
+  original = camera; // never changes 
+  window = new RenderWindow(VideoMode(camera.getSize().x, camera.getSize().y), "Battle Network : Prototype");
   window->setFramerateLimit(60);
-  postprocessing.create(480, 320); // Same as display
+  postprocessing.create(camera.getSize().x, camera.getSize().y); // Same as display
 }
 
 void Engine::Draw(Drawable& _drawable, bool applyShaders) {
@@ -38,12 +40,17 @@ void Engine::Draw(LayeredDrawable* _drawable) {
   LayeredDrawable* context = _drawable;
   sf::Shader* shader = context->GetShader();
 
+  sf::Vector2f originalPos = context->getPosition();
+  context->move(GetViewOffset());
+
   if (shader != nullptr) {
     const sf::Texture* original = context->getTexture();
     postprocessing.draw(*context, shader); // bake
   } else {
     Draw(context, true);
   }
+
+  context->setPosition(originalPos);
 }
 void Engine::Draw(vector<LayeredDrawable*> _drawable) {
   auto it = _drawable.begin();
@@ -78,10 +85,15 @@ void Engine::Draw(vector<LayeredDrawable*> _drawable) {
     LayeredDrawable* context = *it;
     sf::Shader* shader = context->GetShader();
     if (shader != nullptr) {
-      const sf::Texture* original = context->getTexture();
+      sf::Vector2f originalPos = context->getPosition();
+      context->move(GetViewOffset());
       postprocessing.draw(*context, shader); // bake
+      context->setPosition(originalPos);
     } else {
+      sf::Vector2f originalPos = context->getPosition();
+      context->move(GetViewOffset());
       Draw(context, true);
+      context->setPosition(originalPos);
     }
   }
 }
@@ -129,6 +141,10 @@ Engine::Engine(void)
 
 Engine::~Engine(void) {
   delete window;
+}
+
+const sf::Vector2f Engine::GetViewOffset() {
+  return GetDefaultView().getCenter() - camera.getCenter();
 }
 
 void Engine::Push(LayeredDrawable* _drawable) {
@@ -183,4 +199,12 @@ void Engine::SetShader(sf::Shader* shader) {
 
 void Engine::RevokeShader() {
   SetShader(nullptr);
+}
+
+const sf::View Engine::GetDefaultView() {
+  return original;
+}
+
+void Engine::SetView(sf::View camera) {
+  this->camera = camera;
 }

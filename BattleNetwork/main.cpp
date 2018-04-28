@@ -3,6 +3,7 @@
 #include "bnControllableComponent.h"
 #include "bnEngine.h"
 #include "bnBattleScene.h"
+#include "bnMettaur.h"
 #include "SFML/System.hpp"
 #include <Thor/Animations.hpp>
 #include <time.h>
@@ -103,7 +104,7 @@ int main(int argc, char** argv) {
     clock.restart();
 
     float percentage = (float)progress / (float)totalObjects;
-    std::string percentageStr = std::to_string((int)percentage*100);
+    std::string percentageStr = std::to_string((int)(percentage*100));
     Engine::GetInstance().GetWindow()->setTitle(sf::String(std::string("Loading: ") + percentageStr + "%"));
 
     ControllableComponent::GetInstance().update();
@@ -231,6 +232,7 @@ int main(int argc, char** argv) {
   }
 
   // Cleanup
+  Engine::GetInstance().RevokeShader();
   Engine::GetInstance().Clear();
   delete logLabel;
   delete font;
@@ -241,7 +243,11 @@ int main(int argc, char** argv) {
 
   // Make sure we didn't quit the loop prematurely
   if (Engine::GetInstance().Running()) {
-    return BattleScene::Run();
+
+    Mob* mob = new Mob();
+    mob->Add<Mettaur>(6, 2)->Add<Mettaur>(4, 2)->Add<Mettaur>(6, 1);
+
+    return BattleScene::Run(mob);
   }
   
   return EXIT_SUCCESS;

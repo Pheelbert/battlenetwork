@@ -35,6 +35,7 @@ Mettaur::Mettaur(void)
   : animationComponent(this), AI<Mettaur>(this) {
   // Start AI
   this->StateChange<MettaurIdleState>();
+  this->SetDefaultState(new MettaurIdleState());
 
   Entity::team = Team::RED;
   health = 20;
@@ -78,7 +79,7 @@ int* Mettaur::GetAnimOffset() {
   Mettaur* mob = this;
 
   int* res = new int[2];
-  res[0] = res[1] = 0;
+  res[0] = 35;  res[1] = 35;
 
   if (mob->GetTextureType() == TextureType::MOB_METTAUR_IDLE) {
     res[0] = 35;
@@ -89,12 +90,14 @@ int* Mettaur::GetAnimOffset() {
   } else if (mob->GetTextureType() == TextureType::MOB_MOVE) {
     res[0] = 45;
     res[1] = 55;
-  }
+  } 
 
   return res;
 }
 
 void Mettaur::Update(float _elapsed) {
+  this->SetShader(nullptr);
+
   healthUI->Update();
   this->StateUpdate(_elapsed);
 
@@ -104,7 +107,6 @@ void Mettaur::Update(float _elapsed) {
     this->Lock();
   } else {
     this->RefreshTexture();
-    this->SetShader(nullptr);
     animationComponent.update(_elapsed);
   }
 

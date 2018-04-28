@@ -33,14 +33,22 @@ public:
 
   void SetShader(sf::Shader* _shader);
   void RevokeShader();
+
+  void SetView(sf::View camera);
+  const sf::View GetDefaultView();
 private:
   Engine(void);
   ~Engine(void);
 
   RenderWindow* window;
+  sf::View camera;
+  sf::View original;
   Underlay underlay;
   Layers layers;
   Overlay overlay;
   sf::RenderStates state;
   sf::RenderTexture postprocessing;
+
+  const sf::Vector2f GetViewOffset(); // for drawing
+
 };

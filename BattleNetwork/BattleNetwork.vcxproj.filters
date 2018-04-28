@@ -104,6 +104,9 @@
     <Filter Include="Entry">
       <UniqueIdentifier>{99da17ce-caae-4583-a7c2-d4d60a27fba6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Camera">
+      <UniqueIdentifier>{073bf066-0047-4316-9fe1-39c36c5d136a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -204,6 +207,9 @@
     </ClCompile>
     <ClCompile Include="bnLogger.cpp">
       <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCamera.cpp">
+      <Filter>Engine\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +353,15 @@
     </ClInclude>
     <ClInclude Include="bnLongExplosion.h">
       <Filter>Battle\Entity\Artifact\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCamera.h">
+      <Filter>Engine\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPixelInState.h">
+      <Filter>Battle\Entity\Living\Any\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMob.h">
+      <Filter>Battle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

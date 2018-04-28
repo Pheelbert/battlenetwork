@@ -4,8 +4,6 @@
 #include "bnAIState.h"
 #include "bnLongExplosion.h"
 
-#include <iostream>
-
 /*
   This state can be used by any Entity in the engine. 
   It uses constraints to ensure the type passed in Any 
@@ -33,7 +31,6 @@ public:
   void OnLeave(Any& e);
 };
 
-#include "bnExplodeState.h"
 #include "bnLongExplosion.h"
 #include "bnField.h"
 #include "bnLogger.h"

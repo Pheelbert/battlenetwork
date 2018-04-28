@@ -15,7 +15,7 @@ using sf::Font;
 #include "bnProgsMan.h"
 #include "bnBackgroundUI.h"
 #include "bnPlayerHealthUI.h"
-
+#include "bnCamera.h"
 #include "bnControllableComponent.h"
 #include "bnEngine.h"
 #include "bnChipSelectionCust.h"
@@ -25,7 +25,9 @@ using sf::Font;
 #define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
 #define SHADER_FRAG_BAR_PATH "resources/shaders/custom_bar.frag.txt"
 
-int BattleScene::Run() {
+int BattleScene::Run(Mob* mob) {
+  Camera camera(Engine::GetInstance().GetDefaultView());
+
   ChipSelectionCust chipCustGUI(4);
 
   Field* field(new Field(6, 3));
@@ -42,21 +44,6 @@ int BattleScene::Run() {
   //(for now there's only 1 battle and you start straight in it)
   Player* player(new Player());
   field->AddEntity(player, 2, 2);
-
-  /*ProgsMan* boss = new ProgsMan();
-  boss->SetTarget(player);
-  field->AddEntity(boss, 5, 2);*/
-
-  Mettaur* mob(new Mettaur());
-  field->AddEntity(mob, 6, 2);
-  Mettaur* mob2(new Mettaur());
-  field->AddEntity(mob2, 4, 2);
-  Mettaur* mob3(new Mettaur());
-  field->AddEntity(mob3, 6, 1);
-
-  mob->SetTarget(player);
-  mob2->SetTarget(player);
-  mob3->SetTarget(player);
 
   BackgroundUI background = BackgroundUI();
 
@@ -85,20 +72,12 @@ int BattleScene::Run() {
   bool isInChipSelect = false;
   bool isChipSelectReady = false;
   bool isPlayerDeleted = false;
+  bool isMobFinished = false;
   double customProgress = 0; // in mili seconds 
   double customDuration = 10 * 1000; // 10 seconds
 
   // Special: Load shaders if supported 
   double shaderCooldown = 500; // half a second
-  sf::Shader shader;
-
-  if (!shader.loadFromFile(SHADER_FRAG_PIXEL_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_PIXEL_PATH);
-  } else {
-    shader.setUniform("texture", sf::Shader::CurrentTexture);
-    shader.setUniform("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f); // start at full
-    Engine::GetInstance().SetShader(&shader);
-  }
 
   sf::Shader pauseShader;
   if (!pauseShader.loadFromFile(SHADER_FRAG_BLACK_PATH, sf::Shader::Fragment)) {
@@ -142,14 +121,33 @@ int BattleScene::Run() {
       Engine::GetInstance().GetWindow()->setTitle(sf::String(std::string("FPS: ") + fpsStr));
     }
 
-    // TODO: Do not update when paused or in chip select
+    if (mob->NextMobReady()) {
+      Mob::MobData* data = mob->GetNextMob();
+      
+      if (data) {
+        if (data->mob) {
+          // TODO Use a base type that has a target instead of dynamic casting
+          Mettaur* cast = dynamic_cast<Mettaur*>(data->mob);
+
+          if (cast) {
+            cast->SetTarget(player);
+            field->AddEntity(cast, data->tileX, data->tileY);
+          }
+        }
+      }
+    }
+
     ControllableComponent::GetInstance().update();
 
+    camera.Update(elapsed);
+
+    // Do not update when paused or in chip select
     if (!(isPaused || isInChipSelect)) {
       field->Update(elapsed);
     }
 
     Engine::GetInstance().Clear();
+    Engine::GetInstance().SetView(camera.GetView());
 
     background.Draw();
 
@@ -207,9 +205,12 @@ int BattleScene::Run() {
       } else {
         AudioResourceManager::GetInstance().Play(AudioType::PAUSE);
       }
-    } else if (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isPlayerDeleted) {
+    } else if ((!isMobFinished && mob->IsDone()) || (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isPlayerDeleted)) {
+      if (!isMobFinished) { isMobFinished = true; customProgress = customDuration;  }
       if (isInChipSelect == false) {
         AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT);
+        // slide up the screen a hair
+        //camera.MoveCamera(sf::Vector2f(240.f, 140.f), sf::seconds(0.5f));
         isInChipSelect = true;
 
         // Clear any chip UI queues. they will contain null data. 
@@ -235,6 +236,7 @@ int BattleScene::Run() {
         if (chipCustGUI.AreChipsReady()) {
           AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
           customProgress = 0; // NOTE: Hack. Need one more state boolean
+          //camera.MoveCamera(sf::Vector2f(240.f, 160.f), sf::seconds(0.5f)); 
         } else {
           AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
         }
@@ -265,9 +267,6 @@ int BattleScene::Run() {
       shaderCooldown = 0;
     }
 
-    // convert to millis and slow it down by 0.5
-    shader.setUniform("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f);
-
     if (isPlayerDeleted) {
       static bool doOnce = false;
 
@@ -283,8 +282,8 @@ int BattleScene::Run() {
 
     }
 
-    // update the cust if not paused
-    if (!(isPaused || isInChipSelect)) customProgress += elapsed;
+    // update the cust if not paused nor in chip select nor in mob intro
+    if (!(isPaused || isInChipSelect || !mob->IsDone())) customProgress += elapsed;
 
     if (customProgress / customDuration >= 1.0) {
       if (isChipSelectReady == false) {
