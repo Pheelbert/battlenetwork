@@ -3,5 +3,5 @@
 
 class BattleScene {
 public:
-  static int Run(Mob* mob);
+  static int Run( Mob* mob);
 };

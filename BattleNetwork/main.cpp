@@ -3,7 +3,9 @@
 #include "bnControllableComponent.h"
 #include "bnEngine.h"
 #include "bnBattleScene.h"
-#include "bnMettaur.h"
+#include "bnMobFactory.h"
+#include "bnRandomMettaurMob.h"
+#include "bnTwoMettaurMob.h"
 #include "SFML/System.hpp"
 #include <Thor/Animations.hpp>
 #include <time.h>
@@ -244,8 +246,15 @@ int main(int argc, char** argv) {
   // Make sure we didn't quit the loop prematurely
   if (Engine::GetInstance().Running()) {
 
-    Mob* mob = new Mob();
-    mob->Add<Mettaur>(6, 2)->Add<Mettaur>(4, 2)->Add<Mettaur>(6, 1)->Add<Mettaur>(5, 1)->Add<Mettaur>(5, 2)->Add<Mettaur>(5, 3)->Add<Mettaur>(6, 3);
+    Field* field(new Field(6, 3));
+    // TODO: Field factory 
+    // see how the random mob works around holes
+    field->GetAt(5, 2)->SetState(TileState::EMPTY);
+
+    //MobFactory* factory = new TwoMettaurMob(field);
+    MobFactory* factory = new RandomMettaurMob(field);
+    Mob* mob = factory->Build();
+    delete factory;
 
     return BattleScene::Run(mob);
   }

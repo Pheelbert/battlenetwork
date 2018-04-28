@@ -145,7 +145,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)\extern\libs;C:\Program Files (x86)\Windows Kits\10\Lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew.lib;jpeg.lib;openal32.lib;sndfile.lib;freetype.lib;Winmm.lib;OpenGL32.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;sfml-audio.lib;sfml-main.lib;thor-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -173,12 +173,14 @@
     <ClCompile Include="bnProgBomb.cpp" />
     <ClCompile Include="bnProgsMan.cpp" />
     <ClCompile Include="bnAnimationComponent.cpp" />
+    <ClCompile Include="bnRandomMettaurMob.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
     <ClCompile Include="bnSpell.cpp" />
     <ClCompile Include="bnTextureResourceManager.cpp" />
     <ClCompile Include="bnPlayerHealthUI.cpp" />
     <ClCompile Include="bnBuster.cpp" />
+    <ClCompile Include="bnTwoMettaurMob.cpp" />
     <ClCompile Include="bnWave.cpp" />
     <ClCompile Include="bnMettaur.cpp" />
     <ClCompile Include="bnEngine.cpp" />
@@ -213,6 +215,7 @@
     <ClInclude Include="bnMettaurIdleState.h" />
     <ClInclude Include="bnMettaurMoveState.h" />
     <ClInclude Include="bnMob.h" />
+    <ClInclude Include="bnMobFactory.h" />
     <ClInclude Include="bnMobHealthUI.h" />
     <ClInclude Include="bnMobState.h" />
     <ClInclude Include="bnPixelInState.h" />
@@ -222,6 +225,7 @@
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnAnimationComponent.h" />
+    <ClInclude Include="bnRandomMettaurMob.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />
     <ClInclude Include="bnTile.h" />
@@ -234,12 +238,17 @@
     <ClInclude Include="bnPlayerState.h" />
     <ClInclude Include="bnPlayerHealthUI.h" />
     <ClInclude Include="bnBuster.h" />
+    <ClInclude Include="bnTwoMettaurMob.h" />
     <ClInclude Include="bnWave.h" />
     <ClInclude Include="bnMettaur.h" />
     <ClInclude Include="bnEngine.h" />
     <ClInclude Include="bnSelectedChipsUI.h" />
     <ClInclude Include="bnMettaurAttackState.h" />
     <ClInclude Include="bnMeta.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BattleNetwork.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

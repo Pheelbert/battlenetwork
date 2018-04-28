@@ -33,10 +33,7 @@ int Mettaur::currMetIndex = 0;
 
 Mettaur::Mettaur(void)
   : animationComponent(this), AI<Mettaur>(this) {
-  // Start AI
   this->StateChange<MettaurIdleState>();
-  this->SetDefaultState(new MettaurIdleState());
-
   Entity::team = Team::RED;
   health = 20;
   hitHeight = 0;

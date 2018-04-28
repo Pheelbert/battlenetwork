@@ -7,8 +7,6 @@ template<typename T>
 class AI {
 private:
   AIState<T>* stateMachine;
-  AIState<T>* defaultState;
-
   Entity* target;
   T* ref;
   int lock;
@@ -83,32 +81,6 @@ public:
     }
 
     stateMachine = new U(args);
-    stateMachine->OnEnter(*ref);
-  }
-
-  void SetDefaultState(AIState<T>* state) {
-    defaultState = state;
-  }
-
-  AIState<T>* GetDefaultState() {
-    return defaultState;
-  }
-
-  void StateChange(AIState<T>* state) {
-    if (stateMachine == state) {
-      std::cout << "they are the same\n";
-    }
-
-    if (!state) {
-      std::cout << "state is null\n";
-    }
-
-    if (stateMachine) {
-      stateMachine->OnLeave(*ref);
-      delete stateMachine;
-    }
-
-    stateMachine = state;
     stateMachine->OnEnter(*ref);
   }
 

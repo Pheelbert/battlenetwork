@@ -26,8 +26,6 @@ Player::Player(void)
   animationComponent(this),
   AI<Player>(this) 
 {
-  this->StateChange<PlayerIdleState>();
-
   SetLayer(0);
   team = Team::BLUE;
 

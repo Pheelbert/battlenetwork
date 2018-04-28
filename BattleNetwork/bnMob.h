@@ -16,15 +16,21 @@ public:
 private:
   std::vector<MobData*> spawn;
   std::vector<MobData*>::iterator iter;
+  std::vector<std::function<void(Entity*)>> invokers;
   bool nextReady;
-
+  Field* field;
 public:
-  Mob() {
+  Mob(Field* _field) {
     nextReady = true;
+    field = _field;
   }
 
   ~Mob() {
-    spawn.clear();
+    // spawn.clear();
+  }
+
+  Field* GetField() {
+    return field;
   }
 
   const bool NextMobReady() {
@@ -35,6 +41,14 @@ public:
     return (iter == spawn.end() && nextReady);
   }
 
+  void DefaultState() {
+    for (int i = 0; i < invokers.size(); i++) {
+      invokers[i](spawn[i]->mob);
+    }
+
+    invokers.clear();
+  }
+
   MobData* GetNextMob() {
     this->nextReady = false;
     MobData* mob = *(iter);
@@ -42,15 +56,14 @@ public:
     return mob;
   }
 
-  template<typename T>
-  Mob* Add(int tileX, int tileY);
-
-  template<typename T, typename U>
-  Mob* Add(U args, int tileX, int tileY);
+  template<typename T, typename DefaultState>
+  Mob* Spawn(int tileX, int tileY);
 };
 
-template<typename T>
-Mob* Mob::Add(int tileX, int tileY) {
+template<typename T, typename DefaultState>
+Mob* Mob::Spawn(int tileX, int tileY) {
+  // TODO: assert that tileX and tileY exist in field
+
   _DerivedFrom<T, Entity>();
   _DerivedFrom<T, AI<T>>();
 
@@ -58,30 +71,15 @@ Mob* Mob::Add(int tileX, int tileY) {
   T* mob = new T();
   auto onFinish = [&]() { this->nextReady = true; };
   mob->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
-
   data->mob = mob;
   data->tileX = tileX;
   data->tileY = tileY;
-  spawn.push_back(data);
 
-  iter = spawn.begin();
+  // This retains the current entity type and stores it in a function. We do this to transform the 
+  // unknown type back later and can call the proper state change
+  auto defaultStateInvoker = [](Entity* mob) { T* cast = dynamic_cast<T*>(mob); if (cast) { cast->StateChange<DefaultState>(); } };
+  invokers.push_back(defaultStateInvoker);
 
-  return this;
-}
-
-template<typename T, typename U>
-Mob* Mob::Add(U args, int tileX, int tileY) {
-  _DerivedFrom<T, Entity>();
-  _DerivedFrom<T, AI<T>>();
-
-  MobData* data = new MobData();
-  T* mob = new T(args);
-  auto onFinish = [&]() { this->nextReady = true; };
-  mob->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
-
-  data->mob = mob;
-  data->tileX = tileX;
-  data->tileY = tileY;
   spawn.push_back(data);
 
   iter = spawn.begin();

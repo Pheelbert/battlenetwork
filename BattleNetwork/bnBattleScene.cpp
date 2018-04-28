@@ -30,19 +30,10 @@ int BattleScene::Run(Mob* mob) {
 
   ChipSelectionCust chipCustGUI(4);
 
-  Field* field(new Field(6, 3));
-  //TODO: just testing states here, remove later
-  field->GetAt(3, 1)->SetState(TileState::CRACKED);
-  field->GetAt(1, 1)->SetState(TileState::NORMAL);
-  field->GetAt(1, 2)->SetState(TileState::NORMAL);
-  field->GetAt(1, 3)->SetState(TileState::NORMAL);
-  field->GetAt(6, 1)->SetState(TileState::NORMAL);
-  field->GetAt(6, 2)->SetState(TileState::NORMAL);
-  field->GetAt(6, 3)->SetState(TileState::NORMAL);
+  Field* field = mob->GetField();
 
-  //TODO: More dynamic way of handling entities
-  //(for now there's only 1 battle and you start straight in it)
   Player* player(new Player());
+  player->StateChange<PlayerIdleState>();
   field->AddEntity(player, 2, 2);
 
   BackgroundUI background = BackgroundUI();
@@ -124,13 +115,15 @@ int BattleScene::Run(Mob* mob) {
     if (mob->NextMobReady()) {
       Mob::MobData* data = mob->GetNextMob();
       
-      // TODO Use a base type that has a target instead of dynamic casting
+      // TODO Use a base type that has a target instead of dynamic casting? Or force all Entity classes to have a state.
+      // Therefore spells and artifacts will no longer be Entities and instead they will be SceneNodes
       Mettaur* cast = dynamic_cast<Mettaur*>(data->mob);
 
       if (cast) {
         cast->SetTarget(player);
-        field->AddEntity(cast, data->tileX, data->tileY);
       }
+
+      field->AddEntity(data->mob, data->tileX, data->tileY);
     }
 
     ControllableComponent::GetInstance().update();
@@ -163,7 +156,7 @@ int BattleScene::Run(Mob* mob) {
     }
 
     // NOTE: Although HUD, it fades dark when on chip cust screen and paused.
-    if(!isPlayerDeleted)
+    if(!isPlayerDeleted && !isInChipSelect)
       Engine::GetInstance().Push(&customBarSprite);
 
     if (isPaused || isInChipSelect) {
@@ -208,6 +201,8 @@ int BattleScene::Run(Mob* mob) {
         isMobFinished = true; 
         // allow the player to be controlled by keys
         player->StateChange<PlayerControlledState>(); 
+        // Move mob out of the PixelInState 
+        mob->DefaultState();
         // show the chip select screen
         customProgress = customDuration; 
       }

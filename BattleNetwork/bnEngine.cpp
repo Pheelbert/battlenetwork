@@ -1,4 +1,5 @@
 #include "bnEngine.h"
+#include <time.h>       /* time */
 
 Engine& Engine::GetInstance() {
   static Engine instance;
@@ -11,6 +12,9 @@ void Engine::Initialize() {
   window = new RenderWindow(VideoMode(camera.getSize().x, camera.getSize().y), "Battle Network : Prototype");
   window->setFramerateLimit(60);
   postprocessing.create(camera.getSize().x, camera.getSize().y); // Same as display
+
+  // See the random generator with current time
+  srand(time(0));
 }
 
 void Engine::Draw(Drawable& _drawable, bool applyShaders) {

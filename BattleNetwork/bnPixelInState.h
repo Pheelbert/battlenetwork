@@ -23,7 +23,6 @@ class PixelInState : public AIState<Any>
 private:
   sf::Shader pixelated;
   float factor;
-  AIState<Any>* firstState;
   FinishNotifier callback;
 public:
   PixelInState(FinishNotifier onFinish);
@@ -62,8 +61,6 @@ PixelInState<Any>::~PixelInState() {
 
 template<typename Any>
 void PixelInState<Any>::OnEnter(Any& e) {
-  firstState = e.GetDefaultState();
-  e.Lock(); // Lock AI state until complete
   AudioResourceManager::GetInstance().Play(AudioType::APPEAR);
 }
 
@@ -78,11 +75,7 @@ void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
   if (factor <= 0.f) {
     factor = 0.f;
 
-    if (firstState) {
-      e.Unlock();
-      e.StateChange(firstState);
-      return;
-    }
+    if (callback) { callback(); callback = nullptr; /* do once */ }
   }
 
   pixelated.setUniform("pixel_threshold", (float)(factor/400.f));
@@ -91,6 +84,4 @@ void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
 template<typename Any>
 void PixelInState<Any>::OnLeave(Any& e) {
   e.SetShader(nullptr);
-  
-  if (callback) { callback(); }
 }

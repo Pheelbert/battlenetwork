@@ -107,6 +107,15 @@
     <Filter Include="Engine\Camera">
       <UniqueIdentifier>{073bf066-0047-4316-9fe1-39c36c5d136a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Mob">
+      <UniqueIdentifier>{1cf38e39-dbdc-4910-ad71-868672316374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Mob\Random">
+      <UniqueIdentifier>{0e4e830d-27bf-4942-a2b1-f80cf9b05101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Mob\Easy">
+      <UniqueIdentifier>{b20f104e-955c-40ee-88f5-0246628bbff6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -213,6 +222,12 @@
     </ClCompile>
     <ClCompile Include="bnPlayerIdleState.cpp">
       <Filter>Battle\Entity\Living\Player\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnRandomMettaurMob.cpp">
+      <Filter>Battle\Mob\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="bnTwoMettaurMob.cpp">
+      <Filter>Battle\Mob\Easy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -363,11 +378,24 @@
     <ClInclude Include="bnPixelInState.h">
       <Filter>Battle\Entity\Living\Any\States</Filter>
     </ClInclude>
-    <ClInclude Include="bnMob.h">
-      <Filter>Battle</Filter>
-    </ClInclude>
     <ClInclude Include="bnPlayerIdleState.h">
       <Filter>Battle\Entity\Living\Player\States</Filter>
     </ClInclude>
+    <ClInclude Include="bnMob.h">
+      <Filter>Battle\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMobFactory.h">
+      <Filter>Battle\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="bnRandomMettaurMob.h">
+      <Filter>Battle\Mob\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="bnTwoMettaurMob.h">
+      <Filter>Battle\Mob\Easy</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BattleNetwork.rc" />
   </ItemGroup>
 </Project>
