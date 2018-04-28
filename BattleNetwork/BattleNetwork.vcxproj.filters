@@ -211,6 +211,9 @@
     <ClCompile Include="bnCamera.cpp">
       <Filter>Engine\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="bnPlayerIdleState.cpp">
+      <Filter>Battle\Entity\Living\Player\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -362,6 +365,9 @@
     </ClInclude>
     <ClInclude Include="bnMob.h">
       <Filter>Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerIdleState.h">
+      <Filter>Battle\Entity\Living\Player\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

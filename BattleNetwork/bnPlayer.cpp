@@ -1,6 +1,4 @@
 #include "bnPlayer.h"
-#include "bnPlayerControlledState.h"
-#include "bnPlayerHitState.h"
 #include "bnExplodeState.h"
 #include "bnField.h"
 #include "bnBuster.h"
@@ -28,7 +26,7 @@ Player::Player(void)
   animationComponent(this),
   AI<Player>(this) 
 {
-  this->StateChange<PlayerControlledState>();
+  this->StateChange<PlayerIdleState>();
 
   SetLayer(0);
   team = Team::BLUE;

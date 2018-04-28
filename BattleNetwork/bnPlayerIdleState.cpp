@@ -1,0 +1,22 @@
+#include "bnPlayerIdleState.h"
+#include "bnPlayer.h"
+
+
+PlayerIdleState::PlayerIdleState() : AIState<Player>()
+{
+}
+
+
+PlayerIdleState::~PlayerIdleState()
+{
+}
+
+void PlayerIdleState::OnEnter(Player& player) {
+  player.SetAnimation(PlayerState::PLAYER_IDLE);
+}
+
+void PlayerIdleState::OnUpdate(float _elapsed, Player& player) {
+  /* silence is golden */
+}
+
+void PlayerIdleState::OnLeave(Player& player) {}

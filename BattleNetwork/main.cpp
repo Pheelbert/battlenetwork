@@ -245,7 +245,7 @@ int main(int argc, char** argv) {
   if (Engine::GetInstance().Running()) {
 
     Mob* mob = new Mob();
-    mob->Add<Mettaur>(6, 2)->Add<Mettaur>(4, 2)->Add<Mettaur>(6, 1);
+    mob->Add<Mettaur>(6, 2)->Add<Mettaur>(4, 2)->Add<Mettaur>(6, 1)->Add<Mettaur>(5, 1)->Add<Mettaur>(5, 2)->Add<Mettaur>(5, 3)->Add<Mettaur>(6, 3);
 
     return BattleScene::Run(mob);
   }

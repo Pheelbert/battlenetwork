@@ -124,16 +124,12 @@ int BattleScene::Run(Mob* mob) {
     if (mob->NextMobReady()) {
       Mob::MobData* data = mob->GetNextMob();
       
-      if (data) {
-        if (data->mob) {
-          // TODO Use a base type that has a target instead of dynamic casting
-          Mettaur* cast = dynamic_cast<Mettaur*>(data->mob);
+      // TODO Use a base type that has a target instead of dynamic casting
+      Mettaur* cast = dynamic_cast<Mettaur*>(data->mob);
 
-          if (cast) {
-            cast->SetTarget(player);
-            field->AddEntity(cast, data->tileX, data->tileY);
-          }
-        }
+      if (cast) {
+        cast->SetTarget(player);
+        field->AddEntity(cast, data->tileX, data->tileY);
       }
     }
 
@@ -206,7 +202,16 @@ int BattleScene::Run(Mob* mob) {
         AudioResourceManager::GetInstance().Play(AudioType::PAUSE);
       }
     } else if ((!isMobFinished && mob->IsDone()) || (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isPlayerDeleted)) {
-      if (!isMobFinished) { isMobFinished = true; customProgress = customDuration;  }
+       // enemy intro finished
+      if (!isMobFinished) { 
+        // toggle the flag
+        isMobFinished = true; 
+        // allow the player to be controlled by keys
+        player->StateChange<PlayerControlledState>(); 
+        // show the chip select screen
+        customProgress = customDuration; 
+      }
+
       if (isInChipSelect == false) {
         AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT);
         // slide up the screen a hair

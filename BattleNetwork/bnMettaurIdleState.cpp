@@ -1,13 +1,13 @@
 #pragma once
 #include "bnMettaurIdleState.h"
 #include "bnMettaurMoveState.h"
+#include <iostream>
 
 MettaurIdleState::MettaurIdleState() : cooldown(1000), AIState<Mettaur>() { ; }
 MettaurIdleState::~MettaurIdleState() { ; }
 
 void MettaurIdleState::OnEnter(Mettaur& met) {
   met.SetAnimation(MobState::MOB_IDLE);
-
 }
 
 void MettaurIdleState::OnUpdate(float _elapsed, Mettaur& met) {

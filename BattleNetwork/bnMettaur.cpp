@@ -98,18 +98,18 @@ int* Mettaur::GetAnimOffset() {
 void Mettaur::Update(float _elapsed) {
   this->SetShader(nullptr);
 
-  healthUI->Update();
   this->StateUpdate(_elapsed);
 
   // Explode if health depleted
   if (GetHealth() <= 0) {
-    this->StateChange<ExplodeState<Mettaur>>(); // TODO: Do not call this every frame, only once would be better
+    this->StateChange<ExplodeState<Mettaur>>(); 
     this->Lock();
   } else {
     this->RefreshTexture();
     animationComponent.update(_elapsed);
   }
 
+  healthUI->Update();
   Entity::Update(_elapsed);
 }
 

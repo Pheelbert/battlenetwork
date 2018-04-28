@@ -169,6 +169,7 @@
     <ClCompile Include="bnMettaurMoveState.cpp" />
     <ClCompile Include="bnMobHealthUI.cpp" />
     <ClCompile Include="bnPlayerHitState.cpp" />
+    <ClCompile Include="bnPlayerIdleState.cpp" />
     <ClCompile Include="bnProgBomb.cpp" />
     <ClCompile Include="bnProgsMan.cpp" />
     <ClCompile Include="bnAnimationComponent.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="bnPixelInState.h" />
     <ClInclude Include="bnPlayerControlledState.h" />
     <ClInclude Include="bnPlayerHitState.h" />
+    <ClInclude Include="bnPlayerIdleState.h" />
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnAnimationComponent.h" />

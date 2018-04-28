@@ -12,10 +12,14 @@ using sf::IntRect;
 #include "bnAnimationComponent.h"
 #include "bnSelectedChipsUI.h"
 #include "bnAI.h"
+#include "bnPlayerControlledState.h"
+#include "bnPlayerIdleState.h"
+#include "bnPlayerHitState.h"
 
 class Player : public Entity, public AI<Player> {
 public:
   friend class PlayerControlledState;
+  friend class PlayerIdleState;
 
   Player(void);
   virtual ~Player(void);
