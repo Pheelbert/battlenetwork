@@ -34,10 +34,10 @@ public:
   ~ChipSelectionCust();
 
   // GUI ops
-  void CursorRight();
-  void CursorLeft();
-  void CursorAction();
-  void CursorCancel();
+  bool CursorRight();
+  bool CursorLeft();
+  bool CursorAction();
+  bool CursorCancel();
 
   bool IsOutOfView();
   bool IsInView();

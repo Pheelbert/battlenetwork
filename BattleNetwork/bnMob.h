@@ -34,11 +34,20 @@ public:
   }
 
   const bool NextMobReady() {
-    return (nextReady && !IsDone());
+    return (nextReady && !IsSpawningDone());
   }
 
-  const bool IsDone() {
+  const bool IsSpawningDone() {
     return (iter == spawn.end() && nextReady);
+  }
+
+  const bool IsCleared() {
+    for (int i = 0; i < spawn.size(); i++) {
+      if (!spawn[i]->mob->IsDeleted())
+        return false;
+    }
+
+    return true;
   }
 
   void DefaultState() {

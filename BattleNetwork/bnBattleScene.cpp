@@ -28,7 +28,7 @@ using sf::Font;
 int BattleScene::Run(Mob* mob) {
   Camera camera(Engine::GetInstance().GetDefaultView());
 
-  ChipSelectionCust chipCustGUI(4);
+  ChipSelectionCust chipCustGUI(5);
 
   Field* field = mob->GetField();
 
@@ -68,7 +68,7 @@ int BattleScene::Run(Mob* mob) {
   double customDuration = 10 * 1000; // 10 seconds
 
   // Special: Load shaders if supported 
-  double shaderCooldown = 500; // half a second
+  double shaderCooldown = 0; // half a second
 
   sf::Shader pauseShader;
   if (!pauseShader.loadFromFile(SHADER_FRAG_BLACK_PATH, sf::Shader::Fragment)) {
@@ -96,7 +96,8 @@ int BattleScene::Run(Mob* mob) {
     customBarSprite.SetShader(&customBarShader);
   }
 
-  while (Engine::GetInstance().Running()) {
+  bool inBattleState = true;
+  while (Engine::GetInstance().Running() && inBattleState) {
     // check evert frame 
     if (!isPlayerDeleted) {
       isPlayerDeleted = player->IsDeleted();
@@ -124,6 +125,11 @@ int BattleScene::Run(Mob* mob) {
       }
 
       field->AddEntity(data->mob, data->tileX, data->tileY);
+    }
+
+    // Check if entire mob is deleted
+    if (mob->IsCleared()) {
+      isPlayerDeleted = true; // Hack. Just to trigger fade out and spawn a new mob
     }
 
     ControllableComponent::GetInstance().update();
@@ -194,7 +200,7 @@ int BattleScene::Run(Mob* mob) {
       } else {
         AudioResourceManager::GetInstance().Play(AudioType::PAUSE);
       }
-    } else if ((!isMobFinished && mob->IsDone()) || (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isPlayerDeleted)) {
+    } else if ((!isMobFinished && mob->IsSpawningDone()) || (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isPlayerDeleted)) {
        // enemy intro finished
       if (!isMobFinished) { 
         // toggle the flag
@@ -220,29 +226,28 @@ int BattleScene::Run(Mob* mob) {
         chipCustGUI.ResetState();
         chipCustGUI.GetNextChips();
       }
+
       // NOTE: Need a battle scene state manager to handle going to and from one controll scheme to another. 
       // Plus would make more sense to revoke shaders once complete transition 
 
     } else if (isInChipSelect) {
       if (ControllableComponent::GetInstance().has(PRESSED_LEFT)) {
-        chipCustGUI.CursorLeft();
-        AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT);
+        chipCustGUI.CursorLeft() ? AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT) : 1;
       } else if (ControllableComponent::GetInstance().has(PRESSED_RIGHT)) {
-        chipCustGUI.CursorRight();
-        AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT);
+        chipCustGUI.CursorRight() ? AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT) : 1;
       } else if (ControllableComponent::GetInstance().has(PRESSED_ACTION1)) {
-        chipCustGUI.CursorAction();
+        bool performed = chipCustGUI.CursorAction();
 
         if (chipCustGUI.AreChipsReady()) {
           AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
           customProgress = 0; // NOTE: Hack. Need one more state boolean
           //camera.MoveCamera(sf::Vector2f(240.f, 160.f), sf::seconds(0.5f)); 
-        } else {
+        } else if(performed){
           AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
         }
       } else if (ControllableComponent::GetInstance().has(PRESSED_ACTION2)) {
-        chipCustGUI.CursorCancel();
-        AudioResourceManager::GetInstance().Play(AudioType::CHIP_CANCEL);
+        
+        chipCustGUI.CursorCancel() ? AudioResourceManager::GetInstance().Play(AudioType::CHIP_CANCEL) : 1;
       }
     }
 
@@ -261,12 +266,6 @@ int BattleScene::Run(Mob* mob) {
       }
     }
 
-    shaderCooldown -= elapsed;
-
-    if (shaderCooldown < 0) {
-      shaderCooldown = 0;
-    }
-
     if (isPlayerDeleted) {
       static bool doOnce = false;
 
@@ -277,13 +276,21 @@ int BattleScene::Run(Mob* mob) {
         Engine::GetInstance().SetShader(&whiteShader);
         doOnce = true;
       }
+      else {
+        if (shaderCooldown < 0) {
+          shaderCooldown = 0;
+          inBattleState = false;
+        }
+      }
+
+      shaderCooldown -= elapsed;
 
       whiteShader.setUniform("opacity", 1.f - (float)(shaderCooldown / 1000.f)*0.5f);
 
     }
 
     // update the cust if not paused nor in chip select nor in mob intro
-    if (!(isPaused || isInChipSelect || !mob->IsDone())) customProgress += elapsed;
+    if (!(isPaused || isInChipSelect || !mob->IsSpawningDone())) customProgress += elapsed;
 
     if (customProgress / customDuration >= 1.0) {
       if (isChipSelectReady == false) {
@@ -302,6 +309,9 @@ int BattleScene::Run(Mob* mob) {
   delete pauseLabel;
   delete font;
   delete customBarTexture;
+
+  AudioResourceManager::GetInstance().StopStream();
+  Engine::GetInstance().RevokeShader();
 
   return EXIT_SUCCESS;
 }

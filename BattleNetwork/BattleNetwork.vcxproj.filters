@@ -26,15 +26,6 @@
     <Filter Include="Battle\Entity\Spell\Buster">
       <UniqueIdentifier>{a5b0fd9b-980a-4240-9250-0d06444c60a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Entity\Living">
-      <UniqueIdentifier>{e565b472-5297-4f4a-bb4e-f93b6d2d9345}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Battle\Entity\Living\Mettaur">
-      <UniqueIdentifier>{16b3fe77-dae3-4ab7-a685-3797a65c1775}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Battle\Entity\Living\Player">
-      <UniqueIdentifier>{10c1c4d0-3a84-4a71-bef9-04835d2185da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Tile">
       <UniqueIdentifier>{8bd2fb17-906f-4def-ade7-710283fde6b2}</UniqueIdentifier>
     </Filter>
@@ -52,9 +43,6 @@
     </Filter>
     <Filter Include="Battle\Component\Input">
       <UniqueIdentifier>{4a441b30-9e2f-4ff8-921a-60ef383f26d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Battle\Entity\Living\ProgsMan">
-      <UniqueIdentifier>{5d15a7de-9f57-48f4-8d8a-3dcff2b9cefc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\TextureResource">
       <UniqueIdentifier>{04b25a7a-f471-420f-8ea0-6794994adb3c}</UniqueIdentifier>
@@ -77,9 +65,6 @@
     <Filter Include="Battle\Component\Animation">
       <UniqueIdentifier>{32f5b123-7c10-4d87-abfc-a9326380e103}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Entity\Living\Mettaur\States">
-      <UniqueIdentifier>{0edefaae-8923-437f-9711-2ae3d410892b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\AI">
       <UniqueIdentifier>{b0e97f40-0be3-48ff-a3c0-924576c7938e}</UniqueIdentifier>
     </Filter>
@@ -88,15 +73,6 @@
     </Filter>
     <Filter Include="Battle\Entity\Artifact">
       <UniqueIdentifier>{9be22663-7ffb-4d72-afb7-0ae8f6b0b8d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Battle\Entity\Living\Any">
-      <UniqueIdentifier>{7e781496-123e-40b5-af0b-4f433296b3ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Battle\Entity\Living\Any\States">
-      <UniqueIdentifier>{c05712c6-7f52-4d6d-a5ce-4d887bc75117}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Battle\Entity\Living\Player\States">
-      <UniqueIdentifier>{ce04f5a8-3636-4a36-8ba1-192b3f0785eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Battle\Entity\Artifact\Explosion">
       <UniqueIdentifier>{586087ad-200c-42d9-a4d9-72203f62831f}</UniqueIdentifier>
@@ -116,6 +92,30 @@
     <Filter Include="Battle\Mob\Easy">
       <UniqueIdentifier>{b20f104e-955c-40ee-88f5-0246628bbff6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Character">
+      <UniqueIdentifier>{e565b472-5297-4f4a-bb4e-f93b6d2d9345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Mettaur">
+      <UniqueIdentifier>{16b3fe77-dae3-4ab7-a685-3797a65c1775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Mettaur\States">
+      <UniqueIdentifier>{0edefaae-8923-437f-9711-2ae3d410892b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Player">
+      <UniqueIdentifier>{10c1c4d0-3a84-4a71-bef9-04835d2185da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Player\States">
+      <UniqueIdentifier>{ce04f5a8-3636-4a36-8ba1-192b3f0785eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\ProgsMan">
+      <UniqueIdentifier>{5d15a7de-9f57-48f4-8d8a-3dcff2b9cefc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Any">
+      <UniqueIdentifier>{7e781496-123e-40b5-af0b-4f433296b3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Any\States">
+      <UniqueIdentifier>{c05712c6-7f52-4d6d-a5ce-4d887bc75117}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -125,7 +125,7 @@
       <Filter>Battle\Tile</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayer.cpp">
-      <Filter>Battle\Entity\Living\Player</Filter>
+      <Filter>Battle\Entity\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="bnSpell.cpp">
       <Filter>Battle\Entity\Spell</Filter>
@@ -140,7 +140,7 @@
       <Filter>Battle\Entity\Spell\Buster</Filter>
     </ClCompile>
     <ClCompile Include="bnMettaur.cpp">
-      <Filter>Battle\Entity\Living\Mettaur</Filter>
+      <Filter>Battle\Entity\Character\Mettaur</Filter>
     </ClCompile>
     <ClCompile Include="bnChargeComponent.cpp">
       <Filter>Battle\Component\Animation\Charge</Filter>
@@ -152,10 +152,10 @@
       <Filter>Battle</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayerHealthUI.cpp">
-      <Filter>Battle\Entity\Living\Player</Filter>
+      <Filter>Battle\Entity\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="bnMobHealthUI.cpp">
-      <Filter>Battle\Entity\Living\Mettaur</Filter>
+      <Filter>Battle\Entity\Character\Mettaur</Filter>
     </ClCompile>
     <ClCompile Include="bnControllableComponent.cpp">
       <Filter>Battle\Component\Input</Filter>
@@ -164,7 +164,7 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="bnProgsMan.cpp">
-      <Filter>Battle\Entity\Living\ProgsMan</Filter>
+      <Filter>Battle\Entity\Character\ProgsMan</Filter>
     </ClCompile>
     <ClCompile Include="bnAudioResourceManager.cpp">
       <Filter>Resource\AudioResource</Filter>
@@ -185,25 +185,25 @@
       <Filter>Battle\Chips\Database</Filter>
     </ClCompile>
     <ClCompile Include="bnSelectedChipsUI.cpp">
-      <Filter>Battle\Entity\Living\Player</Filter>
+      <Filter>Battle\Entity\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="bnAnimationComponent.cpp">
       <Filter>Battle\Component\Animation</Filter>
     </ClCompile>
     <ClCompile Include="bnMettaurIdleState.cpp">
-      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+      <Filter>Battle\Entity\Character\Mettaur\States</Filter>
     </ClCompile>
     <ClCompile Include="bnMettaurAttackState.cpp">
-      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+      <Filter>Battle\Entity\Character\Mettaur\States</Filter>
     </ClCompile>
     <ClCompile Include="bnMettaurMoveState.cpp">
-      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+      <Filter>Battle\Entity\Character\Mettaur\States</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayerControlledState.cpp">
-      <Filter>Battle\Entity\Living\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\States</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayerHitState.cpp">
-      <Filter>Battle\Entity\Living\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\States</Filter>
     </ClCompile>
     <ClCompile Include="bnLongExplosion.cpp">
       <Filter>Battle\Entity\Artifact\Explosion</Filter>
@@ -221,7 +221,7 @@
       <Filter>Engine\Camera</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayerIdleState.cpp">
-      <Filter>Battle\Entity\Living\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\States</Filter>
     </ClCompile>
     <ClCompile Include="bnRandomMettaurMob.cpp">
       <Filter>Battle\Mob\Random</Filter>
@@ -244,7 +244,7 @@
       <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayer.h">
-      <Filter>Battle\Entity\Living\Player</Filter>
+      <Filter>Battle\Entity\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="bnSpell.h">
       <Filter>Battle\Entity\Spell</Filter>
@@ -262,7 +262,7 @@
       <Filter>Battle\Entity\Spell\Buster</Filter>
     </ClInclude>
     <ClInclude Include="bnMettaur.h">
-      <Filter>Battle\Entity\Living\Mettaur</Filter>
+      <Filter>Battle\Entity\Character\Mettaur</Filter>
     </ClInclude>
     <ClInclude Include="bnLayered.h">
       <Filter>Engine</Filter>
@@ -289,10 +289,10 @@
       <Filter>Battle</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerHealthUI.h">
-      <Filter>Battle\Entity\Living\Player</Filter>
+      <Filter>Battle\Entity\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="bnMobHealthUI.h">
-      <Filter>Battle\Entity\Living\Mettaur</Filter>
+      <Filter>Battle\Entity\Character\Mettaur</Filter>
     </ClInclude>
     <ClInclude Include="bnControllableComponent.h">
       <Filter>Battle\Component\Input</Filter>
@@ -304,7 +304,7 @@
       <Filter>Battle\Enumerations</Filter>
     </ClInclude>
     <ClInclude Include="bnProgsMan.h">
-      <Filter>Battle\Entity\Living\ProgsMan</Filter>
+      <Filter>Battle\Entity\Character\ProgsMan</Filter>
     </ClInclude>
     <ClInclude Include="bnTextureType.h">
       <Filter>Resource\TextureResource</Filter>
@@ -331,7 +331,7 @@
       <Filter>Battle\Chips\Database</Filter>
     </ClInclude>
     <ClInclude Include="bnSelectedChipsUI.h">
-      <Filter>Battle\Entity\Living\Player</Filter>
+      <Filter>Battle\Entity\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="bnChipType.h">
       <Filter>Battle\Chips\Database</Filter>
@@ -346,22 +346,22 @@
       <Filter>Battle\AI</Filter>
     </ClInclude>
     <ClInclude Include="bnMettaurAttackState.h">
-      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+      <Filter>Battle\Entity\Character\Mettaur\States</Filter>
     </ClInclude>
     <ClInclude Include="bnMettaurIdleState.h">
-      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+      <Filter>Battle\Entity\Character\Mettaur\States</Filter>
     </ClInclude>
     <ClInclude Include="bnMettaurMoveState.h">
-      <Filter>Battle\Entity\Living\Mettaur\States</Filter>
+      <Filter>Battle\Entity\Character\Mettaur\States</Filter>
     </ClInclude>
     <ClInclude Include="bnExplodeState.h">
-      <Filter>Battle\Entity\Living\Any\States</Filter>
+      <Filter>Battle\Entity\Character\Any\States</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerControlledState.h">
-      <Filter>Battle\Entity\Living\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\States</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerHitState.h">
-      <Filter>Battle\Entity\Living\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\States</Filter>
     </ClInclude>
     <ClInclude Include="bnMeta.h">
       <Filter>Utilities</Filter>
@@ -376,10 +376,10 @@
       <Filter>Engine\Camera</Filter>
     </ClInclude>
     <ClInclude Include="bnPixelInState.h">
-      <Filter>Battle\Entity\Living\Any\States</Filter>
+      <Filter>Battle\Entity\Character\Any\States</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerIdleState.h">
-      <Filter>Battle\Entity\Living\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\States</Filter>
     </ClInclude>
     <ClInclude Include="bnMob.h">
       <Filter>Battle\Mob</Filter>

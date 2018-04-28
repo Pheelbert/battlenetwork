@@ -244,7 +244,7 @@ int main(int argc, char** argv) {
   AudioResourceManager::GetInstance().StopStream();
 
   // Make sure we didn't quit the loop prematurely
-  if (Engine::GetInstance().Running()) {
+  while(Engine::GetInstance().Running()) {
 
     Field* field(new Field(6, 3));
     // TODO: Field factory 
@@ -256,7 +256,7 @@ int main(int argc, char** argv) {
     Mob* mob = factory->Build();
     delete factory;
 
-    return BattleScene::Run(mob);
+    BattleScene::Run(mob);
   }
   
   return EXIT_SUCCESS;

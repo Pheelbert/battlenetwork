@@ -56,19 +56,25 @@ ChipSelectionCust::~ChipSelectionCust() {
   chipCount = 0;
 }
 
-void ChipSelectionCust::CursorRight() {
+bool ChipSelectionCust::CursorRight() {
   if (++cursorPos > 5) {
     cursorPos = 5;
+    return false;
   }
+
+  return true;
 }
 
-void ChipSelectionCust::CursorLeft() {
+bool ChipSelectionCust::CursorLeft() {
   if (--cursorPos < 0) {
     cursorPos = 0;
+    return false;
   }
+
+  return true;
 }
 
-void ChipSelectionCust::CursorAction() {
+bool ChipSelectionCust::CursorAction() {
   if (cursorPos == 5) {
     // End chip select
     areChipsReady = true;
@@ -90,16 +96,19 @@ void ChipSelectionCust::CursorAction() {
           if (code == '=' || otherCode == '=' || otherCode == code || otherCode == code - 1 || otherCode == code + 1) { queue[i].state = 1; }
           else { queue[i].state = 0; }
         }
+
+        return true;
       }
     }
   }
+  return false;
 }
 
-void ChipSelectionCust::CursorCancel() {
+bool ChipSelectionCust::CursorCancel() {
   // Unqueue all chips buckets
   if (selectCount <= 0) {
     selectCount = 0;
-    return;
+    return false;// nothing happened
   }
 
   selectQueue[selectCount-1]->state = 1;
@@ -112,7 +121,7 @@ void ChipSelectionCust::CursorCancel() {
       queue[i].state = 1;
     }
 
-    return;
+    return true;
   }
 
   /*
@@ -138,6 +147,8 @@ void ChipSelectionCust::CursorCancel() {
       else { queue[j].state = 0; }
     }
   }
+
+  return true;
 }
 
 bool ChipSelectionCust::IsOutOfView() {
