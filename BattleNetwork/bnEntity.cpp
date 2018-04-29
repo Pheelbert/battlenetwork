@@ -108,3 +108,8 @@ bool Entity::IsDeleted() const {
 void Entity::TryDelete() {
   deleted = (health <= 0);
 }
+
+const std::string Entity::GetName()
+{
+  return name;
+}

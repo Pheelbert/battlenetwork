@@ -26,6 +26,8 @@ using sf::Font;
 #define SHADER_FRAG_BAR_PATH "resources/shaders/custom_bar.frag.txt"
 
 int BattleScene::Run(Mob* mob) {
+  std::vector<std::string> mobNames;
+
   Camera camera(Engine::GetInstance().GetDefaultView());
 
   ChipSelectionCust chipCustGUI(5);
@@ -52,6 +54,9 @@ int BattleScene::Run(Mob* mob) {
   sf::Vector2f customBarPos = sf::Vector2f(240.f, 0.f);
   customBarSprite.setPosition(customBarPos);
   customBarSprite.setScale(2.f, 2.f);
+  
+  // MOB UI
+  sf::Font *mobFont = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
 
   // Stream battle music 
   AudioResourceManager::GetInstance().Stream("resources/loops/loop_battle.ogg", true);
@@ -129,6 +134,7 @@ int BattleScene::Run(Mob* mob) {
       }
 
       field->AddEntity(data->mob, data->tileX, data->tileY);
+      mobNames.push_back(data->mob->GetName());
     }
 
     // Check if entire mob is deleted
@@ -162,6 +168,18 @@ int BattleScene::Run(Mob* mob) {
           Engine::GetInstance().Push(entity);
           Engine::GetInstance().Lay(entity->GetMiscComponents());
         }
+      }
+    }
+
+    if (!mob->IsSpawningDone() || isInChipSelect) {
+      for (int i = 0; i < mobNames.size(); i++) {
+        sf::Text mobLabel = sf::Text(mobNames[i], *mobFont);
+        mobLabel.setOrigin(mobLabel.getLocalBounds().width, 0);
+        mobLabel.setPosition(470.0f, -1.f + (i*mobLabel.getLocalBounds().height));
+        mobLabel.setScale(0.8f, 0.8f);
+        mobLabel.setOutlineColor(sf::Color(48, 56, 80));
+        mobLabel.setOutlineThickness(2.f);
+        Engine::GetInstance().Draw(mobLabel, false);
       }
     }
 
@@ -309,6 +327,7 @@ int BattleScene::Run(Mob* mob) {
 
   delete pauseLabel;
   delete font;
+  delete mobFont;
   delete customBarTexture;
 
   AudioResourceManager::GetInstance().StopStream();

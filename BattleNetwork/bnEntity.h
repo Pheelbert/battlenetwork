@@ -45,6 +45,9 @@ public:
   bool IsDeleted() const;
   void TryDelete();
 
+  // For mob UI
+  const std::string GetName();
+
 protected:
   Tile* next;
   Tile* tile;
@@ -54,4 +57,5 @@ protected:
   int health;
   bool passthrough;
   bool deleted;
+  std::string name;
 };
