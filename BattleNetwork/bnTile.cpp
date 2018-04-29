@@ -66,7 +66,11 @@ float Tile::GetHeight() const {
 }
 
 void Tile::SetState(TileState _state) {
-  if (_state == TileState::CRACKED && state != _state) {
+  if (_state == TileState::CRACKED && (state == TileState::EMPTY || state == TileState::BROKEN)) {
+    return;
+  }
+
+  if (_state == TileState::CRACKED) {
     cooldown = cooldownLength;
   }
 
@@ -133,7 +137,7 @@ bool Tile::ContainsEntity(Entity* _entity) const {
 
 void Tile::AffectEntities(Spell* caller) {
   for (auto it = entities.begin(); it < entities.end(); ++it) {
-    if (*it != caller) {
+    if (*it != caller && !(*it)->IsPassthrough()) {
       caller->Attack(*it);
     }
   }

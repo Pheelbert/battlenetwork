@@ -44,6 +44,12 @@ bool SelectedChipsUI::GetNextComponent(Drawable*& out) {
 
 void SelectedChipsUI::Update() {
   if (player) {
+    // TODO: Move chip use logic out of chip UI. Utilize component.s
+    if (invisTimer.getElapsedTime() > sf::seconds(10)) {
+      player->SetPassthrough(false);
+      player->setColor(sf::Color(255, 255, 255, 255));
+    }
+
     // TODO: Move draw out of update. Utilize components.
     int chipOrder = 0;
     for (int i = curr; i < chipCount; i++) {
@@ -56,16 +62,18 @@ void SelectedChipsUI::Update() {
     if (chipCount > 0 && curr < chipCount && selectedChips[curr]) {
       text = Text(sf::String(selectedChips[curr]->GetShortName()), *font);
       text.setOrigin(0, 0);
-      text.setPosition(3.0f, 285.0f);
+      text.setPosition(3.0f, 290.0f);
       text.setOutlineThickness(2.f);
       text.setOutlineColor(sf::Color(48, 56, 80));
+      text.setScale(0.8f, 0.8f);
 
       dmg = Text(to_string(selectedChips[curr]->GetDamage()), *font);
       dmg.setOrigin(0, 0);
-      dmg.setPosition(text.getLocalBounds().width + 13.f, 285.f);
+      dmg.setPosition(text.getLocalBounds().width + 13.f, 290.f);
       dmg.setFillColor(sf::Color(225, 140, 0));
       dmg.setOutlineThickness(2.f);
       dmg.setOutlineColor(sf::Color(48, 56, 80));
+      dmg.setScale(0.8f, 0.8f);
     } else {
       text.setString("");
       dmg.setString("");
@@ -97,6 +105,13 @@ void SelectedChipsUI::UseNextChip() {
     if (low) { low->SetState(TileState::CRACKED); }
 
     AudioResourceManager::GetInstance().Play(AudioType::PANEL_CRACK);
+  }
+  else if (selectedChips[curr]->GetID() == ChipType::INVSBLE) {
+    // Todo make this a time-based component
+    AudioResourceManager::GetInstance().Play(AudioType::INVISIBLE);
+    player->SetPassthrough(true);
+    player->setColor(sf::Color(255, 255, 255, 255 / 2.f));
+    invisTimer.restart();
   }
 
   curr++;

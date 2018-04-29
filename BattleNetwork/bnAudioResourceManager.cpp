@@ -50,6 +50,7 @@ void AudioResourceManager::LoadAllSources(unsigned &status) {
   LoadSource(AudioType::CHIP_DESC_CLOSE, "resources/sfx/chip_desc_close.ogg"); status++;
   LoadSource(AudioType::CHIP_SELECT, "resources/sfx/chip_select.ogg"); status++;
   LoadSource(AudioType::CUSTOM_BAR_FULL, "resources/sfx/custom_bar_full.ogg"); status++;
+  LoadSource(AudioType::CUSTOM_SCREEN_OPEN, "resources/sfx/chip_screen_open.ogg"); status++;
   LoadSource(AudioType::DELETED, "resources/sfx/deleted.ogg"); status++;
   LoadSource(AudioType::EXPLODE, "resources/sfx/explode.ogg"); status++;
   LoadSource(AudioType::GUN, "resources/sfx/gun.ogg"); status++;
@@ -64,6 +65,7 @@ void AudioResourceManager::LoadAllSources(unsigned &status) {
   LoadSource(AudioType::SWORD_SWING, "resources/sfx/sword_swing.ogg"); status++;
   LoadSource(AudioType::TOSS_ITEM, "resources/sfx/toss_item.ogg"); status++;
   LoadSource(AudioType::WAVE, "resources/sfx/wave.ogg"); status++;
+  LoadSource(AudioType::INVISIBLE, "resources/sfx/invisible.ogg"); status++;
 }
 
 void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {

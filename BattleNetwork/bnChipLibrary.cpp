@@ -44,6 +44,6 @@ void ChipLibrary::LoadLibrary() {
   library.insert(library.begin(), Chip(ChipType::HP10, 'F', 10, "HP+10\0", "Restores 10 HP\0"));
   library.insert(library.begin(), Chip(ChipType::HP10, 'E', 10, "HP+10\0", "Restores 10 HP\0"));
   library.insert(library.begin(), Chip(ChipType::HP10, 'A', 10, "HP+10\0", "Restores 10 HP\0"));
-  library.insert(library.begin(), Chip((unsigned)115, 'I', 0, "Invsble\0", "Hide for an amount of time\0"));
-  library.insert(library.begin(), Chip((unsigned)119, 'B', 10, "Barr\0", "Prevent damage\0"));
+  library.insert(library.begin(), Chip(ChipType::INVSBLE, 'I', 0, "Invsble\0", "Hide for an amount of time\0"));
+  library.insert(library.begin(), Chip(ChipType::BARR, 'B', 10, "Barr\0", "Prevent damage\0"));
 }

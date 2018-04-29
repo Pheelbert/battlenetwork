@@ -34,4 +34,8 @@ private:
   Text dmg;
   sf::Sprite icon;
   vector<Drawable*> components;
+
+  // TODO: make time-based components to pass off from UI.
+  // UI should not be responsible for managing chip use logic!
+  sf::Clock invisTimer;
 };

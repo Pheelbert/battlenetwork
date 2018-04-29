@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 
   // play some music while we wait
   AudioResourceManager::GetInstance().SetStreamVolume(10);
-  AudioResourceManager::GetInstance().Stream("resources/loops/loop_theme.ogg", true);
+  AudioResourceManager::GetInstance().Stream("resources/loops/loop_navi_customizer.ogg", true);
 
   // Draw some stats while we wait 
   // TODO: Drawing actual logs from logger here instead of console

@@ -42,7 +42,7 @@ int BattleScene::Run(Mob* mob) {
   sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
   sf::Text* pauseLabel = new sf::Text("paused", *font);
   pauseLabel->setOrigin(pauseLabel->getLocalBounds().width / 2, pauseLabel->getLocalBounds().height * 2);
-  pauseLabel->setPosition((sf::Vector2f)((sf::Vector2i)Engine::GetInstance().GetWindow()->getSize() / 2));
+  pauseLabel->setPosition(sf::Vector2f(240.f, 160.f));
 
   // CHIP CUST
   sf::Texture* customBarTexture = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/ui/custom.png");
@@ -54,7 +54,7 @@ int BattleScene::Run(Mob* mob) {
   customBarSprite.setScale(2.f, 2.f);
 
   // Stream battle music 
-  AudioResourceManager::GetInstance().Stream("resources/loops/loop_boss_battle.ogg", true);
+  AudioResourceManager::GetInstance().Stream("resources/loops/loop_battle.ogg", true);
 
   Clock clock;
   float elapsed = 0.0f;

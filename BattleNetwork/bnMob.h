@@ -11,12 +11,14 @@ public:
     Entity* mob;
     int tileX;
     int tileY;
+    unsigned index;
   };
 
 private:
   std::vector<MobData*> spawn;
   std::vector<MobData*>::iterator iter;
-  std::vector<std::function<void(Entity*)>> invokers;
+  std::vector<std::function<void(Entity*)>> defaultStateInvokers;
+  std::vector<std::function<void(Entity*)>> pixelStateInvokers;
   bool nextReady;
   Field* field;
 public:
@@ -51,18 +53,19 @@ public:
   }
 
   void DefaultState() {
-    for (int i = 0; i < invokers.size(); i++) {
-      invokers[i](spawn[i]->mob);
+    for (int i = 0; i < defaultStateInvokers.size(); i++) {
+      defaultStateInvokers[i](spawn[i]->mob);
     }
 
-    invokers.clear();
+    defaultStateInvokers.clear();
   }
 
   MobData* GetNextMob() {
     this->nextReady = false;
-    MobData* mob = *(iter);
+    MobData* data = *(iter);
     iter++;
-    return mob;
+    pixelStateInvokers[data->index](data->mob);
+    return data;
   }
 
   template<typename T, typename DefaultState>
@@ -78,16 +81,27 @@ Mob* Mob::Spawn(int tileX, int tileY) {
 
   MobData* data = new MobData();
   T* mob = new T();
-  auto onFinish = [&]() { this->nextReady = true; };
-  mob->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
+
   data->mob = mob;
   data->tileX = tileX;
   data->tileY = tileY;
+  data->index = spawn.size();
 
   // This retains the current entity type and stores it in a function. We do this to transform the 
   // unknown type back later and can call the proper state change
+  auto pixelStateInvoker = [this](Entity* mob) {
+    T* cast = dynamic_cast<T*>(mob); 
+    
+    if (cast) {
+      auto onFinish = [this]() { this->nextReady = true; };
+      cast->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
+    }  
+  };
+
+  pixelStateInvokers.push_back(pixelStateInvoker);
+
   auto defaultStateInvoker = [](Entity* mob) { T* cast = dynamic_cast<T*>(mob); if (cast) { cast->StateChange<DefaultState>(); } };
-  invokers.push_back(defaultStateInvoker);
+  defaultStateInvokers.push_back(defaultStateInvoker);
 
   spawn.push_back(data);
 

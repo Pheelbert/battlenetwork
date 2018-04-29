@@ -9,7 +9,8 @@ Entity::Entity(void)
   field(nullptr),
   team(Team::UNKNOWN),
   health(0),
-  deleted(false) {
+  deleted(false),
+  passthrough(false) {
 }
 
 Entity::~Entity(void) {
@@ -88,6 +89,16 @@ int* Entity::GetAnimOffset() {
 
 void Entity::SetHealth(const int _health) {
   health = _health;
+}
+
+void Entity::SetPassthrough(bool state)
+{
+  passthrough = state;
+}
+
+bool Entity::IsPassthrough()
+{
+  return passthrough;
 }
 
 bool Entity::IsDeleted() const {

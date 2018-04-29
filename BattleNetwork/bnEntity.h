@@ -40,6 +40,8 @@ public:
 
   void SetHealth(int _health);
 
+  void SetPassthrough(bool state);
+  bool IsPassthrough();
   bool IsDeleted() const;
   void TryDelete();
 
@@ -50,5 +52,6 @@ protected:
   Field* field;
   Team team;
   int health;
+  bool passthrough;
   bool deleted;
 };

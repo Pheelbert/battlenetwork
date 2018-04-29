@@ -46,7 +46,6 @@ PixelInState<Any>::PixelInState(FinishNotifier onFinish) : AIState<Any>() {
 
   callback = onFinish;
   factor = 400.f;
-  playedFX = false;
 
   if (!pixelated.loadFromFile(SHADER_FRAG_PATH, sf::Shader::Fragment)) {
     Logger::Log("Error loading shader: " SHADER_FRAG_PATH);
@@ -63,16 +62,12 @@ PixelInState<Any>::~PixelInState() {
 
 template<typename Any>
 void PixelInState<Any>::OnEnter(Any& e) {
+  // play swoosh
+  AudioResourceManager::GetInstance().Play(AudioType::APPEAR);
 }
 
 template<typename Any>
 void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
-  // play swoosh
-  if (!playedFX) {
-    AudioResourceManager::GetInstance().Play(AudioType::APPEAR);
-    playedFX = true;
-  }
-
   /* freeze frame */
   e.SetShader(&pixelated);
 
