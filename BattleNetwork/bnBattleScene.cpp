@@ -49,8 +49,7 @@ int BattleScene::Run(Mob* mob) {
   LayeredDrawable customBarSprite;
   customBarSprite.setTexture(*customBarTexture);
   customBarSprite.setOrigin(customBarSprite.getLocalBounds().width / 2, 0);
-  sf::Vector2f customBarPos = (sf::Vector2f)((sf::Vector2i)Engine::GetInstance().GetWindow()->getSize() / 2);
-  customBarPos.y = 0;
+  sf::Vector2f customBarPos = sf::Vector2f(240.f, 0.f);
   customBarSprite.setPosition(customBarPos);
   customBarSprite.setScale(2.f, 2.f);
 
@@ -66,6 +65,7 @@ int BattleScene::Run(Mob* mob) {
   bool isMobFinished = false;
   double customProgress = 0; // in mili seconds 
   double customDuration = 10 * 1000; // 10 seconds
+  bool initFadeOut = false;
 
   // Special: Load shaders if supported 
   double shaderCooldown = 0; // half a second
@@ -101,6 +101,10 @@ int BattleScene::Run(Mob* mob) {
     // check evert frame 
     if (!isPlayerDeleted) {
       isPlayerDeleted = player->IsDeleted();
+
+      if (isPlayerDeleted) {
+        AudioResourceManager::GetInstance().Play(AudioType::DELETED);
+      }
     }
 
     float elapsedSeconds = clock.restart().asSeconds();
@@ -267,14 +271,11 @@ int BattleScene::Run(Mob* mob) {
     }
 
     if (isPlayerDeleted) {
-      static bool doOnce = false;
-
-      if (!doOnce) {
+      if (!initFadeOut) {
         AudioResourceManager::GetInstance().StopStream();
-        AudioResourceManager::GetInstance().Play(AudioType::DELETED);
         shaderCooldown = 1000;
         Engine::GetInstance().SetShader(&whiteShader);
-        doOnce = true;
+        initFadeOut = true;
       }
       else {
         if (shaderCooldown < 0) {
