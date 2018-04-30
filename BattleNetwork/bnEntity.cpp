@@ -18,7 +18,6 @@ Entity::~Entity(void) {
 
 void Entity::Update(float _elapsed) {
   if (IsDeleted()) {
-    tile->RemoveEntity(this);
     field->RemoveEntity(this);
   }
 }

@@ -28,7 +28,20 @@ public:
   }
 
   ~Mob() {
-    // spawn.clear();
+    Cleanup();
+  }
+
+  // DEBUG 
+  std::vector<MobData*>& GetVector() {
+    return spawn;
+  }
+
+  void Cleanup() {
+    for (int i = 0; i < spawn.size(); i++) {
+      delete spawn[i];
+    }
+    field = nullptr;
+    spawn.clear();
   }
 
   Field* GetField() {
@@ -45,8 +58,9 @@ public:
 
   const bool IsCleared() {
     for (int i = 0; i < spawn.size(); i++) {
-      if (!spawn[i]->mob->IsDeleted())
+      if (!spawn[i]->mob->IsDeleted()) {
         return false;
+      }
     }
 
     return true;

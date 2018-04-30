@@ -98,7 +98,7 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
     isMoving = true;
   }
   else {
-    // Cannot more or attack. Forfeit turn.
+    // Cannot move or attack. Forfeit turn.
     met.StateChange<MettaurIdleState>();
     met.NextMettaurTurn();
   }

@@ -248,14 +248,17 @@ int main(int argc, char** argv) {
     Field* field(new Field(6, 3));
     // TODO: Field factory 
     // see how the random mob works around holes
-    field->GetAt(5, 2)->SetState(TileState::EMPTY);
+    field->GetAt((rand())%3+4, (rand()%3)+1)->SetState(TileState::EMPTY);
 
     //MobFactory* factory = new TwoMettaurMob(field);
     MobFactory* factory = new RandomMettaurMob(field);
     Mob* mob = factory->Build();
-    delete factory;
 
     BattleScene::Run(mob);
+
+    delete mob;
+    delete factory;
+    delete field;
   }
   
   return EXIT_SUCCESS;

@@ -172,8 +172,11 @@ int BattleScene::Run(Mob* mob) {
     }
 
     if (!mob->IsSpawningDone() || isInChipSelect) {
-      for (int i = 0; i < mobNames.size(); i++) {
-        sf::Text mobLabel = sf::Text(mobNames[i], *mobFont);
+      for (int i = 0; i < mob->GetVector().size(); i++) {
+        if (!mob->GetVector()[i]->mob)
+          continue;
+
+        sf::Text mobLabel = sf::Text(mob->GetVector()[i]->mob->GetName(), *mobFont);
         mobLabel.setOrigin(mobLabel.getLocalBounds().width, 0);
         mobLabel.setPosition(470.0f, -1.f + (i*mobLabel.getLocalBounds().height));
         mobLabel.setScale(0.8f, 0.8f);
