@@ -112,7 +112,6 @@ void Mettaur::Update(float _elapsed) {
 }
 
 void Mettaur::RefreshTexture() {
-
   if (state == MobState::MOB_IDLE) {
     textureType = TextureType::MOB_METTAUR_IDLE;
   } else if (state == MobState::MOB_MOVING) {

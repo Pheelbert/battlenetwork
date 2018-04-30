@@ -8,17 +8,23 @@ using sf::IntRect;
 #include "bnMobState.h"
 #include "bnTextureType.h"
 #include "bnMobHealthUI.h"
+#include "bnProgsManIdleState.h"
 #include "bnAnimationComponent.h"
+#include "bnAI.h"
 
-class ProgsMan : public Entity {
+class ProgsMan : public Entity, public AI<ProgsMan> {
 public:
+  friend class ProgsManIdleState;
+  friend class ProgsManMoveState;
+  friend class ProgsManAttackState;
+
   ProgsMan(void);
   virtual ~ProgsMan(void);
 
   virtual void Update(float _elapsed);
-  virtual bool Move(Direction _direction);
   virtual void RefreshTexture();
   virtual vector<Drawable*> GetMiscComponents();
+  virtual void SetAnimation(int _state, std::function<void()> onFinish = nullptr);
   virtual int GetStateFromString(string _string);
   virtual int GetHealth() const;
   virtual TextureType GetTextureType() const;
@@ -27,15 +33,12 @@ public:
   void SetHealth(int _health);
   int Hit(int _damage);
   float GetHitHeight() const;
-  int* ProgsMan::getAnimOffset();
+  int* GetAnimOffset();
   void Attack();
 
   void SetTarget(Entity*);
 
 private:
-  //Old static
-  float blinker;
-  float x1, y1, x2, y2;
   sf::Clock clock;
 
   //Cooldowns
@@ -44,13 +47,8 @@ private:
   float waitCooldown;
 
   //Animation
-  float explosionProgress;
-  float explosionProgress2;
   float attackDelay;
-  Sprite explosion;
-  Sprite explosion2;
-  FrameAnimation explode;
-
+ 
   AnimationComponent animationComponent;
 
   float hitHeight;

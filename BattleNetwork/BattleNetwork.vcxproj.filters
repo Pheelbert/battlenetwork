@@ -116,6 +116,9 @@
     <Filter Include="Battle\Entity\Character\Any\States">
       <UniqueIdentifier>{c05712c6-7f52-4d6d-a5ce-4d887bc75117}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Character\ProgsMan\States">
+      <UniqueIdentifier>{6844292c-bee3-4395-b0a0-5d735bad7510}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -228,6 +231,15 @@
     </ClCompile>
     <ClCompile Include="bnTwoMettaurMob.cpp">
       <Filter>Battle\Mob\Easy</Filter>
+    </ClCompile>
+    <ClCompile Include="bnProgsManIdleState.cpp">
+      <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnProgsManMoveState.cpp">
+      <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgsManPunchState.cpp">
+      <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,6 +405,15 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="bnTwoMettaurMob.h">
       <Filter>Battle\Mob\Easy</Filter>
+    </ClInclude>
+    <ClInclude Include="bnProgsManIdleState.h">
+      <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnProgsManMoveState.h">
+      <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnProgsManPunchState.h">
+      <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -133,6 +133,12 @@ int BattleScene::Run(Mob* mob) {
         cast->SetTarget(player);
       }
 
+      ProgsMan* cast2 = dynamic_cast<ProgsMan*>(data->mob);
+
+      if (cast2) {
+        cast2->SetTarget(player);
+      }
+
       field->AddEntity(data->mob, data->tileX, data->tileY);
       mobNames.push_back(data->mob->GetName());
     }
@@ -171,18 +177,23 @@ int BattleScene::Run(Mob* mob) {
       }
     }
 
+    float nextLabelHeight = 0;
     if (!mob->IsSpawningDone() || isInChipSelect) {
       for (int i = 0; i < mob->GetVector().size(); i++) {
         if (!mob->GetVector()[i]->mob)
           continue;
 
         sf::Text mobLabel = sf::Text(mob->GetVector()[i]->mob->GetName(), *mobFont);
+
         mobLabel.setOrigin(mobLabel.getLocalBounds().width, 0);
-        mobLabel.setPosition(470.0f, -1.f + (i*mobLabel.getLocalBounds().height));
+        mobLabel.setPosition(470.0f, -1.f + nextLabelHeight);
         mobLabel.setScale(0.8f, 0.8f);
         mobLabel.setOutlineColor(sf::Color(48, 56, 80));
         mobLabel.setOutlineThickness(2.f);
         Engine::GetInstance().Draw(mobLabel, false);
+
+        // make the next label relative to this one
+        nextLabelHeight += mobLabel.getLocalBounds().height;
       }
     }
 

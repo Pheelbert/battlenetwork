@@ -10,7 +10,8 @@ Entity::Entity(void)
   team(Team::UNKNOWN),
   health(0),
   deleted(false),
-  passthrough(false) {
+  passthrough(false),
+  name("unnamed") {
 }
 
 Entity::~Entity(void) {

@@ -173,6 +173,7 @@
     <ClCompile Include="bnProgBomb.cpp" />
     <ClCompile Include="bnProgsMan.cpp" />
     <ClCompile Include="bnAnimationComponent.cpp" />
+    <ClCompile Include="bnProgsManIdleState.cpp" />
     <ClCompile Include="bnRandomMettaurMob.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
@@ -189,6 +190,8 @@
     <ClCompile Include="bnPlayerControlledState.cpp" />
     <ClCompile Include="bnCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="bnProgsManMoveState.cpp" />
+    <ClCompile Include="ProgsManPunchState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAI.h" />
@@ -225,6 +228,9 @@
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnAnimationComponent.h" />
+    <ClInclude Include="bnProgsManIdleState.h" />
+    <ClInclude Include="bnProgsManMoveState.h" />
+    <ClInclude Include="bnProgsManPunchState.h" />
     <ClInclude Include="bnRandomMettaurMob.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />

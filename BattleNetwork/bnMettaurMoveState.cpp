@@ -65,7 +65,7 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
     if (met.tile->GetY() + 1 <= (int)met.field->GetHeight()) {
       next = met.field->GetAt(met.tile->GetX(), met.tile->GetY() + 1);
       if (met.Teammate(next->GetTeam()) && next->IsWalkable())
-        if (!next->ContainsEntityType<Mettaur>()) {
+        if (!next->ContainsEntityType<Entity>()) {
           met.SetTile(next);
         }
         else {

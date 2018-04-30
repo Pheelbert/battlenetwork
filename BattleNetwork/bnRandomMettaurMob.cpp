@@ -1,4 +1,5 @@
 #include "bnRandomMettaurMob.h"
+#include "bnProgsMan.h"
 
 RandomMettaurMob::RandomMettaurMob(Field* field) : MobFactory(field)
 {
@@ -16,8 +17,14 @@ Mob* RandomMettaurMob::Build() {
     for (int j = 0; j < field->GetHeight(); j++) {
       Tile* tile = field->GetAt(i + 1, j + 1);
       if (tile->IsWalkable() && tile->GetTeam() == Team::RED) {
-        if(rand() % 50 > 25)
-          mob->Spawn<Mettaur, MettaurIdleState>(i + 1, j + 1);
+        if (rand() % 50 > 25) {
+          if (rand() % 10 > 2) {
+            mob->Spawn<ProgsMan, ProgsManIdleState>(i + 1, j + 1);
+          }
+          else {
+            mob->Spawn<Mettaur, MettaurIdleState>(i + 1, j + 1);
+          }
+        }
       }
     }
   }
