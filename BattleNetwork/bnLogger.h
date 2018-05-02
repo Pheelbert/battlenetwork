@@ -2,6 +2,7 @@
 #include <iostream>
 using std::cout;
 using std::endl;
+using std::cin;
 #include <string>
 using std::string;
 using std::to_string;
@@ -19,8 +20,9 @@ public:
   }
 
   template<typename ... Args>
-  static void Failf(const char* _format, Args... args) {
-    fprintf_s(stderr, _format, args...);
+  static void Failf(const string& _format, Args... args) {
+    fprintf_s(stderr, ("ERROR: " + _format).c_str(), args...);
+    cin.ignore(); // Allows us to see the error before the window closes
     exit(EXIT_FAILURE);
   }
 
