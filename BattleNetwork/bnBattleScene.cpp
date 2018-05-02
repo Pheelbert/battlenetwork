@@ -34,19 +34,19 @@ int BattleScene::Run() {
   {
     const clock_t begin_time = clock();
     Engine::GetInstance().Initialize();
-    Logger::Logf("Engine initialized: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+    Logger::Logf("Engine initialized: %f secs\n", float(clock() - begin_time) / CLOCKS_PER_SEC);
   }
 
   {
     const clock_t begin_time = clock();
     TextureResourceManager::GetInstance().LoadAllTextures();
-    Logger::Logf("Loaded textures: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+    Logger::Logf("Loaded textures: %f secs\n", float(clock() - begin_time) / CLOCKS_PER_SEC);
   }
   
   {
     const clock_t begin_time = clock();
     AudioResourceManager::GetInstance().LoadAllSources();
-    Logger::Logf("Loaded audio sources: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+    Logger::Logf("Loaded audio sources: %f secs\n", float(clock() - begin_time) / CLOCKS_PER_SEC);
   }
   
   AudioResourceManager::GetInstance().SetStreamVolume(10);
@@ -119,7 +119,7 @@ int BattleScene::Run() {
   sf::Shader shader;
 
   if (!shader.loadFromFile(SHADER_FRAG_PIXEL_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_PIXEL_PATH);
+    Logger::Logf("Error loading shader: %s\n", SHADER_FRAG_PIXEL_PATH);
   } else {
     shader.setUniform("texture", sf::Shader::CurrentTexture);
     shader.setUniform("pixel_threshold", (float)(shaderCooldown / 1000.f)*0.5f); // start at full
@@ -128,7 +128,7 @@ int BattleScene::Run() {
 
   sf::Shader pauseShader;
   if (!pauseShader.loadFromFile(SHADER_FRAG_BLACK_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_BLACK_PATH);
+    Logger::Logf("Error loading shader: %s\n", SHADER_FRAG_BLACK_PATH);
   } else {
     pauseShader.setUniform("texture", sf::Shader::CurrentTexture);
     pauseShader.setUniform("opacity", 0.5f);
@@ -136,7 +136,7 @@ int BattleScene::Run() {
 
   sf::Shader whiteShader;
   if (!whiteShader.loadFromFile(SHADER_FRAG_WHITE_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_WHITE_PATH);
+    Logger::Logf("Error loading shader: %s\n", SHADER_FRAG_WHITE_PATH);
   }
   else {
     whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
@@ -145,7 +145,7 @@ int BattleScene::Run() {
 
   sf::Shader customBarShader;
   if (!customBarShader.loadFromFile(SHADER_FRAG_BAR_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_BAR_PATH);
+    Logger::Logf("Error loading shader: %s\n", SHADER_FRAG_BAR_PATH);
   } else {
     customBarShader.setUniform("texture", sf::Shader::CurrentTexture);
     customBarShader.setUniform("factor", 0);
