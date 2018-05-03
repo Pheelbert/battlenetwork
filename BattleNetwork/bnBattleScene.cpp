@@ -106,7 +106,7 @@ int BattleScene::Run() {
   AudioResourceManager::GetInstance().Stream("resources/loops/loop_boss_battle.ogg", true);
 
   Clock clock;
-  float elapsed = 0.0f;
+  float elapsedMilliseconds = 0.0f;
   bool isPaused = false;
   bool isInChipSelect = false;
   bool isChipSelectReady = false;
@@ -153,26 +153,15 @@ int BattleScene::Run() {
   }
 
   while (Engine::GetInstance().Running()) {
-    // check evert frame 
     if (!isPlayerDeleted) {
       isPlayerDeleted = player->IsDeleted();
-    }
-
-    float elapsedSeconds = clock.restart().asSeconds();
-    float FPS = 0.f;
-
-    if (elapsedSeconds > 0.f) {
-      FPS = 1.0f / elapsedSeconds;
-      std::string fpsStr = std::to_string(FPS);
-      fpsStr.resize(4);
-      Engine::GetInstance().GetWindow()->setTitle(sf::String(std::string("FPS: ") + fpsStr));
     }
 
     // TODO: Do not update when paused or in chip select
     ControllableComponent::GetInstance().update();
 
     if (!(isPaused || isInChipSelect)) {
-      field->Update(elapsed);
+      field->Update(elapsedMilliseconds);
     }
 
     Engine::GetInstance().Clear();
@@ -272,11 +261,11 @@ int BattleScene::Run() {
 
     if (isInChipSelect && customProgress > 0.f) {
       if (!chipCustGUI.IsInView()) {
-        chipCustGUI.Move(sf::Vector2f(150.f / elapsed, 0));
+        chipCustGUI.Move(sf::Vector2f(150.f / elapsedMilliseconds, 0));
       }
     } else {
       if (!chipCustGUI.IsOutOfView()) {
-        chipCustGUI.Move(sf::Vector2f(-150.f / elapsed, 0));
+        chipCustGUI.Move(sf::Vector2f(-150.f / elapsedMilliseconds, 0));
       } else if (isInChipSelect) { // we're leaving a state
         // Return to game
         isInChipSelect = false;
@@ -285,7 +274,7 @@ int BattleScene::Run() {
       }
     }
 
-    shaderCooldown -= elapsed;
+    shaderCooldown -= elapsedMilliseconds;
 
     if (shaderCooldown < 0) {
       shaderCooldown = 0;
@@ -310,7 +299,7 @@ int BattleScene::Run() {
     }
 
     // update the cust if not paused
-    if (!(isPaused || isInChipSelect)) customProgress += elapsed;
+    if (!(isPaused || isInChipSelect)) customProgress += elapsedMilliseconds;
 
     if (customProgress / customDuration >= 1.0) {
       if (isChipSelectReady == false) {
@@ -323,7 +312,14 @@ int BattleScene::Run() {
 
     customBarShader.setUniform("factor", (float)(customProgress / customDuration));
 
-    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+    elapsedMilliseconds = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+
+    float FPS = 1.0f / (elapsedMilliseconds / 1000.f);
+    std::string fpsStr = std::to_string(FPS);
+    fpsStr.resize(4);
+    Engine::GetInstance().GetWindow()->setTitle(sf::String("FPS: " + fpsStr));
+
+    clock.restart();
   }
 
   delete pauseLabel;
