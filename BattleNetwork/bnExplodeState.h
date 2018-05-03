@@ -3,6 +3,7 @@
 #include "bnEntity.h"
 #include "bnAIState.h"
 #include "bnLongExplosion.h"
+#include "bnShaderResourceManager.h"
 
 /*
   This state can be used by any Entity in the engine. 
@@ -20,7 +21,7 @@ class ExplodeState : public AIState<Any>
 {
 private:
   Entity* explosion;
-  sf::Shader whiteout;
+  sf::Shader* whiteout;
 
 public:
   ExplodeState();
@@ -35,8 +36,6 @@ public:
 #include "bnField.h"
 #include "bnLogger.h"
 
-#define SHADER_FRAG_PATH "resources/shaders/white.frag.txt"
-
 template<typename Any>
 ExplodeState<Any>::ExplodeState() : AIState<Any>() {
   // Enforce template constraints on class
@@ -45,12 +44,7 @@ ExplodeState<Any>::ExplodeState() : AIState<Any>() {
   // If we make it here, we are the proper type
   explosion = nullptr;
 
-  if (!whiteout.loadFromFile(SHADER_FRAG_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_PATH);
-  }
-  else {
-    whiteout.setUniform("texture", sf::Shader::CurrentTexture);
-  }
+  whiteout = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE);
 }
 
 template<typename Any>
@@ -67,14 +61,14 @@ void ExplodeState<Any>::OnEnter(Any& e) {
   Tile* tile = e.GetTile();
   Field* field = e.GetField();
   explosion = new LongExplosion(field, e.GetTeam());
-  field->AddEntity(explosion, tile->GetX(), tile->GetY());
+  field->OwnEntity(explosion, tile->GetX(), tile->GetY());
 }
 
 template<typename Any>
 void ExplodeState<Any>::OnUpdate(float _elapsed, Any& e) {
   /* freeze frame, flash white */
   if ((int)((_elapsed) * 5) % 2 == 0) {
-    e.SetShader(&whiteout);
+    e.SetShader(whiteout);
   }
   else {
     e.SetShader(nullptr);

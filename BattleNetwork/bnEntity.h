@@ -13,6 +13,8 @@ class Tile;
 class Field;
 
 class Entity : public LayeredDrawable {
+  friend class Field;
+
 public:
   Entity(void);
   virtual ~Entity(void);
@@ -46,9 +48,10 @@ public:
   void TryDelete();
 
   // For mob UI
-  const std::string GetName();
+  const std::string GetName() const;
 
 protected:
+  bool ownedByField;
   Tile* next;
   Tile* tile;
   Tile* previous;

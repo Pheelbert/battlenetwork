@@ -25,7 +25,7 @@ void MettaurAttackState::Attack(Mettaur& met) {
   if (met.GetField()->GetAt(met.tile->GetX() - 1, met.tile->GetY())->IsWalkable()) {
     Spell* spell = new Wave(met.field, met.team);
     spell->SetDirection(Direction::LEFT);
-    met.field->AddEntity(spell, met.tile->GetX() - 1, met.tile->GetY());
+    met.field->OwnEntity(spell, met.tile->GetX() - 1, met.tile->GetY());
   }
 
   met.StateChange<MettaurIdleState>();

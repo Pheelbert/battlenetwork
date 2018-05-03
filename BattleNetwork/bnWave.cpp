@@ -99,7 +99,7 @@ void Wave::Attack(Entity* _entity) {
     if (this->GetTile()->GetX() > 1) {
       Wave* passthrough = new Wave(field, team);
       passthrough->SetDirection(this->GetDirection());
-      field->AddEntity(passthrough, this->GetTile()->GetX()-1, this->GetTile()->GetY());
+      field->OwnEntity(passthrough, this->GetTile()->GetX()-1, this->GetTile()->GetY());
     }
 
     deleted = true;

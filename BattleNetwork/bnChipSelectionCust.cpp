@@ -1,9 +1,10 @@
 #include "bnChipSelectionCust.h"
 #include "bnTextureResourceManager.h"
+#include "bnShaderResourceManager.h"
 
-#define SHADER_FRAG_PATH "resources/shaders/greyscale.frag.txt"
-
-ChipSelectionCust::ChipSelectionCust(int cap) {
+ChipSelectionCust::ChipSelectionCust(int cap) : 
+  greyscale(*ShaderResourceManager::GetInstance().GetShader(ShaderType::GREYSCALE)) 
+{
   chipCap = cap;
   queue = new Bucket[chipCap];
   selectQueue = new Bucket*[chipCap];
@@ -28,10 +29,6 @@ ChipSelectionCust::ChipSelectionCust(int cap) {
   chipCard.setTexture(*card);
   chipCard.setScale(2.f, 2.f);
   chipCard.setPosition(2.f*16.f, 48.f);
-
-  if (!greyscale.loadFromFile(SHADER_FRAG_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_PATH);
-  }
 
   sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
   label.setFont(*font);

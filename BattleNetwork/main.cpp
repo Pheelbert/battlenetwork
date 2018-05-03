@@ -1,5 +1,6 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
+#include "bnShaderResourceManager.h"
 #include "bnControllableComponent.h"
 #include "bnEngine.h"
 #include "bnBattleScene.h"
@@ -18,14 +19,18 @@ using sf::Clock;
 #define TITLE_ANIM_CHAR_HEIGHT 221
 #define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
 
-void RunTextureResourceInit(unsigned * progress) {
-  sf::sleep(sf::milliseconds(2000)); // Simulate long loading to see title better
-  const clock_t begin_time = clock();
+void RunGraphicsInit(unsigned * progress) {
+  sf::sleep(sf::milliseconds(1000)); // Simulate long loading to see title better
+  clock_t begin_time = clock();
   TextureResourceManager::GetInstance().LoadAllTextures(*progress);
   Logger::Logf("Loaded textures: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+
+  begin_time = clock();
+  ShaderResourceManager::GetInstance().LoadAllShaders(*progress);
+  Logger::Logf("Loaded shaders: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
 }
 
-void RunAudioResourceInit(unsigned * progress) {
+void RunAudioInit(unsigned * progress) {
   const clock_t begin_time = clock();
   AudioResourceManager::GetInstance().LoadAllSources(*progress);
   Logger::Logf("Loaded audio sources: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
@@ -41,6 +46,7 @@ int main(int argc, char** argv) {
 
   // lazy init
   //TextureResourceManager::GetInstance();
+  ShaderResourceManager::GetInstance();
   AudioResourceManager::GetInstance();
 
   // Title screen logo
@@ -68,13 +74,13 @@ int main(int argc, char** argv) {
   LayeredDrawable progSprite;
 
   // TODO: Add shaders to this list
-  unsigned totalObjects = (unsigned)TextureType::TEXTURE_TYPE_SIZE + (unsigned)AudioType::AUDIO_TYPE_SIZE;
+  unsigned totalObjects = (unsigned)TextureType::TEXTURE_TYPE_SIZE + (unsigned)AudioType::AUDIO_TYPE_SIZE + (unsigned)ShaderType::SHADER_TYPE_SIZE;
   unsigned progress = 0;
 
-  sf::Thread textureLoad(&RunTextureResourceInit, &progress);
-  sf::Thread audioLoad(&RunAudioResourceInit, &progress);
+  sf::Thread graphicsLoad(&RunGraphicsInit, &progress);
+  sf::Thread audioLoad(&RunAudioInit, &progress);
 
-  textureLoad.launch(); 
+  graphicsLoad.launch();
   audioLoad.launch();
 
   // play some music while we wait
@@ -89,14 +95,7 @@ int main(int argc, char** argv) {
   double logFadeOutTimer = 4000;
   double logFadeOutSpeed = 2000;
 
-  sf::Shader whiteShader;
-  if (!whiteShader.loadFromFile(SHADER_FRAG_WHITE_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_WHITE_PATH);
-  }
-  else {
-    whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
-    whiteShader.setUniform("opacity", 0.0f);
-  }
+  sf::Shader* whiteShader = nullptr;
 
   Clock clock;
   float elapsed = 0.0f;
@@ -125,7 +124,6 @@ int main(int argc, char** argv) {
     if (progress == totalObjects) {
       if (!ready) {
         ready = true;
-        Engine::GetInstance().SetShader(&whiteShader);
       }
       else { // Else we are ready next frame
         if (!bg) {
@@ -161,6 +159,17 @@ int main(int argc, char** argv) {
           }
         }
 
+        if (!whiteShader) {
+          try {
+            whiteShader = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE_FADE);
+            whiteShader->setUniform("opacity", 0.0f);
+            Engine::GetInstance().SetShader(whiteShader);
+          }
+          catch (std::exception e) {
+            // didnt catchup? debug
+          }
+        }
+
         shaderCooldown -= elapsed;
         progAnimProgress += elapsed/2000.f;
 
@@ -187,7 +196,7 @@ int main(int argc, char** argv) {
         }
 
         // update shader 
-        whiteShader.setUniform("opacity", (float)(shaderCooldown / 1000.f)*0.5f);
+        whiteShader->setUniform("opacity", (float)(shaderCooldown / 1000.f)*0.5f);
       }
 
       if (ControllableComponent::GetInstance().has(PRESSED_ACTION3)) {

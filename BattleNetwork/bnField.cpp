@@ -58,14 +58,23 @@ void Field::AddEntity(Entity* _entity, int x, int y) {
   GetAt(x, y)->AddEntity(_entity);
 }
 
+void Field::OwnEntity(Entity* _entity, int x, int y) {
+  this->AddEntity(_entity, x, y);
+  _entity->ownedByField = true;
+}
+
 void Field::RemoveEntity(Entity* _entity) {
   auto it = find(entities.begin(), entities.end(), _entity);
   if (it != entities.end()) {
     if (_entity->GetTile()) {
       GetAt(_entity->GetTile()->GetX(), _entity->GetTile()->GetY())->RemoveEntity(_entity);
     }
-    delete *it;
-    *it = nullptr;
+
+    if ((*it)->ownedByField) {
+      delete *it;
+      *it = nullptr;
+    }
+
     entities.erase(it);
   }
 }
@@ -91,6 +100,7 @@ bool Field::GetNextEntity(Entity*& out, int _depth) const {
     }
   }
   i = 0;
+
   return false;
 }
 

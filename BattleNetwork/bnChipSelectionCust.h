@@ -19,7 +19,7 @@ private:
   sf::Sprite cursorBig;
   LayeredDrawable icon;
   LayeredDrawable chipCard;
-  sf::Shader greyscale;
+  sf::Shader& greyscale;
   sf::Text label;
   int chipCount;
   int selectCount;

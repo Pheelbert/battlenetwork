@@ -11,6 +11,7 @@ Entity::Entity(void)
   health(0),
   deleted(false),
   passthrough(false),
+  ownedByField(false),
   name("unnamed") {
 }
 
@@ -109,7 +110,7 @@ void Entity::TryDelete() {
   deleted = (health <= 0);
 }
 
-const std::string Entity::GetName()
+const std::string Entity::GetName() const
 {
   return name;
 }

@@ -119,6 +119,9 @@
     <Filter Include="Battle\Entity\Character\ProgsMan\States">
       <UniqueIdentifier>{6844292c-bee3-4395-b0a0-5d735bad7510}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\ShaderResource">
+      <UniqueIdentifier>{49b19f7e-5aec-46e0-967f-2e0f585adcef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -240,6 +243,9 @@
     </ClCompile>
     <ClCompile Include="ProgsManPunchState.cpp">
       <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnShaderResourceManager.cpp">
+      <Filter>Resource\ShaderResource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -414,6 +420,12 @@
     </ClInclude>
     <ClInclude Include="bnProgsManPunchState.h">
       <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnShaderResourceManager.h">
+      <Filter>Resource\ShaderResource</Filter>
+    </ClInclude>
+    <ClInclude Include="bnShaderType.h">
+      <Filter>Resource\ShaderResource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@
 #include "bnEntity.h"
 #include "bnAIState.h"
 #include "bnAudioResourceManager.h"
+#include "bnShaderResourceManager.h"
 #include <iostream>
 
 /*
@@ -21,7 +22,7 @@ template<typename Any>
 class PixelInState : public AIState<Any>
 {
 private:
-  sf::Shader pixelated;
+  sf::Shader* pixelated;
   float factor;
   FinishNotifier callback;
   bool playedFX;
@@ -37,8 +38,6 @@ public:
 #include "bnField.h"
 #include "bnLogger.h"
 
-#define SHADER_FRAG_PATH "resources/shaders/pixel_blur.frag.txt"
-
 template<typename Any>
 PixelInState<Any>::PixelInState(FinishNotifier onFinish) : AIState<Any>() {
   // Enforce template constraints on class
@@ -47,13 +46,7 @@ PixelInState<Any>::PixelInState(FinishNotifier onFinish) : AIState<Any>() {
   callback = onFinish;
   factor = 400.f;
 
-  if (!pixelated.loadFromFile(SHADER_FRAG_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_PATH);
-  }
-  else {
-    pixelated.setUniform("texture", sf::Shader::CurrentTexture);
-    pixelated.setUniform("pixel_threshold", 1.f);
-  }
+  pixelated = ShaderResourceManager::GetInstance().GetShader(ShaderType::PIXEL_BLUR);
 }
 
 template<typename Any>
@@ -69,7 +62,7 @@ void PixelInState<Any>::OnEnter(Any& e) {
 template<typename Any>
 void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
   /* freeze frame */
-  e.SetShader(&pixelated);
+  e.SetShader(pixelated);
 
   /* If progress is 1, pop state and move onto original state*/
   factor -= _elapsed;
@@ -80,7 +73,7 @@ void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
     if (callback) { callback(); callback = nullptr; /* do once */ }
   }
 
-  pixelated.setUniform("pixel_threshold", (float)(factor/400.f));
+  pixelated->setUniform("pixel_threshold", (float)(factor/400.f));
 }
 
 template<typename Any>

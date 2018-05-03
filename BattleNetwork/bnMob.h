@@ -31,13 +31,9 @@ public:
     Cleanup();
   }
 
-  // DEBUG 
-  std::vector<MobData*>& GetVector() {
-    return spawn;
-  }
-
   void Cleanup() {
     for (int i = 0; i < spawn.size(); i++) {
+      delete spawn[i]->mob;
       delete spawn[i];
     }
     field = nullptr;
@@ -46,6 +42,17 @@ public:
 
   Field* GetField() {
     return field;
+  }
+
+  const int GetMobCount() {
+    return (int)spawn.size();
+  }
+
+  const Entity& GetMobAt(int index) {
+    if (index < 0 || index >= spawn.size()) {
+      throw new std::exception("Invalid index range for Mob::GetMobAt()");
+    }
+    return *spawn[index]->mob;
   }
 
   const bool NextMobReady() {

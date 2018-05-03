@@ -175,6 +175,7 @@
     <ClCompile Include="bnAnimationComponent.cpp" />
     <ClCompile Include="bnProgsManIdleState.cpp" />
     <ClCompile Include="bnRandomMettaurMob.cpp" />
+    <ClCompile Include="bnShaderResourceManager.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
     <ClCompile Include="bnSpell.cpp" />
@@ -232,6 +233,8 @@
     <ClInclude Include="bnProgsManMoveState.h" />
     <ClInclude Include="bnProgsManPunchState.h" />
     <ClInclude Include="bnRandomMettaurMob.h" />
+    <ClInclude Include="bnShaderResourceManager.h" />
+    <ClInclude Include="bnShaderType.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />
     <ClInclude Include="bnTile.h" />

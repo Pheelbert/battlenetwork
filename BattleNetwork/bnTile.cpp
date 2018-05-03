@@ -32,9 +32,7 @@ Tile::Tile(int _x, int _y) {
 }
 
 Tile::~Tile(void) {
-  if (entities.size() > 0) {
-    FreeClear(entities);
-  }
+  entities.clear();
 }
 
 void Tile::SetField(Field* _field) {

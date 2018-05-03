@@ -121,7 +121,7 @@ void Buster::Attack(Entity* _entity) {
   }
 
   if (hit) {
-    AudioResourceManager::GetInstance().Play(AudioType::HURT);
+    AudioResourceManager::GetInstance().Play(AudioType::HURT, 0);
   }
 }
 

@@ -19,11 +19,8 @@ using sf::Font;
 #include "bnControllableComponent.h"
 #include "bnEngine.h"
 #include "bnChipSelectionCust.h"
+#include "bnShaderResourceManager.h"
 
-#define SHADER_FRAG_PIXEL_PATH "resources/shaders/pixel_blur.frag.txt"
-#define SHADER_FRAG_BLACK_PATH "resources/shaders/black_fade.frag.txt"
-#define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
-#define SHADER_FRAG_BAR_PATH "resources/shaders/custom_bar.frag.txt"
 
 int BattleScene::Run(Mob* mob) {
   std::vector<std::string> mobNames;
@@ -36,7 +33,7 @@ int BattleScene::Run(Mob* mob) {
 
   Player* player(new Player());
   player->StateChange<PlayerIdleState>();
-  field->AddEntity(player, 2, 2);
+  field->OwnEntity(player, 2, 2);
 
   BackgroundUI background = BackgroundUI();
 
@@ -75,31 +72,20 @@ int BattleScene::Run(Mob* mob) {
   // Special: Load shaders if supported 
   double shaderCooldown = 0; // half a second
 
-  sf::Shader pauseShader;
-  if (!pauseShader.loadFromFile(SHADER_FRAG_BLACK_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_BLACK_PATH);
-  } else {
-    pauseShader.setUniform("texture", sf::Shader::CurrentTexture);
-    pauseShader.setUniform("opacity", 0.5f);
-  }
+  sf::Shader& pauseShader = *ShaderResourceManager::GetInstance().GetShader(ShaderType::BLACK_FADE);
+  pauseShader.setUniform("texture", sf::Shader::CurrentTexture);
+  pauseShader.setUniform("opacity", 0.5f);
 
-  sf::Shader whiteShader;
-  if (!whiteShader.loadFromFile(SHADER_FRAG_WHITE_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_WHITE_PATH);
-  }
-  else {
-    whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
-    whiteShader.setUniform("opacity", 0.5f);
-  }
+  sf::Shader& whiteShader = *ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE_FADE);
+  whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
+  whiteShader.setUniform("opacity", 0.5f);
 
-  sf::Shader customBarShader;
-  if (!customBarShader.loadFromFile(SHADER_FRAG_BAR_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_BAR_PATH);
-  } else {
-    customBarShader.setUniform("texture", sf::Shader::CurrentTexture);
-    customBarShader.setUniform("factor", 0);
-    customBarSprite.SetShader(&customBarShader);
-  }
+
+  sf::Shader& customBarShader = *ShaderResourceManager::GetInstance().GetShader(ShaderType::CUSTOM_BAR);
+  customBarShader.setUniform("texture", sf::Shader::CurrentTexture);
+  customBarShader.setUniform("factor", 0);
+  customBarSprite.SetShader(&customBarShader);
+
 
   bool inBattleState = true;
   while (Engine::GetInstance().Running() && inBattleState) {
@@ -179,11 +165,11 @@ int BattleScene::Run(Mob* mob) {
 
     float nextLabelHeight = 0;
     if (!mob->IsSpawningDone() || isInChipSelect) {
-      for (int i = 0; i < mob->GetVector().size(); i++) {
-        if (!mob->GetVector()[i]->mob)
+      for (int i = 0; i < mob->GetMobCount(); i++) {
+        if (mob->GetMobAt(i).IsDeleted())
           continue;
 
-        sf::Text mobLabel = sf::Text(mob->GetVector()[i]->mob->GetName(), *mobFont);
+        sf::Text mobLabel = sf::Text(mob->GetMobAt(i).GetName(), *mobFont);
 
         mobLabel.setOrigin(mobLabel.getLocalBounds().width, 0);
         mobLabel.setPosition(470.0f, -1.f + nextLabelHeight);

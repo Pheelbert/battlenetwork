@@ -5,12 +5,12 @@
 #include "bnProgBomb.h"
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
+#include "bnShaderResourceManager.h"
 #include "bnEngine.h"
 #include "bnExplodeState.h"
 
 #define RESOURCE_NAME "progsman"
 #define RESOURCE_PATH "resources/mobs/progsman/progsman.animation"
-#define SHADER_FRAG_PATH "resources/shaders/white.frag.txt"
 
 #define PROGS_COOLDOWN 1000.0f
 #define PROGS_ATTACK_COOLDOWN 2222.f
@@ -45,11 +45,7 @@ ProgsMan::ProgsMan(void)
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
 
-  if (!whiteout.loadFromFile(SHADER_FRAG_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_PATH);
-  } else {
-    whiteout.setUniform("texture", sf::Shader::CurrentTexture);
-  }
+  whiteout = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE);
 
   target = nullptr;
 }
@@ -200,7 +196,7 @@ void ProgsMan::SetHealth(int _health) {
 }
 
 int ProgsMan::Hit(int _damage) {
-  SetShader(&whiteout);
+  SetShader(whiteout);
   (health - _damage < 0) ? health = 0 : health -= _damage;
   return health;
 }
