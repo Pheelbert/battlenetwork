@@ -232,9 +232,6 @@ int BattleScene::Run(Mob* mob) {
     // Draw cust GUI on top of scene. No shaders affecting.
     chipCustGUI.Draw();
 
-    // Write contents to screen (always last step)
-    Engine::GetInstance().Display();
-
     // Scene keyboard controls
     if (ControllableComponent::GetInstance().has(PRESSED_PAUSE) && !isInChipSelect && !isPlayerDeleted) {
       isPaused = !isPaused;
@@ -329,35 +326,62 @@ int BattleScene::Run(Mob* mob) {
           isPAComplete = true;
         }
         else if (hasPA) {
+          static float increment = 0;
+
+          float nextLabelHeight = 0;
+
+          if (paStepIndex <= paSteps.size()) {
+            for (int i = 0; i < paStepIndex; i++) {
+              sf::Text stepLabel = sf::Text(paSteps[i].first, *mobFont);
+
+              stepLabel.setOrigin(0, 0);
+              stepLabel.setPosition(40.0f, 40.f + nextLabelHeight);
+              stepLabel.setScale(0.8f, 0.8f);
+              stepLabel.setOutlineColor(sf::Color(48, 56, 80));
+              stepLabel.setOutlineThickness(2.f);
+              Engine::GetInstance().Draw(stepLabel, false);
+
+              // make the next label relative to this one
+              nextLabelHeight += stepLabel.getLocalBounds().height;
+            }
+            increment = 0;
+          }
+          else {
+            increment += elapsed/100.f;
+
+            sf::Text stepLabel = sf::Text(programAdvance.GetAdvanceChip()->GetShortName(), *mobFont);
+
+            stepLabel.setOrigin(0, 0);
+            stepLabel.setPosition(40.0f, 40.f + nextLabelHeight);
+            stepLabel.setScale(0.8f, 0.8f);
+            stepLabel.setOutlineColor(sf::Color(sin(increment) * 255, cos(increment+90*(22.f/7.f)) * 255, sin(increment+180*(22.f/7.f)) * 255));
+            stepLabel.setOutlineThickness(2.f);
+            Engine::GetInstance().Draw(stepLabel, false);
+          }
+
           if (listStepCounter > 0.f) {
             listStepCounter -= elapsed;
           }
           else {
-            if (paStepIndex >= paSteps.size()) {
+
+            if (paStepIndex > paSteps.size()) {
               hasPA = false; // state over 
               isPAComplete = true;
             }
             else {
-              float nextLabelHeight = 0;
 
-              for (int i = 0; i < paStepIndex; i++) {
-                sf::Text stepLabel = sf::Text(paSteps[i].first, *mobFont);
+              paStepIndex++;
+              listStepCounter = listStepCooldown;
 
-                stepLabel.setOrigin(stepLabel.getLocalBounds().width, 0);
-                stepLabel.setPosition(16.0f, 20.f + nextLabelHeight);
-                stepLabel.setScale(0.8f, 0.8f);
-                stepLabel.setOutlineColor(sf::Color(48, 56, 80));
-                stepLabel.setOutlineThickness(2.f);
-                Engine::GetInstance().Draw(stepLabel, false);
-
-                // make the next label relative to this one
-                nextLabelHeight += stepLabel.getLocalBounds().height;
-              }
             }
           }
         }
       }
     }
+
+    // Write contents to screen (always last step)
+    Engine::GetInstance().Display();
+
 
     if (isPlayerDeleted) {
       if (!initFadeOut) {

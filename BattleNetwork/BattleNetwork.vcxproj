@@ -155,6 +155,7 @@
     <ClCompile Include="bnArtifact.cpp" />
     <ClCompile Include="bnAudioResourceManager.cpp" />
     <ClCompile Include="bnBackgroundUI.cpp" />
+    <ClCompile Include="bnCannon.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
     <ClCompile Include="bnChip.cpp" />
     <ClCompile Include="bnChipLibrary.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="bnAudioType.h" />
     <ClInclude Include="bnBackgroundUI.h" />
     <ClInclude Include="bnCamera.h" />
+    <ClInclude Include="bnCannon.h" />
     <ClInclude Include="bnChargeComponent.h" />
     <ClInclude Include="bnChip.h" />
     <ClInclude Include="bnChipLibrary.h" />

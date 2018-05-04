@@ -11,7 +11,7 @@ PA::PA()
 PA::~PA()
 {
   if (advanceChipRef) {
-    delete advanceChipRef;
+//    delete advanceChipRef;
   }
 
   advances.clear();
@@ -84,15 +84,6 @@ const PASteps PA::GetMatchingSteps()
 
 Chip * PA::GetAdvanceChip()
 {
-  if (advanceChipRef) { delete advanceChipRef;  }
-
-  if (iter != advances.end()) {
-    advanceChipRef = new Chip(0, iter->icon, 0, iter->damage, iter->name, "Program Advance");
-  }
-  else {
-    advanceChipRef = nullptr;
-  }
-
    return advanceChipRef;
 }
 
@@ -109,7 +100,16 @@ bool PA::FindPA(Chip ** input, unsigned size)
     }
 
     if (match) {
-      // Go no further
+      // Load the PA chip
+      if (advanceChipRef) { delete advanceChipRef; }
+
+      if (iter != advances.end()) {
+        advanceChipRef = new Chip(0, iter->icon, 0, iter->damage, iter->name, "Program Advance");
+      }
+      else {
+        advanceChipRef = nullptr;
+      }
+
       return true;
     }
 

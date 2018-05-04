@@ -3,6 +3,7 @@ using std::to_string;
 
 #include "bnPlayer.h"
 #include "bnField.h"
+#include "bnCannon.h"
 #include "bnTile.h"
 #include "bnSelectedChipsUI.h"
 #include "bnTextureResourceManager.h"
@@ -114,6 +115,21 @@ void SelectedChipsUI::UseNextChip() {
     player->SetPassthrough(true);
     player->setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 / 2.f)));
     invisTimer.restart();
+  }
+  else if (selectedChips[curr]->GetShortName() == "XtrmeCnnon") {
+    AudioResourceManager::GetInstance().Play(AudioType::CANNON);
+    Cannon* xtreme1 = new Cannon(player->GetField(), player->GetTeam(), 600);
+    Cannon* xtreme2 = new Cannon(player->GetField(), player->GetTeam(), 600);
+    Cannon* xtreme3 = new Cannon(player->GetField(), player->GetTeam(), 600);
+
+    player->SetAnimation(PlayerState::PLAYER_SHOOTING);
+    xtreme1->SetDirection(Direction::RIGHT);
+    xtreme2->SetDirection(Direction::RIGHT);
+    xtreme3->SetDirection(Direction::RIGHT);
+
+    player->GetField()->OwnEntity(xtreme1, 4, 1);
+    player->GetField()->OwnEntity(xtreme2, 4, 2);
+    player->GetField()->OwnEntity(xtreme3, 4, 3);
   }
 
   curr++;
