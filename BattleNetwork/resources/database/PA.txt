@@ -1,0 +1,4 @@
+PA name="XtrmeCnnon" iconIndex="3" damage="600" type="Normal"
+	Chip name="Cannon1" code="A"
+	Chip name="Cannon2" code="B"
+	Chip name="Cannon3" code="C"

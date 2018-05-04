@@ -20,15 +20,37 @@ using sf::Font;
 #include "bnEngine.h"
 #include "bnChipSelectionCust.h"
 #include "bnShaderResourceManager.h"
+#include "bnPA.h"
 
 
 int BattleScene::Run(Mob* mob) {
+  /*
+  Program Advance + labels
+  */
+  PA programAdvance;
+  PASteps paSteps;
+  programAdvance.LoadPA();
+  bool isPAComplete = false;
+  bool hasPA = false;
+  int paStepIndex = 0;
+
+  float listStepCooldown = 1000.f;
+  float listStepCounter  = listStepCooldown;
+
+  /*
+  Mob labels*/
   std::vector<std::string> mobNames;
 
   Camera camera(Engine::GetInstance().GetDefaultView());
 
+  /*
+  Chips + Chip select setup*/
   ChipSelectionCust chipCustGUI(5);
+  Chip** chips = 0;
+  int chipCount = 0;
 
+  /*
+  Set Scene*/
   Field* field = mob->GetField();
 
   Player* player(new Player());
@@ -281,10 +303,59 @@ int BattleScene::Run(Mob* mob) {
       if (!chipCustGUI.IsOutOfView()) {
         chipCustGUI.Move(sf::Vector2f(-150.f / elapsed, 0));
       } else if (isInChipSelect) { // we're leaving a state
-        // Return to game
-        isInChipSelect = false;
-        player->GetChipsUI()->LoadChips(chipCustGUI.GetChips(), chipCustGUI.GetChipCount());
-        Engine::GetInstance().RevokeShader();
+        // Start Program Advance checks
+        if(isPAComplete && !hasPA) {
+          // Return to game
+          isInChipSelect = false;
+          player->GetChipsUI()->LoadChips(chips, chipCount);
+          Engine::GetInstance().RevokeShader();
+        }
+        else if (!isPAComplete) {
+          chips = chipCustGUI.GetChips();
+          chipCount = chipCustGUI.GetChipCount();
+
+          hasPA = programAdvance.FindPA(chips, chipCount);
+
+          if(hasPA) {
+            paSteps = programAdvance.GetMatchingSteps();
+            Chip* paChip = programAdvance.GetAdvanceChip();
+
+            // For now just delete all other chips. 
+            // TODO: Only remove the chips involved in the program advance. Replace them with the new PA chip.
+            *chips = paChip;
+            chipCount = 1;
+          }
+
+          isPAComplete = true;
+        }
+        else if (hasPA) {
+          if (listStepCounter > 0.f) {
+            listStepCounter -= elapsed;
+          }
+          else {
+            if (paStepIndex >= paSteps.size()) {
+              hasPA = false; // state over 
+              isPAComplete = true;
+            }
+            else {
+              float nextLabelHeight = 0;
+
+              for (int i = 0; i < paStepIndex; i++) {
+                sf::Text stepLabel = sf::Text(paSteps[i].first, *mobFont);
+
+                stepLabel.setOrigin(stepLabel.getLocalBounds().width, 0);
+                stepLabel.setPosition(16.0f, 20.f + nextLabelHeight);
+                stepLabel.setScale(0.8f, 0.8f);
+                stepLabel.setOutlineColor(sf::Color(48, 56, 80));
+                stepLabel.setOutlineThickness(2.f);
+                Engine::GetInstance().Draw(stepLabel, false);
+
+                // make the next label relative to this one
+                nextLabelHeight += stepLabel.getLocalBounds().height;
+              }
+            }
+          }
+        }
       }
     }
 

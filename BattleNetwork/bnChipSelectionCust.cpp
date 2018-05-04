@@ -87,7 +87,7 @@ bool ChipSelectionCust::CursorAction() {
         char code = queue[cursorPos].data->GetCode();
 
         for (int i = 0; i < chipCount; i++) {
-          if (i == cursorPos || queue[i].state == 0 || queue[i].state == 2) continue;
+          if (i == cursorPos || (queue[i].state == 0 && queue[i].data->GetCode() - 1 != code) || queue[i].state == 2) continue;
           char otherCode = queue[i].data->GetCode();
 
           if (code == '=' || otherCode == '=' || otherCode == code || otherCode == code - 1 || otherCode == code + 1) { queue[i].state = 1; }
@@ -133,7 +133,7 @@ bool ChipSelectionCust::CursorCancel() {
 
     for (int j = 0; j < chipCount; j++) {
       if (i > 0) {
-        if (queue[j].state == 0) continue; // already checked
+        if (queue[j].state == 0 && code != queue[j].data->GetCode() - 1) continue; // already checked and not a PA sequence
       }
 
       if (queue[j].state == 2) continue; // skip  
