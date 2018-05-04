@@ -67,13 +67,15 @@ void SelectedChipsUI::Update() {
       text.setOutlineThickness(2.f);
       text.setOutlineColor(sf::Color(48, 56, 80));
 
-      dmg = Text(to_string(selectedChips[curr]->GetDamage()), *font);
-      dmg.setOrigin(0, 0);
-      dmg.setScale(0.8f, 0.8f);
-      dmg.setPosition((text.getLocalBounds().width*text.getScale().x) + 13.f, 290.f);
-      dmg.setFillColor(sf::Color(225, 140, 0));
-      dmg.setOutlineThickness(2.f);
-      dmg.setOutlineColor(sf::Color(48, 56, 80));
+      if (selectedChips[curr]->GetDamage() > 0) {
+        dmg = Text(to_string(selectedChips[curr]->GetDamage()), *font);
+        dmg.setOrigin(0, 0);
+        dmg.setScale(0.8f, 0.8f);
+        dmg.setPosition((text.getLocalBounds().width*text.getScale().x) + 13.f, 290.f);
+        dmg.setFillColor(sf::Color(225, 140, 0));
+        dmg.setOutlineThickness(2.f);
+        dmg.setOutlineColor(sf::Color(48, 56, 80));
+      }
     } else {
       text.setString("");
       dmg.setString("");

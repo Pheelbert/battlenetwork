@@ -1,6 +1,8 @@
 #include "bnChipLibrary.h"
 #include "bnTextureResourceManager.h"
 #include <assert.h>
+#include <sstream>
+#include <algorithm>
 
 ChipLibrary::ChipLibrary() {
 }
@@ -38,7 +40,7 @@ Chip* ChipLibrary::Next() {
 void ChipLibrary::LoadLibrary() {
 
 
-  // TODO: put this in an input stream class
+  // TODO: put this utility in an input stream class and inhert from that
   string data = TextureResourceManager::GetInstance().LoadDataFromFile("resources/database/library.txt");
 
   int endline = 0;
@@ -54,8 +56,26 @@ void ChipLibrary::LoadLibrary() {
       string damage = valueOf("damage", line);
       string type = valueOf("type", line);
       string codes = valueOf("codes", line);
+      // string description = valueOf("description", line);
 
-      library.push_back(Chip(atoi(cardID.c_str()), atoi(iconID.c_str()), codes[0], atoi(damage.c_str()), name, "description"));
+      // Trime white space
+      codes.erase(remove_if(codes.begin(), codes.end(), isspace), codes.end());
+
+      // Tokenize the string with delimeter as ','
+      std::istringstream codeStream(codes);
+      string code;
+
+      while (std::getline(codeStream, code, ',')) {
+        // For every code, push this into our database
+        if (code.empty())
+          continue;
+
+        if (code == "*") {
+          // transform it into the font-compatible ascii char
+          code = '=';
+        }
+        library.push_back(Chip(atoi(cardID.c_str()), atoi(iconID.c_str()), code[0], atoi(damage.c_str()), name, "description"));
+      }
     }
 
     data = data.substr(endline + 1);
