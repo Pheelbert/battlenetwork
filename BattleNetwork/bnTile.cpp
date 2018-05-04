@@ -134,7 +134,7 @@ bool Tile::ContainsEntity(Entity* _entity) const {
 }
 
 void Tile::AffectEntities(Spell* caller) {
-  for (auto it = entities.begin(); it < entities.end(); ++it) {
+  for (std::vector<Entity*>::iterator it = entities.begin(); it < entities.end(); ++it) {
     if (*it != caller && !(*it)->IsPassthrough()) {
       caller->Attack(*it);
     }

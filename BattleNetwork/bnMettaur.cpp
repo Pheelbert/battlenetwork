@@ -38,7 +38,6 @@ Mettaur::Mettaur(void)
   Entity::team = Team::RED;
   health = 20;
   hitHeight = 0;
-  direction = Direction::DOWN;
   textureType = TextureType::MOB_METTAUR_IDLE;
   healthUI = new MobHealthUI(this);
 

@@ -196,7 +196,7 @@ void ChipSelectionCust::Draw() {
 
     for (int i = 0; i < chipCount; i++) {
       icon.setPosition(2.f*(9.0f + (i*16.0f)), 2.f*105.f);
-      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromChipID(queue[i].data->GetID());
+      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromID(queue[i].data->GetIconID());
       icon.setTextureRect(iconSubFrame);
       icon.SetShader(nullptr);
 
@@ -213,7 +213,7 @@ void ChipSelectionCust::Draw() {
 
     for (int i = 0; i < selectCount; i++) {
       icon.setPosition(2 * 97.f, 2.f*(25.0f + (i*16.0f)));
-      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromChipID((*selectQueue[i]).data->GetID());
+      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromID((*selectQueue[i]).data->GetIconID());
       icon.setTextureRect(iconSubFrame);
       Engine::GetInstance().Draw(icon, false);
     }
@@ -225,7 +225,7 @@ void ChipSelectionCust::Draw() {
 
       if (cursorPos < chipCount) {
         // Draw the selected chip card
-        sf::IntRect cardSubFrame = TextureResourceManager::GetInstance().GetCardRectFromChipID(queue[cursorPos].data->GetID());
+        sf::IntRect cardSubFrame = TextureResourceManager::GetInstance().GetCardRectFromID(queue[cursorPos].data->GetID());
         chipCard.setTextureRect(cardSubFrame);
 
         chipCard.SetShader(nullptr);

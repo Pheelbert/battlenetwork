@@ -126,6 +126,9 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
     progs.SetAnimation(MobState::MOB_MOVING, onFinish);
     isMoving = true;
   }
+  else {
+    progs.StateChange<ProgsManIdleState>();
+  }
 }
 
 void ProgsManMoveState::OnLeave(ProgsMan& progs) {

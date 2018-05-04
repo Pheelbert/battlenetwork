@@ -46,6 +46,7 @@ void AnimationComponent::load() {
     } else if (line.find("animation") != string::npos) {
       if (!frames.empty()) {
         //std::cout << "animation total seconds: " << sf::seconds(currentAnimationDuration).asSeconds() << "\n";
+        //std::cout << "animation name push " << currentState << endl;
         animations.addAnimation(entity->GetStateFromString(currentState), frames.at(frameAnimationIndex), sf::seconds(currentAnimationDuration));
         currentAnimationDuration = 0.0f;
       }
@@ -53,6 +54,8 @@ void AnimationComponent::load() {
       string width = valueOf("width", line);
       string height = valueOf("height", line);
       currentState = state;
+      //std::cout << "animation name in " << currentState << endl;
+
       currentWidth = atoi(width.c_str());
       currentHeight = atoi(height.c_str());
       frames.push_back(FrameAnimation());
@@ -62,7 +65,6 @@ void AnimationComponent::load() {
       string startx = valueOf("startx", line);
       string starty = valueOf("starty", line);
       float currentFrameDuration = (float)atof(duration.c_str());
-      // std::cout << "seconds: " << sf::seconds(currentFrameDuration).asSeconds() << "\n";
 
       currentAnimationDuration += currentFrameDuration;
       int currentStartx = atoi(startx.c_str());

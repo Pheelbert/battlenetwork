@@ -29,7 +29,6 @@ public:
   virtual int GetHealth() const;
   virtual TextureType GetTextureType() const;
 
-  MobState GetMobState() const;
   void SetHealth(int _health);
   int Hit(int _damage);
   float GetHitHeight() const;
@@ -37,19 +36,10 @@ public:
 
 private:
   sf::Clock clock;
-
-  //Cooldowns
-  float cooldown;
-  float attackCooldown;
-  float waitCooldown;
-
-  //Animation
-  float attackDelay;
  
   AnimationComponent animationComponent;
 
   float hitHeight;
-  Direction direction;
   MobState state;
   TextureType textureType;
   MobHealthUI* healthUI;
