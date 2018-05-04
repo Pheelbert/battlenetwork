@@ -36,34 +36,34 @@ AudioResourceManager::~AudioResourceManager() {
   delete[] sources;
 }
 
-void AudioResourceManager::LoadAllSources() {
-  LoadSource(AudioType::APPEAR, "resources/sfx/appear.ogg");
-  LoadSource(AudioType::AREA_GRAB, "resources/sfx/area_grab.ogg");
-  LoadSource(AudioType::AREA_GRAB_TOUCHDOWN, "resources/sfx/area_grab_touchdown.ogg");
-  LoadSource(AudioType::BUSTER_CHARGED, "resources/sfx/buster_charged.ogg");
-  LoadSource(AudioType::BUSTER_CHARGING, "resources/sfx/buster_charging.ogg");
-  LoadSource(AudioType::CANNON, "resources/sfx/cannon.ogg");
-  LoadSource(AudioType::CHIP_CANCEL, "resources/sfx/chip_cancel.ogg");
-  LoadSource(AudioType::CHIP_CHOOSE, "resources/sfx/chip_choose.ogg");
-  LoadSource(AudioType::CHIP_CONFIRM, "resources/sfx/chip_confirm.ogg");
-  LoadSource(AudioType::CHIP_DESC, "resources/sfx/chip_desc.ogg");
-  LoadSource(AudioType::CHIP_DESC_CLOSE, "resources/sfx/chip_desc_close.ogg");
-  LoadSource(AudioType::CHIP_SELECT, "resources/sfx/chip_select.ogg");
-  LoadSource(AudioType::CUSTOM_BAR_FULL, "resources/sfx/custom_bar_full.ogg");
-  LoadSource(AudioType::DELETED, "resources/sfx/deleted.ogg");
-  LoadSource(AudioType::EXPLODE, "resources/sfx/explode.ogg");
-  LoadSource(AudioType::GUN, "resources/sfx/gun.ogg");
-  LoadSource(AudioType::HEALTH_ALERT, "resources/sfx/health_alert.ogg");
-  LoadSource(AudioType::HURT, "resources/sfx/hurt.ogg");
-  LoadSource(AudioType::PANEL_CRACK, "resources/sfx/panel_crack.ogg");
-  LoadSource(AudioType::PANEL_RETURN, "resources/sfx/panel_return.ogg");
-  LoadSource(AudioType::PAUSE, "resources/sfx/pause.ogg");
-  LoadSource(AudioType::PRE_BATTLE, "resources/sfx/pre_battle.ogg");
-  LoadSource(AudioType::RECOVER, "resources/sfx/recover.ogg");
-  LoadSource(AudioType::SPREADER, "resources/sfx/spreader.ogg");
-  LoadSource(AudioType::SWORD_SWING, "resources/sfx/sword_swing.ogg");
-  LoadSource(AudioType::TOSS_ITEM, "resources/sfx/toss_item.ogg");
-  LoadSource(AudioType::WAVE, "resources/sfx/wave.ogg");
+void AudioResourceManager::LoadAllSources(unsigned &status) {
+  LoadSource(AudioType::APPEAR, "resources/sfx/appear.ogg"); status++;
+  LoadSource(AudioType::AREA_GRAB, "resources/sfx/area_grab.ogg"); status++;
+  LoadSource(AudioType::AREA_GRAB_TOUCHDOWN, "resources/sfx/area_grab_touchdown.ogg"); status++;
+  LoadSource(AudioType::BUSTER_CHARGED, "resources/sfx/buster_charged.ogg"); status++;
+  LoadSource(AudioType::BUSTER_CHARGING, "resources/sfx/buster_charging.ogg"); status++;
+  LoadSource(AudioType::CANNON, "resources/sfx/cannon.ogg"); status++;
+  LoadSource(AudioType::CHIP_CANCEL, "resources/sfx/chip_cancel.ogg"); status++;
+  LoadSource(AudioType::CHIP_CHOOSE, "resources/sfx/chip_choose.ogg"); status++;
+  LoadSource(AudioType::CHIP_CONFIRM, "resources/sfx/chip_confirm.ogg"); status++;
+  LoadSource(AudioType::CHIP_DESC, "resources/sfx/chip_desc.ogg"); status++;
+  LoadSource(AudioType::CHIP_DESC_CLOSE, "resources/sfx/chip_desc_close.ogg"); status++;
+  LoadSource(AudioType::CHIP_SELECT, "resources/sfx/chip_select.ogg"); status++;
+  LoadSource(AudioType::CUSTOM_BAR_FULL, "resources/sfx/custom_bar_full.ogg"); status++;
+  LoadSource(AudioType::DELETED, "resources/sfx/deleted.ogg"); status++;
+  LoadSource(AudioType::EXPLODE, "resources/sfx/explode.ogg"); status++;
+  LoadSource(AudioType::GUN, "resources/sfx/gun.ogg"); status++;
+  LoadSource(AudioType::HEALTH_ALERT, "resources/sfx/health_alert.ogg"); status++;
+  LoadSource(AudioType::HURT, "resources/sfx/hurt.ogg"); status++;
+  LoadSource(AudioType::PANEL_CRACK, "resources/sfx/panel_crack.ogg"); status++;
+  LoadSource(AudioType::PANEL_RETURN, "resources/sfx/panel_return.ogg"); status++;
+  LoadSource(AudioType::PAUSE, "resources/sfx/pause.ogg"); status++;
+  LoadSource(AudioType::PRE_BATTLE, "resources/sfx/pre_battle.ogg"); status++;
+  LoadSource(AudioType::RECOVER, "resources/sfx/recover.ogg"); status++;
+  LoadSource(AudioType::SPREADER, "resources/sfx/spreader.ogg"); status++;
+  LoadSource(AudioType::SWORD_SWING, "resources/sfx/sword_swing.ogg"); status++;
+  LoadSource(AudioType::TOSS_ITEM, "resources/sfx/toss_item.ogg"); status++;
+  LoadSource(AudioType::WAVE, "resources/sfx/wave.ogg"); status++;
 }
 
 void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {

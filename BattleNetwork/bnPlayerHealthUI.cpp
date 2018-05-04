@@ -59,5 +59,8 @@ void PlayerHealthUI::Update() {
     } else if (currHP < player->GetHealth()) {
       text.setFillColor(sf::Color(0, 255, 80));
     }
+
+    text.setOutlineColor(sf::Color(48, 56, 80));
+    text.setOutlineThickness(2.f);
   }
 }

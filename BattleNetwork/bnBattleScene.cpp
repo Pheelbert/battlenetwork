@@ -15,8 +15,7 @@ using sf::Font;
 #include "bnProgsMan.h"
 #include "bnBackgroundUI.h"
 #include "bnPlayerHealthUI.h"
-#include "bnTextureResourceManager.h"
-#include "bnAudioResourceManager.h"
+
 #include "bnControllableComponent.h"
 #include "bnEngine.h"
 #include "bnChipSelectionCust.h"
@@ -26,29 +25,7 @@ using sf::Font;
 #define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
 #define SHADER_FRAG_BAR_PATH "resources/shaders/custom_bar.frag.txt"
 
-int main() {
-  return BattleScene::Run();
-}
-
-int BattleScene::Run() {
-  {
-    const clock_t begin_time = clock();
-    Engine::GetInstance().Initialize();
-    Logger::Logf("Engine initialized: %f secs\n", float(clock() - begin_time) / CLOCKS_PER_SEC);
-  }
-
-  {
-    const clock_t begin_time = clock();
-    TextureResourceManager::GetInstance().LoadAllTextures();
-    Logger::Logf("Loaded textures: %f secs\n", float(clock() - begin_time) / CLOCKS_PER_SEC);
-  }
-  
-  {
-    const clock_t begin_time = clock();
-    AudioResourceManager::GetInstance().LoadAllSources();
-    Logger::Logf("Loaded audio sources: %f secs\n", float(clock() - begin_time) / CLOCKS_PER_SEC);
-  }
-  
+int BattleScene::Run() { 
   AudioResourceManager::GetInstance().SetStreamVolume(10);
   // AudioResourceManager::GetInstance().SetChannelVolume(0);
 

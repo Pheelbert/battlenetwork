@@ -12,7 +12,7 @@ class AudioResourceManager {
 public:
   static AudioResourceManager& GetInstance();
 
-  void LoadAllSources();
+  void LoadAllSources(unsigned &status);
   void LoadSource(AudioType type, const std::string& path);
   int Play(AudioType type, int priority = 1);
   int Stream(std::string path, bool loop = false);
