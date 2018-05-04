@@ -145,6 +145,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)\extern\libs;C:\Program Files (x86)\Windows Kits\10\Lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew.lib;jpeg.lib;openal32.lib;sndfile.lib;freetype.lib;Winmm.lib;OpenGL32.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;sfml-audio.lib;sfml-main.lib;thor-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -162,6 +163,7 @@
     <ClCompile Include="bnEntity.cpp" />
     <ClCompile Include="bnField.cpp" />
     <ClCompile Include="bnBattleScene.cpp" />
+    <ClCompile Include="bnLogger.cpp" />
     <ClCompile Include="bnMettaurAttackState.cpp" />
     <ClCompile Include="bnMettaurIdleState.cpp" />
     <ClCompile Include="bnMettaurMoveState.cpp" />
@@ -182,6 +184,7 @@
     <ClCompile Include="bnSelectedChipsUI.cpp" />
     <ClCompile Include="bnLongExplosion.cpp" />
     <ClCompile Include="bnPlayerControlledState.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAI.h" />

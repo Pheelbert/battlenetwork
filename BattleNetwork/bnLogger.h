@@ -6,11 +6,31 @@ using std::endl;
 using std::string;
 using std::to_string;
 #include <cstdarg>
-
+#include <queue>
+#include <mutex>
 class Logger {
+private:
+  static std::mutex m;
+  static std::queue<std::string> logs;
+
 public:
+  static std::mutex* GetMutex() {
+    return &m;
+  }
+
+  static const bool GetNextLog(std::string &next) {
+    if (logs.size() == 0)
+      return false;
+
+    next = logs.front();
+    logs.pop();
+
+    return (logs.size() > 0);
+  }
+
   static void Log(string _message) {
-    cerr << _message << endl;
+    //cerr << _message << endl;
+    logs.push(_message);
   }
 
   static void Logf(const char* fmt, ...) {
@@ -29,7 +49,9 @@ public:
     std::string ret(buffer);
     va_end(vl);
     delete[] buffer;
-    cerr << ret << endl;
+   // cerr << ret << endl;
+    logs.push(ret);
+
   }
 
   static string ToString(float _number) {
