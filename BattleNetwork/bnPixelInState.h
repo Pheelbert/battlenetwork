@@ -44,7 +44,7 @@ PixelInState<Any>::PixelInState(FinishNotifier onFinish) : AIState<Any>() {
   _DerivedFrom<Any, Entity>();
 
   callback = onFinish;
-  factor = 150.f;
+  factor = 125.f;
 
   pixelated = ShaderResourceManager::GetInstance().GetShader(ShaderType::PIXEL_BLUR);
 }

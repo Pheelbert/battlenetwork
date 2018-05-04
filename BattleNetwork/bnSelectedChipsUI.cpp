@@ -110,7 +110,7 @@ void SelectedChipsUI::UseNextChip() {
     // Todo make this a time-based component
     AudioResourceManager::GetInstance().Play(AudioType::INVISIBLE);
     player->SetPassthrough(true);
-    player->setColor(sf::Color(255, 255, 255, 255 / 2.f));
+    player->setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 / 2.f)));
     invisTimer.restart();
   }
 

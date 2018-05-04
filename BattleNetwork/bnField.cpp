@@ -67,7 +67,7 @@ void Field::RemoveEntity(Entity* _entity) {
   auto it = find(entities.begin(), entities.end(), _entity);
   if (it != entities.end()) {
     if (_entity->GetTile()) {
-      GetAt(_entity->GetTile()->GetX(), _entity->GetTile()->GetY())->RemoveEntity(_entity);
+      _entity->GetTile()->RemoveEntity(_entity);
     }
 
     if ((*it)->ownedByField) {

@@ -36,7 +36,6 @@ public:
   void RefreshTexture();
 
   bool IsWalkable() const;
-  bool IsEmptyOrBroken() const;
   bool IsCracked() const;
 
   void AddEntity(Entity* _entity);

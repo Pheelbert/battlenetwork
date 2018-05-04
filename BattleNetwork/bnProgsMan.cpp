@@ -22,7 +22,7 @@ ProgsMan::ProgsMan(void)
     AI<ProgsMan>(this) {
   name = "ProgsMan";
   Entity::team = Team::RED;
-  health = 20;
+  health = 300;
   hitHeight = 0;
   direction = Direction::DOWN;
   state = MobState::MOB_IDLE;
@@ -46,15 +46,9 @@ ProgsMan::ProgsMan(void)
   animationComponent.load();
 
   whiteout = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE);
-
-  target = nullptr;
 }
 
 ProgsMan::~ProgsMan(void) {
-}
-
-void ProgsMan::SetTarget(Entity* _target) {
-  target = _target;
 }
 
 int* ProgsMan::GetAnimOffset() {
@@ -96,39 +90,6 @@ void ProgsMan::Update(float _elapsed) {
 
   healthUI->Update();
   Entity::Update(_elapsed);
-}
-
-void ProgsMan::Attack() {
-  if (state == MobState::MOB_THROW) {
-    if (target != nullptr) {
-      Tile* targetTile = target->GetTile();
-      Tile* aimTile = field->GetAt(targetTile->GetX(), targetTile->GetY());
-      ProgBomb* spell = new ProgBomb(field, team, aimTile, 1.0);
-      spell->SetDirection(Direction::LEFT);
-      field->AddEntity(spell, tile->GetX(), tile->GetY());
-      spell->PrepareThrowPath();
-    }
-  } else {
-    if (tile->GetX() + 1 <= (int)field->GetWidth() + 1) {
-      Spell* spell = new Wave(field, team);
-      spell->SetDirection(Direction::LEFT);
-      field->AddEntity(spell, tile->GetX() - 1, tile->GetY());
-
-      Tile* next = 0;
-      next = field->GetAt(tile->GetX() - 1, tile->GetY());
-
-      Entity* entity = 0;
-
-      while (next->GetNextEntity(entity)) {
-        Player* isPlayer = dynamic_cast<Player*>(entity);
-
-        if (isPlayer) {
-          isPlayer->Move(Direction::LEFT);
-          isPlayer->Hit(20);
-        }
-      }
-    }
-  }
 }
 
 void ProgsMan::RefreshTexture() {

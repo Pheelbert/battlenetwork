@@ -45,7 +45,7 @@ void AnimationComponent::load() {
       assert(name == sname && "Wrong class name specified in .animation file");
     } else if (line.find("animation") != string::npos) {
       if (!frames.empty()) {
-        // std::cout << "animation total seconds: " << sf::seconds(currentAnimationDuration).asSeconds() << "\n";
+        //std::cout << "animation total seconds: " << sf::seconds(currentAnimationDuration).asSeconds() << "\n";
         animations.addAnimation(entity->GetStateFromString(currentState), frames.at(frameAnimationIndex), sf::seconds(currentAnimationDuration));
         currentAnimationDuration = 0.0f;
       }

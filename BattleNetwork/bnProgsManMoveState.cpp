@@ -4,6 +4,7 @@
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnProgsManIdleState.h"
+#include "bnProgsManPunchState.h"
 
 ProgsManMoveState::ProgsManMoveState() : isMoving(false), AIState<ProgsMan>() { ; }
 ProgsManMoveState::~ProgsManMoveState() { ; }
@@ -14,30 +15,47 @@ void ProgsManMoveState::OnEnter(ProgsMan& progs) {
 void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
   if (isMoving) return; // We're already moving (animations take time)
 
+
   Tile* temp = progs.tile;
   Tile* next = nullptr;
 
-  Entity* target = progs.GetTarget();
+  int random = rand() % 50;
 
-  if (target && target->GetTile()) {
-    if (target->GetTile()->GetY() < progs.GetTile()->GetY()) {
-      nextDirection = Direction::UP;
-    }
-    else if (target->GetTile()->GetY() > progs.GetTile()->GetY()) {
-      nextDirection = Direction::DOWN;
-    }
-    else {
-      // Just attack
-      progs.StateChange<ProgsManIdleState>();
-      return;
+  if (random > 15) {
+    // Hunt the player
+    Entity* target = progs.GetTarget();
+
+    if (target && target->GetTile()) {
+      if (target->GetTile()->GetY() < progs.GetTile()->GetY()) {
+        nextDirection = Direction::UP;
+      }
+      else if (target->GetTile()->GetY() > progs.GetTile()->GetY()) {
+        nextDirection = Direction::DOWN;
+      }
+      else {
+        if (target->GetTile()->GetX() == progs.GetTile()->GetX() - 1) {
+          // Punch
+          progs.StateChange<ProgsManPunchState>();
+        }
+        else {
+          // Try shooting. 
+
+          // Throw bombs.
+        }
+      }
     }
   }
+
+
+  // otherwise aimlessly move around 
+  int randDirection = rand() % 4;
+  nextDirection = static_cast<Direction>(randDirection);
 
   if (nextDirection == Direction::UP) {
     if (progs.tile->GetY() - 1 > 0) {
       next = progs.field->GetAt(progs.tile->GetX(), progs.tile->GetY() - 1);
       if (progs.Teammate(next->GetTeam()) && next->IsWalkable())
-        if (!next->ContainsEntityType<ProgsMan>()) {
+        if (!next->ContainsEntityType<Entity>()) {
           progs.SetTile(next);
         }
         else {
@@ -55,7 +73,13 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
     if (progs.tile->GetX() - 1 > 0) {
       next = progs.field->GetAt(progs.tile->GetX() - 1, progs.tile->GetY());
       if (progs.Teammate(next->GetTeam()) && next->IsWalkable())
-        progs.SetTile(next);
+        if (!next->ContainsEntityType<Entity>()) {
+          progs.SetTile(next);
+        }
+        else {
+          next = nullptr;
+          nextDirection = Direction::RIGHT;
+        }
       else
         next = nullptr;
     }
@@ -82,7 +106,13 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
     if (progs.tile->GetX() + 1 <= (int)progs.field->GetWidth()) {
       next = progs.field->GetAt(progs.tile->GetX() + 1, progs.tile->GetY());
       if (progs.Teammate(next->GetTeam()) && next->IsWalkable())
-        progs.SetTile(next);
+        if (!next->ContainsEntityType<Entity>()) {
+          progs.SetTile(next);
+        }
+        else {
+          next = nullptr;
+          nextDirection = Direction::LEFT;
+        }
       else
         next = nullptr;
     }

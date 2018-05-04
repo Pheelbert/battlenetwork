@@ -192,7 +192,7 @@
     <ClCompile Include="bnCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="bnProgsManMoveState.cpp" />
-    <ClCompile Include="ProgsManPunchState.cpp" />
+    <ClCompile Include="bnProgsManPunchState.cpp" />
     <ClCompile Include="bnSmartShader.cpp" />
   </ItemGroup>
   <ItemGroup>

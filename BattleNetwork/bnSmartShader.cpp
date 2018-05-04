@@ -65,8 +65,11 @@
     }
 
     for (; fiter != funiforms.end(); fiter++) {
-      ref->setUniform(fiter->first, 0);
+      ref->setUniform(fiter->first, 0.f);
     }
+
+    iuniforms.clear();
+    funiforms.clear();
   }
 
   void SmartShader::SetUniform(std::string uniform, float fvalue) {

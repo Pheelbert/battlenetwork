@@ -34,9 +34,6 @@ public:
   int Hit(int _damage);
   float GetHitHeight() const;
   int* GetAnimOffset();
-  void Attack();
-
-  void SetTarget(Entity*);
 
 private:
   sf::Clock clock;
@@ -56,9 +53,5 @@ private:
   MobState state;
   TextureType textureType;
   MobHealthUI* healthUI;
-  AnimationMap<Sprite, MobState> animator;
   sf::Shader* whiteout;
-
-  // AI
-  Entity* target;
 };
