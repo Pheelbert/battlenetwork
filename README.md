@@ -1,11 +1,11 @@
-# Video w/ Sound
-#### Branch: program-advances
-Click the thumbnail to watch on youtube. Recorded without sound.
+# Video
+#### Branch: program-advances 
+Click the thumbnail to watch on youtube. 
 
 [![Video of engine 5/4/2018](https://img.youtube.com/vi/gGsZ7-6jY7c/0.jpg)](https://youtu.be/gGsZ7-6jY7c)
 [![Video of engine 5/4/2018](https://img.youtube.com/vi/gGsZ7-6jY7c/1.jpg)](https://youtu.be/gGsZ7-6jY7c)
 
-#### Video outdated (since 4/17/2018)
+#### Video WITH SOUND outdated (since 4/17/2018)
 Click the thumbnail to watch on youtube
 
 [![Video of engine 4/14/2018](https://img.youtube.com/vi/zztrHvrZON4/0.jpg)](https://www.youtube.com/watch?v=zztrHvrZON4)
