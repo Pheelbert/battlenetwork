@@ -13,10 +13,15 @@ Click the thumbnail to watch on youtube
 
 # Features
 In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
+
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
+
 At this time only 3 chips are implemented: HP+10, CrckPnl, and Invsble.
+
 Rename the file in `resources/database/library.txt - Copy`to `resources/database/library.txt` for a full library while playing the game.
+
 There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1 A` + `Cannon2 B` + `Cannon3 C` in order. It deals a whopping 600 points of damage to the first 3 enemies vertically.
+
 Mega can also be deleted. The demo now has sound.
 
 # Controls
