@@ -1,4 +1,10 @@
 # Video w/ Sound
+#### Branch: program-advances
+Click the thumbnail to watch on youtube. Recorded without sound.
+
+[![Video of engine 5/4/2018](https://img.youtube.com/vi/gGsZ7-6jY7c/0.jpg)](https://youtu.be/gGsZ7-6jY7c)
+[![Video of engine 5/4/2018](https://img.youtube.com/vi/gGsZ7-6jY7c/1.jpg)](https://youtu.be/gGsZ7-6jY7c)
+
 #### Video outdated (since 4/17/2018)
 Click the thumbnail to watch on youtube
 
@@ -24,14 +30,13 @@ R CTRL -> Use a chip
 Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki)? 
 
 # Author TheMaverickProgrammer
-## Update 4/22/2018
-Upgraded SFML and Thor to latest versions. Built new DLLs and libs for Thor against x64 arch and latest SFML. Rewrote AnimationComponent to use the new Thor API changes. 
-
-Refactored the Mettaur AI into its own resuable classes: AI<Type> and AIState<Type>. Each enemy will inherit the AI<Type> class and set states to better manage AI. See the new and improved Mettaur class. Created a special state called ExplodeState<Any> that takes in any Entity type for each virus to be implemented.
- 
-Refatored player to use new AI and state system via PlayerControlledState. Player will move onto PlayerHurtState when hit and revoke all charger status and ignore input. Reintegrated original move-lag timer with newest API to wait until the move animation ended before switching tiles. The overal result is incredibly smooth. Finally for the player I demonstrated the power of ExplodeState<Any> by pushing it onto the player state when the player dies. It works well.
-
-Rewrote shader pipeline to bake into one target texture and display that on the screen. The speed was astronimcal. The game stays between 59-62 FPS for me no matter how many shaders are now applied.
+## Update 5/4/2018
+Mobs can now be dynamically created by `MobFactory` classes. This allows for a whole set of fun spawning random enemy groups.
+The `Mob` class has utility functions that are used in the intro to spawn enemies one at a time and with a pixel intro effect just like the games.
+Chip menu opens up after intro just like the games.
+Chip database script loads and maps to correct card and icon images.
+PA (Program Advance) system is the latest feature. The `PA` class stores recipes called "steps" that are loaded from a script. After chip select, the chips are then filtered by the `PA` object and returns a matching PA combo chip.
+Mob class now handles deletion of enemy objects. Field class has a new `OwnEntity(e,x,y)` method for objects that need to be cleaned up by field when deleted (like Spells and other effects). 
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -66,12 +71,19 @@ New:
 * Throwable Spells
 * HP+10 chip works in-battle
 * CrckPnl chip works in-battle
+* Invsble chip works in-battle
 * Chip icons are rendered in battle
 * Chip icons are rendered in select
 * Chip combo select system is now working
 * Enemy AI and state system
 * Player AI, state, and integrated keyboard control system
 * Artifacts
+* Loading screen + logs on loading screen effect
+* PA (Program Advance) system, display, loading
+* Chip library now loaded from a script
+* Mob + MobFactory objects
+* Refactored battle scene to accept Mob as input type and animate the battle intro
+* Logger now spits out a file `log.txt` for debugging
 
 Changes from original author:
 
@@ -84,6 +96,7 @@ Changes from original author:
 * Upgraded Thor and SFML
 * Rewrote AnimationComponent to use latest Thor API
 * Rewrote player movement code to use latest AnimationComponent features
+* Refactored Logger class to queueue and dequeeue logs for use in multithreaded loading screen
 
 # Author Pheelbert
 Wrote the foundation for the battle engine. He wrote the tile-based movement and update system emulating an authentic mmbn player experience.
