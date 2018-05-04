@@ -37,10 +37,10 @@ Chip name="Recov8" cardIndex="81" iconIndex="153" damage="300" type="Normal" cod
 
 # 83 - 115
 
-Chip name="Invsble" cardIndex="118" iconIndex="162" damage="0" type="Normal" codes="A,Y,*"
+Chip name="Invsble" cardIndex="115" iconIndex="162" damage="0" type="Normal" codes="A,Y,*"
 
 # 117 - 119
 
-Chip name="Barr10" cardIndex="120" iconIndex="167" damage="0" type="Normal" codes="B,*"
-Chip name="Barr100" cardIndex="121" iconIndex="168" damage="0" type="Normal" codes="U,S"
-Chip name="Barr200" cardIndex="121" iconIndex="169" damage="0" type="Normal" codes="X"
+Chip name="Barr10" cardIndex="120" iconIndex="168" damage="0" type="Normal" codes="B,*"
+Chip name="Barr100" cardIndex="121" iconIndex="169" damage="0" type="Normal" codes="U,S"
+Chip name="Barr200" cardIndex="121" iconIndex="170" damage="0" type="Normal" codes="X"
