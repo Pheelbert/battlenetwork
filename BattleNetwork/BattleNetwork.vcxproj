@@ -193,6 +193,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="bnProgsManMoveState.cpp" />
     <ClCompile Include="ProgsManPunchState.cpp" />
+    <ClCompile Include="bnSmartShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAI.h" />
@@ -235,6 +236,7 @@
     <ClInclude Include="bnRandomMettaurMob.h" />
     <ClInclude Include="bnShaderResourceManager.h" />
     <ClInclude Include="bnShaderType.h" />
+    <ClInclude Include="bnSmartShader.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />
     <ClInclude Include="bnTile.h" />

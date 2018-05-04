@@ -22,7 +22,7 @@ template<typename Any>
 class PixelInState : public AIState<Any>
 {
 private:
-  sf::Shader* pixelated;
+  SmartShader pixelated;
   float factor;
   FinishNotifier callback;
   bool playedFX;
@@ -44,7 +44,7 @@ PixelInState<Any>::PixelInState(FinishNotifier onFinish) : AIState<Any>() {
   _DerivedFrom<Any, Entity>();
 
   callback = onFinish;
-  factor = 400.f;
+  factor = 150.f;
 
   pixelated = ShaderResourceManager::GetInstance().GetShader(ShaderType::PIXEL_BLUR);
 }
@@ -65,7 +65,7 @@ void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
   e.SetShader(pixelated);
 
   /* If progress is 1, pop state and move onto original state*/
-  factor -= _elapsed;
+  factor -= _elapsed/5.f;
 
   if (factor <= 0.f) {
     factor = 0.f;
@@ -73,7 +73,7 @@ void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
     if (callback) { callback(); callback = nullptr; /* do once */ }
   }
 
-  pixelated->setUniform("pixel_threshold", (float)(factor/400.f));
+  pixelated.SetUniform("pixel_threshold", (float)(factor/400.f));
 }
 
 template<typename Any>

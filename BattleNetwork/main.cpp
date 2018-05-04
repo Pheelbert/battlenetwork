@@ -220,7 +220,7 @@ int main(int argc, char** argv) {
       // oldest at the top (at most 30 on screen) at full transparency
       logLabel->setString(logs[i]);
       logLabel->setPosition(0.f, 320 - (i * 10.f) - 5.f);
-      logLabel->setFillColor(sf::Color(255, 255, 255, (float)(logFadeOutSpeed/2000.f)*fmax(0, 255 - (255 / 30)*i)));
+      logLabel->setFillColor(sf::Color(255, 255, 255, (sf::Uint8)((logFadeOutSpeed/2000.f)*fmax(0, 255 - (255 / 30)*i))));
       Engine::GetInstance().Draw(logLabel);
     }
 

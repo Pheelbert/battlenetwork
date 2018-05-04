@@ -9,12 +9,12 @@ Engine& Engine::GetInstance() {
 void Engine::Initialize() {
   camera = sf::View(sf::Vector2f(240, 160), sf::Vector2f(480, 320));
   original = camera; // never changes 
-  window = new RenderWindow(VideoMode(camera.getSize().x, camera.getSize().y), "Battle Network : Prototype");
+  window = new RenderWindow(VideoMode((unsigned int)camera.getSize().x, (unsigned int)camera.getSize().y), "Battle Network : Prototype");
   window->setFramerateLimit(60);
-  postprocessing.create(camera.getSize().x, camera.getSize().y); // Same as display
+  postprocessing.create((unsigned int)camera.getSize().x, (unsigned int)camera.getSize().y); // Same as display
 
   // See the random generator with current time
-  srand(time(0));
+  srand((unsigned int)time(0));
 }
 
 void Engine::Draw(Drawable& _drawable, bool applyShaders) {
@@ -42,14 +42,16 @@ void Engine::Draw(LayeredDrawable* _drawable) {
   // Grab the shader and image, apply to a new render target, pass this render target into Draw()
 
   LayeredDrawable* context = _drawable;
-  sf::Shader* shader = context->GetShader();
+  SmartShader& shader = context->GetShader();
 
   sf::Vector2f originalPos = context->getPosition();
   context->move(GetViewOffset());
 
-  if (shader != nullptr) {
+  if (shader.Get() != nullptr) {
     const sf::Texture* original = context->getTexture();
-    postprocessing.draw(*context, shader); // bake
+    shader.ApplyUniforms();
+    postprocessing.draw(*context, shader.Get()); // bake
+    shader.ResetUniforms();
   } else {
     Draw(context, true);
   }
@@ -87,12 +89,14 @@ void Engine::Draw(vector<LayeredDrawable*> _drawable) {
     // Grab the shader and image, apply to a new render target, pass this render target into Draw()
 
     LayeredDrawable* context = *it;
-    sf::Shader* shader = context->GetShader();
-    if (shader != nullptr) {
+    SmartShader& shader = context->GetShader();
+    if (shader.Get() != nullptr) {
       sf::Vector2f originalPos = context->getPosition();
       context->move(GetViewOffset());
-      postprocessing.draw(*context, shader); // bake
+      shader.ApplyUniforms();
+      postprocessing.draw(*context, shader.Get()); // bake
       context->setPosition(originalPos);
+      shader.ResetUniforms();
     } else {
       sf::Vector2f originalPos = context->getPosition();
       context->move(GetViewOffset());

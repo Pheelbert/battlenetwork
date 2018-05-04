@@ -4,8 +4,6 @@
 #include "bnLogger.h"
 
 #include <SFML/Graphics.hpp>
-using sf::Texture;
-using sf::Font;
 using std::string;
 #include <map>
 using std::map;

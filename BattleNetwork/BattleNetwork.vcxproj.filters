@@ -247,6 +247,9 @@
     <ClCompile Include="bnShaderResourceManager.cpp">
       <Filter>Resource\ShaderResource</Filter>
     </ClCompile>
+    <ClCompile Include="bnSmartShader.cpp">
+      <Filter>Resource\ShaderResource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -425,6 +428,9 @@
       <Filter>Resource\ShaderResource</Filter>
     </ClInclude>
     <ClInclude Include="bnShaderType.h">
+      <Filter>Resource\ShaderResource</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSmartShader.h">
       <Filter>Resource\ShaderResource</Filter>
     </ClInclude>
   </ItemGroup>

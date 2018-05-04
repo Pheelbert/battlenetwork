@@ -106,7 +106,7 @@ Mob* Mob::Spawn(int tileX, int tileY) {
   data->mob = mob;
   data->tileX = tileX;
   data->tileY = tileY;
-  data->index = spawn.size();
+  data->index = (unsigned)spawn.size();
 
   // This retains the current entity type and stores it in a function. We do this to transform the 
   // unknown type back later and can call the proper state change
