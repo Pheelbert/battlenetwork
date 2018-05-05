@@ -47,6 +47,17 @@ void ChipLibrary::LoadLibrary() {
     endline = (int)data.find("\n");
     string line = data.substr(0, endline);
 
+    while (line.compare(0, 1, " ") == 0)
+      line.erase(line.begin()); // remove leading whitespaces
+    while (line.size() > 0 && line.compare(line.size() - 1, 1, " ") == 0)
+      line.erase(line.end() - 1); // remove trailing whitespaces
+
+    if (line[0] == '#') {
+      // Skip comments
+      data = data.substr(endline + 1);
+      continue;
+    }
+
     if (line.find("Chip") != string::npos) {
       string cardID = valueOf("cardIndex", line);
       string iconID = valueOf("iconIndex", line);

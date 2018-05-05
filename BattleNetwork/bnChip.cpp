@@ -15,7 +15,7 @@ Chip::Chip(const Chip & copy) {
 }
 
 Chip::~Chip() {
-  std::cout << "chip " << shortname << " deleted" << std::endl;
+
 }
 
 const string Chip::GetDescription() {
