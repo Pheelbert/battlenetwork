@@ -1,4 +1,5 @@
 #include "bnChip.h"
+#include <iostream>
 
 Chip::Chip(unsigned id, unsigned icon, char code, unsigned damage, string sname, string desc) :
   ID(id), icon(icon), code(code), damage(damage), shortname(sname), description(desc) {
@@ -14,6 +15,7 @@ Chip::Chip(const Chip & copy) {
 }
 
 Chip::~Chip() {
+  std::cout << "chip " << shortname << " deleted" << std::endl;
 }
 
 const string Chip::GetDescription() {

@@ -11,7 +11,9 @@ PA::PA()
 PA::~PA()
 {
   if (advanceChipRef) {
-//    delete advanceChipRef;
+    // PA manages the memory it creates with `new`
+    delete advanceChipRef;
+    advanceChipRef = nullptr;
   }
 
   advances.clear();
@@ -89,6 +91,10 @@ Chip * PA::GetAdvanceChip()
 
 bool PA::FindPA(Chip ** input, unsigned size)
 {
+  if (size == 0) {
+    return false;
+  }
+
   for (iter = advances.begin(); iter != advances.end(); iter++) {
     bool match = true;
 

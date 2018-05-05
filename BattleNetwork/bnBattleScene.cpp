@@ -34,7 +34,7 @@ int BattleScene::Run(Mob* mob) {
   bool hasPA = false;
   int paStepIndex = 0;
 
-  float listStepCooldown = 1000.f;
+  float listStepCooldown = 500.f;
   float listStepCounter  = listStepCooldown;
 
   /*
@@ -263,6 +263,12 @@ int BattleScene::Run(Mob* mob) {
         // Clear any chip UI queues. they will contain null data. 
         player->GetChipsUI()->LoadChips(nullptr, 0);
 
+        // Reset PA system
+        isPAComplete = false;
+        hasPA = false;
+        paStepIndex = 0;
+        listStepCounter = listStepCooldown;
+
         // Load the next chips
         chipCustGUI.ResetState();
         chipCustGUI.GetNextChips();
@@ -317,9 +323,9 @@ int BattleScene::Run(Mob* mob) {
             paSteps = programAdvance.GetMatchingSteps();
             Chip* paChip = programAdvance.GetAdvanceChip();
 
-            // For now just delete all other chips. 
+            // For now do not use all other chips. 
             // TODO: Only remove the chips involved in the program advance. Replace them with the new PA chip.
-            *chips = paChip;
+            chips = &paChip;
             chipCount = 1;
           }
 
@@ -347,7 +353,7 @@ int BattleScene::Run(Mob* mob) {
             increment = 0;
           }
           else {
-            increment += elapsed/100.f;
+            increment += elapsed/500.f;
 
             sf::Text stepLabel = sf::Text(programAdvance.GetAdvanceChip()->GetShortName(), *mobFont);
 
@@ -369,10 +375,15 @@ int BattleScene::Run(Mob* mob) {
               isPAComplete = true;
             }
             else {
-
               paStepIndex++;
               listStepCounter = listStepCooldown;
 
+              if (paStepIndex <= paSteps.size()) {
+                AudioResourceManager::GetInstance().Play(AudioType::POINT);
+              }
+              else if (paStepIndex == paSteps.size()) {
+                AudioResourceManager::GetInstance().Play(AudioType::PA_ADVANCE);
+              }
             }
           }
         }
