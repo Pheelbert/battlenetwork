@@ -1,5 +1,5 @@
-StartTime 1525485675
-Engine initialized: 0.228000 secs
+StartTime 1525486356
+Engine initialized: 0.280000 secs
 Loaded texture: resources/backgrounds/title/tile.png
 Loaded font: resources/fonts/mmbnthin_regular.ttf
 Loaded audio: resources/sfx/appear.ogg
@@ -34,7 +34,7 @@ Loaded audio: resources/sfx/invisible.ogg
 Loaded audio: resources/sfx/pa_advance.ogg
 Loaded audio: resources/sfx/point.ogg
 Loaded audio: resources/sfx/new_game.ogg
-Loaded audio sources: 0.164000 secs
+Loaded audio sources: 0.139000 secs
 Loaded texture: resources/tiles/img_blue_normal.png
 Loaded texture: resources/tiles/img_blue_cracked.png
 Loaded texture: resources/tiles/img_blue_broken.png
@@ -68,7 +68,7 @@ Loaded texture: resources/ui/chip_cards.png
 Loaded texture: resources/ui/chip_icons.png
 Loaded texture: resources/backgrounds/title/bg_blue.png
 Loaded texture: resources/backgrounds/title/prog-pulse.png
-Loaded textures: 0.114000 secs
+Loaded textures: 0.069000 secs
 Loaded shader: resources/shaders/black_fade.frag.txt
 Loaded shader: resources/shaders/custom_bar.frag.txt
 Loaded shader: resources/shaders/greyscale.frag.txt
@@ -77,7 +77,7 @@ Loaded shader: resources/shaders/pixel_blur.frag.txt
 Loaded shader: resources/shaders/white.frag.txt
 Loaded shader: resources/shaders/white_fade.frag.txt
 Loaded shader: resources/shaders/yellow.frag.txt
-Loaded shaders: 0.002000 secs
+Loaded shaders: 0.003000 secs
 Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
 Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
 Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf

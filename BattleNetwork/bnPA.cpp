@@ -98,6 +98,10 @@ bool PA::FindPA(Chip ** input, unsigned size)
   for (iter = advances.begin(); iter != advances.end(); iter++) {
     bool match = true;
 
+    if (iter->steps.size() != size) {
+      return false;
+    }
+
     for (unsigned i = 0; i < size; i++) {
       if (iter->steps[i].code != input[i]->GetCode()) {
         match = false;
