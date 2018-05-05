@@ -6,7 +6,7 @@ Camera::Camera(sf::View view)
   focus = view;
   progress = 1.f;
   dest = origin = focus.getCenter();
-  dur = sf::milliseconds(progress);
+  dur = sf::milliseconds((sf::Int32)progress);
 }
 
 
@@ -17,7 +17,7 @@ Camera::~Camera()
 void Camera::Update(float elapsed) {
   progress += elapsed;
 
-  if (sf::Time(sf::milliseconds(progress)) > dur) {
+  if (sf::Time(sf::milliseconds((sf::Int32)progress)) > dur) {
     PlaceCamera(dest);
     return;
   }

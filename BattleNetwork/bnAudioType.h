@@ -34,5 +34,8 @@ enum AudioType {
   TOSS_ITEM,
   WAVE,
   INVISIBLE,
+  PA_ADVANCE,
+  POINT,
+  NEW_GAME,
   AUDIO_TYPE_SIZE
 };

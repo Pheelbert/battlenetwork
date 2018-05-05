@@ -1,5 +1,8 @@
 #include "bnChipLibrary.h"
-
+#include "bnTextureResourceManager.h"
+#include <assert.h>
+#include <sstream>
+#include <algorithm>
 
 ChipLibrary::ChipLibrary() {
 }
@@ -35,15 +38,51 @@ Chip* ChipLibrary::Next() {
 
 // Used as the folder in battle
 void ChipLibrary::LoadLibrary() {
-  // NOTE: The IDs (first param) be indexed by the frames in the chip cards texture!
-  // SEE:  resources/ui/chip_cards.png
-  library.insert(library.begin(), Chip((unsigned)0, 'A', 20, "Cannon\0", "Hits anything directly in front\0"));
-  library.insert(library.begin(), Chip((unsigned)0, 'A', 20, "Cannon\0", "Hits anything directly in front\0"));
-  library.insert(library.begin(), Chip((unsigned)15, 'J', 80, "ShrtSwrd\0", "Attacks 2 steps forward front\0"));
-  library.insert(library.begin(), Chip(ChipType::CRCKPNL, '=', 0, "CrckPnl\0", "Cracks 3 panels wide\0"));
-  library.insert(library.begin(), Chip(ChipType::HP10, 'F', 10, "HP+10\0", "Restores 10 HP\0"));
-  library.insert(library.begin(), Chip(ChipType::HP10, 'E', 10, "HP+10\0", "Restores 10 HP\0"));
-  library.insert(library.begin(), Chip(ChipType::HP10, 'A', 10, "HP+10\0", "Restores 10 HP\0"));
-  library.insert(library.begin(), Chip(ChipType::INVSBLE, 'I', 0, "Invsble\0", "Hide for an amount of time\0"));
-  library.insert(library.begin(), Chip(ChipType::BARR, 'B', 10, "Barr\0", "Prevent damage\0"));
+  // TODO: put this utility in an input stream class and inhert from that
+  string data = TextureResourceManager::GetInstance().LoadDataFromFile("resources/database/library.txt");
+
+  int endline = 0;
+
+  do {
+    endline = (int)data.find("\n");
+    string line = data.substr(0, endline);
+
+    if (line.find("Chip") != string::npos) {
+      string cardID = valueOf("cardIndex", line);
+      string iconID = valueOf("iconIndex", line);
+      string name   = valueOf("name", line);
+      string damage = valueOf("damage", line);
+      string type = valueOf("type", line);
+      string codes = valueOf("codes", line);
+      // string description = valueOf("description", line);
+
+      // Trime white space
+      codes.erase(remove_if(codes.begin(), codes.end(), isspace), codes.end());
+
+      // Tokenize the string with delimeter as ','
+      std::istringstream codeStream(codes);
+      string code;
+
+      while (std::getline(codeStream, code, ',')) {
+        // For every code, push this into our database
+        if (code.empty())
+          continue;
+
+        if (code == "*") {
+          // transform it into the font-compatible ascii char
+          code = '=';
+        }
+        library.push_back(Chip(atoi(cardID.c_str()), atoi(iconID.c_str()), code[0], atoi(damage.c_str()), name, "description"));
+      }
+    }
+
+    data = data.substr(endline + 1);
+  } while (endline > -1);
+}
+
+string ChipLibrary::valueOf(string _key, string _line) {
+  int keyIndex = (int)_line.find(_key);
+  assert(keyIndex > -1 && "Key was not found in library file.");
+  string s = _line.substr(keyIndex + _key.size() + 2);
+  return s.substr(0, s.find("\""));
 }

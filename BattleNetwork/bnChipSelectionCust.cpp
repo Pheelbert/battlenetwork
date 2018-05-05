@@ -87,7 +87,7 @@ bool ChipSelectionCust::CursorAction() {
         char code = queue[cursorPos].data->GetCode();
 
         for (int i = 0; i < chipCount; i++) {
-          if (i == cursorPos || queue[i].state == 0 || queue[i].state == 2) continue;
+          if (i == cursorPos || (queue[i].state == 0 && queue[i].data->GetCode() - 1 != code) || queue[i].state == 2) continue;
           char otherCode = queue[i].data->GetCode();
 
           if (code == '=' || otherCode == '=' || otherCode == code || otherCode == code - 1 || otherCode == code + 1) { queue[i].state = 1; }
@@ -133,7 +133,7 @@ bool ChipSelectionCust::CursorCancel() {
 
     for (int j = 0; j < chipCount; j++) {
       if (i > 0) {
-        if (queue[j].state == 0) continue; // already checked
+        if (queue[j].state == 0 && code != queue[j].data->GetCode() - 1) continue; // already checked and not a PA sequence
       }
 
       if (queue[j].state == 2) continue; // skip  
@@ -196,7 +196,7 @@ void ChipSelectionCust::Draw() {
 
     for (int i = 0; i < chipCount; i++) {
       icon.setPosition(2.f*(9.0f + (i*16.0f)), 2.f*105.f);
-      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromChipID(queue[i].data->GetID());
+      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromID(queue[i].data->GetIconID());
       icon.setTextureRect(iconSubFrame);
       icon.SetShader(nullptr);
 
@@ -213,7 +213,7 @@ void ChipSelectionCust::Draw() {
 
     for (int i = 0; i < selectCount; i++) {
       icon.setPosition(2 * 97.f, 2.f*(25.0f + (i*16.0f)));
-      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromChipID((*selectQueue[i]).data->GetID());
+      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromID((*selectQueue[i]).data->GetIconID());
       icon.setTextureRect(iconSubFrame);
       Engine::GetInstance().Draw(icon, false);
     }
@@ -225,7 +225,7 @@ void ChipSelectionCust::Draw() {
 
       if (cursorPos < chipCount) {
         // Draw the selected chip card
-        sf::IntRect cardSubFrame = TextureResourceManager::GetInstance().GetCardRectFromChipID(queue[cursorPos].data->GetID());
+        sf::IntRect cardSubFrame = TextureResourceManager::GetInstance().GetCardRectFromID(queue[cursorPos].data->GetID());
         chipCard.setTextureRect(cardSubFrame);
 
         chipCard.SetShader(nullptr);
@@ -242,10 +242,12 @@ void ChipSelectionCust::Draw() {
         Engine::GetInstance().Draw(label, false);
 
         // the order here is very important:
-        label.setString(std::to_string(queue[cursorPos].data->GetDamage()));
-        label.setOrigin(label.getLocalBounds().width*2.f, 0);
-        label.setPosition(2.f*(label.getLocalBounds().width + 60.f), 143.f);
-        Engine::GetInstance().Draw(label, false);
+        if (queue[cursorPos].data->GetDamage() > 0) {
+          label.setString(std::to_string(queue[cursorPos].data->GetDamage()));
+          label.setOrigin(label.getLocalBounds().width*2.f, 0);
+          label.setPosition(2.f*(label.getLocalBounds().width + 60.f), 143.f);
+          Engine::GetInstance().Draw(label, false);
+        }
 
         label.setPosition(2.f*16.f, 143.f);
         label.setOrigin(0, 0);

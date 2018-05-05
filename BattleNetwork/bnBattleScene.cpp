@@ -20,15 +20,37 @@ using sf::Font;
 #include "bnEngine.h"
 #include "bnChipSelectionCust.h"
 #include "bnShaderResourceManager.h"
+#include "bnPA.h"
 
 
 int BattleScene::Run(Mob* mob) {
+  /*
+  Program Advance + labels
+  */
+  PA programAdvance;
+  PASteps paSteps;
+  programAdvance.LoadPA();
+  bool isPAComplete = false;
+  bool hasPA = false;
+  int paStepIndex = 0;
+
+  float listStepCooldown = 500.f;
+  float listStepCounter  = listStepCooldown;
+
+  /*
+  Mob labels*/
   std::vector<std::string> mobNames;
 
   Camera camera(Engine::GetInstance().GetDefaultView());
 
+  /*
+  Chips + Chip select setup*/
   ChipSelectionCust chipCustGUI(5);
+  Chip** chips = 0;
+  int chipCount = 0;
 
+  /*
+  Set Scene*/
   Field* field = mob->GetField();
 
   Player* player(new Player());
@@ -210,9 +232,6 @@ int BattleScene::Run(Mob* mob) {
     // Draw cust GUI on top of scene. No shaders affecting.
     chipCustGUI.Draw();
 
-    // Write contents to screen (always last step)
-    Engine::GetInstance().Display();
-
     // Scene keyboard controls
     if (ControllableComponent::GetInstance().has(PRESSED_PAUSE) && !isInChipSelect && !isPlayerDeleted) {
       isPaused = !isPaused;
@@ -243,6 +262,12 @@ int BattleScene::Run(Mob* mob) {
 
         // Clear any chip UI queues. they will contain null data. 
         player->GetChipsUI()->LoadChips(nullptr, 0);
+
+        // Reset PA system
+        isPAComplete = false;
+        hasPA = false;
+        paStepIndex = 0;
+        listStepCounter = listStepCooldown;
 
         // Load the next chips
         chipCustGUI.ResetState();
@@ -281,12 +306,93 @@ int BattleScene::Run(Mob* mob) {
       if (!chipCustGUI.IsOutOfView()) {
         chipCustGUI.Move(sf::Vector2f(-150.f / elapsed, 0));
       } else if (isInChipSelect) { // we're leaving a state
-        // Return to game
-        isInChipSelect = false;
-        player->GetChipsUI()->LoadChips(chipCustGUI.GetChips(), chipCustGUI.GetChipCount());
-        Engine::GetInstance().RevokeShader();
+        // Start Program Advance checks
+        if(isPAComplete && !hasPA) {
+          // Return to game
+          isInChipSelect = false;
+          player->GetChipsUI()->LoadChips(chips, chipCount);
+          Engine::GetInstance().RevokeShader();
+        }
+        else if (!isPAComplete) {
+          chips = chipCustGUI.GetChips();
+          chipCount = chipCustGUI.GetChipCount();
+
+          hasPA = programAdvance.FindPA(chips, chipCount);
+
+          if(hasPA) {
+            paSteps = programAdvance.GetMatchingSteps();
+            Chip* paChip = programAdvance.GetAdvanceChip();
+
+            // For now do not use all other chips. 
+            // TODO: Only remove the chips involved in the program advance. Replace them with the new PA chip.
+            chips = &paChip;
+            chipCount = 1;
+          }
+
+          isPAComplete = true;
+        }
+        else if (hasPA) {
+          static float increment = 0;
+
+          float nextLabelHeight = 0;
+
+          if (paStepIndex <= paSteps.size()) {
+            for (int i = 0; i < paStepIndex; i++) {
+              sf::Text stepLabel = sf::Text(paSteps[i].first, *mobFont);
+
+              stepLabel.setOrigin(0, 0);
+              stepLabel.setPosition(40.0f, 40.f + nextLabelHeight);
+              stepLabel.setScale(0.8f, 0.8f);
+              stepLabel.setOutlineColor(sf::Color(48, 56, 80));
+              stepLabel.setOutlineThickness(2.f);
+              Engine::GetInstance().Draw(stepLabel, false);
+
+              // make the next label relative to this one
+              nextLabelHeight += stepLabel.getLocalBounds().height;
+            }
+            increment = 0;
+          }
+          else {
+            increment += elapsed/500.f;
+
+            sf::Text stepLabel = sf::Text(programAdvance.GetAdvanceChip()->GetShortName(), *mobFont);
+
+            stepLabel.setOrigin(0, 0);
+            stepLabel.setPosition(40.0f, 40.f + nextLabelHeight);
+            stepLabel.setScale(0.8f, 0.8f);
+            stepLabel.setOutlineColor(sf::Color(sin(increment) * 255, cos(increment+90*(22.f/7.f)) * 255, sin(increment+180*(22.f/7.f)) * 255));
+            stepLabel.setOutlineThickness(2.f);
+            Engine::GetInstance().Draw(stepLabel, false);
+          }
+
+          if (listStepCounter > 0.f) {
+            listStepCounter -= elapsed;
+          }
+          else {
+
+            if (paStepIndex > paSteps.size()) {
+              hasPA = false; // state over 
+              isPAComplete = true;
+            }
+            else {
+              paStepIndex++;
+              listStepCounter = listStepCooldown;
+
+              if (paStepIndex <= paSteps.size()) {
+                AudioResourceManager::GetInstance().Play(AudioType::POINT);
+              }
+              else if (paStepIndex == paSteps.size()) {
+                AudioResourceManager::GetInstance().Play(AudioType::PA_ADVANCE);
+              }
+            }
+          }
+        }
       }
     }
+
+    // Write contents to screen (always last step)
+    Engine::GetInstance().Display();
+
 
     if (isPlayerDeleted) {
       if (!initFadeOut) {

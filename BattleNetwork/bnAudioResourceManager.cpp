@@ -66,6 +66,9 @@ void AudioResourceManager::LoadAllSources(unsigned &status) {
   LoadSource(AudioType::TOSS_ITEM, "resources/sfx/toss_item.ogg"); status++;
   LoadSource(AudioType::WAVE, "resources/sfx/wave.ogg"); status++;
   LoadSource(AudioType::INVISIBLE, "resources/sfx/invisible.ogg"); status++;
+  LoadSource(AudioType::PA_ADVANCE, "resources/sfx/pa_advance.ogg"); status++;
+  LoadSource(AudioType::POINT, "resources/sfx/point.ogg"); status++;
+  LoadSource(AudioType::NEW_GAME, "resources/sfx/new_game.ogg"); status++;
 }
 
 void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {

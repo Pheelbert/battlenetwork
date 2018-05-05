@@ -11,8 +11,7 @@ ProgsManPunchState::~ProgsManPunchState()
 }
 
 void ProgsManPunchState::OnEnter(ProgsMan& progs) {
-  auto onFinish = [&progs]() { /*this->Attack(progs);*/ 
-    progs.StateChange<ProgsManIdleState>(); };
+  auto onFinish = [this, &progs]() { this->Attack(progs); };
   progs.SetAnimation(MobState::MOB_ATTACKING, onFinish);
 }
 
@@ -25,7 +24,7 @@ void ProgsManPunchState::OnUpdate(float _elapsed, ProgsMan& progs) {
 
 void ProgsManPunchState::Attack(ProgsMan& progs) {
   Tile* tile = progs.GetTile();
-  if (tile->GetX() + 1 <= (int)progs.GetField()->GetWidth() + 1) {
+  if (tile->GetX() - 1 >= 1) {
 
     Tile* next = 0;
     next = progs.GetField()->GetAt(tile->GetX() - 1, tile->GetY());

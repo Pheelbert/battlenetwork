@@ -1,0 +1,3 @@
+Chip name="Cannon1"  cardIndex="0" iconIndex="0" damage="20" type="Normal" codes="A"
+Chip name="Cannon2" cardIndex="1" iconIndex="1" damage="40" type="Normal" codes="B"
+Chip name="Cannon3" cardIndex="2" iconIndex="2" damage="60" type="Normal" codes="C"

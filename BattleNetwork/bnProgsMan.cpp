@@ -18,23 +18,17 @@
 #define PROGS_ATTACK_DELAY 500.0f
 
 ProgsMan::ProgsMan(void)
-  : animationComponent(AnimationComponent(this)),
+  : animationComponent(this),
     AI<ProgsMan>(this) {
   name = "ProgsMan";
   Entity::team = Team::RED;
   health = 300;
   hitHeight = 0;
-  direction = Direction::DOWN;
   state = MobState::MOB_IDLE;
   textureType = TextureType::MOB_PROGSMAN_IDLE;
   healthUI = new MobHealthUI(this);
 
-  StateChange<ProgsManIdleState>();
-
-  cooldown = 0;
-  attackCooldown = 0;
-  waitCooldown = 0;
-  attackDelay = 0.0f;
+  this->StateChange<ProgsManIdleState>();
 
   setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
   setScale(2.f, 2.f);
@@ -142,10 +136,6 @@ int ProgsMan::GetStateFromString(string _string) {
 
 TextureType ProgsMan::GetTextureType() const {
   return textureType;
-}
-
-MobState ProgsMan::GetMobState() const {
-  return state;
 }
 
 int ProgsMan::GetHealth() const {

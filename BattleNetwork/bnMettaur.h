@@ -52,7 +52,6 @@ private:
   AnimationComponent animationComponent;
 
   float hitHeight;
-  Direction direction;
   TextureType textureType;
   MobHealthUI* healthUI;
 };
