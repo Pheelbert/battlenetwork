@@ -2,8 +2,8 @@
 #### Branch: program-advances 
 Click the thumbnail to watch on youtube. 
 
-[![Video of engine 5/4/2018](https://img.youtube.com/vi/gGsZ7-6jY7c/0.jpg)](https://youtu.be/gGsZ7-6jY7c)
-[![Video of engine 5/4/2018](https://img.youtube.com/vi/gGsZ7-6jY7c/1.jpg)](https://youtu.be/gGsZ7-6jY7c)
+[![Video of engine 5/4/2018](https://img.youtube.com/vi/EIzU7IrzHs0/0.jpg)](https://youtu.be/EIzU7IrzHs0)
+[![Video of engine 5/4/2018](https://img.youtube.com/vi/EIzU7IrzHs0/1.jpg)](https://youtu.be/EIzU7IrzHs0)
 
 #### Video outdated (since 4/17/2018)
 Click the thumbnail to watch on youtube
