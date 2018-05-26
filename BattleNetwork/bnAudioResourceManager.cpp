@@ -50,6 +50,7 @@ void AudioResourceManager::LoadAllSources(unsigned &status) {
   LoadSource(AudioType::CHIP_DESC_CLOSE, "resources/sfx/chip_desc_close.ogg"); status++;
   LoadSource(AudioType::CHIP_SELECT, "resources/sfx/chip_select.ogg"); status++;
   LoadSource(AudioType::CUSTOM_BAR_FULL, "resources/sfx/custom_bar_full.ogg"); status++;
+  LoadSource(AudioType::CUSTOM_SCREEN_OPEN, "resources/sfx/chip_screen_open.ogg"); status++;
   LoadSource(AudioType::DELETED, "resources/sfx/deleted.ogg"); status++;
   LoadSource(AudioType::EXPLODE, "resources/sfx/explode.ogg"); status++;
   LoadSource(AudioType::GUN, "resources/sfx/gun.ogg"); status++;
@@ -64,14 +65,17 @@ void AudioResourceManager::LoadAllSources(unsigned &status) {
   LoadSource(AudioType::SWORD_SWING, "resources/sfx/sword_swing.ogg"); status++;
   LoadSource(AudioType::TOSS_ITEM, "resources/sfx/toss_item.ogg"); status++;
   LoadSource(AudioType::WAVE, "resources/sfx/wave.ogg"); status++;
+  LoadSource(AudioType::INVISIBLE, "resources/sfx/invisible.ogg"); status++;
+  LoadSource(AudioType::PA_ADVANCE, "resources/sfx/pa_advance.ogg"); status++;
+  LoadSource(AudioType::POINT, "resources/sfx/point.ogg"); status++;
+  LoadSource(AudioType::NEW_GAME, "resources/sfx/new_game.ogg"); status++;
 }
 
 void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {
   if (!sources[type].loadFromFile(path)) {
-    Logger::Log("Failed loading audio: " + path);
-    exit(EXIT_FAILURE);
+    Logger::Failf("Failed loading audio: %s\n", path.c_str());
   } else {
-    Logger::Log("Loaded audio: " + path);
+    Logger::Logf("Loaded audio: %s\n", path.c_str());
   }
 }
 
@@ -86,22 +90,26 @@ int AudioResourceManager::Play(AudioType type, int priority) {
   //                             LOW    (one at a time),
   //                             HIGH    (cancels lower rankings),
   // Find a free channel 
-  for (int i = 0; i < NUM_OF_CHANNELS; i++) {
-    if (priority == 0) {
+  
+  // For low priority sounds, scan and see if this sound is already playing...
+  if (priority == 0) {
+    for (int i = 0; i < NUM_OF_CHANNELS; i++) {
       if (channels[i].getStatus() == sf::SoundSource::Status::Playing) {
         if (channels[i].getBuffer() == &(const sf::SoundBuffer)sources[type]) {
           // Lowest priority sounds only play once 
           return -1;
         }
       }
+    }
+  }
 
-    } else if (channels[i].getStatus() != sf::SoundSource::Status::Playing) {
-      // Check if this is the same type
-      if (channels[i].getBuffer() != &(const sf::SoundBuffer)sources[type]) {
-        channels[i].setBuffer(sources[type]);
-        channels[i].play();
-        return 0;
-      }
+  // Either we are high priority or the sound with 0 priority has not played yet.
+  // Find a free channel...
+  for (int i = 0; i < NUM_OF_CHANNELS; i++) {
+    if (channels[i].getStatus() != sf::SoundSource::Status::Playing) {
+      channels[i].setBuffer(sources[type]);
+      channels[i].play();
+      return 0;
     }
   }
 

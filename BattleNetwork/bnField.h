@@ -22,6 +22,7 @@ public:
   bool GetNextTile(Tile*& out);
 
   void AddEntity(Entity* _entity, int x, int y);
+  void OwnEntity(Entity* _entity, int x, int y);
   void RemoveEntity(Entity* _entity);
   Tile* FindEntity(Entity* _entity) const;
   bool GetNextEntity(Entity*& out, int _depth) const;

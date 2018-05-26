@@ -11,6 +11,7 @@ public:
   ~ChipLibrary();
   static ChipLibrary & GetInstance();
   void LoadLibrary();
+  string valueOf(string _key, string _line);
   Chip* Next();
 private:
   list<Chip> library;

@@ -17,7 +17,6 @@ protected:
     Unlocked
    };
 
-
 public:
   void Lock() {
     lock = AI<T>::StateLock::Locked;

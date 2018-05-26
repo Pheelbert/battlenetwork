@@ -6,7 +6,7 @@
 #include "bnAudioType.h"
 
 // For more authentic retro experience, decrease available channels.
-#define NUM_OF_CHANNELS 5
+#define NUM_OF_CHANNELS 10
 
 class AudioResourceManager {
 public:

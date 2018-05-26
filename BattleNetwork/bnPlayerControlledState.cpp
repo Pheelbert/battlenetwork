@@ -108,11 +108,7 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
             player.previous->SetState(TileState::BROKEN);
           }
           
-          player.SetTile(player.next);
-          player.tile->AddEntity((Entity*)&player);
-          player.previous->RemoveEntity((Entity*)&player);
-          player.previous = nullptr;
-          player.next = nullptr;
+          player.AdoptNextTile();
         }
         player.SetAnimation(PlayerState::PLAYER_IDLE);
       }; // end lambda

@@ -32,9 +32,7 @@ Tile::Tile(int _x, int _y) {
 }
 
 Tile::~Tile(void) {
-  if (entities.size() > 0) {
-    FreeClear(entities);
-  }
+  entities.clear();
 }
 
 void Tile::SetField(Field* _field) {
@@ -66,7 +64,11 @@ float Tile::GetHeight() const {
 }
 
 void Tile::SetState(TileState _state) {
-  if (_state == TileState::CRACKED && state != _state) {
+  if (_state == TileState::CRACKED && (state == TileState::EMPTY || state == TileState::BROKEN)) {
+    return;
+  }
+
+  if (_state == TileState::CRACKED) {
     cooldown = cooldownLength;
   }
 
@@ -132,8 +134,9 @@ bool Tile::ContainsEntity(Entity* _entity) const {
 }
 
 void Tile::AffectEntities(Spell* caller) {
-  for (auto it = entities.begin(); it < entities.end(); ++it) {
-    if (*it != caller) {
+  vector<Entity*> copy = this->entities;
+  for (std::vector<Entity*>::iterator it = copy.begin(); it < copy.end(); ++it) {
+    if (*it != caller && !(*it)->IsPassthrough()) {
       caller->Attack(*it);
     }
   }
@@ -151,8 +154,8 @@ bool Tile::GetNextEntity(Entity*& out) const {
 }
 
 void Tile::Update(float _elapsed) {
-  vector<Entity*> copy = this->entities;
-  for (auto entity = copy.begin(); entity < copy.end(); ++entity) {
+  vector<Entity*> copies = entities;
+  for (vector<Entity*>::iterator entity = copies.begin(); entity != copies.end(); entity++) {
     (*entity)->Update(_elapsed);
   }
 

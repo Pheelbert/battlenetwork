@@ -8,11 +8,12 @@ using std::to_string;
 #include <cstdarg>
 #include <queue>
 #include <mutex>
+#include <fstream>
 class Logger {
 private:
   static std::mutex m;
   static std::queue<std::string> logs;
-
+  static std::ofstream file;
 public:
   static std::mutex* GetMutex() {
     return &m;
@@ -29,8 +30,14 @@ public:
   }
 
   static void Log(string _message) {
+    if (!file.is_open()) {
+      file.open("log.txt");
+      file << "StartTime " << time(0) << endl;
+    }
+
     //cerr << _message << endl;
     logs.push(_message);
+    file << _message << endl;
   }
 
   static void Logf(const char* fmt, ...) {
@@ -52,6 +59,12 @@ public:
    // cerr << ret << endl;
     logs.push(ret);
 
+    if (!file.is_open()) {
+      file.open("log.txt");
+      file << "StartTime " << time(0) << endl;
+    }
+
+    file << ret << endl;
   }
 
   static string ToString(float _number) {
@@ -59,6 +72,6 @@ public:
   }
 
 private:
-  Logger();
+  Logger() { file.close(); }
   ~Logger() = default;
 };

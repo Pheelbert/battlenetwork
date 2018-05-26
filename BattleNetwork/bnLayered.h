@@ -1,4 +1,5 @@
 #include <SFML\Graphics.hpp>
+#include "bnSmartShader.h"
 using sf::Drawable;
 using sf::RenderWindow;
 using sf::VideoMode;
@@ -11,19 +12,17 @@ class LayeredDrawable : public Sprite {
 private:
   int layer;
   int depth;
-  sf::Shader* shader;
+  SmartShader shader;
 
 public:
   LayeredDrawable(void)
     : layer(0),
-    depth(0),
-    shader(nullptr) {
+    depth(0) {
   }
 
   LayeredDrawable(int _layer)
     : layer(_layer),
-    depth(0),
-    shader(nullptr) {
+    depth(0){
   }
 
   void SetLayer(int _layer) {
@@ -31,15 +30,25 @@ public:
   }
 
   void SetShader(sf::Shader* _shader) {
-    shader = _shader;
+    RevokeShader();
+
+    if (_shader) {
+      shader = *_shader;
+    }
+
   }
 
-  sf::Shader* GetShader() {
+  void SetShader(SmartShader& _shader) {
+    RevokeShader();
+    shader =_shader;
+  }
+
+  SmartShader& GetShader() {
     return shader;
   }
 
   void RevokeShader() {
-    shader = nullptr;
+    shader.Reset();
   }
 
   int GetLayer() const {

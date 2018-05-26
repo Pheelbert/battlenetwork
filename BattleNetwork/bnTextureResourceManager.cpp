@@ -27,11 +27,10 @@ void TextureResourceManager::LoadAllTextures(unsigned &status) {
 Texture* TextureResourceManager::LoadTextureFromFile(string _path) {
   Texture* texture = new Texture();
   if (!texture->loadFromFile(_path)) {
-    Logger::Log("Failed loading texture: " + _path);
-    exit(EXIT_FAILURE);
-    return nullptr;
+    Logger::Failf("Failed loading texture: %s\n", _path.c_str());
+  } else {
+    Logger::Logf("Loaded texture: %s\n", _path.c_str());
   }
-  Logger::Log("Loaded texture: " + _path);
   return texture;
 }
 
@@ -39,24 +38,24 @@ Texture* TextureResourceManager::GetTexture(TextureType _ttype) {
   return textures.at(_ttype);
 }
 
-sf::IntRect TextureResourceManager::GetCardRectFromChipID(unsigned ID) {
+sf::IntRect TextureResourceManager::GetCardRectFromID(unsigned ID) {
   return sf::IntRect((ID % 11) * 56, (ID / 11) * 48, 56, 48);
 }
 
-// NOTE: This is not accurate. The cards and icons are not identical in order. Perhaps manual entry is best here? 
-// Otherwise we'll need to manually swap icon placement ourselves...
-sf::IntRect TextureResourceManager::GetIconRectFromChipID(unsigned ID) {
-  return sf::IntRect(1+((ID % 20) * 16), 1+((ID / 20) * 16), 14, 14);
+sf::IntRect TextureResourceManager::GetIconRectFromID(unsigned ID) {
+  sf::IntRect result  = sf::IntRect(1+((ID % 20) * 16), 1+((ID / 20) * 16), 14, 14);
+
+  // Start mapping icons to cards
+  return result;
 }
 
 Font* TextureResourceManager::LoadFontFromFile(string _path) {
   Font* font = new Font();
   if (!font->loadFromFile(_path)) {
-    Logger::Log("Failed loading font: " + _path);
-    exit(EXIT_FAILURE);
-    return nullptr;
+    Logger::Failf("Failed loading font: %s\n", _path.c_str());
+  } else {
+    Logger::Logf("Loaded font: %s\n", _path.c_str());
   }
-  Logger::Log("Loaded font: " + _path);
   return font;
 }
 

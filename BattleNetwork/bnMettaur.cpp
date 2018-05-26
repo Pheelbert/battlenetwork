@@ -33,18 +33,13 @@ int Mettaur::currMetIndex = 0;
 
 Mettaur::Mettaur(void)
   : animationComponent(this), AI<Mettaur>(this) {
-  // Start AI
   this->StateChange<MettaurIdleState>();
-
+  name = "Mettaur";
   Entity::team = Team::RED;
   health = 20;
   hitHeight = 0;
-  direction = Direction::DOWN;
   textureType = TextureType::MOB_METTAUR_IDLE;
   healthUI = new MobHealthUI(this);
-
-  blinker = 0.0f;
-  x1 = 0.0f, y1 = 0.0f, x2 = 0.0f, y2 = 0.0f;
 
   setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
   setScale(2.f, 2.f);
@@ -55,30 +50,20 @@ Mettaur::Mettaur(void)
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
 
+  whiteout = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE);
+
   metID = (int)Mettaur::metIDs.size();
   Mettaur::metIDs.push_back((int)Mettaur::metIDs.size());
 }
 
 Mettaur::~Mettaur(void) {
-  Mettaur::currMetIndex++;
-
-  if (Mettaur::metIDs.size() > 0) {
-    vector<int>::iterator it = find(Mettaur::metIDs.begin(), Mettaur::metIDs.end(), metID);
-
-    if (it != Mettaur::metIDs.end()) {
-      Mettaur::metIDs.erase(it);
-      if (Mettaur::currMetIndex >= Mettaur::metIDs.size()) {
-        Mettaur::currMetIndex = 0;
-      }
-    }
-  }
 }
 
 int* Mettaur::GetAnimOffset() {
   Mettaur* mob = this;
 
   int* res = new int[2];
-  res[0] = res[1] = 0;
+  res[0] = 35;  res[1] = 35;
 
   if (mob->GetTextureType() == TextureType::MOB_METTAUR_IDLE) {
     res[0] = 35;
@@ -89,30 +74,45 @@ int* Mettaur::GetAnimOffset() {
   } else if (mob->GetTextureType() == TextureType::MOB_MOVE) {
     res[0] = 45;
     res[1] = 55;
-  }
+  } 
 
   return res;
 }
 
 void Mettaur::Update(float _elapsed) {
-  healthUI->Update();
+  this->SetShader(nullptr);
+
   this->StateUpdate(_elapsed);
 
   // Explode if health depleted
   if (GetHealth() <= 0) {
-    this->StateChange<ExplodeState<Mettaur>>(); // TODO: Do not call this every frame, only once would be better
+    this->StateChange<ExplodeState<Mettaur>>();
+    
+    if (Mettaur::metIDs.size() > 0) {
+      vector<int>::iterator it = find(Mettaur::metIDs.begin(), Mettaur::metIDs.end(), metID);
+
+      if (it != Mettaur::metIDs.end()) {
+        // Remove this mettaur out of rotation...
+        Mettaur::currMetIndex++;
+
+        Mettaur::metIDs.erase(it);
+        if (Mettaur::currMetIndex >= Mettaur::metIDs.size()) {
+          Mettaur::currMetIndex = 0;
+        }
+      }
+    }
+
     this->Lock();
   } else {
     this->RefreshTexture();
-    this->SetShader(nullptr);
     animationComponent.update(_elapsed);
   }
 
+  healthUI->Update();
   Entity::Update(_elapsed);
 }
 
 void Mettaur::RefreshTexture() {
-
   if (state == MobState::MOB_IDLE) {
     textureType = TextureType::MOB_METTAUR_IDLE;
   } else if (state == MobState::MOB_MOVING) {
@@ -148,8 +148,7 @@ int Mettaur::GetStateFromString(string _string) {
       return static_cast<MobState>(i);
     }
   }
-  Logger::Log(string("Failed to find corresponding enum: " + _string));
-  assert(false);
+  Logger::Failf("Failed to find corresponding enum: %s\n", _string);
   return -1;
 }
 
@@ -173,6 +172,7 @@ void Mettaur::SetHealth(int _health) {
 
 int Mettaur::Hit(int _damage) {
   (health - _damage < 0) ? health = 0 : health -= _damage;
+  SetShader(whiteout);
   return health;
 }
 
