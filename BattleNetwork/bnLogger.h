@@ -1,19 +1,19 @@
 #pragma once
 #include <iostream>
-using std::cout;
+using std::cerr;
 using std::endl;
-using std::cin;
 #include <string>
 using std::string;
 using std::to_string;
 #include <cstdarg>
 #include <queue>
 #include <mutex>
+#include <fstream>
 class Logger {
 private:
   static std::mutex m;
   static std::queue<std::string> logs;
-
+  static std::ofstream file;
 public:
   static std::mutex* GetMutex() {
     return &m;
@@ -30,7 +30,14 @@ public:
   }
 
   static void Log(string _message) {
+    if (!file.is_open()) {
+      file.open("log.txt");
+      file << "StartTime " << time(0) << endl;
+    }
+
+    //cerr << _message << endl;
     logs.push(_message);
+    file << _message << endl;
   }
 
   static void Logf(const char* fmt, ...) {
@@ -49,17 +56,22 @@ public:
     std::string ret(buffer);
     va_end(vl);
     delete[] buffer;
+   // cerr << ret << endl;
     logs.push(ret);
+
+    if (!file.is_open()) {
+      file.open("log.txt");
+      file << "StartTime " << time(0) << endl;
+    }
+
+    file << ret << endl;
   }
 
-  template<typename ... Args>
-  static void Failf(const string& _format, Args... args) {
-    fprintf_s(stderr, ("ERROR: " + _format).c_str(), args...);
-    cin.ignore(); // Allows us to see the error before the window closes
-    exit(EXIT_FAILURE);
+  static string ToString(float _number) {
+    return to_string(_number);
   }
 
 private:
-  Logger();
+  Logger() { file.close(); }
   ~Logger() = default;
 };

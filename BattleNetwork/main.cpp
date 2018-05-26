@@ -1,8 +1,12 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
+#include "bnShaderResourceManager.h"
 #include "bnControllableComponent.h"
 #include "bnEngine.h"
 #include "bnBattleScene.h"
+#include "bnMobFactory.h"
+#include "bnRandomMettaurMob.h"
+#include "bnTwoMettaurMob.h"
 #include "SFML/System.hpp"
 #include <Thor/Animations.hpp>
 #include <time.h>
@@ -15,14 +19,18 @@ using sf::Clock;
 #define TITLE_ANIM_CHAR_HEIGHT 221
 #define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
 
-void RunTextureResourceInit(unsigned * progress) {
-  sf::sleep(sf::milliseconds(2000)); // Simulate long loading to see title better
-  const clock_t begin_time = clock();
+void RunGraphicsInit(unsigned * progress) {
+  sf::sleep(sf::milliseconds(1000)); // Simulate long loading to see title better
+  clock_t begin_time = clock();
   TextureResourceManager::GetInstance().LoadAllTextures(*progress);
   Logger::Logf("Loaded textures: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+
+  begin_time = clock();
+  ShaderResourceManager::GetInstance().LoadAllShaders(*progress);
+  Logger::Logf("Loaded shaders: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
 }
 
-void RunAudioResourceInit(unsigned * progress) {
+void RunAudioInit(unsigned * progress) {
   const clock_t begin_time = clock();
   AudioResourceManager::GetInstance().LoadAllSources(*progress);
   Logger::Logf("Loaded audio sources: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
@@ -38,6 +46,7 @@ int main(int argc, char** argv) {
 
   // lazy init
   //TextureResourceManager::GetInstance();
+  ShaderResourceManager::GetInstance();
   AudioResourceManager::GetInstance();
 
   // Title screen logo
@@ -65,13 +74,13 @@ int main(int argc, char** argv) {
   LayeredDrawable progSprite;
 
   // TODO: Add shaders to this list
-  unsigned totalObjects = (unsigned)TextureType::TEXTURE_TYPE_SIZE + (unsigned)AudioType::AUDIO_TYPE_SIZE;
+  unsigned totalObjects = (unsigned)TextureType::TEXTURE_TYPE_SIZE + (unsigned)AudioType::AUDIO_TYPE_SIZE + (unsigned)ShaderType::SHADER_TYPE_SIZE;
   unsigned progress = 0;
 
-  sf::Thread textureLoad(&RunTextureResourceInit, &progress);
-  sf::Thread audioLoad(&RunAudioResourceInit, &progress);
+  sf::Thread graphicsLoad(&RunGraphicsInit, &progress);
+  sf::Thread audioLoad(&RunAudioInit, &progress);
 
-  textureLoad.launch(); 
+  graphicsLoad.launch();
   audioLoad.launch();
 
   // play some music while we wait
@@ -79,7 +88,6 @@ int main(int argc, char** argv) {
   AudioResourceManager::GetInstance().Stream("resources/loops/loop_theme.ogg", true);
 
   // Draw some stats while we wait 
-  // TODO: Drawing actual logs from logger here instead of console
   bool inLoadState = true;
   bool ready = false;
 
@@ -87,14 +95,7 @@ int main(int argc, char** argv) {
   double logFadeOutTimer = 4000;
   double logFadeOutSpeed = 2000;
 
-  sf::Shader whiteShader;
-  if (!whiteShader.loadFromFile(SHADER_FRAG_WHITE_PATH, sf::Shader::Fragment)) {
-    Logger::Log("Error loading shader: " SHADER_FRAG_WHITE_PATH);
-  }
-  else {
-    whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
-    whiteShader.setUniform("opacity", 0.0f);
-  }
+  sf::Shader* whiteShader = nullptr;
 
   Clock clock;
   float elapsed = 0.0f;
@@ -103,7 +104,7 @@ int main(int argc, char** argv) {
     clock.restart();
 
     float percentage = (float)progress / (float)totalObjects;
-    std::string percentageStr = std::to_string((int)percentage*100);
+    std::string percentageStr = std::to_string((int)(percentage*100));
     Engine::GetInstance().GetWindow()->setTitle(sf::String(std::string("Loading: ") + percentageStr + "%"));
 
     ControllableComponent::GetInstance().update();
@@ -123,7 +124,6 @@ int main(int argc, char** argv) {
     if (progress == totalObjects) {
       if (!ready) {
         ready = true;
-        Engine::GetInstance().SetShader(&whiteShader);
       }
       else { // Else we are ready next frame
         if (!bg) {
@@ -159,6 +159,17 @@ int main(int argc, char** argv) {
           }
         }
 
+        if (!whiteShader) {
+          try {
+            whiteShader = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE_FADE);
+            whiteShader->setUniform("opacity", 0.0f);
+            Engine::GetInstance().SetShader(whiteShader);
+          }
+          catch (std::exception e) {
+            // didnt catchup? debug
+          }
+        }
+
         shaderCooldown -= elapsed;
         progAnimProgress += elapsed/2000.f;
 
@@ -185,7 +196,7 @@ int main(int argc, char** argv) {
         }
 
         // update shader 
-        whiteShader.setUniform("opacity", (float)(shaderCooldown / 1000.f)*0.5f);
+        whiteShader->setUniform("opacity", (float)(shaderCooldown / 1000.f)*0.5f);
       }
 
       if (ControllableComponent::GetInstance().has(PRESSED_ACTION3)) {
@@ -209,7 +220,7 @@ int main(int argc, char** argv) {
       // oldest at the top (at most 30 on screen) at full transparency
       logLabel->setString(logs[i]);
       logLabel->setPosition(0.f, 320 - (i * 10.f) - 5.f);
-      logLabel->setFillColor(sf::Color(255, 255, 255, (float)(logFadeOutSpeed/2000.f)*fmax(0, 255 - (255 / 30)*i)));
+      logLabel->setFillColor(sf::Color(255, 255, 255, (sf::Uint8)((logFadeOutSpeed/2000.f)*fmax(0, 255 - (255 / 30)*i))));
       Engine::GetInstance().Draw(logLabel);
     }
 
@@ -231,6 +242,7 @@ int main(int argc, char** argv) {
   }
 
   // Cleanup
+  Engine::GetInstance().RevokeShader();
   Engine::GetInstance().Clear();
   delete logLabel;
   delete font;
@@ -240,8 +252,22 @@ int main(int argc, char** argv) {
   AudioResourceManager::GetInstance().StopStream();
 
   // Make sure we didn't quit the loop prematurely
-  if (Engine::GetInstance().Running()) {
-    return BattleScene::Run();
+  while(Engine::GetInstance().Running()) {
+
+    Field* field(new Field(6, 3));
+    // TODO: Field factory 
+    // see how the random mob works around holes
+    field->GetAt((rand())%3+4, (rand()%3)+1)->SetState(TileState::EMPTY);
+
+    //MobFactory* factory = new TwoMettaurMob(field);
+    MobFactory* factory = new RandomMettaurMob(field);
+    Mob* mob = factory->Build();
+
+    BattleScene::Run(mob);
+
+    delete mob;
+    delete factory;
+    delete field;
   }
   
   return EXIT_SUCCESS;

@@ -155,6 +155,7 @@
     <ClCompile Include="bnArtifact.cpp" />
     <ClCompile Include="bnAudioResourceManager.cpp" />
     <ClCompile Include="bnBackgroundUI.cpp" />
+    <ClCompile Include="bnCannon.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
     <ClCompile Include="bnChip.cpp" />
     <ClCompile Include="bnChipLibrary.cpp" />
@@ -168,23 +169,33 @@
     <ClCompile Include="bnMettaurIdleState.cpp" />
     <ClCompile Include="bnMettaurMoveState.cpp" />
     <ClCompile Include="bnMobHealthUI.cpp" />
+    <ClCompile Include="bnPA.cpp" />
     <ClCompile Include="bnPlayerHitState.cpp" />
+    <ClCompile Include="bnPlayerIdleState.cpp" />
     <ClCompile Include="bnProgBomb.cpp" />
     <ClCompile Include="bnProgsMan.cpp" />
     <ClCompile Include="bnAnimationComponent.cpp" />
+    <ClCompile Include="bnProgsManIdleState.cpp" />
+    <ClCompile Include="bnRandomMettaurMob.cpp" />
+    <ClCompile Include="bnShaderResourceManager.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
     <ClCompile Include="bnSpell.cpp" />
     <ClCompile Include="bnTextureResourceManager.cpp" />
     <ClCompile Include="bnPlayerHealthUI.cpp" />
     <ClCompile Include="bnBuster.cpp" />
+    <ClCompile Include="bnTwoMettaurMob.cpp" />
     <ClCompile Include="bnWave.cpp" />
     <ClCompile Include="bnMettaur.cpp" />
     <ClCompile Include="bnEngine.cpp" />
     <ClCompile Include="bnSelectedChipsUI.cpp" />
     <ClCompile Include="bnLongExplosion.cpp" />
     <ClCompile Include="bnPlayerControlledState.cpp" />
+    <ClCompile Include="bnCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="bnProgsManMoveState.cpp" />
+    <ClCompile Include="bnProgsManPunchState.cpp" />
+    <ClCompile Include="bnSmartShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAI.h" />
@@ -192,6 +203,8 @@
     <ClInclude Include="bnAudioResourceManager.h" />
     <ClInclude Include="bnAudioType.h" />
     <ClInclude Include="bnBackgroundUI.h" />
+    <ClInclude Include="bnCamera.h" />
+    <ClInclude Include="bnCannon.h" />
     <ClInclude Include="bnChargeComponent.h" />
     <ClInclude Include="bnChip.h" />
     <ClInclude Include="bnChipLibrary.h" />
@@ -209,13 +222,25 @@
     <ClInclude Include="bnMemory.h" />
     <ClInclude Include="bnMettaurIdleState.h" />
     <ClInclude Include="bnMettaurMoveState.h" />
+    <ClInclude Include="bnMob.h" />
+    <ClInclude Include="bnMobFactory.h" />
     <ClInclude Include="bnMobHealthUI.h" />
     <ClInclude Include="bnMobState.h" />
+    <ClInclude Include="bnPA.h" />
+    <ClInclude Include="bnPixelInState.h" />
     <ClInclude Include="bnPlayerControlledState.h" />
     <ClInclude Include="bnPlayerHitState.h" />
+    <ClInclude Include="bnPlayerIdleState.h" />
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnAnimationComponent.h" />
+    <ClInclude Include="bnProgsManIdleState.h" />
+    <ClInclude Include="bnProgsManMoveState.h" />
+    <ClInclude Include="bnProgsManPunchState.h" />
+    <ClInclude Include="bnRandomMettaurMob.h" />
+    <ClInclude Include="bnShaderResourceManager.h" />
+    <ClInclude Include="bnShaderType.h" />
+    <ClInclude Include="bnSmartShader.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />
     <ClInclude Include="bnTile.h" />
@@ -228,12 +253,17 @@
     <ClInclude Include="bnPlayerState.h" />
     <ClInclude Include="bnPlayerHealthUI.h" />
     <ClInclude Include="bnBuster.h" />
+    <ClInclude Include="bnTwoMettaurMob.h" />
     <ClInclude Include="bnWave.h" />
     <ClInclude Include="bnMettaur.h" />
     <ClInclude Include="bnEngine.h" />
     <ClInclude Include="bnSelectedChipsUI.h" />
     <ClInclude Include="bnMettaurAttackState.h" />
     <ClInclude Include="bnMeta.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BattleNetwork.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

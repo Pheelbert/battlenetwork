@@ -38,14 +38,15 @@ Texture* TextureResourceManager::GetTexture(TextureType _ttype) {
   return textures.at(_ttype);
 }
 
-sf::IntRect TextureResourceManager::GetCardRectFromChipID(unsigned ID) {
+sf::IntRect TextureResourceManager::GetCardRectFromID(unsigned ID) {
   return sf::IntRect((ID % 11) * 56, (ID / 11) * 48, 56, 48);
 }
 
-// NOTE: This is not accurate. The cards and icons are not identical in order. Perhaps manual entry is best here? 
-// Otherwise we'll need to manually swap icon placement ourselves...
-sf::IntRect TextureResourceManager::GetIconRectFromChipID(unsigned ID) {
-  return sf::IntRect(1+((ID % 20) * 16), 1+((ID / 20) * 16), 14, 14);
+sf::IntRect TextureResourceManager::GetIconRectFromID(unsigned ID) {
+  sf::IntRect result  = sf::IntRect(1+((ID % 20) * 16), 1+((ID / 20) * 16), 14, 14);
+
+  // Start mapping icons to cards
+  return result;
 }
 
 Font* TextureResourceManager::LoadFontFromFile(string _path) {

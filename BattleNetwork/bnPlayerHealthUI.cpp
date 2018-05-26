@@ -52,7 +52,8 @@ void PlayerHealthUI::Update() {
 
     text = Text(to_string(currHP), *font);
     text.setOrigin(text.getLocalBounds().width, 0);
-    text.setPosition(80.0f, -4.f);
+    text.setPosition(80.0f, -1.f);
+    text.setScale(0.8f, 0.8f);
 
     if (currHP > player->GetHealth()) {
       text.setFillColor(sf::Color(255, 165, 0));

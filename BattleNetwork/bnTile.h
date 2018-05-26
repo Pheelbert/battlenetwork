@@ -36,13 +36,12 @@ public:
   void RefreshTexture();
 
   bool IsWalkable() const;
-  bool IsEmptyOrBroken() const;
   bool IsCracked() const;
 
   void AddEntity(Entity* _entity);
   void RemoveEntity(Entity* _entity);
   bool ContainsEntity(Entity* _entity) const;
-  template<class Type> bool ContainsEntityType() const;
+  template<class Type> bool ContainsEntityType();
   void AffectEntities(Spell* caller);
   bool GetNextEntity(Entity*& out) const;
 
@@ -65,8 +64,10 @@ private:
 
 
 template<class Type>
-bool Tile::ContainsEntityType() const {
-  for (auto it = entities.begin(); it < entities.end(); ++it) {
+bool Tile::ContainsEntityType() {
+  // std::cout << "len of entities is: " << entities.size() << "\n";
+
+  for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
     if (dynamic_cast<Type*>(*it) != nullptr) {
       return true;
     }

@@ -12,16 +12,21 @@ using sf::IntRect;
 #include "bnAnimationComponent.h"
 #include "bnSelectedChipsUI.h"
 #include "bnAI.h"
+#include "bnPlayerControlledState.h"
+#include "bnPlayerIdleState.h"
+#include "bnPlayerHitState.h"
 
 class Player : public Entity, public AI<Player> {
 public:
   friend class PlayerControlledState;
+  friend class PlayerIdleState;
 
   Player(void);
   virtual ~Player(void);
 
   virtual void Update(float _elapsed);
   virtual bool Move(Direction _direction);
+  void AdoptNextTile();
   void Attack(float _charge);
   virtual vector<Drawable*> GetMiscComponents();
   void RefreshTexture();

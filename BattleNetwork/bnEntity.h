@@ -13,6 +13,8 @@ class Tile;
 class Field;
 
 class Entity : public LayeredDrawable {
+  friend class Field;
+
 public:
   Entity(void);
   virtual ~Entity(void);
@@ -40,15 +42,23 @@ public:
 
   void SetHealth(int _health);
 
+  void SetPassthrough(bool state);
+  bool IsPassthrough();
   bool IsDeleted() const;
   void TryDelete();
 
+  // For mob UI
+  const std::string GetName() const;
+
 protected:
+  bool ownedByField;
   Tile* next;
   Tile* tile;
   Tile* previous;
   Field* field;
   Team team;
   int health;
+  bool passthrough;
   bool deleted;
+  std::string name;
 };

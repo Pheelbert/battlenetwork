@@ -106,22 +106,26 @@ bool Buster::Move(Direction _direction) {
 }
 
 void Buster::Attack(Entity* _entity) {
+  if (deleted) return;
+
   Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
   if (isMob) {
     isMob->Hit(damage);
     hitHeight = isMob->GetHitHeight();
     hit = true;
+    deleted = true;
   } else {
     ProgsMan* isProgs = dynamic_cast<ProgsMan*>(_entity);
     if (isProgs) {
       isProgs->Hit(damage);
       hitHeight = isProgs->GetHitHeight();
       hit = true;
+      deleted = true;
     }
   }
 
   if (hit) {
-    AudioResourceManager::GetInstance().Play(AudioType::HURT);
+    AudioResourceManager::GetInstance().Play(AudioType::HURT, 0);
   }
 }
 

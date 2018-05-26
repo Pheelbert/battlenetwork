@@ -1,4 +1,5 @@
 #include "bnEngine.h"
+#include <time.h>       /* time */
 
 Engine& Engine::GetInstance() {
   static Engine instance;
@@ -6,9 +7,16 @@ Engine& Engine::GetInstance() {
 }
 
 void Engine::Initialize() {
-  window = new RenderWindow(VideoMode(480, 320), "Battle Network : Prototype");
+  view = sf::View(sf::Vector2f(240, 160), sf::Vector2f(480, 320));
+  original = view; // never changes 
+  cam = Camera(view);
+
+  window = new RenderWindow(VideoMode((unsigned int)view.getSize().x, (unsigned int)view.getSize().y), "Battle Network : Prototype");
   window->setFramerateLimit(60);
-  postprocessing.create(480, 320); // Same as display
+  postprocessing.create((unsigned int)view.getSize().x, (unsigned int)view.getSize().y); // Same as display
+
+  // See the random generator with current time
+  srand((unsigned int)time(0));
 }
 
 void Engine::Draw(Drawable& _drawable, bool applyShaders) {
@@ -36,11 +44,13 @@ void Engine::Draw(LayeredDrawable* _drawable) {
   // Grab the shader and image, apply to a new render target, pass this render target into Draw()
 
   LayeredDrawable* context = _drawable;
-  sf::Shader* shader = context->GetShader();
+  SmartShader& shader = context->GetShader();
 
-  if (shader != nullptr) {
+  if (shader.Get() != nullptr) {
     const sf::Texture* original = context->getTexture();
-    postprocessing.draw(*context, shader); // bake
+    shader.ApplyUniforms();
+    postprocessing.draw(*context, shader.Get()); // bake
+    shader.ResetUniforms();
   } else {
     Draw(context, true);
   }
@@ -76,10 +86,11 @@ void Engine::Draw(vector<LayeredDrawable*> _drawable) {
     // Grab the shader and image, apply to a new render target, pass this render target into Draw()
 
     LayeredDrawable* context = *it;
-    sf::Shader* shader = context->GetShader();
-    if (shader != nullptr) {
-      const sf::Texture* original = context->getTexture();
-      postprocessing.draw(*context, shader); // bake
+    SmartShader& shader = context->GetShader();
+    if (shader.Get() != nullptr) {
+      shader.ApplyUniforms();
+      postprocessing.draw(*context, shader.Get()); // bake
+      shader.ResetUniforms();
     } else {
       Draw(context, true);
     }
@@ -124,11 +135,16 @@ RenderWindow* Engine::GetWindow() const {
 Engine::Engine(void)
   : layers(Layers()),
   overlay(Overlay()),
-  underlay(Underlay()) {
+  underlay(Underlay()),
+  cam(Camera(view)) {
 }
 
 Engine::~Engine(void) {
   delete window;
+}
+
+const sf::Vector2f Engine::GetViewOffset() {
+  return GetDefaultView().getCenter() - view.getCenter();
 }
 
 void Engine::Push(LayeredDrawable* _drawable) {
@@ -183,4 +199,17 @@ void Engine::SetShader(sf::Shader* shader) {
 
 void Engine::RevokeShader() {
   SetShader(nullptr);
+}
+
+const sf::View Engine::GetDefaultView() {
+  return original;
+}
+
+Camera& Engine::GetCamera()
+{
+  return cam;
+}
+
+void Engine::SetView(sf::View v) {
+  this->view = v;
 }

@@ -14,7 +14,7 @@ PlayerHitState::~PlayerHitState()
 
 void PlayerHitState::OnEnter(Player& player) {
   player.SetAnimation(PlayerState::PLAYER_HIT);
-  AudioResourceManager::GetInstance().Play(AudioType::HURT);
+  AudioResourceManager::GetInstance().Play(AudioType::HURT, 0);
 }
 
 void PlayerHitState::OnUpdate(float _elapsed, Player& player) {

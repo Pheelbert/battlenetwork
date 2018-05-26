@@ -19,7 +19,7 @@ private:
   sf::Sprite cursorBig;
   LayeredDrawable icon;
   LayeredDrawable chipCard;
-  sf::Shader greyscale;
+  sf::Shader& greyscale;
   sf::Text label;
   int chipCount;
   int selectCount;
@@ -34,10 +34,10 @@ public:
   ~ChipSelectionCust();
 
   // GUI ops
-  void CursorRight();
-  void CursorLeft();
-  void CursorAction();
-  void CursorCancel();
+  bool CursorRight();
+  bool CursorLeft();
+  bool CursorAction();
+  bool CursorCancel();
 
   bool IsOutOfView();
   bool IsInView();

@@ -9,7 +9,10 @@ Entity::Entity(void)
   field(nullptr),
   team(Team::UNKNOWN),
   health(0),
-  deleted(false) {
+  deleted(false),
+  passthrough(false),
+  ownedByField(false),
+  name("unnamed") {
 }
 
 Entity::~Entity(void) {
@@ -17,7 +20,6 @@ Entity::~Entity(void) {
 
 void Entity::Update(float _elapsed) {
   if (IsDeleted()) {
-    tile->RemoveEntity(this);
     field->RemoveEntity(this);
   }
 }
@@ -90,10 +92,25 @@ void Entity::SetHealth(const int _health) {
   health = _health;
 }
 
+void Entity::SetPassthrough(bool state)
+{
+  passthrough = state;
+}
+
+bool Entity::IsPassthrough()
+{
+  return passthrough;
+}
+
 bool Entity::IsDeleted() const {
   return deleted;
 }
 
 void Entity::TryDelete() {
   deleted = (health <= 0);
+}
+
+const std::string Entity::GetName() const
+{
+  return name;
 }
