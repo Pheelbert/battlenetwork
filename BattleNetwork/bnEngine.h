@@ -7,6 +7,7 @@ using sf::Event;
 #include <vector>
 using std::vector;
 
+#include "bnCamera.h"
 #include "bnLayered.h"
 
 class Engine {
@@ -36,19 +37,22 @@ public:
 
   void SetView(sf::View camera);
   const sf::View GetDefaultView();
+  Camera& GetCamera();
+
+  // TODO: make this private again
+  const sf::Vector2f GetViewOffset(); // for drawing 
 private:
   Engine(void);
   ~Engine(void);
 
   RenderWindow* window;
-  sf::View camera;
+  sf::View view;
   sf::View original;
   Underlay underlay;
   Layers layers;
   Overlay overlay;
   sf::RenderStates state;
   sf::RenderTexture postprocessing;
-
-  const sf::Vector2f GetViewOffset(); // for drawing
+  Camera cam;
 
 };

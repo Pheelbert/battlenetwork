@@ -34,7 +34,7 @@ void ProgsManPunchState::Attack(ProgsMan& progs) {
     while (next->GetNextEntity(entity)) {
       Player* isPlayer = dynamic_cast<Player*>(entity);
 
-      if (isPlayer) {
+      if (isPlayer && !isPlayer->IsPassthrough()) {
         isPlayer->Move(Direction::LEFT);
         isPlayer->AdoptNextTile();
         isPlayer->Hit(20);

@@ -41,7 +41,7 @@ int BattleScene::Run(Mob* mob) {
   Mob labels*/
   std::vector<std::string> mobNames;
 
-  Camera camera(Engine::GetInstance().GetDefaultView());
+  Camera& camera(Engine::GetInstance().GetCamera());
 
   /*
   Chips + Chip select setup*/
@@ -170,8 +170,11 @@ int BattleScene::Run(Mob* mob) {
 
     background.Draw();
 
+    sf::Vector2f cameraAntiOffset = -Engine::GetInstance().GetViewOffset();
+
     Tile* tile = nullptr;
     while (field->GetNextTile(tile)) {
+      tile->move(Engine::GetInstance().GetViewOffset());
       Engine::GetInstance().LayUnder(tile);
     }
 
@@ -396,6 +399,13 @@ int BattleScene::Run(Mob* mob) {
 
     // Write contents to screen (always last step)
     Engine::GetInstance().Display();
+
+    // TODO: make camera effects apply only to individual scenes that request them
+    // This will avoid this hack here to move elements around on screen
+    tile = nullptr;
+    while (field->GetNextTile(tile)) {
+      tile->move(cameraAntiOffset);
+    }
 
 
     if (isPlayerDeleted) {

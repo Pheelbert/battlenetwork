@@ -166,6 +166,8 @@ int Player::GetHealth() const {
 }
 
 int Player::Hit(int _damage) {
+  if (this->IsPassthrough()) return false;
+
   bool result = false;
 
   if (health - _damage < 0) {

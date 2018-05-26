@@ -154,8 +154,8 @@ bool Tile::GetNextEntity(Entity*& out) const {
 }
 
 void Tile::Update(float _elapsed) {
-  vector<Entity*> copy = this->entities;
-  for (auto entity = copy.begin(); entity < copy.end(); ++entity) {
+  vector<Entity*> copies = entities;
+  for (vector<Entity*>::iterator entity = copies.begin(); entity != copies.end(); entity++) {
     (*entity)->Update(_elapsed);
   }
 

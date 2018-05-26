@@ -41,9 +41,6 @@ Mettaur::Mettaur(void)
   textureType = TextureType::MOB_METTAUR_IDLE;
   healthUI = new MobHealthUI(this);
 
-  blinker = 0.0f;
-  x1 = 0.0f, y1 = 0.0f, x2 = 0.0f, y2 = 0.0f;
-
   setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
   setScale(2.f, 2.f);
 
@@ -53,23 +50,13 @@ Mettaur::Mettaur(void)
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
 
+  whiteout = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE);
+
   metID = (int)Mettaur::metIDs.size();
   Mettaur::metIDs.push_back((int)Mettaur::metIDs.size());
 }
 
 Mettaur::~Mettaur(void) {
-  Mettaur::currMetIndex++;
-
-  if (Mettaur::metIDs.size() > 0) {
-    vector<int>::iterator it = find(Mettaur::metIDs.begin(), Mettaur::metIDs.end(), metID);
-
-    if (it != Mettaur::metIDs.end()) {
-      Mettaur::metIDs.erase(it);
-      if (Mettaur::currMetIndex >= Mettaur::metIDs.size()) {
-        Mettaur::currMetIndex = 0;
-      }
-    }
-  }
 }
 
 int* Mettaur::GetAnimOffset() {
@@ -99,7 +86,22 @@ void Mettaur::Update(float _elapsed) {
 
   // Explode if health depleted
   if (GetHealth() <= 0) {
-    this->StateChange<ExplodeState<Mettaur>>(); 
+    this->StateChange<ExplodeState<Mettaur>>();
+    
+    if (Mettaur::metIDs.size() > 0) {
+      vector<int>::iterator it = find(Mettaur::metIDs.begin(), Mettaur::metIDs.end(), metID);
+
+      if (it != Mettaur::metIDs.end()) {
+        // Remove this mettaur out of rotation...
+        Mettaur::currMetIndex++;
+
+        Mettaur::metIDs.erase(it);
+        if (Mettaur::currMetIndex >= Mettaur::metIDs.size()) {
+          Mettaur::currMetIndex = 0;
+        }
+      }
+    }
+
     this->Lock();
   } else {
     this->RefreshTexture();
@@ -171,6 +173,7 @@ void Mettaur::SetHealth(int _health) {
 
 int Mettaur::Hit(int _damage) {
   (health - _damage < 0) ? health = 0 : health -= _damage;
+  SetShader(whiteout);
   return health;
 }
 

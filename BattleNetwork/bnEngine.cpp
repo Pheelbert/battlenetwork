@@ -7,11 +7,13 @@ Engine& Engine::GetInstance() {
 }
 
 void Engine::Initialize() {
-  camera = sf::View(sf::Vector2f(240, 160), sf::Vector2f(480, 320));
-  original = camera; // never changes 
-  window = new RenderWindow(VideoMode((unsigned int)camera.getSize().x, (unsigned int)camera.getSize().y), "Battle Network : Prototype");
+  view = sf::View(sf::Vector2f(240, 160), sf::Vector2f(480, 320));
+  original = view; // never changes 
+  cam = Camera(view);
+
+  window = new RenderWindow(VideoMode((unsigned int)view.getSize().x, (unsigned int)view.getSize().y), "Battle Network : Prototype");
   window->setFramerateLimit(60);
-  postprocessing.create((unsigned int)camera.getSize().x, (unsigned int)camera.getSize().y); // Same as display
+  postprocessing.create((unsigned int)view.getSize().x, (unsigned int)view.getSize().y); // Same as display
 
   // See the random generator with current time
   srand((unsigned int)time(0));
@@ -44,9 +46,6 @@ void Engine::Draw(LayeredDrawable* _drawable) {
   LayeredDrawable* context = _drawable;
   SmartShader& shader = context->GetShader();
 
-  sf::Vector2f originalPos = context->getPosition();
-  context->move(GetViewOffset());
-
   if (shader.Get() != nullptr) {
     const sf::Texture* original = context->getTexture();
     shader.ApplyUniforms();
@@ -55,8 +54,6 @@ void Engine::Draw(LayeredDrawable* _drawable) {
   } else {
     Draw(context, true);
   }
-
-  context->setPosition(originalPos);
 }
 void Engine::Draw(vector<LayeredDrawable*> _drawable) {
   auto it = _drawable.begin();
@@ -91,17 +88,11 @@ void Engine::Draw(vector<LayeredDrawable*> _drawable) {
     LayeredDrawable* context = *it;
     SmartShader& shader = context->GetShader();
     if (shader.Get() != nullptr) {
-      sf::Vector2f originalPos = context->getPosition();
-      context->move(GetViewOffset());
       shader.ApplyUniforms();
       postprocessing.draw(*context, shader.Get()); // bake
-      context->setPosition(originalPos);
       shader.ResetUniforms();
     } else {
-      sf::Vector2f originalPos = context->getPosition();
-      context->move(GetViewOffset());
       Draw(context, true);
-      context->setPosition(originalPos);
     }
   }
 }
@@ -144,7 +135,8 @@ RenderWindow* Engine::GetWindow() const {
 Engine::Engine(void)
   : layers(Layers()),
   overlay(Overlay()),
-  underlay(Underlay()) {
+  underlay(Underlay()),
+  cam(Camera(view)) {
 }
 
 Engine::~Engine(void) {
@@ -152,7 +144,7 @@ Engine::~Engine(void) {
 }
 
 const sf::Vector2f Engine::GetViewOffset() {
-  return GetDefaultView().getCenter() - camera.getCenter();
+  return GetDefaultView().getCenter() - view.getCenter();
 }
 
 void Engine::Push(LayeredDrawable* _drawable) {
@@ -213,6 +205,11 @@ const sf::View Engine::GetDefaultView() {
   return original;
 }
 
-void Engine::SetView(sf::View camera) {
-  this->camera = camera;
+Camera& Engine::GetCamera()
+{
+  return cam;
+}
+
+void Engine::SetView(sf::View v) {
+  this->view = v;
 }

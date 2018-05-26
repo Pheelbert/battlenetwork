@@ -6,6 +6,8 @@
 #include "bnProgsManIdleState.h"
 #include "bnProgsManPunchState.h"
 
+#include "bnMettaur.h"
+
 ProgsManMoveState::ProgsManMoveState() : isMoving(false), AIState<ProgsMan>() { ; }
 ProgsManMoveState::~ProgsManMoveState() { ; }
 
@@ -55,7 +57,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
     if (progs.tile->GetY() - 1 > 0) {
       next = progs.field->GetAt(progs.tile->GetX(), progs.tile->GetY() - 1);
       if (progs.Teammate(next->GetTeam()) && next->IsWalkable())
-        if (!next->ContainsEntityType<Entity>()) {
+        if (!next->ContainsEntityType<ProgsMan>() && !next->ContainsEntityType<Mettaur>()) {
           progs.SetTile(next);
         }
         else {
@@ -73,7 +75,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
     if (progs.tile->GetX() - 1 > 0) {
       next = progs.field->GetAt(progs.tile->GetX() - 1, progs.tile->GetY());
       if (progs.Teammate(next->GetTeam()) && next->IsWalkable())
-        if (!next->ContainsEntityType<Entity>()) {
+        if (!next->ContainsEntityType<ProgsMan>() && !next->ContainsEntityType<Mettaur>()) {
           progs.SetTile(next);
         }
         else {
@@ -88,7 +90,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
     if (progs.tile->GetY() + 1 <= (int)progs.field->GetHeight()) {
       next = progs.field->GetAt(progs.tile->GetX(), progs.tile->GetY() + 1);
       if (progs.Teammate(next->GetTeam()) && next->IsWalkable())
-        if (!next->ContainsEntityType<Entity>()) {
+        if (!next->ContainsEntityType<ProgsMan>() && !next->ContainsEntityType<Mettaur>()) {
           progs.SetTile(next);
         }
         else {
@@ -106,7 +108,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
     if (progs.tile->GetX() + 1 <= (int)progs.field->GetWidth()) {
       next = progs.field->GetAt(progs.tile->GetX() + 1, progs.tile->GetY());
       if (progs.Teammate(next->GetTeam()) && next->IsWalkable())
-        if (!next->ContainsEntityType<Entity>()) {
+        if (!next->ContainsEntityType<ProgsMan>() && !next->ContainsEntityType<Mettaur>()) {
           progs.SetTile(next);
         }
         else {

@@ -1,9 +1,4 @@
 #pragma once
-#include <Thor/Animations.hpp>
-using thor::FrameAnimation;
-using thor::AnimationMap;
-using sf::IntRect;
-
 #include "bnEntity.h"
 #include "bnMobState.h"
 #include "bnAI.h"
@@ -38,10 +33,7 @@ private:
 
   void NextMettaurTurn();
 
-  //Old static
-  float blinker;
-  float x1, y1, x2, y2;
-  sf::Clock clock;
+  sf::Shader* whiteout;
 
   static vector<int> metIDs;
   static int currMetIndex;

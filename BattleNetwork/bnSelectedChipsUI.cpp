@@ -122,7 +122,10 @@ void SelectedChipsUI::UseNextChip() {
     Cannon* xtreme2 = new Cannon(player->GetField(), player->GetTeam(), 600);
     Cannon* xtreme3 = new Cannon(player->GetField(), player->GetTeam(), 600);
 
-    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE); };
+
+    Engine::GetInstance().GetCamera().ShakeCamera(25, sf::seconds(5));
+
+    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
 
     player->SetAnimation(PlayerState::PLAYER_SHOOTING, onFinish);
     xtreme1->SetDirection(Direction::RIGHT);
