@@ -109,7 +109,7 @@ void SelectedChipsUI::UseNextChip() {
 
     AudioResourceManager::GetInstance().Play(AudioType::PANEL_CRACK);
   }
-  else if (selectedChips[curr]->GetID() == ChipType::INVSBLE) {
+  else if (selectedChips[curr]->GetShortName() == "Invsble") {
     // Todo make this a time-based component
     AudioResourceManager::GetInstance().Play(AudioType::INVISIBLE);
     player->SetPassthrough(true);

@@ -91,22 +91,26 @@ int AudioResourceManager::Play(AudioType type, int priority) {
   //                             LOW    (one at a time),
   //                             HIGH    (cancels lower rankings),
   // Find a free channel 
-  for (int i = 0; i < NUM_OF_CHANNELS; i++) {
-    if (priority == 0) {
+  
+  // For low priority sounds, scan and see if this sound is already playing...
+  if (priority == 0) {
+    for (int i = 0; i < NUM_OF_CHANNELS; i++) {
       if (channels[i].getStatus() == sf::SoundSource::Status::Playing) {
         if (channels[i].getBuffer() == &(const sf::SoundBuffer)sources[type]) {
           // Lowest priority sounds only play once 
           return -1;
         }
       }
+    }
+  }
 
-    } else if (channels[i].getStatus() != sf::SoundSource::Status::Playing) {
-      // Check if this is the same type
-      if (channels[i].getBuffer() != &(const sf::SoundBuffer)sources[type]) {
-        channels[i].setBuffer(sources[type]);
-        channels[i].play();
-        return 0;
-      }
+  // Either we are high priority or the sound with 0 priority has not played yet.
+  // Find a free channel...
+  for (int i = 0; i < NUM_OF_CHANNELS; i++) {
+    if (channels[i].getStatus() != sf::SoundSource::Status::Playing) {
+      channels[i].setBuffer(sources[type]);
+      channels[i].play();
+      return 0;
     }
   }
 
