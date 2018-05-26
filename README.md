@@ -1,15 +1,9 @@
 # Videos w/ SOUND
-#### Branch: program-advances 
+#### Branch: master
 Click the thumbnail to watch on youtube. 
 
 [![Video of engine 5/4/2018](https://img.youtube.com/vi/EIzU7IrzHs0/0.jpg)](https://youtu.be/EIzU7IrzHs0)
 [![Video of engine 5/4/2018](https://img.youtube.com/vi/EIzU7IrzHs0/1.jpg)](https://youtu.be/EIzU7IrzHs0)
-
-#### Video outdated (since 4/17/2018)
-Click the thumbnail to watch on youtube
-
-[![Video of engine 4/14/2018](https://img.youtube.com/vi/zztrHvrZON4/0.jpg)](https://www.youtube.com/watch?v=zztrHvrZON4)
-[![Video of engine 4/14/2018](https://img.youtube.com/vi/zztrHvrZON4/1.jpg)](https://www.youtube.com/watch?v=zztrHvrZON4)
 
 # Features
 In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
@@ -20,9 +14,11 @@ At this time only 3 chips are implemented: HP+10, CrckPnl, and Invsble.
 
 Rename the file in `resources/database/library.txt - Copy`to `resources/database/library.txt` for a full library while playing the game.
 
-There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1 A` + `Cannon2 B` + `Cannon3 C` in order. It deals a whopping 600 points of damage to the first 3 enemies vertically.
+There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1 A` + `Cannon1 B` + `Cannon1 C` in order. It deals a whopping 600 points of damage, shaking the screen, and attacks the first 3 enemies vertically.
+There other other PAs that can be triggered through system but are not implemented and do not do any damage. 
+You can write your own PA's and add your own chips by editting the `/database` textfiles.
 
-Mega can also be deleted. The demo now has sound.
+Mega can also be deleted. Sound has been rebalanced through the Audio Priorty system.
 
 # Controls
 ```
@@ -37,6 +33,12 @@ R CTRL -> Use a chip
 Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki)? 
 
 # Author TheMaverickProgrammer
+
+## Update 5/26/2018
+The PA system is bug free and acts just like the game: only matching codes or chip names can be queued together. To activate PA's, order matters. 
+The engine has support for a basic camera and can shake with a stress amount and a duration. You can see this live with the XtremeCannon PA.
+Previously an animation bug with the Thor library caused a crash. I wrote our own animation class in the AnimationComponent with complete success.
+
 ## Update 5/4/2018
 Mobs can now be dynamically created by `MobFactory` classes. This allows for a whole set of fun spawning random enemy groups.
 The `Mob` class has utility functions that are used in the intro to spawn enemies one at a time and with a pixel intro effect just like the games.
@@ -44,6 +46,10 @@ Chip menu opens up after intro just like the games.
 Chip database script loads and maps to correct card and icon images.
 PA (Program Advance) system is the latest feature. The `PA` class stores recipes called "steps" that are loaded from a script. After chip select, the chips are then filtered by the `PA` object and returns a matching PA combo chip.
 Mob class now handles deletion of enemy objects. Field class has a new `OwnEntity(e,x,y)` method for objects that need to be cleaned up by field when deleted (like Spells and other effects). 
+
+## Update 5/3/2018
+Created a loading screen. Rewrote logger to store output into a queue that I dequeue in the screen and draw the missing textures 
+once evereything is loaded from seperate threads. The loading screen calculates % complete and flashes when 100%.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -91,6 +97,9 @@ New:
 * Mob + MobFactory objects
 * Refactored battle scene to accept Mob as input type and animate the battle intro
 * Logger now spits out a file `log.txt` for debugging
+* Loading screen + loading screen custom graphics
+* Camera quakes
+* New animation support
 
 Changes from original author:
 
@@ -104,6 +113,8 @@ Changes from original author:
 * Rewrote AnimationComponent to use latest Thor API
 * Rewrote player movement code to use latest AnimationComponent features
 * Refactored Logger class to queueue and dequeeue logs for use in multithreaded loading screen
+* Rewrote logger to support queueing/dequeueing across threads for loading screen support
+* Done away with Thor:: dependencies and wrote my own animation class and animation editor
 
 # Author Pheelbert
 Wrote the foundation for the battle engine. He wrote the tile-based movement and update system emulating an authentic mmbn player experience.
