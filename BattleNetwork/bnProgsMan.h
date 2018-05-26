@@ -1,7 +1,5 @@
 #pragma once
-#include <Thor/Animations.hpp>
-using thor::FrameAnimation;
-using thor::AnimationMap;
+#include <SFML\Graphics.hpp>
 using sf::IntRect;
 
 #include "bnEntity.h"

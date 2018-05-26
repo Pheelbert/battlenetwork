@@ -124,6 +124,14 @@ bool Player::Move(Direction _direction) {
   return moved;
 }
 
+void Player::AdoptNextTile() {
+  SetTile(next);
+  tile->AddEntity(this);
+  previous->RemoveEntity(this);
+  previous = nullptr;
+  next = nullptr;
+}
+
 void Player::Attack(float _charge) {
   if (tile->GetX() <= static_cast<int>(field->GetWidth())) {
     Spell* spell = new Buster(field, team, chargeComponent.IsFullyCharged());
@@ -165,14 +173,14 @@ int Player::Hit(int _damage) {
     result = true;
   } else {
     health -= _damage;
-    if (previous) {
+    /*if (previous) {
       // Go back where we were hit
       this->tile->RemoveEntity(this);
       this->SetTile(previous);
       previous->AddEntity(this);
       previous = nullptr;
       next = nullptr;
-    }
+    }*/
     this->StateChange<PlayerHitState, float>({ 600.0f });
   }
 

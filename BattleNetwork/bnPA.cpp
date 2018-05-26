@@ -142,14 +142,18 @@ bool PA::FindPA(Chip ** input, unsigned size)
       std::cout << "input[i]->GetShortName() " << input[i]->GetShortName() << "\n";
 
       if (iter->steps[i].code != code) {
+        match = false;
         break; // stop loop
       }
       // Ensure that the chip code and name matches as those are the best way to identify chips
       else if (iter->steps[i].chipShortName != input[i]->GetShortName()) {
+        match = false;
         break; // stop loop
       }
       else {
         match = true;
+        // We do not break here. If it is a match all across the steps, then the for loop ends 
+        // and match stays == true
       }
     }
 

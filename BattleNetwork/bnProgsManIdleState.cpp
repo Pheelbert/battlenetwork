@@ -3,7 +3,7 @@
 #include "bnProgsMan.h"
 
 
-ProgsManIdleState::ProgsManIdleState() : cooldown(500.f), AIState<ProgsMan>()
+ProgsManIdleState::ProgsManIdleState() : cooldown(200.f), AIState<ProgsMan>()
 {
 }
 

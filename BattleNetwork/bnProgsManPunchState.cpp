@@ -36,10 +36,14 @@ void ProgsManPunchState::Attack(ProgsMan& progs) {
 
       if (isPlayer) {
         isPlayer->Move(Direction::LEFT);
+        isPlayer->AdoptNextTile();
         isPlayer->Hit(20);
+        isPlayer->RefreshTexture();
       }
     }
   }
+
+  tile = 0;
 
   progs.StateChange<ProgsManIdleState>();
 }

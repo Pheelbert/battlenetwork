@@ -1,6 +1,3 @@
-#include <Thor/Animations.hpp>
-using thor::FrameAnimation;
-using thor::Animator;
 #include <SFML\Graphics.hpp>
 using sf::Sprite;
 using sf::IntRect;
@@ -12,13 +9,10 @@ using sf::IntRect;
 
 AnimationComponent::AnimationComponent(Entity* _entity) {
   entity = _entity;
-  animator = new Animator<sf::Sprite, int>(animations);
+  currAnimationID = 0;
 }
 
 AnimationComponent::~AnimationComponent() {
-  if (animator) {
-    delete animator;
-  }
 }
 
 void AnimationComponent::setup(string _name, string _path) {
@@ -28,7 +22,7 @@ void AnimationComponent::setup(string _name, string _path) {
 
 void AnimationComponent::load() {
   int frameAnimationIndex = -1;
-  vector<FrameAnimation> frames;
+  vector<FrameList> frameLists;
   string currentState = "";
   float currentAnimationDuration = 0.0f;
   int currentWidth = 0;
@@ -44,10 +38,10 @@ void AnimationComponent::load() {
       string sname = valueOf("name", line);
       assert(name == sname && "Wrong class name specified in .animation file");
     } else if (line.find("animation") != string::npos) {
-      if (!frames.empty()) {
+      if (!frameLists.empty()) {
         //std::cout << "animation total seconds: " << sf::seconds(currentAnimationDuration).asSeconds() << "\n";
         //std::cout << "animation name push " << currentState << endl;
-        animations.addAnimation(entity->GetStateFromString(currentState), frames.at(frameAnimationIndex), sf::seconds(currentAnimationDuration));
+        animations.insert(std::make_pair(entity->GetStateFromString(currentState), frameLists.at(frameAnimationIndex)));
         currentAnimationDuration = 0.0f;
       }
       string state = valueOf("state", line);
@@ -58,7 +52,7 @@ void AnimationComponent::load() {
 
       currentWidth = atoi(width.c_str());
       currentHeight = atoi(height.c_str());
-      frames.push_back(FrameAnimation());
+      frameLists.push_back(FrameList());
       frameAnimationIndex++;
     } else if (line.find("frame") != string::npos) {
       string duration = valueOf("duration", line);
@@ -69,14 +63,14 @@ void AnimationComponent::load() {
       currentAnimationDuration += currentFrameDuration;
       int currentStartx = atoi(startx.c_str());
       int currentStarty = atoi(starty.c_str());
-      frames.at(frameAnimationIndex).addFrame(currentFrameDuration, IntRect(currentStartx, currentStarty, currentWidth, currentHeight));
+      frameLists.at(frameAnimationIndex).Add(currentFrameDuration, IntRect(currentStartx, currentStarty, currentWidth, currentHeight));
     }
 
     data = data.substr(endline + 1);
   } while (endline > -1);
 
   // One more addAnimation to do
-  animations.addAnimation(entity->GetStateFromString(currentState), frames.at(frameAnimationIndex), sf::seconds(currentAnimationDuration));
+  animations.insert(std::make_pair(entity->GetStateFromString(currentState), frameLists.at(frameAnimationIndex)));
 }
 
 string AnimationComponent::valueOf(string _key, string _line) {
@@ -87,26 +81,14 @@ string AnimationComponent::valueOf(string _key, string _line) {
 }
 
 void AnimationComponent::update(float elapsed) {
-  animator->update(sf::milliseconds((sf::Int32)elapsed));
-  animator->animate(*entity);
+  progress += elapsed / 1000.f; // to ms
+
+  animator(progress, *entity, animations[currAnimationID], finishCallback);
 }
 
 void AnimationComponent::setAnimation(int state, std::function<void()> onFinish)
 {
-  /*
-    NOTE: Very hack-ish to use thor::Playback::loop() like this. We queue the animation 
-    along with a callback after the animation completes. Then we make it play again and loop forever. 
-    This is because some animations are short, single frames (like IDLE states) and while we'd like 
-    them to stop on end, Thor gives us no immediate way to do this. In fact Thor dequeues the animation 
-    completely and our Entitys draw empty. 
-
-    There might be a way we can add an onFinish event notifier for one-frame animations to prevent the update() 
-    timer for the animator. No further work has been done to confirm this solution.
-  */
-  if (onFinish) {
-    animator->play() << state << thor::Playback::notify(onFinish) << thor::Playback::loop(state);
-  }
-  else {
-    animator->play() << state << thor::Playback::loop(state);
-  }
+  progress = 0.0f;
+  currAnimationID = state; 
+  finishCallback = onFinish;
 }

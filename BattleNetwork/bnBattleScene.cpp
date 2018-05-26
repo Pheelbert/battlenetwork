@@ -185,6 +185,19 @@ int BattleScene::Run(Mob* mob) {
       }
     }
 
+    // NOTE: Although HUD, it fades dark when on chip cust screen and paused.
+    if(!isPlayerDeleted && !isInChipSelect)
+      Engine::GetInstance().Push(&customBarSprite);
+
+    if (isPaused || isInChipSelect) {
+      // apply shader on draw calls below
+      Engine::GetInstance().SetShader(&pauseShader);
+    }
+
+    Engine::GetInstance().DrawUnderlay();
+    Engine::GetInstance().DrawLayers();
+    Engine::GetInstance().DrawOverlay();
+
     float nextLabelHeight = 0;
     if (!mob->IsSpawningDone() || isInChipSelect) {
       for (int i = 0; i < mob->GetMobCount(); i++) {
@@ -204,19 +217,6 @@ int BattleScene::Run(Mob* mob) {
         nextLabelHeight += mobLabel.getLocalBounds().height;
       }
     }
-
-    // NOTE: Although HUD, it fades dark when on chip cust screen and paused.
-    if(!isPlayerDeleted && !isInChipSelect)
-      Engine::GetInstance().Push(&customBarSprite);
-
-    if (isPaused || isInChipSelect) {
-      // apply shader on draw calls below
-      Engine::GetInstance().SetShader(&pauseShader);
-    }
-
-    Engine::GetInstance().DrawUnderlay();
-    Engine::GetInstance().DrawLayers();
-    Engine::GetInstance().DrawOverlay();
 
     if (!isPlayerDeleted) {
       if (player->GetChipsUI()) {
@@ -332,6 +332,7 @@ int BattleScene::Run(Mob* mob) {
           isPAComplete = true;
         }
         else if (hasPA) {
+          static bool advanceSoundPlay = false;
           static float increment = 0;
 
           float nextLabelHeight = 0;
@@ -353,6 +354,11 @@ int BattleScene::Run(Mob* mob) {
             increment = 0;
           }
           else {
+            if (!advanceSoundPlay) {
+              AudioResourceManager::GetInstance().Play(AudioType::PA_ADVANCE);
+              advanceSoundPlay = true;
+            }
+
             increment += elapsed/500.f;
 
             sf::Text stepLabel = sf::Text(programAdvance.GetAdvanceChip()->GetShortName(), *mobFont);
@@ -372,6 +378,7 @@ int BattleScene::Run(Mob* mob) {
 
             if (paStepIndex > paSteps.size()) {
               hasPA = false; // state over 
+              advanceSoundPlay = false;
               isPAComplete = true;
             }
             else {
@@ -380,9 +387,6 @@ int BattleScene::Run(Mob* mob) {
 
               if (paStepIndex <= paSteps.size()) {
                 AudioResourceManager::GetInstance().Play(AudioType::POINT);
-              }
-              else if (paStepIndex == paSteps.size()) {
-                AudioResourceManager::GetInstance().Play(AudioType::PA_ADVANCE);
               }
             }
           }

@@ -89,8 +89,8 @@ bool ChipSelectionCust::CursorAction() {
         for (int i = 0; i < chipCount; i++) {
           if (i == cursorPos || (queue[i].state == 0 && queue[i].data->GetCode() - 1 != code) || queue[i].state == 2) continue;
           char otherCode = queue[i].data->GetCode();
-
-          if (code == '=' || otherCode == '=' || otherCode == code || otherCode == code - 1 || otherCode == code + 1) { queue[i].state = 1; }
+          bool isSameChip = (queue[i].data->GetShortName() == queue[cursorPos].data->GetShortName());
+          if (code == '=' || otherCode == '=' || otherCode == code || isSameChip ) { queue[i].state = 1; }
           else { queue[i].state = 0; }
         }
 
@@ -140,7 +140,9 @@ bool ChipSelectionCust::CursorCancel() {
 
       char otherCode = queue[j].data->GetCode();
 
-      if (code == '=' || otherCode == '=' || otherCode == code || otherCode == code - 1 || otherCode == code + 1) { queue[j].state = 1; }
+      bool isSameChip = (queue[j].data->GetShortName() == selectQueue[i]->data->GetShortName());
+
+      if (code == '=' || otherCode == '=' || otherCode == code || isSameChip) { queue[j].state = 1; }
       else { queue[j].state = 0; }
     }
   }

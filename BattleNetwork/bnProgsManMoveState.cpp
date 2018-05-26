@@ -35,7 +35,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
       else {
         if (target->GetTile()->GetX() == progs.GetTile()->GetX() - 1) {
           // Punch
-          progs.StateChange<ProgsManPunchState>();
+          return progs.StateChange<ProgsManPunchState>();
         }
         else {
           // Try shooting. 

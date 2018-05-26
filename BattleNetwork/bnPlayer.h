@@ -26,6 +26,7 @@ public:
 
   virtual void Update(float _elapsed);
   virtual bool Move(Direction _direction);
+  void AdoptNextTile();
   void Attack(float _charge);
   virtual vector<Drawable*> GetMiscComponents();
   void RefreshTexture();

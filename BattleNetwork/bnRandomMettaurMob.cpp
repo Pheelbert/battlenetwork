@@ -18,7 +18,7 @@ Mob* RandomMettaurMob::Build() {
       Tile* tile = field->GetAt(i + 1, j + 1);
       if (tile->IsWalkable() && tile->GetTeam() == Team::RED) {
         if (rand() % 50 > 25) {
-          if (rand() % 10 > 2) {
+          if (rand() % 10 > 8) {
             mob->Spawn<ProgsMan, ProgsManIdleState>(i + 1, j + 1);
           }
           else {

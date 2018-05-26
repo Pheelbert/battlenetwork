@@ -1,7 +1,7 @@
 PA name="XtrmeCnnon" iconIndex="232" damage="600" type="Normal"
 	Chip name="Cannon1" code="A"
-	Chip name="Cannon2" code="B"
-	Chip name="Cannon3" code="C"
+	Chip name="Cannon1" code="B"
+	Chip name="Cannon1" code="C"
 
 PA name="LifeSwrd" iconIndex="232" damage="700" type="Normal"
 	Chip name="Swrd" code="H"
