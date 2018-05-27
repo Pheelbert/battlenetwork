@@ -30,6 +30,16 @@ ChipSelectionCust::ChipSelectionCust(int cap) :
   chipCard.setScale(2.f, 2.f);
   chipCard.setPosition(2.f*16.f, 48.f);
 
+  sf::Texture* nodata = TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_NODATA);
+  chipNoData.setTexture(*nodata);
+  chipNoData.setScale(2.f, 2.f);
+  chipNoData.setPosition(2.f*16.f, 48.f);
+
+  sf::Texture* senddata = TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_SENDDATA);
+  chipSendData.setTexture(*senddata);
+  chipSendData.setScale(2.f, 2.f);
+  chipSendData.setPosition(2.f*16.f, 48.f);
+
   sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
   label.setFont(*font);
 
@@ -257,11 +267,17 @@ void ChipSelectionCust::Draw() {
         label.setFillColor(sf::Color(225, 180, 0));
         Engine::GetInstance().Draw(label, false);
       }
+      else {
+        Engine::GetInstance().Draw(chipNoData, false);
+      }
 
       // Draw the small cursor
       Engine::GetInstance().Draw(cursorSmall, false);
-    } else
+    }
+    else {
+      Engine::GetInstance().Draw(chipSendData, false);
       Engine::GetInstance().Draw(cursorBig, false);
+    }
   }
 }
 

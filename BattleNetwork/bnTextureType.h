@@ -41,6 +41,8 @@ enum TextureType {
   CHIP_CURSOR_BIG,
   CHIP_CARDS,
   CHIP_ICONS,
+  CHIP_NODATA,
+  CHIP_SENDDATA,
   //Background/Foreground
   BACKGROUND_BLUE,
   TITLE_ANIM_CHAR,

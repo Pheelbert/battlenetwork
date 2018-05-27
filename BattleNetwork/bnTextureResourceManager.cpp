@@ -109,6 +109,8 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/ui/chip_cursor_big.png");
   paths.push_back("resources/ui/chip_cards.png");
   paths.push_back("resources/ui/chip_icons.png");
+  paths.push_back("resources/ui/chip_nodata.png");
+  paths.push_back("resources/ui/chip_senddata.png");
 
   // Background/foreground
   paths.push_back("resources/backgrounds/title/bg_blue.png");
