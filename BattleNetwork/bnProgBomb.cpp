@@ -16,7 +16,7 @@ ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, float _duration) {
   direction = Direction::NONE;
   deleted = false;
   hit = false;
-  texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_PROG_BOMB);
+  texture = TEXTURES.GetTexture(TextureType::SPELL_PROG_BOMB);
 
   progress = 0.0f;
   hitHeight = 0.0f;
@@ -29,7 +29,7 @@ ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, float _duration) {
   target = _target;
 
   setOrigin(sf::Vector2f(19, 24) / 2.f);
-  AudioResourceManager::GetInstance().Play(AudioType::TOSS_ITEM);
+  AUDIO.Play(AudioType::TOSS_ITEM);
 }
 
 ProgBomb::~ProgBomb(void) {

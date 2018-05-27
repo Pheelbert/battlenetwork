@@ -41,7 +41,7 @@ Mettaur::Mettaur(void)
   textureType = TextureType::MOB_METTAUR_IDLE;
   healthUI = new MobHealthUI(this);
 
-  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
+  setTexture(*TEXTURES.GetTexture(textureType));
   setScale(2.f, 2.f);
 
   this->SetHealth(health);
@@ -50,7 +50,7 @@ Mettaur::Mettaur(void)
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
 
-  whiteout = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE);
+  whiteout = SHADERS.GetShader(ShaderType::WHITE);
 
   metID = (int)Mettaur::metIDs.size();
   Mettaur::metIDs.push_back((int)Mettaur::metIDs.size());
@@ -120,7 +120,7 @@ void Mettaur::RefreshTexture() {
   } else if (state == MobState::MOB_ATTACKING) {
     textureType = TextureType::MOB_METTAUR_ATTACK;
   }
-  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
+  setTexture(*TEXTURES.GetTexture(textureType));
 
   if (textureType == TextureType::MOB_METTAUR_IDLE) {
     setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 25.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 45.0f);

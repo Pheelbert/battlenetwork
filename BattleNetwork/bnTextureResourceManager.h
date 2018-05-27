@@ -34,3 +34,5 @@ private:
   vector<string> paths;
   map<TextureType, Texture*> textures;
 };
+
+#define TEXTURES TextureResourceManager::GetInstance()

@@ -152,9 +152,11 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bnBattleResults.h" />
     <ClCompile Include="bnArtifact.cpp" />
     <ClCompile Include="bnAudioResourceManager.cpp" />
     <ClCompile Include="bnBackgroundUI.cpp" />
+    <ClCompile Include="bnBattleResults.cpp" />
     <ClCompile Include="bnCannon.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
     <ClCompile Include="bnChip.cpp" />

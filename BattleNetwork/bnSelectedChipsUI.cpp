@@ -21,10 +21,10 @@ SelectedChipsUI::SelectedChipsUI(Entity* _entity)
 SelectedChipsUI::SelectedChipsUI(Player* _player)
   : player(_player) {
   chipCount = curr = 0;
-  icon = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICONS));
+  icon = sf::Sprite(*TEXTURES.GetTexture(CHIP_ICONS));
   icon.setScale(sf::Vector2f(2.f, 2.f));
 
-  font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
+  font = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
   components.push_back(&text);
   components.push_back(&dmg);
 }
@@ -55,9 +55,9 @@ void SelectedChipsUI::Update() {
     int chipOrder = 0;
     for (int i = curr; i < chipCount; i++) {
       icon.setPosition(player->getPosition() + sf::Vector2f(30.0f - (i - curr) * 3.0f, - (i - curr) * 3.0f));
-      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromID(selectedChips[curr]->GetIconID());
+      sf::IntRect iconSubFrame = TEXTURES.GetIconRectFromID(selectedChips[curr]->GetIconID());
       icon.setTextureRect(iconSubFrame);
-      Engine::GetInstance().Draw(icon);
+      ENGINE.Draw(icon);
     }
 
     if (chipCount > 0 && curr < chipCount && selectedChips[curr]) {
@@ -97,7 +97,7 @@ void SelectedChipsUI::UseNextChip() {
 
   if (selectedChips[curr]->GetShortName().substr(0, 5) == "Recov") {
     player->SetHealth(player->GetHealth() + selectedChips[curr]->GetDamage());
-    AudioResourceManager::GetInstance().Play(AudioType::RECOVER);
+    AUDIO.Play(AudioType::RECOVER);
   } else if (selectedChips[curr]->GetID() == ChipType::CRCKPNL) {
     Tile* top = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 1);
     Tile* mid = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 2);
@@ -107,23 +107,23 @@ void SelectedChipsUI::UseNextChip() {
     if (mid) { mid->SetState(TileState::CRACKED); }
     if (low) { low->SetState(TileState::CRACKED); }
 
-    AudioResourceManager::GetInstance().Play(AudioType::PANEL_CRACK);
+    AUDIO.Play(AudioType::PANEL_CRACK);
   }
   else if (selectedChips[curr]->GetShortName() == "Invsble") {
     // Todo make this a time-based component
-    AudioResourceManager::GetInstance().Play(AudioType::INVISIBLE);
+    AUDIO.Play(AudioType::INVISIBLE);
     player->SetPassthrough(true);
     player->setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 / 2.f)));
     invisTimer.restart();
   }
   else if (selectedChips[curr]->GetShortName() == "XtrmeCnnon") {
-    AudioResourceManager::GetInstance().Play(AudioType::CANNON);
+    AUDIO.Play(AudioType::CANNON);
     Cannon* xtreme1 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
     Cannon* xtreme2 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
     Cannon* xtreme3 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
 
 
-    Engine::GetInstance().GetCamera().ShakeCamera(25, sf::seconds(1));
+    ENGINE.GetCamera().ShakeCamera(25, sf::seconds(1));
 
     auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
 

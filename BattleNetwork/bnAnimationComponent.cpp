@@ -28,7 +28,7 @@ void AnimationComponent::load() {
   int currentWidth = 0;
   int currentHeight = 0;
 
-  string data = TextureResourceManager::GetInstance().LoadDataFromFile(path);
+  string data = TEXTURES.LoadDataFromFile(path);
   int endline = 0;
   do {
     endline = (int) data.find("\n");

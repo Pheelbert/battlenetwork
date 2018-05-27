@@ -19,7 +19,7 @@ ChargeComponent::~ChargeComponent() {
 }
 
 void ChargeComponent::load() {
-  chargeTexture = *TextureResourceManager::GetInstance().LoadTextureFromFile(CHARGE_TEXTURE);
+  chargeTexture = *TEXTURES.LoadTextureFromFile(CHARGE_TEXTURE);
   for (int x = 0; x < BLUE_CHARGE_FRAME_COUNT; x++) {
     blueChargeAnimation.addFrame(0.2f, IntRect(CHARGE_WIDTH*x, 0, CHARGE_WIDTH, CHARGE_HEIGHT));
   }
@@ -46,7 +46,7 @@ void ChargeComponent::update(float _elapsed) {
     if (chargeCounter >= CHARGE_COUNTER_MAX) {
       if (isCharged == false) {
         // We're switching states
-        AudioResourceManager::GetInstance().Play(AudioType::BUSTER_CHARGED);
+        AUDIO.Play(AudioType::BUSTER_CHARGED);
       }
 
       isCharged = true;
@@ -59,7 +59,7 @@ void ChargeComponent::update(float _elapsed) {
     } else if (chargeCounter >= CHARGE_COUNTER_MIN) {
       if (isPartiallyCharged == false) {
         // Switching states
-        AudioResourceManager::GetInstance().Play(AudioType::BUSTER_CHARGING);
+        AUDIO.Play(AudioType::BUSTER_CHARGING);
       }
 
       isPartiallyCharged = true;

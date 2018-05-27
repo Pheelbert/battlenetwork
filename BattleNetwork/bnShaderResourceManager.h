@@ -28,3 +28,5 @@ private:
   vector<string> paths;
   map<ShaderType, sf::Shader*> shaders;
 };
+
+#define SHADERS ShaderResourceManager::GetInstance()

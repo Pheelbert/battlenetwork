@@ -32,3 +32,4 @@ private:
   int streamVolume;
 };
 
+#define AUDIO AudioResourceManager::GetInstance()

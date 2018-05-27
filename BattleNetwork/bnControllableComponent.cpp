@@ -21,9 +21,9 @@ ControllableComponent::~ControllableComponent() {
 void ControllableComponent::update() {
   this->events.clear();
   Event event;
-  while (Engine::GetInstance().GetWindow()->pollEvent(event)) {
+  while (ENGINE.GetWindow()->pollEvent(event)) {
     if (event.type == Event::Closed) {
-      Engine::GetInstance().GetWindow()->close();
+      ENGINE.GetWindow()->close();
     }
 
     if (Event::KeyPressed == event.type) {

@@ -128,6 +128,9 @@
     <Filter Include="Battle\Entity\Spell\Cannon">
       <UniqueIdentifier>{6e2416ad-ce8f-493f-84d7-f1e6f16a2ed5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Results">
+      <UniqueIdentifier>{5ab083d3-308d-4225-a245-928fbb4b9ce8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -261,6 +264,12 @@
     </ClCompile>
     <ClCompile Include="bnCannon.cpp">
       <Filter>Battle\Entity\Spell\Cannon</Filter>
+    </ClCompile>
+    <ClCompile Include="bnBattleResults.cpp">
+      <Filter>Battle\Results</Filter>
+    </ClCompile>
+    <ClCompile Include="bnBattleResults.h">
+      <Filter>Battle\Results</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

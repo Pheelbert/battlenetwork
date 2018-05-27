@@ -23,17 +23,17 @@ using sf::Clock;
 void RunGraphicsInit(std::atomic<int> * progress) {
   sf::sleep(sf::milliseconds(1000)); // Simulate long loading to see title better
   clock_t begin_time = clock();
-  TextureResourceManager::GetInstance().LoadAllTextures(*progress);
+  TEXTURES.LoadAllTextures(*progress);
   Logger::Logf("Loaded textures: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
 
   begin_time = clock();
-  ShaderResourceManager::GetInstance().LoadAllShaders(*progress);
+  SHADERS.LoadAllShaders(*progress);
   Logger::Logf("Loaded shaders: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
 }
 
 void RunAudioInit(std::atomic<int> * progress) {
   const clock_t begin_time = clock();
-  AudioResourceManager::GetInstance().LoadAllSources(*progress);
+  AUDIO.LoadAllSources(*progress);
   Logger::Logf("Loaded audio sources: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
 }
 
@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
   //                    1) always run from main thread and 
   //                    2) load before we do any loading screen rendering
   const clock_t begin_time = clock();
-  Engine::GetInstance().Initialize();
+  ENGINE.Initialize();
   Logger::Logf("Engine initialized: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
 
   // lazy init
@@ -51,15 +51,15 @@ int main(int argc, char** argv) {
   AudioResourceManager::GetInstance();
 
   // Title screen logo
-  sf::Texture* logo = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/title/tile_en.png");
+  sf::Texture* logo = TEXTURES.LoadTextureFromFile("resources/backgrounds/title/tile_en.png");
   LayeredDrawable logoSprite;
   logoSprite.setTexture(*logo);
   logoSprite.setOrigin(logoSprite.getLocalBounds().width / 2, logoSprite.getLocalBounds().height / 2);
-  sf::Vector2f logoPos = (sf::Vector2f)((sf::Vector2i)Engine::GetInstance().GetWindow()->getSize() / 2);
+  sf::Vector2f logoPos = (sf::Vector2f)((sf::Vector2i)ENGINE.GetWindow()->getSize() / 2);
   logoSprite.setPosition(logoPos);
 
   // Log output text
-  sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthin_regular.ttf");
+  sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthin_regular.ttf");
   sf::Text* logLabel = new sf::Text("...", *font);
   logLabel->setCharacterSize(10);
   logLabel->setOrigin(0.f, logLabel->getLocalBounds().height);
@@ -84,8 +84,8 @@ int main(int argc, char** argv) {
   audioLoad.launch();
 
   // play some music while we wait
-  AudioResourceManager::GetInstance().SetStreamVolume(10);
-  AudioResourceManager::GetInstance().Stream("resources/loops/loop_theme.ogg", true);
+  AUDIO.SetStreamVolume(10);
+  AUDIO.Stream("resources/loops/loop_theme.ogg", true);
 
   // Draw some stats while we wait 
   bool inLoadState = true;
@@ -100,12 +100,12 @@ int main(int argc, char** argv) {
   Clock clock;
   float elapsed = 0.0f;
 
-  while(inLoadState && Engine::GetInstance().Running()) {
+  while(inLoadState && ENGINE.Running()) {
     clock.restart();
 
     float percentage = (float)progress / (float)totalObjects;
     std::string percentageStr = std::to_string((int)(percentage*100));
-    Engine::GetInstance().GetWindow()->setTitle(sf::String(std::string("Loading: ") + percentageStr + "%"));
+    ENGINE.GetWindow()->setTitle(sf::String(std::string("Loading: ") + percentageStr + "%"));
 
     ControllableComponent::GetInstance().update();
 
@@ -129,7 +129,7 @@ int main(int argc, char** argv) {
         if (!bg) {
           // NOW we can load resources from internal storage throughout the game
           try {
-            bg = TextureResourceManager::GetInstance().GetTexture(TextureType::BACKGROUND_BLUE);
+            bg = TEXTURES.GetTexture(TextureType::BACKGROUND_BLUE);
             bgSprite.setTexture(*bg);
             bgSprite.setScale(2.f, 2.f);
           }
@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
         if (!progs) {
           // NOW we can load resources from internal storage throughout the game
           try {
-            progs = TextureResourceManager::GetInstance().GetTexture(TextureType::TITLE_ANIM_CHAR);
+            progs = TEXTURES.GetTexture(TextureType::TITLE_ANIM_CHAR);
 
             progSprite.setTexture(*progs);
             progSprite.setPosition(200.f, 0.f);
@@ -161,9 +161,9 @@ int main(int argc, char** argv) {
 
         if (!whiteShader) {
           try {
-            whiteShader = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE_FADE);
+            whiteShader = SHADERS.GetShader(ShaderType::WHITE_FADE);
             whiteShader->setUniform("opacity", 0.0f);
-            Engine::GetInstance().SetShader(whiteShader);
+            ENGINE.SetShader(whiteShader);
           }
           catch (std::exception e) {
             // didnt catchup? debug
@@ -205,12 +205,12 @@ int main(int argc, char** argv) {
     }
 
     // Prepare for next draw calls
-    Engine::GetInstance().Clear();
+    ENGINE.Clear();
 
     // if background is ready and loaded from threads...
     if (ready) {
       // show it 
-      Engine::GetInstance().Draw(&bgSprite);
+      ENGINE.Draw(&bgSprite);
     }
 
     // Draw logs on top of bg
@@ -221,38 +221,38 @@ int main(int argc, char** argv) {
       logLabel->setString(logs[i]);
       logLabel->setPosition(0.f, 320 - (i * 10.f) - 5.f);
       logLabel->setFillColor(sf::Color(255, 255, 255, (sf::Uint8)((logFadeOutSpeed/2000.f)*fmax(0, 255 - (255 / 30)*i))));
-      Engine::GetInstance().Draw(logLabel);
+      ENGINE.Draw(logLabel);
     }
 
     if (progs) {
       progAnim(progSprite, progAnimProgress);
-      Engine::GetInstance().Draw(&progSprite);
+      ENGINE.Draw(&progSprite);
     }
 
-    Engine::GetInstance().Draw(&logoSprite);
+    ENGINE.Draw(&logoSprite);
 
-    Engine::GetInstance().DrawUnderlay();
-    Engine::GetInstance().DrawLayers();
-    Engine::GetInstance().DrawOverlay();
+    ENGINE.DrawUnderlay();
+    ENGINE.DrawLayers();
+    ENGINE.DrawOverlay();
 
     // Write contents to screen
-    Engine::GetInstance().Display();
+    ENGINE.Display();
 
     elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
   }
 
   // Cleanup
-  Engine::GetInstance().RevokeShader();
-  Engine::GetInstance().Clear();
+  ENGINE.RevokeShader();
+  ENGINE.Clear();
   delete logLabel;
   delete font;
   delete logo;
 
   // Stop music and go to battle 
-  AudioResourceManager::GetInstance().StopStream();
+  AUDIO.StopStream();
 
   // Make sure we didn't quit the loop prematurely
-  while(Engine::GetInstance().Running()) {
+  while(ENGINE.Running()) {
 
     Field* field(new Field(6, 3));
     // TODO: Field factory 

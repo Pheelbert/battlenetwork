@@ -30,7 +30,7 @@ Cannon::Cannon(Field* _field, Team _team, int _damage) {
 
   damage = _damage;
   //TODO: make new sprite animation for charged bullet
-  texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
+  texture = TEXTURES.GetTexture(TextureType::SPELL_BULLET_HIT);
  
   setScale(2.f, 2.f);
   for (int x = 0; x < BULLET_ANIMATION_SPRITES; x++) {
@@ -120,7 +120,7 @@ void Cannon::Attack(Entity* _entity) {
   }
 
   if (hit) {
-   //  AudioResourceManager::GetInstance().Play(AudioType::HURT, 0);
+   //  AUDIO.Play(AudioType::HURT, 0);
   }
 }
 

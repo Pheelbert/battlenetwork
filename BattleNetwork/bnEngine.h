@@ -56,3 +56,5 @@ private:
   Camera cam;
 
 };
+
+#define ENGINE Engine::GetInstance()

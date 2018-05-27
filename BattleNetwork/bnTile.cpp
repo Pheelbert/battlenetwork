@@ -104,7 +104,7 @@ void Tile::RefreshTexture() {
   } else {
     assert(false && "Tile in invalid state");
   }
-  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
+  setTexture(*TEXTURES.GetTexture(textureType));
 }
 
 bool Tile::IsWalkable() const {

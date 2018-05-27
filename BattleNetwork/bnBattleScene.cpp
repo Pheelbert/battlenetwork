@@ -41,7 +41,7 @@ int BattleScene::Run(Mob* mob) {
   Mob labels*/
   std::vector<std::string> mobNames;
 
-  Camera& camera(Engine::GetInstance().GetCamera());
+  Camera& camera(ENGINE.GetCamera());
 
   /*
   Chips + Chip select setup*/
@@ -60,13 +60,13 @@ int BattleScene::Run(Mob* mob) {
   BackgroundUI background = BackgroundUI();
 
   // PAUSE
-  sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
+  sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
   sf::Text* pauseLabel = new sf::Text("paused", *font);
   pauseLabel->setOrigin(pauseLabel->getLocalBounds().width / 2, pauseLabel->getLocalBounds().height * 2);
   pauseLabel->setPosition(sf::Vector2f(240.f, 160.f));
 
   // CHIP CUST
-  sf::Texture* customBarTexture = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/ui/custom.png");
+  sf::Texture* customBarTexture = TEXTURES.LoadTextureFromFile("resources/ui/custom.png");
   LayeredDrawable customBarSprite;
   customBarSprite.setTexture(*customBarTexture);
   customBarSprite.setOrigin(customBarSprite.getLocalBounds().width / 2, 0);
@@ -75,10 +75,10 @@ int BattleScene::Run(Mob* mob) {
   customBarSprite.setScale(2.f, 2.f);
   
   // MOB UI
-  sf::Font *mobFont = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
+  sf::Font *mobFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
 
   // Stream battle music 
-  AudioResourceManager::GetInstance().Stream("resources/loops/loop_battle.ogg", true);
+  AUDIO.Stream("resources/loops/loop_battle.ogg", true);
 
   Clock clock;
   float elapsed = 0.0f;
@@ -94,29 +94,29 @@ int BattleScene::Run(Mob* mob) {
   // Special: Load shaders if supported 
   double shaderCooldown = 0; // half a second
 
-  sf::Shader& pauseShader = *ShaderResourceManager::GetInstance().GetShader(ShaderType::BLACK_FADE);
+  sf::Shader& pauseShader = *SHADERS.GetShader(ShaderType::BLACK_FADE);
   pauseShader.setUniform("texture", sf::Shader::CurrentTexture);
   pauseShader.setUniform("opacity", 0.5f);
 
-  sf::Shader& whiteShader = *ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE_FADE);
+  sf::Shader& whiteShader = *SHADERS.GetShader(ShaderType::WHITE_FADE);
   whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
   whiteShader.setUniform("opacity", 0.5f);
 
 
-  sf::Shader& customBarShader = *ShaderResourceManager::GetInstance().GetShader(ShaderType::CUSTOM_BAR);
+  sf::Shader& customBarShader = *SHADERS.GetShader(ShaderType::CUSTOM_BAR);
   customBarShader.setUniform("texture", sf::Shader::CurrentTexture);
   customBarShader.setUniform("factor", 0);
   customBarSprite.SetShader(&customBarShader);
 
 
   bool inBattleState = true;
-  while (Engine::GetInstance().Running() && inBattleState) {
+  while (ENGINE.Running() && inBattleState) {
     // check evert frame 
     if (!isPlayerDeleted) {
       isPlayerDeleted = player->IsDeleted();
 
       if (isPlayerDeleted) {
-        AudioResourceManager::GetInstance().Play(AudioType::DELETED);
+        AUDIO.Play(AudioType::DELETED);
       }
     }
 
@@ -127,7 +127,7 @@ int BattleScene::Run(Mob* mob) {
       FPS = 1.0f / elapsedSeconds;
       std::string fpsStr = std::to_string(FPS);
       fpsStr.resize(4);
-      Engine::GetInstance().GetWindow()->setTitle(sf::String(std::string("FPS: ") + fpsStr));
+      ENGINE.GetWindow()->setTitle(sf::String(std::string("FPS: ") + fpsStr));
     }
 
     if (mob->NextMobReady()) {
@@ -165,41 +165,41 @@ int BattleScene::Run(Mob* mob) {
       field->Update(elapsed);
     }
 
-    Engine::GetInstance().Clear();
-    Engine::GetInstance().SetView(camera.GetView());
+    ENGINE.Clear();
+    ENGINE.SetView(camera.GetView());
 
     background.Draw();
 
-    sf::Vector2f cameraAntiOffset = -Engine::GetInstance().GetViewOffset();
+    sf::Vector2f cameraAntiOffset = -ENGINE.GetViewOffset();
 
     Tile* tile = nullptr;
     while (field->GetNextTile(tile)) {
-      tile->move(Engine::GetInstance().GetViewOffset());
-      Engine::GetInstance().LayUnder(tile);
+      tile->move(ENGINE.GetViewOffset());
+      ENGINE.LayUnder(tile);
     }
 
     for (int d = 1; d <= field->GetHeight(); d++) {
       Entity* entity = nullptr;
       while (field->GetNextEntity(entity, d)) {
         if (!entity->IsDeleted()) {
-          Engine::GetInstance().Push(entity);
-          Engine::GetInstance().Lay(entity->GetMiscComponents());
+          ENGINE.Push(entity);
+          ENGINE.Lay(entity->GetMiscComponents());
         }
       }
     }
 
     // NOTE: Although HUD, it fades dark when on chip cust screen and paused.
     if(!isPlayerDeleted && !isInChipSelect)
-      Engine::GetInstance().Push(&customBarSprite);
+      ENGINE.Push(&customBarSprite);
 
     if (isPaused || isInChipSelect) {
       // apply shader on draw calls below
-      Engine::GetInstance().SetShader(&pauseShader);
+      ENGINE.SetShader(&pauseShader);
     }
 
-    Engine::GetInstance().DrawUnderlay();
-    Engine::GetInstance().DrawLayers();
-    Engine::GetInstance().DrawOverlay();
+    ENGINE.DrawUnderlay();
+    ENGINE.DrawLayers();
+    ENGINE.DrawOverlay();
 
     float nextLabelHeight = 0;
     if (!mob->IsSpawningDone() || isInChipSelect) {
@@ -214,7 +214,7 @@ int BattleScene::Run(Mob* mob) {
         mobLabel.setScale(0.8f, 0.8f);
         mobLabel.setOutlineColor(sf::Color(48, 56, 80));
         mobLabel.setOutlineThickness(2.f);
-        Engine::GetInstance().Draw(mobLabel, false);
+        ENGINE.Draw(mobLabel, false);
 
         // make the next label relative to this one
         nextLabelHeight += mobLabel.getLocalBounds().height;
@@ -229,7 +229,7 @@ int BattleScene::Run(Mob* mob) {
 
     if (isPaused) {
       // render on top 
-      Engine::GetInstance().Draw(pauseLabel, false);
+      ENGINE.Draw(pauseLabel, false);
     }
 
     // Draw cust GUI on top of scene. No shaders affecting.
@@ -240,9 +240,9 @@ int BattleScene::Run(Mob* mob) {
       isPaused = !isPaused;
 
       if (!isPaused) {
-        Engine::GetInstance().RevokeShader();
+        ENGINE.RevokeShader();
       } else {
-        AudioResourceManager::GetInstance().Play(AudioType::PAUSE);
+        AUDIO.Play(AudioType::PAUSE);
       }
     } else if ((!isMobFinished && mob->IsSpawningDone()) || (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isPlayerDeleted)) {
        // enemy intro finished
@@ -258,7 +258,7 @@ int BattleScene::Run(Mob* mob) {
       }
 
       if (isInChipSelect == false) {
-        AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT);
+        AUDIO.Play(AudioType::CHIP_SELECT);
         // slide up the screen a hair
         //camera.MoveCamera(sf::Vector2f(240.f, 140.f), sf::seconds(0.5f));
         isInChipSelect = true;
@@ -282,22 +282,22 @@ int BattleScene::Run(Mob* mob) {
 
     } else if (isInChipSelect) {
       if (ControllableComponent::GetInstance().has(PRESSED_LEFT)) {
-        chipCustGUI.CursorLeft() ? AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT) : 1;
+        chipCustGUI.CursorLeft() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
       } else if (ControllableComponent::GetInstance().has(PRESSED_RIGHT)) {
-        chipCustGUI.CursorRight() ? AudioResourceManager::GetInstance().Play(AudioType::CHIP_SELECT) : 1;
+        chipCustGUI.CursorRight() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
       } else if (ControllableComponent::GetInstance().has(PRESSED_ACTION1)) {
         bool performed = chipCustGUI.CursorAction();
 
         if (chipCustGUI.AreChipsReady()) {
-          AudioResourceManager::GetInstance().Play(AudioType::CHIP_CONFIRM);
+          AUDIO.Play(AudioType::CHIP_CONFIRM);
           customProgress = 0; // NOTE: Hack. Need one more state boolean
           //camera.MoveCamera(sf::Vector2f(240.f, 160.f), sf::seconds(0.5f)); 
         } else if(performed){
-          AudioResourceManager::GetInstance().Play(AudioType::CHIP_CHOOSE);
+          AUDIO.Play(AudioType::CHIP_CHOOSE);
         }
       } else if (ControllableComponent::GetInstance().has(PRESSED_ACTION2)) {
         
-        chipCustGUI.CursorCancel() ? AudioResourceManager::GetInstance().Play(AudioType::CHIP_CANCEL) : 1;
+        chipCustGUI.CursorCancel() ? AUDIO.Play(AudioType::CHIP_CANCEL) : 1;
       }
     }
 
@@ -314,7 +314,7 @@ int BattleScene::Run(Mob* mob) {
           // Return to game
           isInChipSelect = false;
           player->GetChipsUI()->LoadChips(chips, chipCount);
-          Engine::GetInstance().RevokeShader();
+          ENGINE.RevokeShader();
         }
         else if (!isPAComplete) {
           chips = chipCustGUI.GetChips();
@@ -349,7 +349,7 @@ int BattleScene::Run(Mob* mob) {
               stepLabel.setScale(0.8f, 0.8f);
               stepLabel.setOutlineColor(sf::Color(48, 56, 80));
               stepLabel.setOutlineThickness(2.f);
-              Engine::GetInstance().Draw(stepLabel, false);
+              ENGINE.Draw(stepLabel, false);
 
               // make the next label relative to this one
               nextLabelHeight += stepLabel.getLocalBounds().height;
@@ -358,7 +358,7 @@ int BattleScene::Run(Mob* mob) {
           }
           else {
             if (!advanceSoundPlay) {
-              AudioResourceManager::GetInstance().Play(AudioType::PA_ADVANCE);
+              AUDIO.Play(AudioType::PA_ADVANCE);
               advanceSoundPlay = true;
             }
 
@@ -371,7 +371,7 @@ int BattleScene::Run(Mob* mob) {
             stepLabel.setScale(0.8f, 0.8f);
             stepLabel.setOutlineColor(sf::Color(sin(increment) * 255, cos(increment+90*(22.f/7.f)) * 255, sin(increment+180*(22.f/7.f)) * 255));
             stepLabel.setOutlineThickness(2.f);
-            Engine::GetInstance().Draw(stepLabel, false);
+            ENGINE.Draw(stepLabel, false);
           }
 
           if (listStepCounter > 0.f) {
@@ -389,7 +389,7 @@ int BattleScene::Run(Mob* mob) {
               listStepCounter = listStepCooldown;
 
               if (paStepIndex <= paSteps.size()) {
-                AudioResourceManager::GetInstance().Play(AudioType::POINT);
+                AUDIO.Play(AudioType::POINT);
               }
             }
           }
@@ -398,7 +398,7 @@ int BattleScene::Run(Mob* mob) {
     }
 
     // Write contents to screen (always last step)
-    Engine::GetInstance().Display();
+    ENGINE.Display();
 
     // TODO: make camera effects apply only to individual scenes that request them
     // This will avoid this hack here to move elements around on screen
@@ -410,9 +410,9 @@ int BattleScene::Run(Mob* mob) {
 
     if (isPlayerDeleted) {
       if (!initFadeOut) {
-        AudioResourceManager::GetInstance().StopStream();
+        AUDIO.StopStream();
         shaderCooldown = 1000;
-        Engine::GetInstance().SetShader(&whiteShader);
+        ENGINE.SetShader(&whiteShader);
         initFadeOut = true;
       }
       else {
@@ -433,7 +433,7 @@ int BattleScene::Run(Mob* mob) {
 
     if (customProgress / customDuration >= 1.0) {
       if (isChipSelectReady == false) {
-        AudioResourceManager::GetInstance().Play(AudioType::CUSTOM_BAR_FULL);
+        AUDIO.Play(AudioType::CUSTOM_BAR_FULL);
         isChipSelectReady = true;
       }
     } else {
@@ -450,8 +450,8 @@ int BattleScene::Run(Mob* mob) {
   delete mobFont;
   delete customBarTexture;
 
-  AudioResourceManager::GetInstance().StopStream();
-  Engine::GetInstance().RevokeShader();
+  AUDIO.StopStream();
+  ENGINE.RevokeShader();
 
   return EXIT_SUCCESS;
 }

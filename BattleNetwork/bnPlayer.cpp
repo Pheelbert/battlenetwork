@@ -207,7 +207,7 @@ void Player::RefreshTexture() {
     assert(false && "Invalid player state.");
   }
 
-  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
+  setTexture(*TEXTURES.GetTexture(textureType));
 
   if (tile != nullptr) {
     setPosition(tile->getPosition().x + 2.f, tile->getPosition().y - 76.f);

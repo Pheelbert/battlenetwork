@@ -12,10 +12,10 @@
 
 BackgroundUI::BackgroundUI(void)
   : progress(0.0f) {
-  bgTexture = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/bg_green.png");
+  bgTexture = TEXTURES.LoadTextureFromFile("resources/backgrounds/green/bg_green.png");
   background.setTexture(*bgTexture);
   background.setScale(2.f, 2.f);
-  cmTexture = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/green/fg_green.png");
+  cmTexture = TEXTURES.LoadTextureFromFile("resources/backgrounds/green/fg_green.png");
   component.setTexture(*cmTexture);
   for (int x = 0; x < COMPONENT_FRAME_COUNT; x++) {
     float relative = 0.0f;
@@ -32,14 +32,14 @@ void BackgroundUI::Draw() {
   if (progress >= 1.f) progress = 0.0f;
   static float mx = 0.0f, my = 0.0f;
   bool ySwitch = false, xSwitch = false;;
-  Engine::GetInstance().Draw(background);
+  ENGINE.Draw(background);
   for (int y = -10; y <= 10; y++) {
     for (int x = -10; x <= 15; x++) {
       if (xSwitch && ySwitch) {
         component.setPosition(x*32.f + x * X_OFFSET + mx, y*32.f + y * Y_OFFSET + my);
         component.setScale(2.f, 2.f);
         animation(component, progress);
-        Engine::GetInstance().Draw(component);
+        ENGINE.Draw(component);
       }
       xSwitch = !xSwitch;
     }

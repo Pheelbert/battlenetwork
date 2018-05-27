@@ -39,7 +39,7 @@ Chip* ChipLibrary::Next() {
 // Used as the folder in battle
 void ChipLibrary::LoadLibrary() {
   // TODO: put this utility in an input stream class and inhert from that
-  string data = TextureResourceManager::GetInstance().LoadDataFromFile("resources/database/library.txt");
+  string data = TEXTURES.LoadDataFromFile("resources/database/library.txt");
 
   int endline = 0;
 

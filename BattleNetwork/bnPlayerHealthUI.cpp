@@ -14,8 +14,8 @@ PlayerHealthUI::PlayerHealthUI(Entity* _entity)
 
 PlayerHealthUI::PlayerHealthUI(Player* _player)
   : player(_player) {
-  font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
-  texture = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/ui/img_health.png");
+  font = TEXTURES.LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
+  texture = TEXTURES.LoadTextureFromFile("resources/ui/img_health.png");
   sprite.setTexture(*texture);
   sprite.setPosition(3.f, 0.0f);
   sprite.setScale(2.f, 2.f);

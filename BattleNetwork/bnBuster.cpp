@@ -32,10 +32,10 @@ Buster::Buster(Field* _field, Team _team, bool _charged) {
   if (_charged) {
     damage = 10;
     //TODO: make new sprite animation for charged bullet
-    texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
+    texture = TEXTURES.GetTexture(TextureType::SPELL_BULLET_HIT);
   } else {
     damage = 1;
-    texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_BULLET_HIT);
+    texture = TEXTURES.GetTexture(TextureType::SPELL_BULLET_HIT);
   }
   setScale(2.f, 2.f);
   for (int x = 0; x < BULLET_ANIMATION_SPRITES; x++) {
@@ -125,7 +125,7 @@ void Buster::Attack(Entity* _entity) {
   }
 
   if (hit) {
-    AudioResourceManager::GetInstance().Play(AudioType::HURT, 0);
+    AUDIO.Play(AudioType::HURT, 0);
   }
 }
 

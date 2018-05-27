@@ -104,7 +104,7 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
         //Cooldown until player's movement catches up to actual position (avoid walking through spells)
         if (player.previous) {
           if (player.previous->IsCracked()) {
-            AudioResourceManager::GetInstance().Play(AudioType::PANEL_CRACK);
+            AUDIO.Play(AudioType::PANEL_CRACK);
             player.previous->SetState(TileState::BROKEN);
           }
           

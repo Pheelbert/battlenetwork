@@ -30,7 +30,7 @@ ProgsMan::ProgsMan(void)
 
   this->StateChange<ProgsManIdleState>();
 
-  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
+  setTexture(*TEXTURES.GetTexture(textureType));
   setScale(2.f, 2.f);
 
   this->SetHealth(health);
@@ -39,7 +39,7 @@ ProgsMan::ProgsMan(void)
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
 
-  whiteout = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE);
+  whiteout = SHADERS.GetShader(ShaderType::WHITE);
 }
 
 ProgsMan::~ProgsMan(void) {
@@ -97,7 +97,7 @@ void ProgsMan::RefreshTexture() {
     textureType = TextureType::MOB_PROGSMAN_THROW;
   }
 
-  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
+  setTexture(*TEXTURES.GetTexture(textureType));
 
   if (textureType == TextureType::MOB_PROGSMAN_IDLE) {
     setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 65.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 115.0f);

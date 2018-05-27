@@ -24,7 +24,7 @@ void PA::LoadPA()
   advances.clear();
 
   // TODO: put this utility in an input stream class and inhert from that
-  string data = TextureResourceManager::GetInstance().LoadDataFromFile("resources/database/PA.txt");
+  string data = TEXTURES.LoadDataFromFile("resources/database/PA.txt");
 
   int endline = 0;
   std::vector<PA::PAData::Required> currSteps;
