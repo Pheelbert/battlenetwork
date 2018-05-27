@@ -1,5 +1,5 @@
 # Videos w/ SOUND
-#### Branch: master
+#### Branch: master Outdatted as of 5/27/2018
 Click the thumbnail to watch on youtube. 
 
 [![Video of engine 5/26/2018](https://img.youtube.com/vi/2NdjhPiUJGQ/0.jpg)](https://youtu.be/2NdjhPiUJGQ)
@@ -18,7 +18,7 @@ There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1
 There other other PAs that can be triggered through system but are not implemented and do not do any damage. 
 You can write your own PA's and add your own chips by editting the `/database` textfiles.
 
-Mega can also be deleted. Sound has been rebalanced through the Audio Priorty system.
+Mega can also be deleted. If mega wins or loses, the battle results will show up with your time, ranking, and a random chip.
 
 # Controls
 ```
@@ -34,22 +34,15 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 
 # Author TheMaverickProgrammer
 
+## Update 5/27/2018
+Added battle results to the end of the match that shows time, ranking, and a new item
+
+[![screen.png](https://s15.postimg.cc/6ini1kqa3/screen.png)](https://postimg.cc/image/qd9jnp5hj/)
+
 ## Update 5/26/2018
 The PA system is bug free and acts just like the game: only matching codes or chip names can be queued together. To activate PA's, order matters. 
 The engine has support for a basic camera and can shake with a stress amount and a duration. You can see this live with the XtremeCannon PA.
 Previously an animation bug with the Thor library caused a crash. I wrote our own animation class in the AnimationComponent with complete success.
-
-## Update 5/4/2018
-Mobs can now be dynamically created by `MobFactory` classes. This allows for a whole set of fun spawning random enemy groups.
-The `Mob` class has utility functions that are used in the intro to spawn enemies one at a time and with a pixel intro effect just like the games.
-Chip menu opens up after intro just like the games.
-Chip database script loads and maps to correct card and icon images.
-PA (Program Advance) system is the latest feature. The `PA` class stores recipes called "steps" that are loaded from a script. After chip select, the chips are then filtered by the `PA` object and returns a matching PA combo chip.
-Mob class now handles deletion of enemy objects. Field class has a new `OwnEntity(e,x,y)` method for objects that need to be cleaned up by field when deleted (like Spells and other effects). 
-
-## Update 5/3/2018
-Created a loading screen. Rewrote logger to store output into a queue that I dequeue in the screen and draw the missing textures 
-once evereything is loaded from seperate threads. The loading screen calculates % complete and flashes when 100%.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -100,6 +93,7 @@ New:
 * Loading screen + loading screen custom graphics
 * Camera quakes
 * New animation support
+* Battle results
 
 Changes from original author:
 
