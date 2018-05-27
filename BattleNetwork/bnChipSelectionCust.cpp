@@ -187,8 +187,8 @@ void ChipSelectionCust::Move(sf::Vector2f delta) {
 void ChipSelectionCust::GetNextChips() {
   ClearChips();
 
+  int perTurn = 3; // Limit how many new chips we get per turn
   for (int i = chipCount; i < chipCap; i++) {
-
     queue[i].data = ChipLibrary::GetInstance().Next();
     queue[i].state = 1;
 
@@ -197,6 +197,9 @@ void ChipSelectionCust::GetNextChips() {
       return;
     }
     chipCount++;
+    perTurn--;
+
+    if (perTurn == 0) return;
   }
 }
 

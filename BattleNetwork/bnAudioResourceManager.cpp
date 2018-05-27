@@ -49,6 +49,7 @@ void AudioResourceManager::LoadAllSources(std::atomic<int> &status) {
   LoadSource(AudioType::CHIP_DESC, "resources/sfx/chip_desc.ogg"); status++;
   LoadSource(AudioType::CHIP_DESC_CLOSE, "resources/sfx/chip_desc_close.ogg"); status++;
   LoadSource(AudioType::CHIP_SELECT, "resources/sfx/chip_select.ogg"); status++;
+  LoadSource(AudioType::CHIP_ERROR, "resources/sfx/chip_error.ogg"); status++;
   LoadSource(AudioType::CUSTOM_BAR_FULL, "resources/sfx/custom_bar_full.ogg"); status++;
   LoadSource(AudioType::CUSTOM_SCREEN_OPEN, "resources/sfx/chip_screen_open.ogg"); status++;
   LoadSource(AudioType::DELETED, "resources/sfx/deleted.ogg"); status++;
@@ -95,7 +96,7 @@ int AudioResourceManager::Play(AudioType type, int priority) {
   if (priority == 0) {
     for (int i = 0; i < NUM_OF_CHANNELS; i++) {
       if (channels[i].getStatus() == sf::SoundSource::Status::Playing) {
-        if (channels[i].getBuffer() == &(const sf::SoundBuffer)sources[type]) {
+        if ((sf::SoundBuffer*)channels[i].getBuffer() == &sources[type]) {
           // Lowest priority sounds only play once 
           return -1;
         }

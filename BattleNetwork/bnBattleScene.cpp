@@ -19,6 +19,7 @@ using sf::Font;
 #include "bnControllableComponent.h"
 #include "bnEngine.h"
 #include "bnChipSelectionCust.h"
+#include "bnBattleResults.h"
 #include "bnShaderResourceManager.h"
 #include "bnPA.h"
 
@@ -48,6 +49,10 @@ int BattleScene::Run(Mob* mob) {
   ChipSelectionCust chipCustGUI(5);
   Chip** chips = 0;
   int chipCount = 0;
+
+  /*
+  Battle results pointer */
+  BattleResults* battleResults = nullptr;
 
   /*
   Set Scene*/
@@ -289,15 +294,18 @@ int BattleScene::Run(Mob* mob) {
         bool performed = chipCustGUI.CursorAction();
 
         if (chipCustGUI.AreChipsReady()) {
-          AUDIO.Play(AudioType::CHIP_CONFIRM);
+          AUDIO.Play(AudioType::CHIP_CONFIRM, 0);
           customProgress = 0; // NOTE: Hack. Need one more state boolean
           //camera.MoveCamera(sf::Vector2f(240.f, 160.f), sf::seconds(0.5f)); 
         } else if(performed){
-          AUDIO.Play(AudioType::CHIP_CHOOSE);
+          AUDIO.Play(AudioType::CHIP_CHOOSE, 0);
+        }
+        else {
+          AUDIO.Play(AudioType::CHIP_ERROR, 0);
         }
       } else if (ControllableComponent::GetInstance().has(PRESSED_ACTION2)) {
         
-        chipCustGUI.CursorCancel() ? AUDIO.Play(AudioType::CHIP_CANCEL) : 1;
+        chipCustGUI.CursorCancel() ? AUDIO.Play(AudioType::CHIP_CANCEL, 0) : 1;
       }
     }
 
@@ -397,6 +405,34 @@ int BattleScene::Run(Mob* mob) {
       }
     }
 
+
+    if (isPlayerDeleted) {
+      if (battleResults == nullptr) {
+        battleResults = new BattleResults(sf::seconds(1));
+        AUDIO.StopStream();
+        AUDIO.Stream("resources/loops/enemy_deleted.ogg");
+      }
+      else {
+        battleResults->Draw();
+
+        if (!battleResults->IsInView()) {
+          float amount = 100.f / elapsed;
+          battleResults->Move(sf::Vector2f(amount, 0));
+        }
+        else {
+          if (ControllableComponent::GetInstance().has(PRESSED_ACTION3)) {
+            // Have to hit twice
+            if (battleResults->IsFinished()) {
+              inBattleState = false;
+            }
+            else {
+              battleResults->CursorAction();
+            }
+          }
+        }
+      }
+    }
+
     // Write contents to screen (always last step)
     ENGINE.Display();
 
@@ -407,29 +443,8 @@ int BattleScene::Run(Mob* mob) {
       tile->move(cameraAntiOffset);
     }
 
-
-    if (isPlayerDeleted) {
-      if (!initFadeOut) {
-        AUDIO.StopStream();
-        shaderCooldown = 1000;
-        ENGINE.SetShader(&whiteShader);
-        initFadeOut = true;
-      }
-      else {
-        if (shaderCooldown < 0) {
-          shaderCooldown = 0;
-          inBattleState = false;
-        }
-      }
-
-      shaderCooldown -= elapsed;
-
-      whiteShader.setUniform("opacity", 1.f - (float)(shaderCooldown / 1000.f)*0.5f);
-
-    }
-
-    // update the cust if not paused nor in chip select nor in mob intro
-    if (!(isPaused || isInChipSelect || !mob->IsSpawningDone())) customProgress += elapsed;
+    // update the cust if not paused nor in chip select nor in mob intro nor battle results
+    if (!(isPlayerDeleted || isPaused || isInChipSelect || !mob->IsSpawningDone())) customProgress += elapsed;
 
     if (customProgress / customDuration >= 1.0) {
       if (isChipSelectReady == false) {
@@ -449,6 +464,8 @@ int BattleScene::Run(Mob* mob) {
   delete font;
   delete mobFont;
   delete customBarTexture;
+
+  if (battleResults) { delete battleResults; }
 
   AUDIO.StopStream();
   ENGINE.RevokeShader();

@@ -1,9 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "bnTextureResourceManager.h"
-#include "bnAudioResourceManager.h"
-#include "bnEngine.h"
 
 class BattleResults {
 private:

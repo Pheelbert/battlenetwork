@@ -255,12 +255,11 @@ int main(int argc, char** argv) {
   while(ENGINE.Running()) {
 
     Field* field(new Field(6, 3));
-    // TODO: Field factory 
     // see how the random mob works around holes
     field->GetAt((rand())%3+4, (rand()%3)+1)->SetState(TileState::EMPTY);
 
-    //MobFactory* factory = new TwoMettaurMob(field);
-    MobFactory* factory = new RandomMettaurMob(field);
+    MobFactory* factory = new TwoMettaurMob(field);
+    //MobFactory* factory = new RandomMettaurMob(field);
     Mob* mob = factory->Build();
 
     BattleScene::Run(mob);

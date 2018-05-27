@@ -112,6 +112,9 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/ui/chip_nodata.png");
   paths.push_back("resources/ui/chip_senddata.png");
 
+  // Battle Results Frame
+  paths.push_back("resources/ui/battle_results.png");
+
   // Background/foreground
   paths.push_back("resources/backgrounds/title/bg_blue.png");
   paths.push_back("resources/backgrounds/title/prog-pulse.png");
