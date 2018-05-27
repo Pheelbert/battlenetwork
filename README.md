@@ -2,8 +2,8 @@
 #### Branch: master
 Click the thumbnail to watch on youtube. 
 
-[![Video of engine 5/4/2018](https://img.youtube.com/vi/EIzU7IrzHs0/0.jpg)](https://youtu.be/EIzU7IrzHs0)
-[![Video of engine 5/4/2018](https://img.youtube.com/vi/EIzU7IrzHs0/1.jpg)](https://youtu.be/EIzU7IrzHs0)
+[![Video of engine 5/26/2018](https://img.youtube.com/vi/2NdjhPiUJGQ/0.jpg)](https://youtu.be/2NdjhPiUJGQ)
+[![Video of engine 5/26/2018](https://img.youtube.com/vi/2NdjhPiUJGQ/1.jpg)](https://youtu.be/2NdjhPiUJGQ) 
 
 # Features
 In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
