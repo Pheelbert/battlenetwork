@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <atomic>
 #include <sstream>
 using std::stringstream;
 #include <fstream>
@@ -11,7 +12,7 @@ TextureResourceManager& TextureResourceManager::GetInstance() {
   return instance;
 }
 
-void TextureResourceManager::LoadAllTextures(unsigned &status) {
+void TextureResourceManager::LoadAllTextures(std::atomic<int> &status) {
   TextureType textureType = static_cast<TextureType>(0);
   while (textureType != TEXTURE_TYPE_SIZE) {
     status++;
@@ -27,7 +28,7 @@ void TextureResourceManager::LoadAllTextures(unsigned &status) {
 Texture* TextureResourceManager::LoadTextureFromFile(string _path) {
   Texture* texture = new Texture();
   if (!texture->loadFromFile(_path)) {
-    Logger::Failf("Failed loading texture: %s\n", _path.c_str());
+    Logger::Logf("Failed loading texture: %s\n", _path.c_str());
   } else {
     Logger::Logf("Loaded texture: %s\n", _path.c_str());
   }
@@ -52,7 +53,7 @@ sf::IntRect TextureResourceManager::GetIconRectFromID(unsigned ID) {
 Font* TextureResourceManager::LoadFontFromFile(string _path) {
   Font* font = new Font();
   if (!font->loadFromFile(_path)) {
-    Logger::Failf("Failed loading font: %s\n", _path.c_str());
+    Logger::Logf("Failed loading font: %s\n", _path.c_str());
   } else {
     Logger::Logf("Loaded font: %s\n", _path.c_str());
   }

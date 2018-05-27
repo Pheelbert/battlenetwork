@@ -36,7 +36,7 @@ AudioResourceManager::~AudioResourceManager() {
   delete[] sources;
 }
 
-void AudioResourceManager::LoadAllSources(unsigned &status) {
+void AudioResourceManager::LoadAllSources(std::atomic<int> &status) {
   LoadSource(AudioType::APPEAR, "resources/sfx/appear.ogg"); status++;
   LoadSource(AudioType::AREA_GRAB, "resources/sfx/area_grab.ogg"); status++;
   LoadSource(AudioType::AREA_GRAB_TOUCHDOWN, "resources/sfx/area_grab_touchdown.ogg"); status++;
@@ -73,7 +73,7 @@ void AudioResourceManager::LoadAllSources(unsigned &status) {
 
 void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {
   if (!sources[type].loadFromFile(path)) {
-    Logger::Failf("Failed loading audio: %s\n", path.c_str());
+    Logger::Logf("Failed loading audio: %s\n", path.c_str());
   } else {
     Logger::Logf("Loaded audio: %s\n", path.c_str());
   }

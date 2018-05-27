@@ -95,8 +95,8 @@ void SelectedChipsUI::UseNextChip() {
     return;
   }
 
-  if (selectedChips[curr]->GetID() == ChipType::HP10) {
-    player->SetHealth(player->GetHealth() + 10);
+  if (selectedChips[curr]->GetShortName().substr(0, 5) == "Recov") {
+    player->SetHealth(player->GetHealth() + selectedChips[curr]->GetDamage());
     AudioResourceManager::GetInstance().Play(AudioType::RECOVER);
   } else if (selectedChips[curr]->GetID() == ChipType::CRCKPNL) {
     Tile* top = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 1);
@@ -118,12 +118,12 @@ void SelectedChipsUI::UseNextChip() {
   }
   else if (selectedChips[curr]->GetShortName() == "XtrmeCnnon") {
     AudioResourceManager::GetInstance().Play(AudioType::CANNON);
-    Cannon* xtreme1 = new Cannon(player->GetField(), player->GetTeam(), 600);
-    Cannon* xtreme2 = new Cannon(player->GetField(), player->GetTeam(), 600);
-    Cannon* xtreme3 = new Cannon(player->GetField(), player->GetTeam(), 600);
+    Cannon* xtreme1 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+    Cannon* xtreme2 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+    Cannon* xtreme3 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
 
 
-    Engine::GetInstance().GetCamera().ShakeCamera(25, sf::seconds(5));
+    Engine::GetInstance().GetCamera().ShakeCamera(25, sf::seconds(1));
 
     auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
 

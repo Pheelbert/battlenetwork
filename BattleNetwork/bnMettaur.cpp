@@ -148,7 +148,7 @@ int Mettaur::GetStateFromString(string _string) {
       return static_cast<MobState>(i);
     }
   }
-  Logger::Failf("Failed to find corresponding enum: %s\n", _string);
+  Logger::Logf("Failed to find corresponding enum: %s\n", _string);
   return -1;
 }
 

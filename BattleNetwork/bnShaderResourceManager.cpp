@@ -10,7 +10,7 @@ ShaderResourceManager& ShaderResourceManager::GetInstance() {
   return instance;
 }
 
-void ShaderResourceManager::LoadAllShaders(unsigned &status) {
+void ShaderResourceManager::LoadAllShaders(std::atomic<int> &status) {
   ShaderType shaderType = static_cast<ShaderType>(0);
   while (shaderType != SHADER_TYPE_SIZE) {
     status++;

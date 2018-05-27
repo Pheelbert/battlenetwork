@@ -13,11 +13,12 @@ using std::vector;
 #include <iostream>
 using std::cerr;
 using std::endl;
+#include <atomic>
 
 class ShaderResourceManager {
 public:
   static ShaderResourceManager& GetInstance();
-  void LoadAllShaders (unsigned &status);
+  void LoadAllShaders (std::atomic<int> &status);
   sf::Shader* LoadShaderFromFile(string _path);
   sf::Shader* GetShader(ShaderType _ttype);
 

@@ -15,11 +15,12 @@ using std::vector;
 #include <iostream>
 using std::cerr;
 using std::endl;
+#include <atomic>
 
 class TextureResourceManager {
 public:
   static TextureResourceManager& GetInstance();
-  void LoadAllTextures(unsigned &status);
+  void LoadAllTextures(std::atomic<int> &status);
   Texture* LoadTextureFromFile(string _path);
   Texture* GetTexture(TextureType _ttype);
   sf::IntRect GetCardRectFromID(unsigned ID);

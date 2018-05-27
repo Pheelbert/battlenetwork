@@ -11,6 +11,7 @@
 #include <Thor/Animations.hpp>
 #include <time.h>
 #include <queue>
+#include <atomic>
 
 using sf::Clock;
 
@@ -19,7 +20,7 @@ using sf::Clock;
 #define TITLE_ANIM_CHAR_HEIGHT 221
 #define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
 
-void RunGraphicsInit(unsigned * progress) {
+void RunGraphicsInit(std::atomic<int> * progress) {
   sf::sleep(sf::milliseconds(1000)); // Simulate long loading to see title better
   clock_t begin_time = clock();
   TextureResourceManager::GetInstance().LoadAllTextures(*progress);
@@ -30,7 +31,7 @@ void RunGraphicsInit(unsigned * progress) {
   Logger::Logf("Loaded shaders: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
 }
 
-void RunAudioInit(unsigned * progress) {
+void RunAudioInit(std::atomic<int> * progress) {
   const clock_t begin_time = clock();
   AudioResourceManager::GetInstance().LoadAllSources(*progress);
   Logger::Logf("Loaded audio sources: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
@@ -50,7 +51,7 @@ int main(int argc, char** argv) {
   AudioResourceManager::GetInstance();
 
   // Title screen logo
-  sf::Texture* logo = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/title/tile.png");
+  sf::Texture* logo = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/title/tile_en.png");
   LayeredDrawable logoSprite;
   logoSprite.setTexture(*logo);
   logoSprite.setOrigin(logoSprite.getLocalBounds().width / 2, logoSprite.getLocalBounds().height / 2);
@@ -73,9 +74,8 @@ int main(int argc, char** argv) {
   LayeredDrawable bgSprite;
   LayeredDrawable progSprite;
 
-  // TODO: Add shaders to this list
-  unsigned totalObjects = (unsigned)TextureType::TEXTURE_TYPE_SIZE + (unsigned)AudioType::AUDIO_TYPE_SIZE + (unsigned)ShaderType::SHADER_TYPE_SIZE;
-  unsigned progress = 0;
+  int totalObjects = (unsigned)TextureType::TEXTURE_TYPE_SIZE + (unsigned)AudioType::AUDIO_TYPE_SIZE + (unsigned)ShaderType::SHADER_TYPE_SIZE;
+  std::atomic<int> progress = 0;
 
   sf::Thread graphicsLoad(&RunGraphicsInit, &progress);
   sf::Thread audioLoad(&RunAudioInit, &progress);
