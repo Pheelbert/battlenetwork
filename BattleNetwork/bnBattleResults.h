@@ -5,11 +5,15 @@
 class BattleResults {
 private:
   sf::Sprite resultsSprite;
-  sf::Text label;
-  sf::Text Rank;
+  sf::Text time;
+  sf::Text rank;
+  sf::Text reward;
+  sf::Sprite rewardCard;
 
   bool isHidden;
   bool isRevealed;
+
+  std::string FormatString(sf::Time time);
 
 public:
   BattleResults(sf::Time battleLength);

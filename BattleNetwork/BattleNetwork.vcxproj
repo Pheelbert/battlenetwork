@@ -262,6 +262,7 @@
     <ClInclude Include="bnSelectedChipsUI.h" />
     <ClInclude Include="bnMettaurAttackState.h" />
     <ClInclude Include="bnMeta.h" />
+    <ClInclude Include="bnTimer.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

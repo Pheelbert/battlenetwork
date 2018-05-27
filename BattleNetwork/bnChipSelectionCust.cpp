@@ -260,7 +260,7 @@ void ChipSelectionCust::Draw() {
         if (queue[cursorPos].data->GetDamage() > 0) {
           label.setString(std::to_string(queue[cursorPos].data->GetDamage()));
           label.setOrigin(label.getLocalBounds().width*2.f, 0);
-          label.setPosition(2.f*(label.getLocalBounds().width + 60.f), 143.f);
+          label.setPosition(2.f*(84.f), 143.f);
           ENGINE.Draw(label, false);
         }
 

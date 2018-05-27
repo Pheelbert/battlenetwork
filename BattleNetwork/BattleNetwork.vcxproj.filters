@@ -460,6 +460,9 @@
     <ClInclude Include="bnCannon.h">
       <Filter>Battle\Entity\Spell\Cannon</Filter>
     </ClInclude>
+    <ClInclude Include="bnTimer.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

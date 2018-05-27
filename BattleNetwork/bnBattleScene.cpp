@@ -20,6 +20,7 @@ using sf::Font;
 #include "bnEngine.h"
 #include "bnChipSelectionCust.h"
 #include "bnBattleResults.h"
+#include "bnTimer.h"
 #include "bnShaderResourceManager.h"
 #include "bnPA.h"
 
@@ -53,6 +54,7 @@ int BattleScene::Run(Mob* mob) {
   /*
   Battle results pointer */
   BattleResults* battleResults = nullptr;
+ Timer battleTimer;
 
   /*
   Set Scene*/
@@ -235,6 +237,10 @@ int BattleScene::Run(Mob* mob) {
     if (isPaused) {
       // render on top 
       ENGINE.Draw(pauseLabel, false);
+      battleTimer.Pause();
+    }
+    else {
+      if (battleTimer.IsPaused()) { battleTimer.Start(); }
     }
 
     // Draw cust GUI on top of scene. No shaders affecting.
@@ -391,6 +397,8 @@ int BattleScene::Run(Mob* mob) {
               hasPA = false; // state over 
               advanceSoundPlay = false;
               isPAComplete = true;
+              // Resume the battle timer
+              battleTimer.Start();
             }
             else {
               paStepIndex++;
@@ -408,7 +416,8 @@ int BattleScene::Run(Mob* mob) {
 
     if (isPlayerDeleted) {
       if (battleResults == nullptr) {
-        battleResults = new BattleResults(sf::seconds(1));
+        sf::Time totalBattleTime = sf::milliseconds(battleTimer.GetElapsed());
+        battleResults = new BattleResults(totalBattleTime);
         AUDIO.StopStream();
         AUDIO.Stream("resources/loops/enemy_deleted.ogg");
       }
@@ -426,6 +435,7 @@ int BattleScene::Run(Mob* mob) {
               inBattleState = false;
             }
             else {
+              AUDIO.Play(AudioType::ITEM_GET);
               battleResults->CursorAction();
             }
           }
