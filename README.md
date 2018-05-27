@@ -10,7 +10,7 @@ In this demo, you can move Mega around, shoot, charge, and delete enemies on the
 
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
 
-At this time only 3 chips are implemented: HP+10, CrckPnl, and Invsble.
+At this time only 3 chip types are implemented: All heath+ chips, CrckPnl, and Invsble.
 
 Rename the file in `resources/database/library.txt - Copy`to `resources/database/library.txt` for a full library while playing the game.
 
