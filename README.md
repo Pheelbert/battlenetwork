@@ -37,6 +37,8 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 ## Update 5/27/2018
 Added battle results to the end of the match that shows time, ranking, and a new item
 
+[![screen.png](https://s15.postimg.cc/6ini1kqa3/screen.png)](https://postimg.cc/image/qd9jnp5hj/)
+
 ## Update 5/26/2018
 The PA system is bug free and acts just like the game: only matching codes or chip names can be queued together. To activate PA's, order matters. 
 The engine has support for a basic camera and can shake with a stress amount and a duration. You can see this live with the XtremeCannon PA.
