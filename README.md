@@ -34,8 +34,8 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 
 # Author TheMaverickProgrammer
 
-## Update 5/27/2018
-Added battle results to the end of the match that shows time, ranking, and a new item
+## Update 5/28/2018
+Added battle results to the end of the match that shows time, ranking, and a new item. Items can be registered with `Mob` objects inside the `MobFactory` specialization. The ranking is authentically calculated from the official strategy guide for MMBN 6. The rewarded item is random but based on rank.
 
 [![screen.png](https://s15.postimg.cc/6ini1kqa3/screen.png)](https://postimg.cc/image/qd9jnp5hj/)
 
@@ -93,7 +93,9 @@ New:
 * Loading screen + loading screen custom graphics
 * Camera quakes
 * New animation support
-* Battle results
+* Battle results 
+* Post-battle reward system
+* Authentic MMBN 6 ranking system 
 
 Changes from original author:
 
