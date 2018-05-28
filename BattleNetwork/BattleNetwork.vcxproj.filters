@@ -131,6 +131,9 @@
     <Filter Include="Battle\Results">
       <UniqueIdentifier>{5ab083d3-308d-4225-a245-928fbb4b9ce8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Results\ItemGet">
+      <UniqueIdentifier>{a5846164-84ed-4646-b020-9b4afabffdf5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -462,6 +465,9 @@
     </ClInclude>
     <ClInclude Include="bnTimer.h">
       <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBattleItem.h">
+      <Filter>Battle\Results\ItemGet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

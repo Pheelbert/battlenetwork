@@ -65,6 +65,13 @@ int main(int argc, char** argv) {
   logLabel->setOrigin(0.f, logLabel->getLocalBounds().height);
   std::vector<std::string> logs;
 
+  // Press Start text
+  sf::Font* startFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
+  sf::Text* startLabel = new sf::Text("PRESS START", *startFont);
+  startLabel->setCharacterSize(24);
+  startLabel->setOrigin(0.f, startLabel->getLocalBounds().height);
+  startLabel->setPosition(sf::Vector2f(180.0f, 240.f));
+
   // Title screen background
   // This will be loaded from the resource manager AFTER it's ready
   sf::Texture* bg = nullptr;
@@ -227,6 +234,7 @@ int main(int argc, char** argv) {
     if (progs) {
       progAnim(progSprite, progAnimProgress);
       ENGINE.Draw(&progSprite);
+      ENGINE.Draw(startLabel);
     }
 
     ENGINE.Draw(&logoSprite);
@@ -258,8 +266,8 @@ int main(int argc, char** argv) {
     // see how the random mob works around holes
     field->GetAt((rand())%3+4, (rand()%3)+1)->SetState(TileState::EMPTY);
 
-    MobFactory* factory = new TwoMettaurMob(field);
-    //MobFactory* factory = new RandomMettaurMob(field);
+    // MobFactory* factory = new TwoMettaurMob(field);
+    MobFactory* factory = new RandomMettaurMob(field);
     Mob* mob = factory->Build();
 
     BattleScene::Run(mob);

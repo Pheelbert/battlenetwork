@@ -1,6 +1,10 @@
 #pragma once
 
+#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+
+class Mob;
+class BattleItem;
 
 class BattleResults {
 private:
@@ -13,10 +17,14 @@ private:
   bool isHidden;
   bool isRevealed;
 
+  BattleItem* item;
+  int score; // 1-10 or 11+ as S rank
+
+  // utilities 
   std::string FormatString(sf::Time time);
 
 public:
-  BattleResults(sf::Time battleLength);
+  BattleResults(sf::Time battleLength, int moveCount, int hitCount, int counterCount, bool doubleDelete, bool tripleDelete, Mob* mob);
   ~BattleResults();
 
   // GUI ops
@@ -26,8 +34,9 @@ public:
   bool IsInView();
   void Move(sf::Vector2f delta);
   void Draw();
-
-  // Chip ops
   bool IsFinished();
+
+  // Get the reward 
+  BattleItem* GetReward();
 };
 

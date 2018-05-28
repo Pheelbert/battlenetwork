@@ -1,55 +1,105 @@
 #include "bnBattleResults.h"
 #include "bnTextureResourceManager.h"
 #include "bnEngine.h"
+#include "bnMob.h"
+#include "bnBattleItem.h"
 
-std::string BattleResults::FormatString(sf::Time time)
-{
-  double totalMS = time.asMilliseconds();
-  std::cout << "totalMS: " << totalMS << "\n";
+BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount, int counterCount, bool doubleDelete, bool tripleDelete, Mob *mob) {
+  /*
+  Calculate score and rank
+  Calculations are based off http ://megaman.wikia.com/wiki/Virus_Busting
 
-  int minutes = totalMS / 1000 / 60;
-  std::cout << "minutes: " << minutes << "\n";
+  Delete Time
+    0.00~5.00 = 7
+    5.01~12.00 = 6
+    12.01~36.00 = 5
+    36.01 and up = 4
 
-  double remainder = (totalMS / 1000.0 / 60.0) - (double)minutes;
-  std::cout << "remainder: " << remainder << "\n";
+    Boss Delete Time
+    0.00~30.00 = 10
+    30.01~40.00 = 8
+    40.01~50.00 = 6
+    50.01 and up = 4
 
-  int seconds = remainder * 100;
-  remainder = (remainder * 100.0) - (double)seconds;
-  int ms = remainder * 100;
+    Number of Hits(received by MegaMan)
+    0 = +1
+    1 = 0
+    2 = -1
+    3 = -2
+    4 or more = -3
 
-  if (minutes > 99) {
-    minutes = 99;
+    Movement Number of Steps
+    0~2 = +1
+    3 or more = +0
+
+    Multiple Deletion
+    Double Delete = +2
+    Triple Delete = +4
+
+    Counter Hits
+    0 = +0
+    1 = +1
+    2 = +2
+    3 = +3
+    */
+  score = 0;
+
+  if(!mob->IsBoss()) {
+    if (battleLength.asSeconds() > 36.1) score += 4;
+    else if (battleLength.asSeconds() > 12.01) score += 5;
+    else if (battleLength.asSeconds() > 5.01) score += 6;
+    else score += 7;
+  }
+  else {
+    if (battleLength.asSeconds() > 50.01) score += 4;
+    else if (battleLength.asSeconds() > 40.01) score += 6;
+    else if (battleLength.asSeconds() > 30.01) score += 8;
+    else score += 10;
   }
 
-  std::string O = "0";
-  std::string builder;
+  switch (hitCount) {
+    case 0: score += 1; break;
+    case 1: score += 0; break;
+    case 2: score -= 1; break;
+    case 3: score -= 2; break;
+    default: score -= 3; break;
+  }
 
-  if (minutes < 10) builder += O;
-  builder += std::to_string(minutes) + "/";
+  if (moveCount >= 0 && moveCount <= 2) {
+    score += 1;
+  }
 
-  if (seconds < 10) builder += O;
-  builder += std::to_string(seconds) + "/";
+  if (doubleDelete) score += 2;
+  if (tripleDelete) score += 4;
 
-  if (ms < 10) builder += O;
-  builder += std::to_string(ms);
+  std::cout << "score before normalization: " << score << "\n";
 
-  return builder;
-}
+  score += std::max(counterCount, 3);
 
-BattleResults::BattleResults(sf::Time battleLength) {
+  // No score of zero or below. Min score of 1
+  score = std::max(1, score);
+
+  // Get reward based on score
+  item = mob->GetRankedReward(score);
+ 
   isRevealed = false;
 
   resultsSprite = sf::Sprite(*TEXTURES.GetTexture(TextureType::BATTLE_RESULTS_FRAME));
   resultsSprite.setScale(2.f, 2.f);
   resultsSprite.setPosition(-resultsSprite.getTextureRect().width*2.f, 20.f);
 
-  // TODO: replace with RewardItem class type to store and handle data 
-  sf::IntRect random = TEXTURES.GetCardRectFromID(rand() % (17 * 11));
+  if (item) {
+    sf::IntRect rect = TEXTURES.GetCardRectFromID(item->GetID());
 
-  rewardCard = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_CARDS));;
-  rewardCard.setTextureRect(random);
+    rewardCard = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_CARDS));
+    rewardCard.setTextureRect(rect);
+  }
+  else {
+    rewardCard = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_NODATA));
+  }
+
   rewardCard.setScale(2.f, 2.f);
-  rewardCard.setPosition(275.0f, 180.f);
+  rewardCard.setPosition(274.0f, 180.f);
 
   sf::Font *font = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
   time.setFont(*font);
@@ -60,13 +110,59 @@ BattleResults::BattleResults(sf::Time battleLength) {
 
   rank.setFont(*font);
   rank.setPosition(2.f*192.f, 111.f);
-  rank.setString("S");
+
+  reward.setFont(*font);
+  reward.setPosition(2.f*40.f, 209.f);
+  reward.setString(item->GetName());
+  reward.setFillColor(sf::Color(240, 248, 248));
+
+  if (score > 10) {
+    rank.setString("S");
+  }
+  else {
+    rank.setString(std::to_string(score));
+  }
+
   rank.setOrigin(rank.getLocalBounds().width, 0);
   rank.setFillColor(sf::Color(240, 248, 248));
 }
 
 BattleResults::~BattleResults() {
 
+}
+
+std::string BattleResults::FormatString(sf::Time time)
+{
+  double totalMS = time.asMilliseconds();
+  std::cout << "totalMS: " << totalMS << "\n";
+
+  int minutes = (int)(totalMS / 1000) / 60;
+  std::cout << "minutes: " << minutes << "\n";
+
+  double remainder = ((int)(totalMS / 1000.0) / 60.0) - (double)minutes;
+  std::cout << "remainder: " << remainder << "\n";
+
+  int seconds = (int)(remainder * 100) % 60;
+  remainder = (remainder * 100.0) - (double)seconds;
+  int ms = (int)(remainder * 100) % 100;
+
+  if (minutes > 99) {
+    minutes = 99;
+  }
+
+  std::string O = "0";
+  std::string builder;
+
+  if (minutes < 10) builder += O;
+  builder += std::to_string(minutes) + ":";
+
+  if (seconds < 10) builder += O;
+  builder += std::to_string(seconds) + ":";
+
+  if (ms < 10) builder += O;
+  builder += std::to_string(ms);
+
+  return builder;
 }
 
 // GUI ops
@@ -128,6 +224,7 @@ void BattleResults::Draw() {
 
     if (isRevealed) {
       ENGINE.Draw(rewardCard, false);
+      ENGINE.Draw(reward, false);
     }
   }
 }
@@ -135,4 +232,9 @@ void BattleResults::Draw() {
 // Chip ops
 bool BattleResults::IsFinished() {
   return isRevealed;
+}
+
+BattleItem* BattleResults::GetReward()
+{
+  return item;
 }

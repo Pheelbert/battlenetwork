@@ -156,7 +156,9 @@
     <ClCompile Include="bnArtifact.cpp" />
     <ClCompile Include="bnAudioResourceManager.cpp" />
     <ClCompile Include="bnBackgroundUI.cpp" />
-    <ClCompile Include="bnBattleResults.cpp" />
+    <ClCompile Include="bnBattleResults.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="bnCannon.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
     <ClCompile Include="bnChip.cpp" />
@@ -200,6 +202,7 @@
     <ClCompile Include="bnSmartShader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bnBattleItem.h" />
     <ClInclude Include="bnAI.h" />
     <ClInclude Include="bnArtifact.h" />
     <ClInclude Include="bnAudioResourceManager.h" />

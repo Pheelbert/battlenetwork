@@ -34,6 +34,8 @@ public:
   int GetHealth() const;
   void SetHealth(int _health);
   int Hit(int _damage);
+  int GetMoveCount() const;
+  int GetHitCount() const;
 
   PlayerHealthUI* GetHealthUI() const;
   SelectedChipsUI * GetChipsUI() const;
@@ -42,6 +44,8 @@ public:
   virtual void SetAnimation(int _state, std::function<void()> onFinish = nullptr);
 private:
   int health;
+  int moveCount;
+  int hitCount;
 
   TextureType textureType;
   PlayerState state;

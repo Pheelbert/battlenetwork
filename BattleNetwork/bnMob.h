@@ -2,7 +2,9 @@
 #include "bnEntity.h"
 #include "bnPixelInState.h"
 #include "bnMeta.h"
+#include "bnBattleItem.h"
 #include <vector>
+#include <map>
 
 class Mob
 {
@@ -19,16 +21,64 @@ private:
   std::vector<MobData*>::iterator iter;
   std::vector<std::function<void(Entity*)>> defaultStateInvokers;
   std::vector<std::function<void(Entity*)>> pixelStateInvokers;
+  std::map<int, BattleItem> rewards;
   bool nextReady;
   Field* field;
+  bool isBoss;
 public:
   Mob(Field* _field) {
     nextReady = true;
     field = _field;
+    isBoss = false;
   }
 
   ~Mob() {
     Cleanup();
+  }
+
+  // Cap ranks between 1-10 and where 11 is Rank S
+  void RegisterRankedReward(int rank, BattleItem item) {
+    rank = std::max(1, rank);
+    rank = std::min(11, rank);
+
+    rewards.insert(std::make_pair(rank, item));
+  }
+
+  // TODO: Off chance that there's no item
+  BattleItem* GetRankedReward(int score) {
+    if (rewards.empty()) {
+      return nullptr;
+    }
+    
+    // Collect only the items we can be rewarded with...
+    std::vector<BattleItem> possible;
+
+    // Populate the possible
+    std::map<int, BattleItem>::iterator iter = rewards.begin();
+
+    while (iter != rewards.end()) {
+      if (iter->first <= score) {
+        possible.push_back(iter->second);
+      }
+
+      iter++;
+    }
+
+    if (possible.empty()) {
+      return nullptr;
+    }
+
+    int random = rand() % possible.size();
+
+    std::vector<BattleItem>::iterator possibleIter;
+    possibleIter = possible.begin();
+      
+    while (random > 0) {
+      --random;
+      possibleIter++;
+    }
+
+    return new BattleItem(*possibleIter);
   }
 
   void Cleanup() {
@@ -46,6 +96,14 @@ public:
 
   const int GetMobCount() {
     return (int)spawn.size();
+  }
+
+  void ToggleBossFlag() {
+    isBoss = !isBoss;
+  }
+
+  bool IsBoss() {
+    return isBoss;
   }
 
   const Entity& GetMobAt(int index) {

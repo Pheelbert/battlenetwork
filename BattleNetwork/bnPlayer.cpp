@@ -29,6 +29,8 @@ Player::Player(void)
   SetLayer(0);
   team = Team::BLUE;
 
+  moveCount = hitCount = 0;
+
   //Animation
   animationProgress = 0.0f;
   setScale(2.0f, 2.0f);
@@ -43,6 +45,8 @@ Player::Player(void)
   animationComponent.load();
 
   previous = nullptr;
+
+  moveCount = 0;
 }
 
 Player::~Player(void) {
@@ -130,6 +134,7 @@ void Player::AdoptNextTile() {
   previous->RemoveEntity(this);
   previous = nullptr;
   next = nullptr;
+  moveCount++;
 }
 
 void Player::Attack(float _charge) {
@@ -175,18 +180,21 @@ int Player::Hit(int _damage) {
     result = true;
   } else {
     health -= _damage;
-    /*if (previous) {
-      // Go back where we were hit
-      this->tile->RemoveEntity(this);
-      this->SetTile(previous);
-      previous->AddEntity(this);
-      previous = nullptr;
-      next = nullptr;
-    }*/
+    hitCount++;
     this->StateChange<PlayerHitState, float>({ 600.0f });
   }
 
   return result;
+}
+
+int Player::GetMoveCount() const
+{
+  return moveCount;
+}
+
+int Player::GetHitCount() const
+{
+  return hitCount;
 }
 
 void Player::RefreshTexture() {

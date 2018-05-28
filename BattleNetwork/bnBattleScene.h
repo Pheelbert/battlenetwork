@@ -1,5 +1,6 @@
 #pragma once
-#include "bnMob.h"
+
+class Mob;
 
 class BattleScene {
 public:

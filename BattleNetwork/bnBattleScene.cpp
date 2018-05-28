@@ -7,7 +7,9 @@ using sf::Font;
 
 #include <time.h>
 
+#include "bnBattleResults.h"
 #include "bnBattleScene.h"
+#include "bnMob.h"
 #include "bnField.h"
 #include "bnPlayer.h"
 #include "bnMemory.h"
@@ -17,13 +19,11 @@ using sf::Font;
 #include "bnPlayerHealthUI.h"
 #include "bnCamera.h"
 #include "bnControllableComponent.h"
-#include "bnEngine.h"
 #include "bnChipSelectionCust.h"
-#include "bnBattleResults.h"
 #include "bnTimer.h"
 #include "bnShaderResourceManager.h"
 #include "bnPA.h"
-
+#include "bnEngine.h"
 
 int BattleScene::Run(Mob* mob) {
   /*
@@ -416,8 +416,13 @@ int BattleScene::Run(Mob* mob) {
 
     if (isPlayerDeleted) {
       if (battleResults == nullptr) {
-        sf::Time totalBattleTime = sf::milliseconds(battleTimer.GetElapsed());
-        battleResults = new BattleResults(totalBattleTime);
+        sf::Time totalBattleTime = sf::milliseconds((sf::Int32)battleTimer.GetElapsed());
+
+        // TODO: GetCounterCount()
+        //       GetDoubleDelete()
+        //       GetTripleDelete()
+        battleResults = new BattleResults(totalBattleTime, player->GetMoveCount(), player->GetHitCount(), 0, false, false, mob);
+        
         AUDIO.StopStream();
         AUDIO.Stream("resources/loops/enemy_deleted.ogg");
       }
@@ -432,6 +437,10 @@ int BattleScene::Run(Mob* mob) {
           if (ControllableComponent::GetInstance().has(PRESSED_ACTION3)) {
             // Have to hit twice
             if (battleResults->IsFinished()) {
+              // TODO: sent the battle item off to the player's gaming session for storage
+              BattleItem* reward = battleResults->GetReward();
+              if (reward) delete reward;
+
               inBattleState = false;
             }
             else {
