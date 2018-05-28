@@ -8,7 +8,7 @@ class Timer {
 
 public:
   Timer() {
-    isPaused = false;
+    isPaused = true;
     elapsed = 0;
     clock.restart();
   }

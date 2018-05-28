@@ -30,6 +30,7 @@ public:
     nextReady = true;
     field = _field;
     isBoss = false;
+    iter = spawn.end();
   }
 
   ~Mob() {
@@ -54,14 +55,14 @@ public:
     std::vector<BattleItem> possible;
 
     // Populate the possible
-    std::multimap<int, BattleItem>::iterator iter = rewards.begin();
+    std::multimap<int, BattleItem>::iterator mapIter = rewards.begin();
 
-    while (iter != rewards.end()) {
-      if (iter->first <= score) {
-        possible.push_back(iter->second);
+    while (mapIter != rewards.end()) {
+      if (mapIter->first <= score) {
+        possible.push_back(mapIter->second);
       }
 
-      iter++;
+      mapIter++;
     }
 
     if (possible.empty()) {

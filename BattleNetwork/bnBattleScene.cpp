@@ -54,7 +54,7 @@ int BattleScene::Run(Mob* mob) {
   /*
   Battle results pointer */
   BattleResults* battleResults = nullptr;
- Timer battleTimer;
+  Timer battleTimer;
 
   /*
   Set Scene*/
@@ -237,11 +237,8 @@ int BattleScene::Run(Mob* mob) {
     if (isPaused) {
       // render on top 
       ENGINE.Draw(pauseLabel, false);
-      battleTimer.Pause();
     }
-    else {
-      if (battleTimer.IsPaused()) { battleTimer.Start(); }
-    }
+  
 
     // Draw cust GUI on top of scene. No shaders affecting.
     chipCustGUI.Draw();
@@ -291,7 +288,7 @@ int BattleScene::Run(Mob* mob) {
       // NOTE: Need a battle scene state manager to handle going to and from one controll scheme to another. 
       // Plus would make more sense to revoke shaders once complete transition 
 
-    } else if (isInChipSelect) {
+    } else if (isInChipSelect && chipCustGUI.IsInView()) {
       if (ControllableComponent::GetInstance().has(PRESSED_LEFT)) {
         chipCustGUI.CursorLeft() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
       } else if (ControllableComponent::GetInstance().has(PRESSED_RIGHT)) {
@@ -383,7 +380,7 @@ int BattleScene::Run(Mob* mob) {
             stepLabel.setOrigin(0, 0);
             stepLabel.setPosition(40.0f, 40.f + nextLabelHeight);
             stepLabel.setScale(0.8f, 0.8f);
-            stepLabel.setOutlineColor(sf::Color(sin(increment) * 255, cos(increment+90*(22.f/7.f)) * 255, sin(increment+180*(22.f/7.f)) * 255));
+            stepLabel.setOutlineColor(sf::Color((sf::Uint32)(sin(increment) * 255), (sf::Uint32)(cos(increment+90*(22.f/7.f)) * 255), (sf::Uint32)(sin(increment+180*(22.f/7.f)) * 255)));
             stepLabel.setOutlineThickness(2.f);
             ENGINE.Draw(stepLabel, false);
           }
@@ -397,8 +394,6 @@ int BattleScene::Run(Mob* mob) {
               hasPA = false; // state over 
               advanceSoundPlay = false;
               isPAComplete = true;
-              // Resume the battle timer
-              battleTimer.Start();
             }
             else {
               paStepIndex++;
@@ -413,9 +408,8 @@ int BattleScene::Run(Mob* mob) {
       }
     }
 
-
     if (isPlayerDeleted) {
-      if (battleResults == nullptr) {
+      if (!battleResults) {
         sf::Time totalBattleTime = sf::milliseconds((sf::Int32)battleTimer.GetElapsed());
 
         // TODO: GetCounterCount()
@@ -463,7 +457,17 @@ int BattleScene::Run(Mob* mob) {
     }
 
     // update the cust if not paused nor in chip select nor in mob intro nor battle results
-    if (!(isPlayerDeleted || isPaused || isInChipSelect || !mob->IsSpawningDone())) customProgress += elapsed;
+    if (!(isPlayerDeleted || isPaused || isInChipSelect || !mob->IsSpawningDone())) {
+      customProgress += elapsed;
+
+      if (battleTimer.IsPaused()) {
+        // start counting seconds again 
+        battleTimer.Start();
+      }
+    }
+    else {
+      battleTimer.Pause();
+    }
 
     if (customProgress / customDuration >= 1.0) {
       if (isChipSelectReady == false) {

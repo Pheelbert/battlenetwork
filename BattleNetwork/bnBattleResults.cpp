@@ -129,20 +129,13 @@ BattleResults::~BattleResults() {
 std::string BattleResults::FormatString(sf::Time time)
 {
   double totalMS = time.asMilliseconds();
-  std::cout << "totalMS: " << totalMS << "\n";
+  
+  int minutes = (int)totalMS / 1000 / 60;
+  int seconds = (int)(totalMS / 1000.0) % 60;
+  int ms = (int)(totalMS - (minutes*60*1000) - (seconds*1000)) % 99;
 
-  int minutes = (int)(totalMS / 1000) / 60;
-  std::cout << "minutes: " << minutes << "\n";
-
-  double remainder = ((int)(totalMS / 1000.0) / 60.0) - (double)minutes;
-  std::cout << "remainder: " << remainder << "\n";
-
-  int seconds = (int)(remainder * 100) % 60;
-  remainder = (remainder * 100.0) - (double)seconds;
-  int ms = (int)(remainder * 100) % 100;
-
-  if (minutes > 99) {
-    minutes = 99;
+  if (minutes > 59) {
+    minutes = 59;
   }
 
   std::string O = "0";
