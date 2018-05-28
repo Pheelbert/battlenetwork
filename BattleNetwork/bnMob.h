@@ -21,7 +21,7 @@ private:
   std::vector<MobData*>::iterator iter;
   std::vector<std::function<void(Entity*)>> defaultStateInvokers;
   std::vector<std::function<void(Entity*)>> pixelStateInvokers;
-  std::map<int, BattleItem> rewards;
+  std::multimap<int, BattleItem> rewards;
   bool nextReady;
   Field* field;
   bool isBoss;
@@ -54,7 +54,7 @@ public:
     std::vector<BattleItem> possible;
 
     // Populate the possible
-    std::map<int, BattleItem>::iterator iter = rewards.begin();
+    std::multimap<int, BattleItem>::iterator iter = rewards.begin();
 
     while (iter != rewards.end()) {
       if (iter->first <= score) {

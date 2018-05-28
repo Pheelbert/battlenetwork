@@ -72,8 +72,6 @@ BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount,
   if (doubleDelete) score += 2;
   if (tripleDelete) score += 4;
 
-  std::cout << "score before normalization: " << score << "\n";
-
   score += std::max(counterCount, 3);
 
   // No score of zero or below. Min score of 1
@@ -106,7 +104,6 @@ BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount,
   time.setPosition(2.f*192.f, 79.f);
   time.setString(FormatString(battleLength));
   time.setOrigin(time.getLocalBounds().width, 0);
-  time.setFillColor(sf::Color(240, 248, 248));
 
   rank.setFont(*font);
   rank.setPosition(2.f*192.f, 111.f);
@@ -114,7 +111,6 @@ BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount,
   reward.setFont(*font);
   reward.setPosition(2.f*40.f, 209.f);
   reward.setString(item->GetName());
-  reward.setFillColor(sf::Color(240, 248, 248));
 
   if (score > 10) {
     rank.setString("S");
@@ -124,7 +120,6 @@ BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount,
   }
 
   rank.setOrigin(rank.getLocalBounds().width, 0);
-  rank.setFillColor(sf::Color(240, 248, 248));
 }
 
 BattleResults::~BattleResults() {
@@ -204,12 +199,25 @@ void BattleResults::Draw() {
   if (IsInView()) {
     // Draw shadow
     rank.setPosition(2.f*192.f, 112.f);
-    rank.setFillColor(sf::Color(80, 72, 88));
+
+    if (score > 10) {
+      rank.setFillColor(sf::Color(56, 92, 25));
+    }
+    else {
+      rank.setFillColor(sf::Color(80, 72, 88));
+    }
+
     ENGINE.Draw(rank, false);
 
     // Draw overlay
     rank.setPosition(2.f*191.f, 110.f);
-    rank.setFillColor(sf::Color(240, 248, 248));
+
+    if (score > 10) {
+      rank.setFillColor(sf::Color(176, 228, 24));
+    }
+    else {
+      rank.setFillColor(sf::Color(240, 248, 248));
+    }
     ENGINE.Draw(rank, false);
 
     // Draw shadow

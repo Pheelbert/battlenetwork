@@ -469,6 +469,9 @@
     <ClInclude Include="bnBattleItem.h">
       <Filter>Battle\Results\ItemGet</Filter>
     </ClInclude>
+    <ClInclude Include="bnStringEncoder.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

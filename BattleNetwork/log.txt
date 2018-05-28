@@ -1,5 +1,5 @@
-StartTime 1527510369
-Engine initialized: 0.361000 secs
+StartTime 1527530439
+Engine initialized: 0.315000 secs
 Loaded texture: resources/backgrounds/title/tile_en.png
 
 Loaded font: resources/fonts/mmbnthin_regular.ttf
@@ -74,7 +74,7 @@ Loaded audio: resources/sfx/point.ogg
 
 Loaded audio: resources/sfx/new_game.ogg
 
-Loaded audio sources: 0.167000 secs
+Loaded audio sources: 0.158000 secs
 Loaded texture: resources/tiles/img_blue_normal.png
 
 Loaded texture: resources/tiles/img_blue_cracked.png
@@ -157,6 +157,8 @@ Loaded shader: resources/shaders/white.frag.txt
 Loaded shader: resources/shaders/white_fade.frag.txt
 Loaded shader: resources/shaders/yellow.frag.txt
 Loaded shaders: 0.003000 secs
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
 Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
 
 Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
