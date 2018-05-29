@@ -37,7 +37,7 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 ## Update 5/28/2018
 Added battle results to the end of the match that shows time, ranking, and a new item. Items can be registered with `Mob` objects inside the `MobFactory` specialization. The ranking is authentically calculated from the official strategy guide for MMBN 6. The rewarded item is random but based on rank.
 
-[![screen.png](https://s15.postimg.cc/6ini1kqa3/screen.png)](https://postimg.cc/image/qd9jnp5hj/)
+[![preview.png](https://s15.postimg.cc/6cpgwlocr/preview.png)](https://postimg.cc/image/phsq6d30n/)
 
 ## Update 5/26/2018
 The PA system is bug free and acts just like the game: only matching codes or chip names can be queued together. To activate PA's, order matters. 
