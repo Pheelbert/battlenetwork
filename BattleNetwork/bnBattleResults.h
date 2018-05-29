@@ -12,6 +12,7 @@ private:
   sf::Text time;
   sf::Text rank;
   sf::Text reward;
+  sf::Text chipCode;
   sf::Sprite rewardCard;
 
   bool isHidden;

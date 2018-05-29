@@ -264,8 +264,8 @@ int BattleScene::Run(Mob* mob) {
         // show the chip select screen
         customProgress = customDuration; 
       }
-
-      if (isInChipSelect == false) {
+      
+      if (isInChipSelect == false && !isPlayerDeleted) {
         AUDIO.Play(AudioType::CHIP_SELECT);
         // slide up the screen a hair
         //camera.MoveCamera(sf::Vector2f(240.f, 140.f), sf::seconds(0.5f));

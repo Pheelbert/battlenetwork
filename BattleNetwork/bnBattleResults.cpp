@@ -86,11 +86,19 @@ BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount,
   resultsSprite.setScale(2.f, 2.f);
   resultsSprite.setPosition(-resultsSprite.getTextureRect().width*2.f, 20.f);
 
+  sf::Font *font = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
+
   if (item) {
     sf::IntRect rect = TEXTURES.GetCardRectFromID(item->GetID());
 
     rewardCard = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_CARDS));
     rewardCard.setTextureRect(rect);
+
+    if (item->IsChip()) {
+      chipCode.setFont(*font);
+      chipCode.setPosition(2.f*114.f, 209.f);
+      chipCode.setString(std::string() + item->GetChipCode());
+    }
   }
   else {
     rewardCard = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_NODATA));
@@ -99,7 +107,6 @@ BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount,
   rewardCard.setScale(2.f, 2.f);
   rewardCard.setPosition(274.0f, 180.f);
 
-  sf::Font *font = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
   time.setFont(*font);
   time.setPosition(2.f*192.f, 79.f);
   time.setString(FormatString(battleLength));
@@ -109,7 +116,7 @@ BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount,
   rank.setPosition(2.f*192.f, 111.f);
 
   reward.setFont(*font);
-  reward.setPosition(2.f*40.f, 209.f);
+  reward.setPosition(2.f*42.f, 209.f);
   reward.setString(item->GetName());
 
   if (score > 10) {
@@ -226,6 +233,10 @@ void BattleResults::Draw() {
     if (isRevealed) {
       ENGINE.Draw(rewardCard, false);
       ENGINE.Draw(reward, false);
+      
+      if (item && item->IsChip()) {
+        ENGINE.Draw(chipCode, false);
+      }
     }
   }
 }
