@@ -36,5 +36,15 @@ Mob* RandomMettaurMob::Build() {
       }
     }
   }
+
+  if (mob->GetMobCount() == 0) {
+    int x = (field->GetWidth() / 2) + 1;
+    int y = (field->GetHeight() / 2) + 1;
+    mob->Spawn<Mettaur, MettaurIdleState>(x, y);
+
+    Tile* tile = field->GetAt(x, y);
+    if (!tile->IsWalkable()) { tile->SetState(TileState::NORMAL); }
+  }
+
   return mob;
 }

@@ -48,5 +48,6 @@ enum TextureType {
   //Background/Foreground
   BACKGROUND_BLUE,
   TITLE_ANIM_CHAR,
+  GAME_OVER,
   TEXTURE_TYPE_SIZE
 };

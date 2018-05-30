@@ -46,9 +46,9 @@ int main(int argc, char** argv) {
   Logger::Logf("Engine initialized: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
 
   // lazy init
-  //TextureResourceManager::GetInstance();
-  ShaderResourceManager::GetInstance();
-  AudioResourceManager::GetInstance();
+  TEXTURES;
+  SHADERS;
+  AUDIO;
 
   // Title screen logo
   sf::Texture* logo = TEXTURES.LoadTextureFromFile("resources/backgrounds/title/tile_en.png");
@@ -260,21 +260,52 @@ int main(int argc, char** argv) {
   AUDIO.StopStream();
 
   // Make sure we didn't quit the loop prematurely
-  while(ENGINE.Running()) {
+  while (ENGINE.Running()) {
 
     Field* field(new Field(6, 3));
     // see how the random mob works around holes
-    field->GetAt((rand())%3+4, (rand()%3)+1)->SetState(TileState::EMPTY);
+    field->GetAt((rand()) % 3 + 4, (rand() % 3) + 1)->SetState(TileState::EMPTY);
 
     // MobFactory* factory = new TwoMettaurMob(field);
     MobFactory* factory = new RandomMettaurMob(field);
     Mob* mob = factory->Build();
 
-    BattleScene::Run(mob);
+    int win = BattleScene::Run(mob);
 
     delete mob;
     delete factory;
     delete field;
+
+    if (win != 1) {
+      // Start the game over music
+      AUDIO.Stream("resources/loops/game_over.ogg");
+      ENGINE.Clear();
+      break;
+    }
+  }
+
+  sf::Sprite gameOver;
+  gameOver.setTexture(*TEXTURES.GetTexture(TextureType::GAME_OVER));
+  gameOver.setScale(2.f, 2.f);
+  gameOver.setOrigin(gameOver.getLocalBounds().width / 2, gameOver.getLocalBounds().height / 2);
+  gameOver.setPosition(logoPos);
+
+  // Show gameover screen
+  while (ENGINE.Running()) {
+    ControllableComponent::GetInstance().update();
+
+    ENGINE.Draw(gameOver);
+
+    // Draw loop
+    ENGINE.DrawUnderlay();
+    ENGINE.DrawLayers();
+    ENGINE.DrawOverlay();
+
+    // Write contents to screen
+    ENGINE.Display();
+
+    // Prepare for next render 
+    ENGINE.Clear();
   }
   
   return EXIT_SUCCESS;

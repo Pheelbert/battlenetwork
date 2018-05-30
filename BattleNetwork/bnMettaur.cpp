@@ -57,6 +57,7 @@ Mettaur::Mettaur(void)
 }
 
 Mettaur::~Mettaur(void) {
+
 }
 
 int* Mettaur::GetAnimOffset() {
