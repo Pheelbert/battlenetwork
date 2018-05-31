@@ -289,11 +289,21 @@ int main(int argc, char** argv) {
   gameOver.setScale(2.f, 2.f);
   gameOver.setOrigin(gameOver.getLocalBounds().width / 2, gameOver.getLocalBounds().height / 2);
   gameOver.setPosition(logoPos);
+  float fadeInCooldown = 500.0f; // half a second
 
   // Show gameover screen
   while (ENGINE.Running()) {
+    clock.restart();
+
     INPUT.update();
 
+    fadeInCooldown -= elapsed;
+
+    if (fadeInCooldown < 0) {
+      fadeInCooldown = 0;
+    }
+
+    gameOver.setColor(sf::Color(255, 255, 255, 255 - (255 * (fadeInCooldown / 500.f))));
     ENGINE.Draw(gameOver);
 
     // Draw loop
@@ -306,6 +316,9 @@ int main(int argc, char** argv) {
 
     // Prepare for next render 
     ENGINE.Clear();
+
+    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+
   }
   
   return EXIT_SUCCESS;
