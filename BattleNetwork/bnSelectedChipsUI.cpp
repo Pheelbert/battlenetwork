@@ -4,6 +4,7 @@ using std::to_string;
 #include "bnPlayer.h"
 #include "bnField.h"
 #include "bnCannon.h"
+#include "bnBasicSword.h"
 #include "bnTile.h"
 #include "bnSelectedChipsUI.h"
 #include "bnTextureResourceManager.h"
@@ -157,6 +158,11 @@ void SelectedChipsUI::UseNextChip() {
     auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
 
     player->SetAnimation(PlayerState::PLAYER_SLASHING, onFinish);
+
+    BasicSword* sword = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+    AUDIO.Play(AudioType::SWORD_SWING);
+
+    player->GetField()->OwnEntity(sword, player->GetTile()->GetX() + 1, player->GetTile()->GetY());
   }
 
   curr++;

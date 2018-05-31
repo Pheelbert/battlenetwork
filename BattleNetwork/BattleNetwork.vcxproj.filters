@@ -137,6 +137,12 @@
     <Filter Include="Engine\Animate">
       <UniqueIdentifier>{fe12002d-65c0-4184-bb5f-72f816483120}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Spell\Sword">
+      <UniqueIdentifier>{7004a356-eed2-4c93-945f-5cfc693fe3c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Spell\Sword\Basic">
+      <UniqueIdentifier>{cdf7b239-fbfe-4c6b-ad6f-451306bed072}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -279,6 +285,9 @@
     </ClCompile>
     <ClCompile Include="Animate.cpp">
       <Filter>Engine\Animate</Filter>
+    </ClCompile>
+    <ClCompile Include="bnBasicSword.cpp">
+      <Filter>Battle\Entity\Spell\Sword\Basic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -480,6 +489,9 @@
     </ClInclude>
     <ClInclude Include="bnAnimate.h">
       <Filter>Engine\Animate</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBasicSword.h">
+      <Filter>Battle\Entity\Spell\Sword\Basic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

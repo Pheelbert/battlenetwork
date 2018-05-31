@@ -97,7 +97,7 @@ bool ChipSelectionCust::CursorAction() {
         char code = queue[cursorPos].data->GetCode();
 
         for (int i = 0; i < chipCount; i++) {
-          if (i == cursorPos || (queue[i].state == 0 && queue[i].data->GetCode() - 1 != code) || queue[i].state == 2) continue;
+          if (i == cursorPos || (queue[i].state == 0) || queue[i].state == 2) continue;
           char otherCode = queue[i].data->GetCode();
           bool isSameChip = (queue[i].data->GetShortName() == queue[cursorPos].data->GetShortName());
           if (code == '=' || otherCode == '=' || otherCode == code || isSameChip ) { queue[i].state = 1; }

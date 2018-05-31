@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animate.cpp" />
+    <ClCompile Include="bnBasicSword.cpp" />
     <ClCompile Include="bnBattleResults.h" />
     <ClCompile Include="bnArtifact.cpp" />
     <ClCompile Include="bnAudioResourceManager.cpp" />
@@ -204,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAnimate.h" />
+    <ClInclude Include="bnBasicSword.h" />
     <ClInclude Include="bnBattleItem.h" />
     <ClInclude Include="bnAI.h" />
     <ClInclude Include="bnArtifact.h" />
