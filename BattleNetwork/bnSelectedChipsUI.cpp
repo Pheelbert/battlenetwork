@@ -54,7 +54,7 @@ void SelectedChipsUI::Update() {
     // TODO: Move draw out of update. Utilize components.
     int chipOrder = 0;
     for (int i = curr; i < chipCount; i++) {
-      icon.setPosition(player->getPosition() + sf::Vector2f(30.0f - (i - curr) * 3.0f, - (i - curr) * 3.0f));
+      icon.setPosition(player->getPosition() + sf::Vector2f(((i - curr) * 2.0f) - 4.f, - player->getLocalBounds().height - 63.f - (i - curr) * -2.0f));
       sf::IntRect iconSubFrame = TEXTURES.GetIconRectFromID(selectedChips[curr]->GetIconID());
       icon.setTextureRect(iconSubFrame);
       ENGINE.Draw(icon);
@@ -95,9 +95,16 @@ void SelectedChipsUI::UseNextChip() {
     return;
   }
 
-  if (selectedChips[curr]->GetShortName().substr(0, 5) == "Recov") {
+  std::string chip = selectedChips[curr]->GetShortName();
+
+  if (chip.substr(0, 5) == "Recov") {
     player->SetHealth(player->GetHealth() + selectedChips[curr]->GetDamage());
     AUDIO.Play(AudioType::RECOVER);
+
+    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+
+    player->SetAnimation(PlayerState::PLAYER_HEAL, onFinish);
+
   } else if (selectedChips[curr]->GetID() == ChipType::CRCKPNL) {
     Tile* top = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 1);
     Tile* mid = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 2);
@@ -109,14 +116,14 @@ void SelectedChipsUI::UseNextChip() {
 
     AUDIO.Play(AudioType::PANEL_CRACK);
   }
-  else if (selectedChips[curr]->GetShortName() == "Invsble") {
+  else if (chip == "Invsble") {
     // Todo make this a time-based component
     AUDIO.Play(AudioType::INVISIBLE);
     player->SetPassthrough(true);
     player->setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 / 2.f)));
     invisTimer.restart();
   }
-  else if (selectedChips[curr]->GetShortName() == "XtrmeCnnon") {
+  else if (chip == "XtrmeCnnon") {
     AUDIO.Play(AudioType::CANNON);
     Cannon* xtreme1 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
     Cannon* xtreme2 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
@@ -135,6 +142,11 @@ void SelectedChipsUI::UseNextChip() {
     player->GetField()->OwnEntity(xtreme1, 4, 1);
     player->GetField()->OwnEntity(xtreme2, 4, 2);
     player->GetField()->OwnEntity(xtreme3, 4, 3);
+  }
+  else if (chip == "Swrd" || chip == "LongSwrd" || chip == "WideSwrd") {
+    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+
+    player->SetAnimation(PlayerState::PLAYER_SLASHING, onFinish);
   }
 
   curr++;

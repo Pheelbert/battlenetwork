@@ -18,7 +18,7 @@ using sf::Font;
 #include "bnBackgroundUI.h"
 #include "bnPlayerHealthUI.h"
 #include "bnCamera.h"
-#include "bnControllableComponent.h"
+#include "bnInputManager.h"
 #include "bnChipSelectionCust.h"
 #include "bnTimer.h"
 #include "bnShaderResourceManager.h"
@@ -167,7 +167,7 @@ int BattleScene::Run(Mob* mob) {
       isMobDeleted = true; // Hack. Just to trigger fade out and spawn a new mob
     }
 
-    ControllableComponent::GetInstance().update();
+    INPUT.update();
 
     camera.Update(elapsed);
 
@@ -248,7 +248,7 @@ int BattleScene::Run(Mob* mob) {
     chipCustGUI.Draw();
 
     // Scene keyboard controls
-    if (ControllableComponent::GetInstance().has(PRESSED_PAUSE) && !isInChipSelect && !isBattleRoundOver) {
+    if (INPUT.has(PRESSED_PAUSE) && !isInChipSelect && !isBattleRoundOver) {
       isPaused = !isPaused;
 
       if (!isPaused) {
@@ -256,7 +256,7 @@ int BattleScene::Run(Mob* mob) {
       } else {
         AUDIO.Play(AudioType::PAUSE);
       }
-    } else if ((!isMobFinished && mob->IsSpawningDone()) || (ControllableComponent::GetInstance().has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isBattleRoundOver)) {
+    } else if ((!isMobFinished && mob->IsSpawningDone()) || (INPUT.has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isBattleRoundOver)) {
        // enemy intro finished
       if (!isMobFinished) { 
         // toggle the flag
@@ -293,11 +293,11 @@ int BattleScene::Run(Mob* mob) {
       // Plus would make more sense to revoke shaders once complete transition 
 
     } else if (isInChipSelect && chipCustGUI.IsInView()) {
-      if (ControllableComponent::GetInstance().has(PRESSED_LEFT)) {
+      if (INPUT.has(PRESSED_LEFT)) {
         chipCustGUI.CursorLeft() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
-      } else if (ControllableComponent::GetInstance().has(PRESSED_RIGHT)) {
+      } else if (INPUT.has(PRESSED_RIGHT)) {
         chipCustGUI.CursorRight() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
-      } else if (ControllableComponent::GetInstance().has(PRESSED_ACTION1)) {
+      } else if (INPUT.has(PRESSED_ACTION1)) {
         bool performed = chipCustGUI.CursorAction();
 
         if (chipCustGUI.AreChipsReady()) {
@@ -310,7 +310,7 @@ int BattleScene::Run(Mob* mob) {
         else {
           AUDIO.Play(AudioType::CHIP_ERROR, 0);
         }
-      } else if (ControllableComponent::GetInstance().has(PRESSED_ACTION2)) {
+      } else if (INPUT.has(PRESSED_ACTION2)) {
         
         chipCustGUI.CursorCancel() ? AUDIO.Play(AudioType::CHIP_CANCEL, 0) : 1;
       }
@@ -432,7 +432,7 @@ int BattleScene::Run(Mob* mob) {
           battleResults->Move(sf::Vector2f(amount, 0));
         }
         else {
-          if (ControllableComponent::GetInstance().has(PRESSED_ACTION3)) {
+          if (INPUT.has(PRESSED_ACTION3)) {
             // Have to hit twice
             if (battleResults->IsFinished()) {
               // TODO: sent the battle item off to the player's gaming session for storage

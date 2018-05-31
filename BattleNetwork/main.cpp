@@ -1,7 +1,7 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 #include "bnShaderResourceManager.h"
-#include "bnControllableComponent.h"
+#include "bnInputManager.h"
 #include "bnEngine.h"
 #include "bnBattleScene.h"
 #include "bnMobFactory.h"
@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
     std::string percentageStr = std::to_string((int)(percentage*100));
     ENGINE.GetWindow()->setTitle(sf::String(std::string("Loading: ") + percentageStr + "%"));
 
-    ControllableComponent::GetInstance().update();
+    INPUT.update();
 
     /*
       Get next logs. One at a time for effect.
@@ -206,7 +206,7 @@ int main(int argc, char** argv) {
         whiteShader->setUniform("opacity", (float)(shaderCooldown / 1000.f)*0.5f);
       }
 
-      if (ControllableComponent::GetInstance().has(PRESSED_ACTION3)) {
+      if (INPUT.has(PRESSED_ACTION3)) {
         inLoadState = false;
       }
     }
@@ -292,7 +292,7 @@ int main(int argc, char** argv) {
 
   // Show gameover screen
   while (ENGINE.Running()) {
-    ControllableComponent::GetInstance().update();
+    INPUT.update();
 
     ENGINE.Draw(gameOver);
 

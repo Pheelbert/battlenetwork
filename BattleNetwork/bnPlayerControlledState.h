@@ -2,12 +2,12 @@
 #include "bnAIState.h"
 class Tile;
 class Player;
-class ControllableComponent;
+class InputManager;
 
 class PlayerControlledState : public AIState<Player>
 {
 private:
-  ControllableComponent * controllableComponent;
+  InputManager * InputManager;
 
   //Cooldowns
   float moveKeyPressCooldown;

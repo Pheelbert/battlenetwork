@@ -44,6 +44,9 @@ Player::Player(void)
   animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
   animationComponent.load();
 
+  textureType = TextureType::NAVI_MEGAMAN_ATLAS;
+  setTexture(*TEXTURES.GetTexture(textureType));
+
   previous = nullptr;
 
   moveCount = 0;
@@ -198,7 +201,7 @@ int Player::GetHitCount() const
 }
 
 void Player::RefreshTexture() {
-  switch (state) {
+  /*switch (state) {
   case PlayerState::PLAYER_IDLE:
     textureType = TextureType::NAVI_MEGAMAN_MOVE;
     break;
@@ -211,14 +214,15 @@ void Player::RefreshTexture() {
   case PlayerState::PLAYER_HIT:
     textureType = TextureType::NAVI_MEGAMAN_HIT;
     break;
+  case PlayerState::PLAYER_SLASHING:
+    textureType = TextureType::NAVI_MEGAMAN_ATLAS;
+    break;
   default:
     assert(false && "Invalid player state.");
-  }
-
-  setTexture(*TEXTURES.GetTexture(textureType));
+  }*/
 
   if (tile != nullptr) {
-    setPosition(tile->getPosition().x + 2.f, tile->getPosition().y - 76.f);
+    setPosition(tile->getPosition().x + (tile->GetWidth()/2.0f), tile->getPosition().y + (tile->GetHeight()/2.0f));
   }
 }
 
@@ -231,8 +235,8 @@ SelectedChipsUI* Player::GetChipsUI() const {
 }
 
 int Player::GetStateFromString(string _string) {
-  int size = 4;
-  string PLAYER_STATE_STRINGS[] = { "PLAYER_IDLE", "PLAYER_MOVING", "PLAYER_HIT", "PLAYER_SHOOTING" };
+  int size = 6;
+  string PLAYER_STATE_STRINGS[] = { "PLAYER_IDLE", "PLAYER_MOVING", "PLAYER_HIT", "PLAYER_SHOOTING", "PLAYER_SLASHING", "PLAYER_HEAL" };
   for (int i = 0; i < size; i++) {
     if (_string == PLAYER_STATE_STRINGS[i]) {
       return static_cast<PlayerState>(i);

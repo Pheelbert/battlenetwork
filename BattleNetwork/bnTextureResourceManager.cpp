@@ -78,6 +78,7 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/navis/megaman/navi_megaman_move.png");
   paths.push_back("resources/navis/megaman/navi_megaman_hit.png");
   paths.push_back("resources/navis/megaman/navi_megaman_shoot.png");
+  paths.push_back("resources/navis/megaman/navi_megaman_atlas.png");
 
   //-Mobs-
   paths.push_back("resources/mobs/mob_move.png");

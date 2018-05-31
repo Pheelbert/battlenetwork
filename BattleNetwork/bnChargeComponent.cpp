@@ -53,8 +53,9 @@ void ChargeComponent::update(float _elapsed) {
       animationProgress += 0.03f;
       (animationProgress >= 1.0f) ? animationProgress = 0.0f : animationProgress = animationProgress;
       chargeSprite.setTexture(chargeTexture);
-      chargeSprite.setPosition(entity->getPosition().x - 18.0f, entity->getPosition().y);
+      chargeSprite.setPosition(entity->getPosition().x + 9.0f, entity->getPosition().y - 36.f);
       chargeSprite.setScale(2.0f, 2.0f);
+      chargeSprite.setOrigin(sf::Vector2f(chargeSprite.getLocalBounds().width/2.f, chargeSprite.getLocalBounds().height/2.f));
       purpleChargeAnimation(chargeSprite, animationProgress);
     } else if (chargeCounter >= CHARGE_COUNTER_MIN) {
       if (isPartiallyCharged == false) {
@@ -66,8 +67,9 @@ void ChargeComponent::update(float _elapsed) {
       animationProgress += 0.05f;
       (animationProgress >= 1.0f) ? animationProgress = 0.0f : animationProgress = animationProgress;
       chargeSprite.setTexture(chargeTexture);
-      chargeSprite.setPosition(entity->getPosition().x - 18.0f, entity->getPosition().y);
+      chargeSprite.setPosition(entity->getPosition().x + 9.0f, entity->getPosition().y - 36.f);
       chargeSprite.setScale(2.0f, 2.0f);
+      chargeSprite.setOrigin(sf::Vector2f(chargeSprite.getLocalBounds().width/2.f, chargeSprite.getLocalBounds().height/2.f));
       blueChargeAnimation(chargeSprite, animationProgress);
     }
 
