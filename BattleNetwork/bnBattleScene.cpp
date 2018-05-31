@@ -6,8 +6,6 @@ using sf::Event;
 using sf::Font;
 
 #include <time.h>
-
-#include "bnBattleResults.h"
 #include "bnBattleScene.h"
 #include "bnMob.h"
 #include "bnField.h"
@@ -24,6 +22,7 @@ using sf::Font;
 #include "bnShaderResourceManager.h"
 #include "bnPA.h"
 #include "bnEngine.h"
+#include "bnBattleResults.h"
 
 int BattleScene::Run(Mob* mob) {
   /*

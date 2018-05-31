@@ -124,7 +124,6 @@ void SelectedChipsUI::UseNextChip() {
     invisTimer.restart();
   }
   else if (chip == "XtrmeCnnon") {
-    AUDIO.Play(AudioType::CANNON);
     Cannon* xtreme1 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
     Cannon* xtreme2 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
     Cannon* xtreme3 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
@@ -133,8 +132,9 @@ void SelectedChipsUI::UseNextChip() {
     ENGINE.GetCamera().ShakeCamera(25, sf::seconds(1));
 
     auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+    player->SetAnimation(PlayerState::PLAYER_CANNON, onFinish);
+    AUDIO.Play(AudioType::CANNON);
 
-    player->SetAnimation(PlayerState::PLAYER_SHOOTING, onFinish);
     xtreme1->SetDirection(Direction::RIGHT);
     xtreme2->SetDirection(Direction::RIGHT);
     xtreme3->SetDirection(Direction::RIGHT);
@@ -142,6 +142,16 @@ void SelectedChipsUI::UseNextChip() {
     player->GetField()->OwnEntity(xtreme1, 4, 1);
     player->GetField()->OwnEntity(xtreme2, 4, 2);
     player->GetField()->OwnEntity(xtreme3, 4, 3);
+  }
+  else if (chip == "Cannon1") {
+    Cannon* cannon = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+    player->SetAnimation(PlayerState::PLAYER_CANNON, onFinish);
+    AUDIO.Play(AudioType::CANNON);
+
+    cannon->SetDirection(Direction::RIGHT);
+
+    player->GetField()->OwnEntity(cannon, player->GetTile()->GetX()+1, player->GetTile()->GetY());
   }
   else if (chip == "Swrd" || chip == "LongSwrd" || chip == "WideSwrd") {
     auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };

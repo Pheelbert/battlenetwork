@@ -235,8 +235,8 @@ SelectedChipsUI* Player::GetChipsUI() const {
 }
 
 int Player::GetStateFromString(string _string) {
-  int size = 6;
-  string PLAYER_STATE_STRINGS[] = { "PLAYER_IDLE", "PLAYER_MOVING", "PLAYER_HIT", "PLAYER_SHOOTING", "PLAYER_SLASHING", "PLAYER_HEAL" };
+  int size = 7;
+  string PLAYER_STATE_STRINGS[] = { "PLAYER_IDLE", "PLAYER_MOVING", "PLAYER_HIT", "PLAYER_SHOOTING", "PLAYER_SLASHING", "PLAYER_HEAL", "PLAYER_CANNON" };
   for (int i = 0; i < size; i++) {
     if (_string == PLAYER_STATE_STRINGS[i]) {
       return static_cast<PlayerState>(i);
