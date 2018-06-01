@@ -23,9 +23,6 @@
     <Filter Include="Battle\Entity\Spell\Buster">
       <UniqueIdentifier>{a5b0fd9b-980a-4240-9250-0d06444c60a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Tile">
-      <UniqueIdentifier>{8bd2fb17-906f-4def-ade7-710283fde6b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Component">
       <UniqueIdentifier>{dfa2cbcd-8575-45f2-93b6-c5d98a64e469}</UniqueIdentifier>
     </Filter>
@@ -143,13 +140,16 @@
     <Filter Include="Battle\Entity\Spell\Sword\Basic">
       <UniqueIdentifier>{cdf7b239-fbfe-4c6b-ad6f-451306bed072}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Field\Tile">
+      <UniqueIdentifier>{8bd2fb17-906f-4def-ade7-710283fde6b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
       <Filter>Battle\Field</Filter>
     </ClCompile>
     <ClCompile Include="bnTile.cpp">
-      <Filter>Battle\Tile</Filter>
+      <Filter>Battle\Field\Tile</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayer.cpp">
       <Filter>Battle\Entity\Character\Player</Filter>
@@ -295,7 +295,7 @@
       <Filter>Battle\Field</Filter>
     </ClInclude>
     <ClInclude Include="bnTile.h">
-      <Filter>Battle\Tile</Filter>
+      <Filter>Battle\Field\Tile</Filter>
     </ClInclude>
     <ClInclude Include="bnEntity.h">
       <Filter>Battle\Entity</Filter>

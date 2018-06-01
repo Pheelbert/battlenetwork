@@ -159,10 +159,13 @@ void SelectedChipsUI::UseNextChip() {
 
     player->SetAnimation(PlayerState::PLAYER_SLASHING, onFinish);
 
-    BasicSword* sword = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+    BasicSword* sword  = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+    BasicSword* sword2 = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+
     AUDIO.Play(AudioType::SWORD_SWING);
 
-    player->GetField()->OwnEntity(sword, player->GetTile()->GetX() + 1, player->GetTile()->GetY());
+    player->GetField()->OwnEntity(sword,  player->GetTile()->GetX() + 1, player->GetTile()->GetY());
+    player->GetField()->OwnEntity(sword2, player->GetTile()->GetX() + 1, player->GetTile()->GetY()+1);
   }
 
   curr++;

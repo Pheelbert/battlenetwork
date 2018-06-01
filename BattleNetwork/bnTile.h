@@ -38,6 +38,8 @@ public:
   bool IsWalkable() const;
   bool IsCracked() const;
 
+  bool IsHighlighted() const;
+
   void AddEntity(Entity* _entity);
   void RemoveEntity(Entity* _entity);
   bool ContainsEntity(Entity* _entity) const;
@@ -60,6 +62,7 @@ private:
   Field* field;
   float cooldown;
   float cooldownLength;
+  bool hasSpell;
 };
 
 

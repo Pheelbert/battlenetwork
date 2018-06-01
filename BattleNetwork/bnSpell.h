@@ -7,8 +7,9 @@ using sf::Texture;
 class Spell : public Entity {
 public:
   Spell(void);
-  Spell(Field* _field, Team _team);
   virtual ~Spell(void);
+
+  const bool IsTileHighlightEnabled() const;
 
   virtual void Update(float _elapsed) = 0;
   virtual bool Move(Direction _direction) = 0;
@@ -20,8 +21,11 @@ public:
   void SetDirection(Direction _direction);
   Direction GetDirection() const;
 
+  void EnableTileHighlight(bool enable);
+
 protected:
   bool hit;
+  bool markTile;
   int random;
   float cooldown;
   float damageCooldown;

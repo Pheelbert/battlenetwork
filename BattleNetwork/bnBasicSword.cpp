@@ -26,6 +26,8 @@ BasicSword::BasicSword(Field* _field, Team _team, int _damage) {
   srand((unsigned int)time(nullptr));
   cooldown = 0;
   damage = _damage;
+
+  EnableTileHighlight(true);
 }
 
 BasicSword::~BasicSword(void) {
@@ -34,14 +36,11 @@ BasicSword::~BasicSword(void) {
 void BasicSword::Update(float _elapsed) {
   if (cooldown >= COOLDOWN || hit) {
     deleted = true;
+    Entity::Update(_elapsed);
     return;
   }
 
   tile->AffectEntities(this);
-
-  Tile* down = field->GetAt(tile->GetX(), tile->GetY() + 1);
-
-  if (down) { down->AffectEntities(this); }
 
   cooldown += _elapsed;
 }

@@ -29,6 +29,7 @@ Tile::Tile(int _x, int _y) {
   width = getTextureRect().width * getScale().x;
   height = getTextureRect().height * getScale().y;
   setPosition(((x - 1) * width) + START_X, ((y - 1) * (height - Y_OFFSET)) + START_Y);
+  hasSpell = false;
 }
 
 Tile::~Tile(void) {
@@ -115,6 +116,10 @@ bool Tile::IsCracked() const {
   return state == TileState::CRACKED;
 }
 
+bool Tile::IsHighlighted() const {
+  return hasSpell;
+}
+
 void Tile::AddEntity(Entity* _entity) {
   if (!ContainsEntity(_entity)) {
     _entity->SetTile(this);
@@ -154,8 +159,16 @@ bool Tile::GetNextEntity(Entity*& out) const {
 }
 
 void Tile::Update(float _elapsed) {
+  hasSpell = false;
+
   vector<Entity*> copies = entities;
   for (vector<Entity*>::iterator entity = copies.begin(); entity != copies.end(); entity++) {
+    if (!hasSpell) {
+      Spell* isSpell = dynamic_cast<Spell*>(*entity);
+
+      hasSpell = !(isSpell == nullptr) && isSpell->IsTileHighlightEnabled();
+    }
+
     (*entity)->Update(_elapsed);
   }
 

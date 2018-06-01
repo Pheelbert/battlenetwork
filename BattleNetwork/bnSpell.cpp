@@ -26,9 +26,14 @@ Spell::Spell(void) {
   direction = Direction::NONE;
   texture = nullptr;
   animation = FrameAnimation();
+  bool markTile = false;
 }
 
 Spell::~Spell(void) {
+}
+
+const bool Spell::IsTileHighlightEnabled() const {
+  return markTile;
 }
 
 void Spell::SetDirection(Direction _direction) {
@@ -37,4 +42,9 @@ void Spell::SetDirection(Direction _direction) {
 
 Direction Spell::GetDirection() const {
   return direction;
+}
+
+void Spell::EnableTileHighlight(bool enable)
+{
+  markTile = true;
 }

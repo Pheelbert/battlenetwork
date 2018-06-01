@@ -110,12 +110,13 @@ int BattleScene::Run(Mob* mob) {
   whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
   whiteShader.setUniform("opacity", 0.5f);
 
+  sf::Shader& yellowShader = *SHADERS.GetShader(ShaderType::YELLOW);
+  whiteShader.setUniform("texture", sf::Shader::CurrentTexture);
 
   sf::Shader& customBarShader = *SHADERS.GetShader(ShaderType::CUSTOM_BAR);
   customBarShader.setUniform("texture", sf::Shader::CurrentTexture);
   customBarShader.setUniform("factor", 0);
   customBarSprite.SetShader(&customBarShader);
-
 
   bool inBattleState = true;
   while (ENGINE.Running() && inBattleState) {
@@ -185,7 +186,16 @@ int BattleScene::Run(Mob* mob) {
     Tile* tile = nullptr;
     while (field->GetNextTile(tile)) {
       tile->move(ENGINE.GetViewOffset());
-      ENGINE.LayUnder(tile);
+
+      if (tile->IsHighlighted()) {
+        LayeredDrawable* coloredTile = new LayeredDrawable(*(sf::Sprite*)tile);
+        coloredTile->SetShader(&yellowShader);
+        ENGINE.Draw(coloredTile);
+        delete coloredTile;
+      }
+      else {
+        ENGINE.LayUnder(tile);
+      }
     }
 
     for (int d = 1; d <= field->GetHeight(); d++) {

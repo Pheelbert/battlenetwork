@@ -31,6 +31,8 @@ Wave::Wave(Field* _field, Team _team) {
   random = 0;
 
   AUDIO.Play(AudioType::WAVE);
+
+  EnableTileHighlight(true);
 }
 
 Wave::~Wave(void) {
@@ -39,6 +41,7 @@ Wave::~Wave(void) {
 void Wave::Update(float _elapsed) {
   if (!tile->IsWalkable()) {
     deleted = true;
+    Entity::Update(_elapsed);
     return;
   }
 

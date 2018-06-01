@@ -20,6 +20,12 @@ public:
     depth(0) {
   }
 
+  LayeredDrawable(const sf::Sprite& rhs) {
+    this->Sprite::Sprite(rhs);
+    layer = 0;
+    depth = 0;
+  }
+
   LayeredDrawable(int _layer)
     : layer(_layer),
     depth(0){
