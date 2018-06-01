@@ -5,6 +5,7 @@
 ChipSelectionCust::ChipSelectionCust(int cap) : 
   greyscale(*SHADERS.GetShader(ShaderType::GREYSCALE)) 
 {
+  cap = std::min(cap, 8);
   chipCap = cap;
   queue = new Bucket[chipCap];
   selectQueue = new Bucket*[chipCap];
