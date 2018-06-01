@@ -2,7 +2,6 @@
 #### Branch: master as of 6/01/2018
 Click the thumbnail to watch on youtube. 
 
-[![Video of engine 6/01/2018](https://img.youtube.com/vi/D6uHYNMeqxM/0.jpg)](https://www.youtube.com/watch?v=D6uHYNMeqxM)
 [![Video of engine 6/01/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
 [![sword.png](https://s15.postimg.cc/l91tx2baj/sword.png)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
 [![healing.png](https://s15.postimg.cc/ce0zmk9nf/healing.png)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
@@ -21,7 +20,7 @@ There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1
 There other other PAs that can be triggered through system but are not implemented and do not do any damage. 
 You can write your own PA's and add your own chips by editting the `/database` textfiles.
 
-Mega can also be deleted, ending the demo. If mega wins or loses, the battle results will show up with your time, ranking, and a random chip.
+Mega can also be deleted, ending the demo. If mega wins, the battle results will show up with your time, ranking, and a random chip.
 
 # Controls
 ```
