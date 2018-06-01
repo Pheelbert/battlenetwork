@@ -22,7 +22,7 @@ There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1
 There other other PAs that can be triggered through system but are not implemented and do not do any damage. 
 You can write your own PA's and add your own chips by editting the `/database` textfiles.
 
-Mega can also be deleted, ending the demo. If mega wins, the battle results will show up with your time, ranking, and a random chip.
+Mega can also be deleted, ending the demo. If mega wins, the battle results will show up with your time, ranking, and a random chip based on score.
 
 # Controls
 ```
