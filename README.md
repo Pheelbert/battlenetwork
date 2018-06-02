@@ -13,8 +13,11 @@ Click the thumbnail to watch on youtube.
 **Keyboard support for MMBN Chrono X Config .ini files**
 [![tool.png](https://s15.postimg.cc/hdqmp92i3/tool.png)](https://postimg.cc/image/wmgk30w6f/)
 
-Just copy and paste your `options.ini` file to the same folder as the executable and the engine will read it.
-There is no joystick support at this time.
+Just copy and paste your `options.ini` file to the same folder as the executable and the engine will read it. Plug in your controller. You'll know if everything is good because the GamePad icon will show up on the title screen:
+
+[![gamepad_support.png](https://s15.postimg.cc/nmm2cu7ij/gamepad_support.png)](https://postimg.cc/image/ib75s4lfr/)
+
+There is joystick support but the tricky thing about joysticks are that each vendor has different configurations. If you have a problem with your joystick, file an issue on the project page [here](https://github.com/TheMaverickProgrammer/battlenetwork/issues). 
 
 --------
 
