@@ -11,9 +11,12 @@ Click the thumbnail to watch on youtube.
 # Features
 
 **Keyboard support for MMBN Chrono X Config.ini files**
-[tool.png](https://s15.postimg.cc/hdqmp92i3/tool.png)
+[![tool.png](https://s15.postimg.cc/hdqmp92i3/tool.png)](https://postimg.cc/image/wmgk30w6f/)
+
 Just copy and paste your `config.ini` file to the same folder as the executable and the engine will read it.
 There is no joystick support at this time.
+
+--------
 
 In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
 
