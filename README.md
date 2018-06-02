@@ -9,6 +9,15 @@ Click the thumbnail to watch on youtube.
 [![healing.png](https://s15.postimg.cc/ce0zmk9nf/healing.png)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
 
 # Features
+
+**Keyboard support for MMBN Chrono X Config .ini files**
+[![tool.png](https://s15.postimg.cc/hdqmp92i3/tool.png)](https://postimg.cc/image/wmgk30w6f/)
+
+Just copy and paste your `options.ini` file to the same folder as the executable and the engine will read it.
+There is no joystick support at this time.
+
+--------
+
 In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
 
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
