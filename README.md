@@ -1,16 +1,20 @@
 # Videos w/ SOUND
-#### Branch: master Outdatted as of 5/27/2018
+#### Branch: master as of 6/01/2018
 Click the thumbnail to watch on youtube. 
 
-[![Video of engine 5/26/2018](https://img.youtube.com/vi/2NdjhPiUJGQ/0.jpg)](https://youtu.be/2NdjhPiUJGQ)
-[![Video of engine 5/26/2018](https://img.youtube.com/vi/2NdjhPiUJGQ/1.jpg)](https://youtu.be/2NdjhPiUJGQ) 
+[![Video of engine 6/01/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
+
+[![sword.png](https://s15.postimg.cc/l91tx2baj/sword.png)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
+
+[![healing.png](https://s15.postimg.cc/ce0zmk9nf/healing.png)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
 
 # Features
 In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
 
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
 
-At this time only 3 chip types are implemented: All heath+ chips, CrckPnl, and Invsble.
+At this time only 5 chip types are implemented: All heath+ chips, Invsible, Cannon, CrckPanel, and Sword.
+`BasicSword` is the default behavior for all the sword chips at the moment. It behaves as wide-sword attacking one panel ahead and one panel below. Each chip plays the appropriate animation.
 
 Rename the file in `resources/database/library.txt - Copy`to `resources/database/library.txt` for a full library while playing the game.
 
@@ -18,14 +22,14 @@ There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1
 There other other PAs that can be triggered through system but are not implemented and do not do any damage. 
 You can write your own PA's and add your own chips by editting the `/database` textfiles.
 
-Mega can also be deleted. If mega wins or loses, the battle results will show up with your time, ranking, and a random chip.
+Mega can also be deleted, ending the demo. If mega wins, the battle results will show up with your time, ranking, and a random chip based on score.
 
 # Controls
 ```
 ARROWS -> Move
 SPACE  -> Shoot (hold to charge)
 P      -> Pause/Unpause 
-Return -> Bring up chip select GUI / Hide 
+Return -> Bring up chip select GUI / Hide / Continue
 R CTRL -> Use a chip
 ```
 
@@ -34,15 +38,12 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 
 # Author TheMaverickProgrammer
 
-## Update 5/28/2018
+## Update 6/01/2018
 Added battle results to the end of the match that shows time, ranking, and a new item. Items can be registered with `Mob` objects inside the `MobFactory` specialization. The ranking is authentically calculated from the official strategy guide for MMBN 6. The rewarded item is random but based on rank.
 
 [![preview.png](https://s15.postimg.cc/6cpgwlocr/preview.png)](https://postimg.cc/image/phsq6d30n/)
 
-## Update 5/26/2018
-The PA system is bug free and acts just like the game: only matching codes or chip names can be queued together. To activate PA's, order matters. 
-The engine has support for a basic camera and can shake with a stress amount and a duration. You can see this live with the XtremeCannon PA.
-Previously an animation bug with the Thor library caused a crash. I wrote our own animation class in the AnimationComponent with complete success.
+Added animations for health, sword, and cannon chips. Made the tiles blink yellow for spells that enable this behavior `EnableTileHighlight(true);` in the `Spells` child classes.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -96,6 +97,7 @@ New:
 * Battle results 
 * Post-battle reward system
 * Authentic MMBN 6 ranking system 
+* Tile highlighting as seen in the games by enemy attacks and some player chips
 
 Changes from original author:
 
