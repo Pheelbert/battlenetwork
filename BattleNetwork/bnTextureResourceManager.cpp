@@ -120,6 +120,9 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/backgrounds/title/bg_blue.png");
   paths.push_back("resources/backgrounds/title/prog-pulse.png");
   paths.push_back("resources/backgrounds/game_over/game_over.png");
+
+  // Other
+  paths.push_back("resources/ui/gamepad_support_icon.png");
 }
 
 TextureResourceManager::~TextureResourceManager(void) {

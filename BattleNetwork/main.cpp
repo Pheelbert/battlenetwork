@@ -218,6 +218,13 @@ int main(int argc, char** argv) {
     if (ready) {
       // show it 
       ENGINE.Draw(&bgSprite);
+
+      if (INPUT.HasChronoXGamepadSupport()) {
+        sf::Sprite gamePadICon(*TEXTURES.GetTexture(TextureType::GAMEPAD_SUPPORT_ICON));
+        gamePadICon.setScale(2.f, 2.f);
+        gamePadICon.setPosition(10.f, 5.0f);
+        ENGINE.Draw(gamePadICon);
+      }
     }
 
     // Draw logs on top of bg

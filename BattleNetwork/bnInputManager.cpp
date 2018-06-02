@@ -5,6 +5,11 @@ using sf::Keyboard;
 #include "bnInputManager.h"
 #include "bnDirection.h"
 
+// #include <iostream>
+
+#define GAMEPAD_1 0
+#define GAMEPAD_1_AXIS_SENSITIVITY 30.f
+
 InputManager& InputManager::GetInstance() {
   static InputManager instance;
   return instance;
@@ -13,6 +18,19 @@ InputManager& InputManager::GetInstance() {
 InputManager::InputManager()
   : events(vector<InputEvent>()),
     config("options.ini") {
+
+  if (sf::Joystick::isConnected(GAMEPAD_1)) {
+    gamepadPressed["Start"] = false;
+    gamepadPressed["Select"] = false;
+    gamepadPressed["L"] = false;
+    gamepadPressed["R"] = false;
+    gamepadPressed["A"] = false;
+    gamepadPressed["B"] = false;
+    gamepadPressed["Left"] = false;
+    gamepadPressed["Right"] = false;
+    gamepadPressed["Up"] = false;
+    gamepadPressed["Down"] = false;
+  }
 }
 
 
@@ -21,13 +39,92 @@ InputManager::~InputManager() {
 
 void InputManager::update() {
   this->events.clear();
+
   Event event;
   while (ENGINE.GetWindow()->pollEvent(event)) {
     if (event.type == Event::Closed) {
       ENGINE.GetWindow()->close();
     }
 
-    if (Event::KeyPressed == event.type) {
+    if (config.IsOK() && sf::Joystick::isConnected(GAMEPAD_1)) {
+      for (unsigned int i = 0; i < sf::Joystick::getButtonCount(GAMEPAD_1); i++)
+      {
+        std::string action = "";
+
+        if (sf::Joystick::isButtonPressed(GAMEPAD_1, i)) {
+          action = config.GetPairedAction((ChronoXConfigReader::Gamepad)i);
+
+          if (action == "") continue;
+
+          if (!gamepadPressed[action]) {
+            gamepadPressed[action] = true;
+
+            // std::cout << "Button #" << i << " is pressed [Action: " << action << "]\n";
+
+            if (action == "Select") {
+              events.push_back(PRESSED_PAUSE);
+            }
+            else if (action == "Start") {
+              events.push_back(PRESSED_ACTION3);
+            }
+            else if (action == "Left") {
+              events.push_back(PRESSED_LEFT);
+            }
+            else if (action == "Right") {
+              events.push_back(PRESSED_RIGHT);
+            }
+            else if (action == "Up") {
+              events.push_back(PRESSED_UP);
+            }
+            else if (action == "Down") {
+              events.push_back(PRESSED_DOWN);
+            }
+            else if (action == "A") {
+              events.push_back(PRESSED_ACTION1);
+            }
+            else if (action == "B") {
+              events.push_back(PRESSED_ACTION2);
+            }
+          }
+        } else {
+          action = config.GetPairedAction((ChronoXConfigReader::Gamepad)i);
+
+          if (action == "") continue;
+
+          if (gamepadPressed[action]) {
+            gamepadPressed[action] = false;
+
+            // std::cout << "Button #" << i << " is released [Action: " << action << "]\n";
+
+            if (action == "Select") {
+              events.push_back(RELEASED_PAUSE);
+            }
+            else if (action == "Start") {
+              events.push_back(RELEASED_ACTION3);
+            }
+            else if (action == "Left") {
+              events.push_back(RELEASED_LEFT);
+            }
+            else if (action == "Right") {
+              events.push_back(RELEASED_RIGHT);
+            }
+            else if (action == "Up") {
+              events.push_back(RELEASED_UP);
+            }
+            else if (action == "Down") {
+              events.push_back(RELEASED_DOWN);
+            }
+            else if (action == "A") {
+              events.push_back(RELEASED_ACTION1);
+            }
+            else if (action == "B") {
+              events.push_back(RELEASED_ACTION2);
+            }
+          }
+        }
+      }
+    } else if (Event::KeyPressed == event.type) {
+      /* Gamepad not connected. Strictly use keyboard events. */
       std::string action = "";
       if (config.IsOK()) {
         action = config.GetPairedAction(event.key.code);
@@ -49,8 +146,7 @@ void InputManager::update() {
         } else if (action == "B") {
           events.push_back(PRESSED_ACTION2);
         } 
-      }
-      else {
+      } else {
         if (Keyboard::Up == event.key.code) {
           events.push_back(PRESSED_UP);
         }
@@ -76,9 +172,7 @@ void InputManager::update() {
           events.push_back(PRESSED_PAUSE);
         }
       }
-    }
-
-    if (Event::KeyReleased == event.type) {
+    } else if (Event::KeyReleased == event.type) {
       std::string action = "";
       if (config.IsOK()) {
         action = config.GetPairedAction(event.key.code);
@@ -135,6 +229,55 @@ void InputManager::update() {
         }
       }
     }
+  } // end event poll
+
+  // Check these every frame regardless of input state...
+
+  float axisXPower = 0.f;
+  float axisYPower = 0.f;
+
+  if (sf::Joystick::hasAxis(GAMEPAD_1, sf::Joystick::PovX)) {
+    axisXPower = sf::Joystick::getAxisPosition(GAMEPAD_1, sf::Joystick::PovX);
+  }
+
+  if (sf::Joystick::hasAxis(GAMEPAD_1, sf::Joystick::PovY)) {
+    axisYPower = sf::Joystick::getAxisPosition(GAMEPAD_1, sf::Joystick::PovY);
+  }
+
+  if (axisXPower <= -GAMEPAD_1_AXIS_SENSITIVITY) {
+    events.push_back(PRESSED_LEFT);
+    gamepadPressed["Left"] = true;
+  }
+  else if (gamepadPressed["Left"]) {
+    events.push_back(RELEASED_LEFT);
+    gamepadPressed["Left"] = false;
+  }
+
+  if (axisXPower >= GAMEPAD_1_AXIS_SENSITIVITY) {
+    events.push_back(PRESSED_RIGHT);
+    gamepadPressed["Right"] = true;
+  }
+  else if (gamepadPressed["Right"]) {
+    events.push_back(RELEASED_RIGHT);
+    gamepadPressed["Right"] = false;
+  }
+
+  if (axisYPower >= GAMEPAD_1_AXIS_SENSITIVITY) {
+    events.push_back(PRESSED_UP);
+    gamepadPressed["Up"] = true;
+  }
+  else if (gamepadPressed["Up"]) {
+    events.push_back(RELEASED_UP);
+    gamepadPressed["Up"] = false;
+  }
+
+  if (axisYPower <= -GAMEPAD_1_AXIS_SENSITIVITY) {
+    events.push_back(PRESSED_DOWN);
+    gamepadPressed["Down"] = true;
+  }
+  else if (gamepadPressed["Down"]) {
+    events.push_back(RELEASED_DOWN);
+    gamepadPressed["Down"] = false;
   }
 }
 
@@ -144,4 +287,9 @@ bool InputManager::has(InputEvent _event) {
 
 bool InputManager::empty() {
   return events.empty();
+}
+
+bool InputManager::HasChronoXGamepadSupport()
+{
+  return config.IsOK() && sf::Joystick::isConnected(GAMEPAD_1);
 }

@@ -296,13 +296,15 @@ Chip** ChipSelectionCust::GetChips() {
 }
 
 void ChipSelectionCust::ClearChips() {
-  for (int i = 0; i < selectCount; i++) {
-    if (*(selectedChips+i) != nullptr) {
-      delete selectedChips[i];
-    }
+  if (areChipsReady) {
+    for (int i = 0; i < selectCount; i++) {
+      if (*(selectedChips + i) != nullptr) {
+        delete selectedChips[i];
+      }
 
-    (*(selectQueue[i])).data = nullptr;
-    selectedChips[i] = nullptr;
+      (*(selectQueue[i])).data = nullptr;
+      selectedChips[i] = nullptr;
+    }
   }
 
   if (selectCount > 0)

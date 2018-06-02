@@ -43,10 +43,14 @@ Up="32781"
 */
 
 class ChronoXConfigReader {
+public:
+  enum Gamepad { };
+
 private:
   // Config values
   // Map keys to actions
   std::map<sf::Keyboard::Key, std::string> keyboard;
+  std::map<Gamepad, std::string> gamepad;
   bool isAudioEnabled;
 
   // State flags
@@ -64,6 +68,21 @@ private:
     int keyIndex = (int)_line.find(_key);
     std::string s = _line.substr(keyIndex + _key.size() + 2);
     return s.substr(0, s.find("\""));
+  }
+
+  Gamepad GetGamepadCode(int key) {
+    unsigned int vendor = sf::Joystick::getIdentification(0).vendorId;
+    unsigned int product = sf::Joystick::getIdentification(0).productId;
+
+    // Start and select on rock candy xbox controller do not map correctly
+    if (vendor == 3695 && product == 287) {
+      if (key == 32777 || key == 32778) {
+        key -= 2;
+      }
+    }
+
+    key -= 32769; // We want base 0 buttons for SFML
+    return (Gamepad)key;
   }
 
   sf::Keyboard::Key GetKeyCodeFromAscii(int ascii) {
@@ -361,10 +380,74 @@ private:
   }
 
   const bool ParseGamepad(std::string buffer) {
+    int endline = 0;
+
+    do {
+      endline = (int)buffer.find("\n");
+      std::string line = buffer.substr(0, endline);
+
+      Trim(line);
+
+      if (line.find("Select") != std::string::npos) {
+        std::string value = ValueOf("Select", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "Select"));
+      }
+
+      if (line.find("Start") != std::string::npos) {
+        std::string value = ValueOf("Start", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "Start"));
+      }
+
+      if (line.find("R") != std::string::npos) {
+        std::string value = ValueOf("R", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "R"));
+      }
+
+      if (line.find("L") != std::string::npos) {
+        std::string value = ValueOf("L", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "L"));
+      }
+
+      if (line.find("B") != std::string::npos) {
+        std::string value = ValueOf("B", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "B"));
+      }
+
+      if (line.find("A") != std::string::npos) {
+        std::string value = ValueOf("A", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "A"));
+      }
+
+      if (line.find("Left") != std::string::npos) {
+        std::string value = ValueOf("Left", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "Left"));
+      }
+
+      if (line.find("Right") != std::string::npos) {
+        std::string value = ValueOf("Right", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "Right"));
+      }
+
+      if (line.find("Down") != std::string::npos) {
+        std::string value = ValueOf("Down", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "Down"));
+      }
+
+      if (line.find("Up") != std::string::npos) {
+        std::string value = ValueOf("Up", line);
+        gamepad.insert(std::make_pair(GetGamepadCode(std::atoi(value.c_str())), "Up"));
+      }
+
+      // Read next line...
+      buffer = buffer.substr(endline + 1);
+    } while (endline > -1);
+
+    // We've come to the end of the config file with all expected headers
     return true;
   }
 
 public:
+
   ChronoXConfigReader(std::string filepath) {
     isOK = Parse(FileUtil::Read(filepath));
   }
@@ -375,6 +458,16 @@ public:
     std::map<sf::Keyboard::Key, std::string>::iterator iter = keyboard.find(event);
 
     if (iter != keyboard.end()) {
+      return iter->second;
+    }
+
+    return "";
+  }
+
+  const std::string GetPairedAction(Gamepad event) {
+    std::map<Gamepad, std::string>::iterator iter = gamepad.find(event);
+
+    if (iter != gamepad.end()) {
       return iter->second;
     }
 

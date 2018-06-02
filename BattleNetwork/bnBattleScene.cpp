@@ -79,6 +79,10 @@ int BattleScene::Run(Mob* mob) {
   sf::Vector2f customBarPos = sf::Vector2f(240.f, 0.f);
   customBarSprite.setPosition(customBarPos);
   customBarSprite.setScale(2.f, 2.f);
+
+  // Selection input delays
+  double maxChipSelectInputCooldown = 1000.0f/10.f; // tenth a second
+  double chipSelectInputCooldown = maxChipSelectInputCooldown;
   
   // MOB UI
   sf::Font *mobFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
@@ -100,7 +104,7 @@ int BattleScene::Run(Mob* mob) {
   bool initFadeOut = false;
 
   // Special: Load shaders if supported 
-  double shaderCooldown = 0; // half a second
+  double shaderCooldown = 0;
 
   sf::Shader& pauseShader = *SHADERS.GetShader(ShaderType::BLACK_FADE);
   pauseShader.setUniform("texture", sf::Shader::CurrentTexture);
@@ -285,7 +289,7 @@ int BattleScene::Run(Mob* mob) {
         isInChipSelect = true;
 
         // Clear any chip UI queues. they will contain null data. 
-        player->GetChipsUI()->LoadChips(nullptr, 0);
+        player->GetChipsUI()->LoadChips(0, 0);
 
         // Reset PA system
         isPAComplete = false;
@@ -303,10 +307,24 @@ int BattleScene::Run(Mob* mob) {
 
     } else if (isInChipSelect && chipCustGUI.IsInView()) {
       if (INPUT.has(PRESSED_LEFT)) {
-        chipCustGUI.CursorLeft() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
+        chipSelectInputCooldown -= elapsed;
+
+        if (chipSelectInputCooldown <= 0) {
+          chipCustGUI.CursorLeft() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
+          chipSelectInputCooldown = maxChipSelectInputCooldown;
+        }
       } else if (INPUT.has(PRESSED_RIGHT)) {
-        chipCustGUI.CursorRight() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
-      } else if (INPUT.has(PRESSED_ACTION1)) {
+        chipSelectInputCooldown -= elapsed;
+
+        if (chipSelectInputCooldown <= 0) {
+          chipCustGUI.CursorRight() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
+          chipSelectInputCooldown = maxChipSelectInputCooldown;
+        }
+      } else {
+        chipSelectInputCooldown = 0;
+      }
+      
+      if (INPUT.has(PRESSED_ACTION1)) {
         bool performed = chipCustGUI.CursorAction();
 
         if (chipCustGUI.AreChipsReady()) {
@@ -441,7 +459,7 @@ int BattleScene::Run(Mob* mob) {
           battleResults->Move(sf::Vector2f(amount, 0));
         }
         else {
-          if (INPUT.has(PRESSED_ACTION3)) {
+          if (INPUT.has(PRESSED_ACTION1)) {
             // Have to hit twice
             if (battleResults->IsFinished()) {
               // TODO: sent the battle item off to the player's gaming session for storage
