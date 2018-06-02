@@ -154,7 +154,17 @@ void SelectedChipsUI::UseNextChip() {
 
     player->GetField()->OwnEntity(cannon, player->GetTile()->GetX()+1, player->GetTile()->GetY());
   }
-  else if (chip == "Swrd" || chip == "LongSwrd" || chip == "WideSwrd") {
+  else if (chip == "Swrd") {
+    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+
+    player->SetAnimation(PlayerState::PLAYER_SLASHING, onFinish);
+
+    BasicSword* sword  = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+
+    AUDIO.Play(AudioType::SWORD_SWING);
+
+    player->GetField()->OwnEntity(sword,  player->GetTile()->GetX() + 1, player->GetTile()->GetY());
+  } else if (chip == "LongSwrd") {
     auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
 
     player->SetAnimation(PlayerState::PLAYER_SLASHING, onFinish);
@@ -164,8 +174,31 @@ void SelectedChipsUI::UseNextChip() {
 
     AUDIO.Play(AudioType::SWORD_SWING);
 
-    player->GetField()->OwnEntity(sword,  player->GetTile()->GetX() + 1, player->GetTile()->GetY());
-    player->GetField()->OwnEntity(sword2, player->GetTile()->GetX() + 1, player->GetTile()->GetY()+1);
+    if (player->GetField()->GetAt(player->GetTile()->GetX() + 1, player->GetTile()->GetY())) {
+      player->GetField()->OwnEntity(sword, player->GetTile()->GetX() + 1, player->GetTile()->GetY());
+    }
+
+    if (player->GetField()->GetAt(player->GetTile()->GetX() + 2, player->GetTile()->GetY())) {
+      player->GetField()->OwnEntity(sword2, player->GetTile()->GetX() + 2, player->GetTile()->GetY());
+    }
+  }
+  else if (chip == "WideSwrd") {
+    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+
+    player->SetAnimation(PlayerState::PLAYER_SLASHING, onFinish);
+
+    BasicSword* sword = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+    BasicSword* sword2 = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
+
+    AUDIO.Play(AudioType::SWORD_SWING);
+
+    if (player->GetField()->GetAt(player->GetTile()->GetX() + 1, player->GetTile()->GetY())) {
+      player->GetField()->OwnEntity(sword, player->GetTile()->GetX() + 1, player->GetTile()->GetY());
+    }
+
+    if (player->GetField()->GetAt(player->GetTile()->GetX() + 1, player->GetTile()->GetY()+1)) {
+      player->GetField()->OwnEntity(sword2, player->GetTile()->GetX() + 1, player->GetTile()->GetY()+1);
+    }
   }
 
   curr++;
