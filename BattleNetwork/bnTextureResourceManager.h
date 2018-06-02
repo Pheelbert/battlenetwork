@@ -26,7 +26,6 @@ public:
   sf::IntRect GetCardRectFromID(unsigned ID);
   sf::IntRect GetIconRectFromID(unsigned ID);
   Font* LoadFontFromFile(string _path);
-  string LoadDataFromFile(string _path);
 
 private:
   TextureResourceManager(void);

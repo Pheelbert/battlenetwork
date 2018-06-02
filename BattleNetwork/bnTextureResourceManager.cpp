@@ -127,11 +127,3 @@ TextureResourceManager::~TextureResourceManager(void) {
     delete it->second;
   }
 }
-
-string TextureResourceManager::LoadDataFromFile(string _path) {
-  ifstream in(_path);
-  stringstream buffer;
-  buffer << in.rdbuf();
-  string contents(buffer.str());
-  return contents;
-}

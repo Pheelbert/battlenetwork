@@ -1,4 +1,5 @@
 #include "bnChipLibrary.h"
+#include "bnFileUtil.h"
 #include "bnTextureResourceManager.h"
 #include <assert.h>
 #include <sstream>
@@ -39,7 +40,7 @@ Chip* ChipLibrary::Next() {
 // Used as the folder in battle
 void ChipLibrary::LoadLibrary() {
   // TODO: put this utility in an input stream class and inhert from that
-  string data = TEXTURES.LoadDataFromFile("resources/database/library.txt");
+  string data = FileUtil::Read("resources/database/library.txt");
 
   int endline = 0;
 

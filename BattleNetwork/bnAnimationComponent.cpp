@@ -3,7 +3,7 @@ using sf::Sprite;
 using sf::IntRect;
 
 #include "bnAnimationComponent.h"
-#include "bnTextureResourceManager.h"
+#include "bnFileUtil.h"
 #include "bnLogger.h"
 #include "bnEntity.h"
 
@@ -29,7 +29,7 @@ void AnimationComponent::load() {
   int currentHeight = 0;
   bool legacySupport = true;
 
-  string data = TEXTURES.LoadDataFromFile(path);
+  string data = FileUtil::Read(path);
   int endline = 0;
   do {
     endline = (int) data.find("\n");

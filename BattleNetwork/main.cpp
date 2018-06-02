@@ -303,7 +303,7 @@ int main(int argc, char** argv) {
       fadeInCooldown = 0;
     }
 
-    gameOver.setColor(sf::Color(255, 255, 255, 255 - (255 * (fadeInCooldown / 500.f))));
+    gameOver.setColor(sf::Color(255, 255, 255, (sf::Uint32)(255 - (255 * (fadeInCooldown / 500.f)))));
     ENGINE.Draw(gameOver);
 
     // Draw loop

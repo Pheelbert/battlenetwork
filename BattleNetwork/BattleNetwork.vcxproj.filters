@@ -493,6 +493,12 @@
     <ClInclude Include="bnBasicSword.h">
       <Filter>Battle\Entity\Spell\Sword\Basic</Filter>
     </ClInclude>
+    <ClInclude Include="bnFileUtil.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChronoXConfigReader.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

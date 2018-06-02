@@ -135,7 +135,8 @@ void Tile::RemoveEntity(Entity* _entity) {
 }
 
 bool Tile::ContainsEntity(Entity* _entity) const {
-  return find(entities.begin(), entities.end(), _entity) != entities.end();
+  vector<Entity*> copy = this->entities;
+  return find(copy.begin(), copy.end(), _entity) != copy.end();
 }
 
 void Tile::AffectEntities(Spell* caller) {

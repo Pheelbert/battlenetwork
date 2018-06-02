@@ -2,6 +2,7 @@
 #include <vector>
 using std::vector;
 #include "bnInputEvent.h"
+#include "bnChronoXConfigReader.h"
 
 class InputManager {
 public:
@@ -14,6 +15,9 @@ public:
 private:
   InputManager();
   vector<InputEvent> events;
+
+  // Support for ChronoX config.ini files
+  ChronoXConfigReader config;
 };
 
 #define INPUT InputManager::GetInstance()

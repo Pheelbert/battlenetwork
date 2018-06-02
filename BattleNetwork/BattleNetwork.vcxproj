@@ -219,6 +219,7 @@
     <ClInclude Include="bnChipLibrary.h" />
     <ClInclude Include="bnChipSelectionCust.h" />
     <ClInclude Include="bnChipType.h" />
+    <ClInclude Include="bnChronoXConfigReader.h" />
     <ClInclude Include="bnInputManager.h" />
     <ClInclude Include="bnInputEvent.h" />
     <ClInclude Include="bnEntity.h" />
@@ -271,6 +272,7 @@
     <ClInclude Include="bnMettaurAttackState.h" />
     <ClInclude Include="bnMeta.h" />
     <ClInclude Include="bnTimer.h" />
+    <ClInclude Include="bnFileUtil.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
