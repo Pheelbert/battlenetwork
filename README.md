@@ -21,7 +21,7 @@ There is joystick support but the tricky thing about joysticks are that each ven
 
 --------
 
-In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
+In this demo, you can choose which mob to battle, move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
 
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
 
@@ -37,6 +37,8 @@ You can write your own PA's and add your own chips by editting the `/database` t
 Mega can also be deleted, ending the demo. If mega wins, the battle results will show up with your time, ranking, and a random chip based on score.
 
 # Controls
+If not using [MMBN Chrono X Config Utility](http://www.mmbnchronox.com/download.php), these are the default bindings
+
 ```
 ARROWS -> Move
 SPACE  -> Shoot (hold to charge)
@@ -50,7 +52,9 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 
 # Author TheMaverickProgrammer
 
-## Update 6/01/2018
+## Update 6/03/2018
+The menu now goes to the Battle Select screen where you can choose which mob to net battle against. The screen displays subjective information like the mob's attack, speed, and has a place for HP and description at the bottom. 
+
 Added battle results to the end of the match that shows time, ranking, and a new item. Items can be registered with `Mob` objects inside the `MobFactory` specialization. The ranking is authentically calculated from the official strategy guide for MMBN 6. The rewarded item is random but based on rank.
 
 [![preview.png](https://s15.postimg.cc/6cpgwlocr/preview.png)](https://postimg.cc/image/phsq6d30n/)
@@ -91,6 +95,7 @@ New:
 * HP+10 chip works in-battle
 * CrckPnl chip works in-battle
 * Invsble chip works in-battle
+* Sword chips work in-battle 
 * Chip icons are rendered in battle
 * Chip icons are rendered in select
 * Chip combo select system is now working
@@ -110,6 +115,9 @@ New:
 * Post-battle reward system
 * Authentic MMBN 6 ranking system 
 * Tile highlighting as seen in the games by enemy attacks and some player chips
+* MMBN Chrono X Config reader
+* Gamepad support
+* Battle Select Screen
 
 Changes from original author:
 
