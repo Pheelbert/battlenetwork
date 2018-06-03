@@ -32,7 +32,7 @@ int SelectScene::Run()
   menuLabel->setPosition(sf::Vector2f(20.f, 5.0f));
 
   // Selection input delays
-  double maxSelectInputCooldown = 1000.0f / 5.f; // fifth a second
+  double maxSelectInputCooldown = 1000.0f / 2.f; // half of a second
   double selectInputCooldown = maxSelectInputCooldown;
 
   // MOB UI font
@@ -45,6 +45,14 @@ int SelectScene::Run()
 
   sf::Text *speedLabel = new sf::Text("1", *mobFont);
   speedLabel->setPosition(325.f, 45.f);
+
+  sf::Font *hpFont = TEXTURES.LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
+  sf::Text *hpLabel = new sf::Text("20", *hpFont);
+  hpLabel->setOutlineColor(sf::Color(48, 56, 80));
+  hpLabel->setOutlineThickness(2.f);
+  hpLabel->setScale(0.8f, 0.8f);
+  hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
+  hpLabel->setPosition(sf::Vector2f(180.f, 33.0f));
 
   float maxNumberCooldown = 500.f;
   float numberCooldown = maxNumberCooldown; // half a second
@@ -114,6 +122,9 @@ int SelectScene::Run()
     speedLabel->setFillColor(sf::Color::White);
     ENGINE.Draw(speedLabel);
 
+    // Draw hp
+    ENGINE.Draw(hpLabel);
+
     ENGINE.Draw(mob);
 
     ENGINE.DrawUnderlay();
@@ -153,7 +164,7 @@ int SelectScene::Run()
     }
 
     mobSelectionIndex = std::max(0, mobSelectionIndex);
-    mobSelectionIndex = std::min(3, mobSelectionIndex);
+    mobSelectionIndex = std::min(2, mobSelectionIndex);
 
     if (mobSelectionIndex == 0) {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE),true);
@@ -161,6 +172,7 @@ int SelectScene::Run()
       mobLabel->setString("Mettaur");
       speedLabel->setString("1");
       attackLabel->setString("1");
+      hpLabel->setString("20");
     }
     else if (mobSelectionIndex == 1) {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_PROGSMAN_IDLE),true);
@@ -168,6 +180,7 @@ int SelectScene::Run()
       mobLabel->setString("ProgsMan");
       speedLabel->setString("4");
       attackLabel->setString("3");
+      hpLabel->setString("300");
     }
     else {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_ANYTHING_GOES),true);
@@ -175,25 +188,40 @@ int SelectScene::Run()
       mobLabel->setString("Random Mob");
       speedLabel->setString("*");
       attackLabel->setString("*");
+      hpLabel->setString("");
     }
 
     if (numberCooldown > 0) {
       numberCooldown -= elapsed;
-      char first  = mobLabel->getString()[rand() % mobLabel->getString().getSize()];
-      char second = mobLabel->getString()[rand() % mobLabel->getString().getSize()];
-      std::string newstr = mobLabel->getString();
-      std::replace(newstr.begin(), newstr.end(), first, second); 
+      std::string newstr;
+
+      for (int i = 0; i < mobLabel->getString().getSize(); i++) {
+        double progress = (maxNumberCooldown - numberCooldown) / maxNumberCooldown;
+        double index = progress * mobLabel->getString().getSize();
+
+        if (i < (int)index) {
+          newstr += mobLabel->getString()[i];
+        } else {
+          if (mobLabel->getString()[i] != ' ') {
+            newstr += (char)(((rand() % (90 - 65)) + 65) + 1);
+          }
+          else {
+            newstr += ' ';
+          }
+        }
+      }
 
       int randAttack = rand() % 10;
       int randSpeed = rand() % 10;
 
       attackLabel->setString(std::to_string(randAttack));
       speedLabel->setString(std::to_string(randSpeed));
-      // mobLabel->setString(sf::String(newstr));
+      mobLabel->setString(sf::String(newstr));
     }
 
     // Refresh mob graphic origin every frame as it may change
     mob.setOrigin(mob.getLocalBounds().width / 2.f, mob.getLocalBounds().height / 2.f);
+    hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
 
     // Make a selection
     if (INPUT.has(PRESSED_ACTION1)) {
@@ -241,10 +269,12 @@ int SelectScene::Run()
   }
   delete font;
   delete mobFont;
+  delete hpFont;
   delete mobLabel;
   delete attackLabel;
   delete speedLabel;
   delete menuLabel;
+  delete hpLabel;
 
   AUDIO.StopStream();
   ENGINE.RevokeShader();
