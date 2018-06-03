@@ -6,7 +6,7 @@ Click the thumbnail to watch on youtube.
 
 [![sword.png](https://s15.postimg.cc/l91tx2baj/sword.png)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
 
-[![image.png](https://s15.postimg.cc/lezwpqxh7/image.png)](https://postimg.cc/image/4eh0h2kfr/)
+[![image.png](https://s15.postimg.cc/mik119uuj/image.png)](https://postimg.cc/image/6kbbb50mf/)
 
 # Features
 
