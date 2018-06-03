@@ -115,6 +115,8 @@ TextureResourceManager::TextureResourceManager(void) {
 
   // Battle Results Frame
   paths.push_back("resources/ui/battle_results.png");
+  paths.push_back("resources/ui/zenny.png");
+  paths.push_back("resources/ui/nodata.png");
 
   // Background/foreground
   paths.push_back("resources/backgrounds/title/bg_blue.png");

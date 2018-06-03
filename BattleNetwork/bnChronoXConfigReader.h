@@ -454,6 +454,8 @@ public:
 
   const bool IsOK() { return isOK; }
 
+  const bool IsAudioEnabled() { return isAudioEnabled;  }
+
   const std::string GetPairedAction(sf::Keyboard::Key event) {
     std::map<sf::Keyboard::Key, std::string>::iterator iter = keyboard.find(event);
 

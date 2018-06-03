@@ -7,6 +7,8 @@
 #include "bnMobFactory.h"
 #include "bnRandomMettaurMob.h"
 #include "bnTwoMettaurMob.h"
+#include "bnCannodumbMob.h"
+#include "bnChronoXConfigReader.h"
 #include "SFML/System.hpp"
 #include <Thor/Animations.hpp>
 #include <time.h>
@@ -49,6 +51,10 @@ int main(int argc, char** argv) {
   TEXTURES;
   SHADERS;
   AUDIO;
+
+  ChronoXConfigReader config("options.ini");
+  INPUT.SupportChronoXGamepad(config);
+  AUDIO.EnableAudio(config.IsAudioEnabled());
 
   // Title screen logo
   sf::Texture* logo = TEXTURES.LoadTextureFromFile("resources/backgrounds/title/tile_en.png");
@@ -274,7 +280,8 @@ int main(int argc, char** argv) {
     field->GetAt((rand()) % 3 + 4, (rand() % 3) + 1)->SetState(TileState::EMPTY);
 
     // MobFactory* factory = new TwoMettaurMob(field);
-    MobFactory* factory = new RandomMettaurMob(field);
+    //MobFactory* factory = new RandomMettaurMob(field);
+    MobFactory* factory = new CannodumbMob(field);
     Mob* mob = factory->Build();
 
     int win = BattleScene::Run(mob);

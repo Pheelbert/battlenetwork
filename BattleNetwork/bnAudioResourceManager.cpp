@@ -7,6 +7,8 @@ AudioResourceManager& AudioResourceManager::GetInstance() {
 }
 
 AudioResourceManager::AudioResourceManager() {
+  isEnabled = true;
+
   channels = new sf::Sound[NUM_OF_CHANNELS];
 
   for (int i = 0; i < NUM_OF_CHANNELS; i++) {
@@ -34,6 +36,10 @@ AudioResourceManager::~AudioResourceManager() {
   // Free memory
   delete[] channels;
   delete[] sources;
+}
+
+void AudioResourceManager::EnableAudio(bool status) {
+  isEnabled = status;
 }
 
 void AudioResourceManager::LoadAllSources(std::atomic<int> &status) {
@@ -82,6 +88,8 @@ void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {
 }
 
 int AudioResourceManager::Play(AudioType type, int priority) {
+  if (!isEnabled) { return -1; }
+
   if (type == AudioType::AUDIO_TYPE_SIZE) {
     return -1;
   }
@@ -120,6 +128,8 @@ int AudioResourceManager::Play(AudioType type, int priority) {
 }
 
 int AudioResourceManager::Stream(std::string path, bool loop) {
+  if (!isEnabled) { return -1; }
+
   // stop previous stream if any 
   stream.stop();
 

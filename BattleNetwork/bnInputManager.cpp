@@ -17,7 +17,7 @@ InputManager& InputManager::GetInstance() {
 
 InputManager::InputManager()
   : events(vector<InputEvent>()),
-    config("options.ini") {
+    config(nullptr) {
 
   if (sf::Joystick::isConnected(GAMEPAD_1)) {
     gamepadPressed["Start"] = false;
@@ -35,6 +35,11 @@ InputManager::InputManager()
 
 
 InputManager::~InputManager() {
+  this->config = nullptr;
+}
+
+void InputManager::SupportChronoXGamepad(ChronoXConfigReader& config) {
+  this->config = &config;
 }
 
 void InputManager::update() {
@@ -46,13 +51,13 @@ void InputManager::update() {
       ENGINE.GetWindow()->close();
     }
 
-    if (config.IsOK() && sf::Joystick::isConnected(GAMEPAD_1)) {
+    if (config && config->IsOK() && sf::Joystick::isConnected(GAMEPAD_1)) {
       for (unsigned int i = 0; i < sf::Joystick::getButtonCount(GAMEPAD_1); i++)
       {
         std::string action = "";
 
         if (sf::Joystick::isButtonPressed(GAMEPAD_1, i)) {
-          action = config.GetPairedAction((ChronoXConfigReader::Gamepad)i);
+          action = config->GetPairedAction((ChronoXConfigReader::Gamepad)i);
 
           if (action == "") continue;
 
@@ -87,7 +92,7 @@ void InputManager::update() {
             }
           }
         } else {
-          action = config.GetPairedAction((ChronoXConfigReader::Gamepad)i);
+          action = config->GetPairedAction((ChronoXConfigReader::Gamepad)i);
 
           if (action == "") continue;
 
@@ -126,8 +131,8 @@ void InputManager::update() {
     } else if (Event::KeyPressed == event.type) {
       /* Gamepad not connected. Strictly use keyboard events. */
       std::string action = "";
-      if (config.IsOK()) {
-        action = config.GetPairedAction(event.key.code);
+      if (config->IsOK()) {
+        action = config->GetPairedAction(event.key.code);
 
         if (action == "Select") {
           events.push_back(PRESSED_PAUSE);
@@ -174,8 +179,8 @@ void InputManager::update() {
       }
     } else if (Event::KeyReleased == event.type) {
       std::string action = "";
-      if (config.IsOK()) {
-        action = config.GetPairedAction(event.key.code);
+      if (config->IsOK()) {
+        action = config->GetPairedAction(event.key.code);
 
         if (action == "Select") {
           events.push_back(RELEASED_PAUSE);
@@ -291,5 +296,5 @@ bool InputManager::empty() {
 
 bool InputManager::HasChronoXGamepadSupport()
 {
-  return config.IsOK() && sf::Joystick::isConnected(GAMEPAD_1);
+  return config->IsOK() && sf::Joystick::isConnected(GAMEPAD_1);
 }

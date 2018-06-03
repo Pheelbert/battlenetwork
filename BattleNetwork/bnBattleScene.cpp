@@ -13,7 +13,9 @@ using sf::Font;
 #include "bnMemory.h"
 #include "bnMettaur.h"
 #include "bnProgsMan.h"
-#include "bnBackgroundUI.h"
+#include "bnLanBackground.h"
+#include "bnGraveyardBackground.h"
+#include "bnVirusBackground.h"
 #include "bnPlayerHealthUI.h"
 #include "bnCamera.h"
 #include "bnInputManager.h"
@@ -63,7 +65,21 @@ int BattleScene::Run(Mob* mob) {
   player->StateChange<PlayerIdleState>();
   field->OwnEntity(player, 2, 2);
 
-  BackgroundUI background = BackgroundUI();
+  /*
+  Background for scene*/
+  Background* background = nullptr;
+  
+  int randBG = rand() % 3;
+  
+  if (randBG == 0) {
+    background = new LanBackground();
+  }
+  else if (randBG == 1) {
+    background = new GraveyardBackground();
+  }
+  else if (randBG == 2) {
+    background = new VirusBackground();
+  }
 
   // PAUSE
   sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
@@ -183,7 +199,7 @@ int BattleScene::Run(Mob* mob) {
     ENGINE.Clear();
     ENGINE.SetView(camera.GetView());
 
-    background.Draw();
+    background->Draw();
 
     sf::Vector2f cameraAntiOffset = -ENGINE.GetViewOffset();
 
@@ -536,6 +552,7 @@ int BattleScene::Run(Mob* mob) {
   delete font;
   delete mobFont;
   delete customBarTexture;
+  delete background;
 
   if (battleResults) { delete battleResults; }
 

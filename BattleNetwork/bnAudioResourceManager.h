@@ -13,6 +13,7 @@ class AudioResourceManager {
 public:
   static AudioResourceManager& GetInstance();
 
+  void EnableAudio(bool status);
   void LoadAllSources(std::atomic<int> &status);
   void LoadSource(AudioType type, const std::string& path);
   int Play(AudioType type, int priority = 1);
@@ -30,6 +31,7 @@ private:
   sf::Music stream;
   int channelVolume;
   int streamVolume;
+  bool isEnabled;
 };
 
 #define AUDIO AudioResourceManager::GetInstance()

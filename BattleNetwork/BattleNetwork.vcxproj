@@ -137,7 +137,8 @@
       <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <EnablePREfast>false</EnablePREfast>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -153,14 +154,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animate.cpp" />
+    <ClCompile Include="bnBackground.cpp" />
     <ClCompile Include="bnBasicSword.cpp" />
-    <ClCompile Include="bnBattleResults.h" />
+    <ClCompile Include="bnBattleResults.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="bnArtifact.cpp" />
     <ClCompile Include="bnAudioResourceManager.cpp" />
-    <ClCompile Include="bnBackgroundUI.cpp" />
+    <ClCompile Include="bnGraveyardBackground.cpp" />
+    <ClCompile Include="bnLanBackground.cpp" />
     <ClCompile Include="bnBattleResults.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="bnCannodumbMob.cpp" />
     <ClCompile Include="bnCannon.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
     <ClCompile Include="bnChip.cpp" />
@@ -202,17 +209,21 @@
     <ClCompile Include="bnProgsManMoveState.cpp" />
     <ClCompile Include="bnProgsManPunchState.cpp" />
     <ClCompile Include="bnSmartShader.cpp" />
+    <ClCompile Include="bnVirusBackground.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAnimate.h" />
+    <ClInclude Include="bnBackground.h" />
     <ClInclude Include="bnBasicSword.h" />
     <ClInclude Include="bnBattleItem.h" />
     <ClInclude Include="bnAI.h" />
     <ClInclude Include="bnArtifact.h" />
     <ClInclude Include="bnAudioResourceManager.h" />
     <ClInclude Include="bnAudioType.h" />
-    <ClInclude Include="bnBackgroundUI.h" />
+    <ClInclude Include="bnGraveyardBackground.h" />
+    <ClInclude Include="bnLanBackground.h" />
     <ClInclude Include="bnCamera.h" />
+    <ClInclude Include="bnCannodumbMob.h" />
     <ClInclude Include="bnCannon.h" />
     <ClInclude Include="bnChargeComponent.h" />
     <ClInclude Include="bnChip.h" />
@@ -265,6 +276,7 @@
     <ClInclude Include="bnPlayerHealthUI.h" />
     <ClInclude Include="bnBuster.h" />
     <ClInclude Include="bnTwoMettaurMob.h" />
+    <ClInclude Include="bnVirusBackground.h" />
     <ClInclude Include="bnWave.h" />
     <ClInclude Include="bnMettaur.h" />
     <ClInclude Include="bnEngine.h" />

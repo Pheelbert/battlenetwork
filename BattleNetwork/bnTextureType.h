@@ -46,6 +46,8 @@ enum TextureType {
   CHIP_SENDDATA,
   // Battle Result
   BATTLE_RESULTS_FRAME,
+  BATTLE_RESULTS_ZENNY,
+  BATTLE_RESULTS_NODATA,
   //Background/Foreground
   BACKGROUND_BLUE,
   TITLE_ANIM_CHAR,

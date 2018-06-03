@@ -119,18 +119,6 @@
     <Filter Include="Engine\Input">
       <UniqueIdentifier>{4a441b30-9e2f-4ff8-921a-60ef383f26d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Resource">
-      <UniqueIdentifier>{0e5b07ae-1ba2-404d-a462-579ab664eac6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Resource\TextureResource">
-      <UniqueIdentifier>{04b25a7a-f471-420f-8ea0-6794994adb3c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Resource\AudioResource">
-      <UniqueIdentifier>{584d74c6-24b9-4e0b-b8cb-06f4e0b8a9c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Resource\ShaderResource">
-      <UniqueIdentifier>{49b19f7e-5aec-46e0-967f-2e0f585adcef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Animate">
       <UniqueIdentifier>{fe12002d-65c0-4184-bb5f-72f816483120}</UniqueIdentifier>
     </Filter>
@@ -142,6 +130,18 @@
     </Filter>
     <Filter Include="Battle\Field\Tile">
       <UniqueIdentifier>{8bd2fb17-906f-4def-ade7-710283fde6b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resources">
+      <UniqueIdentifier>{0e5b07ae-1ba2-404d-a462-579ab664eac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resources\TextureResource">
+      <UniqueIdentifier>{04b25a7a-f471-420f-8ea0-6794994adb3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resources\AudioResource">
+      <UniqueIdentifier>{584d74c6-24b9-4e0b-b8cb-06f4e0b8a9c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resources\ShaderResource">
+      <UniqueIdentifier>{49b19f7e-5aec-46e0-967f-2e0f585adcef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +156,6 @@
     </ClCompile>
     <ClCompile Include="bnSpell.cpp">
       <Filter>Battle\Entity\Spell</Filter>
-    </ClCompile>
-    <ClCompile Include="bnBackgroundUI.cpp">
-      <Filter>Battle\Background</Filter>
     </ClCompile>
     <ClCompile Include="bnWave.cpp">
       <Filter>Battle\Entity\Spell\Wave</Filter>
@@ -191,10 +188,10 @@
       <Filter>Battle\Entity\Character\ProgsMan</Filter>
     </ClCompile>
     <ClCompile Include="bnAudioResourceManager.cpp">
-      <Filter>Engine\Resource\AudioResource</Filter>
+      <Filter>Engine\Resources\AudioResource</Filter>
     </ClCompile>
     <ClCompile Include="bnTextureResourceManager.cpp">
-      <Filter>Engine\Resource\TextureResource</Filter>
+      <Filter>Engine\Resources\TextureResource</Filter>
     </ClCompile>
     <ClCompile Include="bnProgBomb.cpp">
       <Filter>Battle\Entity\Spell\ProgBomb</Filter>
@@ -260,10 +257,10 @@
       <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
     </ClCompile>
     <ClCompile Include="bnShaderResourceManager.cpp">
-      <Filter>Engine\Resource\ShaderResource</Filter>
+      <Filter>Engine\Resources\ShaderResource</Filter>
     </ClCompile>
     <ClCompile Include="bnSmartShader.cpp">
-      <Filter>Engine\Resource\ShaderResource</Filter>
+      <Filter>Engine\Resources\ShaderResource</Filter>
     </ClCompile>
     <ClCompile Include="bnProgsManPunchState.cpp">
       <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
@@ -289,6 +286,21 @@
     <ClCompile Include="bnBasicSword.cpp">
       <Filter>Battle\Entity\Spell\Sword\Basic</Filter>
     </ClCompile>
+    <ClCompile Include="bnCannodumbMob.cpp">
+      <Filter>Battle\Mob\Easy</Filter>
+    </ClCompile>
+    <ClCompile Include="bnLanBackground.cpp">
+      <Filter>Battle\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="bnGraveyardBackground.cpp">
+      <Filter>Battle\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="bnBackground.cpp">
+      <Filter>Battle\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="bnVirusBackground.cpp">
+      <Filter>Battle\Background</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -311,9 +323,6 @@
     </ClInclude>
     <ClInclude Include="bnLogger.h">
       <Filter>Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="bnBackgroundUI.h">
-      <Filter>Battle\Background</Filter>
     </ClInclude>
     <ClInclude Include="bnWave.h">
       <Filter>Battle\Entity\Spell\Wave</Filter>
@@ -345,9 +354,6 @@
     <ClInclude Include="bnDirection.h">
       <Filter>Battle\Enumerations</Filter>
     </ClInclude>
-    <ClInclude Include="bnBattleScene.h">
-      <Filter>Battle</Filter>
-    </ClInclude>
     <ClInclude Include="bnPlayerHealthUI.h">
       <Filter>Battle\Entity\Character\Player</Filter>
     </ClInclude>
@@ -361,16 +367,16 @@
       <Filter>Battle\Entity\Character\ProgsMan</Filter>
     </ClInclude>
     <ClInclude Include="bnTextureType.h">
-      <Filter>Engine\Resource\TextureResource</Filter>
+      <Filter>Engine\Resources\TextureResource</Filter>
     </ClInclude>
     <ClInclude Include="bnAudioType.h">
-      <Filter>Engine\Resource\AudioResource</Filter>
+      <Filter>Engine\Resources\AudioResource</Filter>
     </ClInclude>
     <ClInclude Include="bnAudioResourceManager.h">
-      <Filter>Engine\Resource\AudioResource</Filter>
+      <Filter>Engine\Resources\AudioResource</Filter>
     </ClInclude>
     <ClInclude Include="bnTextureResourceManager.h">
-      <Filter>Engine\Resource\TextureResource</Filter>
+      <Filter>Engine\Resources\TextureResource</Filter>
     </ClInclude>
     <ClInclude Include="bnProgBomb.h">
       <Filter>Battle\Entity\Spell\ProgBomb</Filter>
@@ -458,13 +464,13 @@
       <Filter>Battle\Entity\Character\ProgsMan\States</Filter>
     </ClInclude>
     <ClInclude Include="bnShaderResourceManager.h">
-      <Filter>Engine\Resource\ShaderResource</Filter>
+      <Filter>Engine\Resources\ShaderResource</Filter>
     </ClInclude>
     <ClInclude Include="bnShaderType.h">
-      <Filter>Engine\Resource\ShaderResource</Filter>
+      <Filter>Engine\Resources\ShaderResource</Filter>
     </ClInclude>
     <ClInclude Include="bnSmartShader.h">
-      <Filter>Engine\Resource\ShaderResource</Filter>
+      <Filter>Engine\Resources\ShaderResource</Filter>
     </ClInclude>
     <ClInclude Include="bnPA.h">
       <Filter>Battle\Chips\PA</Filter>
@@ -498,6 +504,22 @@
     </ClInclude>
     <ClInclude Include="bnChronoXConfigReader.h">
       <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBattleScene.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCannodumbMob.h">
+      <Filter>Battle\Mob\Easy</Filter>
+    </ClInclude>
+    <ClInclude Include="bnLanBackground.h">
+      <Filter>Battle\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="bnGraveyardBackground.h">
+      <Filter>Battle\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBackground.h" />
+    <ClInclude Include="bnVirusBackground.h">
+      <Filter>Battle\Background</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

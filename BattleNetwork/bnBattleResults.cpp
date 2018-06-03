@@ -101,7 +101,7 @@ BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount,
     }
   }
   else {
-    rewardCard = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_NODATA));
+    rewardCard = sf::Sprite(*TEXTURES.GetTexture(TextureType::BATTLE_RESULTS_NODATA));
   }
 
   rewardCard.setScale(2.f, 2.f);
@@ -117,7 +117,13 @@ BattleResults::BattleResults(sf::Time battleLength, int moveCount, int hitCount,
 
   reward.setFont(*font);
   reward.setPosition(2.f*42.f, 209.f);
-  reward.setString(item->GetName());
+
+  if (item) {
+    reward.setString(item->GetName());
+  }
+  else {
+    reward.setString("No Data");
+  }
 
   if (score > 10) {
     rank.setString("S");
