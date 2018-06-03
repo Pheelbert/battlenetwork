@@ -96,6 +96,9 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/mobs/progsman/mob_progsman_punch.png");
   paths.push_back("resources/mobs/progsman/mob_progsman_throw.png");
 
+  // Select screen "Anything Goes"
+  paths.push_back("resources/mobs/select/random.png");
+
   //-Spells-
   //Bullet
   paths.push_back("resources/spells/spell_bullet_hit.png");
@@ -122,6 +125,7 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/backgrounds/title/bg_blue.png");
   paths.push_back("resources/backgrounds/title/prog-pulse.png");
   paths.push_back("resources/backgrounds/game_over/game_over.png");
+  paths.push_back("resources/backgrounds/select/battle_select.png");
 
   // Other
   paths.push_back("resources/ui/gamepad_support_icon.png");

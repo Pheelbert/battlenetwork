@@ -29,9 +29,6 @@
     <Filter Include="Battle\Enumerations">
       <UniqueIdentifier>{5c9d2cbc-eb6d-4112-b2aa-bafcdf47830a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Background">
-      <UniqueIdentifier>{dc29490c-a264-4350-a55e-b02202ddc325}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{b2d44660-3edc-4851-bcad-91fd074e9eef}</UniqueIdentifier>
     </Filter>
@@ -142,6 +139,21 @@
     </Filter>
     <Filter Include="Engine\Resources\ShaderResource">
       <UniqueIdentifier>{49b19f7e-5aec-46e0-967f-2e0f585adcef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Select">
+      <UniqueIdentifier>{2c22d20c-e987-4431-9a4b-554d71926008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Backgrounds">
+      <UniqueIdentifier>{dc29490c-a264-4350-a55e-b02202ddc325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene">
+      <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Mob\Boss">
+      <UniqueIdentifier>{e66292ed-1af5-4333-930f-cd53c65a9e48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Mob\Boss\ProgsMan">
+      <UniqueIdentifier>{a79cf10e-8091-4ad4-a760-c6bf708c83cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -290,16 +302,22 @@
       <Filter>Battle\Mob\Easy</Filter>
     </ClCompile>
     <ClCompile Include="bnLanBackground.cpp">
-      <Filter>Battle\Background</Filter>
+      <Filter>Battle\Backgrounds</Filter>
     </ClCompile>
     <ClCompile Include="bnGraveyardBackground.cpp">
-      <Filter>Battle\Background</Filter>
-    </ClCompile>
-    <ClCompile Include="bnBackground.cpp">
-      <Filter>Battle\Background</Filter>
+      <Filter>Battle\Backgrounds</Filter>
     </ClCompile>
     <ClCompile Include="bnVirusBackground.cpp">
-      <Filter>Battle\Background</Filter>
+      <Filter>Battle\Backgrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="bnBackground.cpp">
+      <Filter>Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="bnSelectScene.cpp">
+      <Filter>Select</Filter>
+    </ClCompile>
+    <ClCompile Include="bnProgsManBossFight.cpp">
+      <Filter>Battle\Mob\Boss\ProgsMan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -505,21 +523,27 @@
     <ClInclude Include="bnChronoXConfigReader.h">
       <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="bnBattleScene.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="bnCannodumbMob.h">
       <Filter>Battle\Mob\Easy</Filter>
     </ClInclude>
     <ClInclude Include="bnLanBackground.h">
-      <Filter>Battle\Background</Filter>
+      <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
     <ClInclude Include="bnGraveyardBackground.h">
-      <Filter>Battle\Background</Filter>
+      <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
     <ClInclude Include="bnBackground.h" />
     <ClInclude Include="bnVirusBackground.h">
-      <Filter>Battle\Background</Filter>
+      <Filter>Battle\Backgrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSelectScene.h">
+      <Filter>Select</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBattleScene.h">
+      <Filter>Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="bnProgsManBossFight.h">
+      <Filter>Battle\Mob\Boss\ProgsMan</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

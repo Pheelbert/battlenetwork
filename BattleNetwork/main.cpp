@@ -3,11 +3,7 @@
 #include "bnShaderResourceManager.h"
 #include "bnInputManager.h"
 #include "bnEngine.h"
-#include "bnBattleScene.h"
-#include "bnMobFactory.h"
-#include "bnRandomMettaurMob.h"
-#include "bnTwoMettaurMob.h"
-#include "bnCannodumbMob.h"
+#include "bnSelectScene.h"
 #include "bnChronoXConfigReader.h"
 #include "SFML/System.hpp"
 #include <Thor/Animations.hpp>
@@ -269,26 +265,12 @@ int main(int argc, char** argv) {
   delete font;
   delete logo;
 
-  // Stop music and go to battle 
+  // Stop music and go to select screen 
   AUDIO.StopStream();
 
   // Make sure we didn't quit the loop prematurely
   while (ENGINE.Running()) {
-
-    Field* field(new Field(6, 3));
-    // see how the random mob works around holes
-    field->GetAt((rand()) % 3 + 4, (rand() % 3) + 1)->SetState(TileState::EMPTY);
-
-    // MobFactory* factory = new TwoMettaurMob(field);
-    //MobFactory* factory = new RandomMettaurMob(field);
-    MobFactory* factory = new CannodumbMob(field);
-    Mob* mob = factory->Build();
-
-    int win = BattleScene::Run(mob);
-
-    delete mob;
-    delete factory;
-    delete field;
+    int win = SelectScene::Run();
 
     if (win != 1) {
       // Start the game over music

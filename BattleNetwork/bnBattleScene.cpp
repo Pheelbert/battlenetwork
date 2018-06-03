@@ -104,7 +104,12 @@ int BattleScene::Run(Mob* mob) {
   sf::Font *mobFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
 
   // Stream battle music 
-  AUDIO.Stream("resources/loops/loop_battle.ogg", true);
+  if (!mob->IsBoss()) {
+    AUDIO.Stream("resources/loops/loop_battle.ogg", true);
+  }
+  else {
+    AUDIO.Stream("resources/loops/loop_boss_battle.ogg", true);
+  }
 
   Clock clock;
   float elapsed = 0.0f;

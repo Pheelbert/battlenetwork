@@ -188,6 +188,7 @@
     <ClCompile Include="bnProgBomb.cpp" />
     <ClCompile Include="bnProgsMan.cpp" />
     <ClCompile Include="bnAnimationComponent.cpp" />
+    <ClCompile Include="bnProgsManBossFight.cpp" />
     <ClCompile Include="bnProgsManIdleState.cpp" />
     <ClCompile Include="bnRandomMettaurMob.cpp" />
     <ClCompile Include="bnShaderResourceManager.cpp" />
@@ -210,6 +211,7 @@
     <ClCompile Include="bnProgsManPunchState.cpp" />
     <ClCompile Include="bnSmartShader.cpp" />
     <ClCompile Include="bnVirusBackground.cpp" />
+    <ClCompile Include="bnSelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAnimate.h" />
@@ -255,10 +257,12 @@
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnAnimationComponent.h" />
+    <ClInclude Include="bnProgsManBossFight.h" />
     <ClInclude Include="bnProgsManIdleState.h" />
     <ClInclude Include="bnProgsManMoveState.h" />
     <ClInclude Include="bnProgsManPunchState.h" />
     <ClInclude Include="bnRandomMettaurMob.h" />
+    <ClInclude Include="bnSelectScene.h" />
     <ClInclude Include="bnShaderResourceManager.h" />
     <ClInclude Include="bnShaderType.h" />
     <ClInclude Include="bnSmartShader.h" />
