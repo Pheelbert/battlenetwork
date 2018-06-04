@@ -11,6 +11,7 @@ enum AudioType {
   BUSTER_CHARGED,
   BUSTER_CHARGING,
   CANNON,
+  COUNTER,
   CHIP_CANCEL,
   CHIP_CHOOSE,
   CHIP_CONFIRM,
@@ -39,5 +40,6 @@ enum AudioType {
   PA_ADVANCE,
   POINT,
   NEW_GAME,
+  TEXT,
   AUDIO_TYPE_SIZE
 };

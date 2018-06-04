@@ -155,6 +155,9 @@
     <Filter Include="Battle\Mob\Boss\ProgsMan">
       <UniqueIdentifier>{a79cf10e-8091-4ad4-a760-c6bf708c83cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Resources\FontResource">
+      <UniqueIdentifier>{439edcdf-bce0-4360-b0e4-4fe0e780bf66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">

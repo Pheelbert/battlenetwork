@@ -49,6 +49,7 @@ void AudioResourceManager::LoadAllSources(std::atomic<int> &status) {
   LoadSource(AudioType::BUSTER_CHARGED, "resources/sfx/buster_charged.ogg"); status++;
   LoadSource(AudioType::BUSTER_CHARGING, "resources/sfx/buster_charging.ogg"); status++;
   LoadSource(AudioType::CANNON, "resources/sfx/cannon.ogg"); status++;
+  LoadSource(AudioType::COUNTER, "resources/sfx/counter.ogg"); status++;
   LoadSource(AudioType::CHIP_CANCEL, "resources/sfx/chip_cancel.ogg"); status++;
   LoadSource(AudioType::CHIP_CHOOSE, "resources/sfx/chip_choose.ogg"); status++;
   LoadSource(AudioType::CHIP_CONFIRM, "resources/sfx/chip_confirm.ogg"); status++;
@@ -77,6 +78,7 @@ void AudioResourceManager::LoadAllSources(std::atomic<int> &status) {
   LoadSource(AudioType::PA_ADVANCE, "resources/sfx/pa_advance.ogg"); status++;
   LoadSource(AudioType::POINT, "resources/sfx/point.ogg"); status++;
   LoadSource(AudioType::NEW_GAME, "resources/sfx/new_game.ogg"); status++;
+  LoadSource(AudioType::TEXT, "resources/sfx/text.ogg"); status++;
 }
 
 void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {

@@ -66,11 +66,17 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/tiles/img_blue_normal.png");
   paths.push_back("resources/tiles/img_blue_cracked.png");
   paths.push_back("resources/tiles/img_blue_broken.png");
+  paths.push_back("resources/tiles/img_blue_ice.png");
+  paths.push_back("resources/tiles/img_blue_grass.png");
+  paths.push_back("resources/tiles/img_blue_purple.png");
   paths.push_back("resources/tiles/img_blue_empty.png");
   //Red tile
   paths.push_back("resources/tiles/img_red_normal.png");
   paths.push_back("resources/tiles/img_red_cracked.png");
   paths.push_back("resources/tiles/img_red_broken.png");
+  paths.push_back("resources/tiles/img_red_ice.png");
+  paths.push_back("resources/tiles/img_red_grass.png");
+  paths.push_back("resources/tiles/img_red_purple.png");
   paths.push_back("resources/tiles/img_red_empty.png");
 
   //-Navis-
@@ -127,8 +133,11 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/backgrounds/game_over/game_over.png");
   paths.push_back("resources/backgrounds/select/battle_select.png");
 
-  // Other
+  // other icons
   paths.push_back("resources/ui/gamepad_support_icon.png");
+
+  // other misc
+  paths.push_back("resources/shaders/textures/distortion.png");
 }
 
 TextureResourceManager::~TextureResourceManager(void) {

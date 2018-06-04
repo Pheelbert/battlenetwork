@@ -30,7 +30,7 @@ sf::Shader* ShaderResourceManager::LoadShaderFromFile(string _path) {
     exit(EXIT_FAILURE);
     return nullptr;
   }
-  shader->setUniform("texture", sf::Shader::CurrentTexture);
+  //shader->setUniform("texture", sf::Shader::CurrentTexture);
 
   Logger::Log("Loaded shader: " + _path);
   return shader;
@@ -49,6 +49,7 @@ ShaderResourceManager::ShaderResourceManager(void) {
   paths.push_back("resources/shaders/white.frag.txt");
   paths.push_back("resources/shaders/white_fade.frag.txt");
   paths.push_back("resources/shaders/yellow.frag.txt");
+  paths.push_back("resources/shaders/distortion.frag.txt");
 }
 
 ShaderResourceManager::~ShaderResourceManager(void) {

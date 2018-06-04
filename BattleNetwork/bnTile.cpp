@@ -96,11 +96,37 @@ void Tile::RefreshTexture() {
     } else {
       textureType = ((int)(cooldown * 5) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_RED_NORMAL : TextureType::TILE_RED_BROKEN;
     }
-  } else if (state == TileState::EMPTY) {
+  }
+  else if (state == TileState::EMPTY) {
     if (team == Team::BLUE) {
       textureType = TextureType::TILE_BLUE_EMPTY;
-    } else {
+    }
+    else {
       textureType = TextureType::TILE_RED_EMPTY;
+    }
+  }
+  else if (state == TileState::ICE) {
+    if (team == Team::BLUE) {
+      textureType = TextureType::TILE_BLUE_ICE;
+    }
+    else {
+      textureType = TextureType::TILE_RED_ICE;
+    }
+  }
+  else if (state == TileState::GRASS) {
+    if (team == Team::BLUE) {
+      textureType = TextureType::TILE_BLUE_GRASS;
+    }
+    else {
+      textureType = TextureType::TILE_RED_GRASS;
+    }
+  }
+  else if (state == TileState::PURPLE) {
+    if (team == Team::BLUE) {
+      textureType = TextureType::TILE_BLUE_PURPLE;
+    }
+    else {
+      textureType = TextureType::TILE_RED_PURPLE;
     }
   } else {
     assert(false && "Tile in invalid state");

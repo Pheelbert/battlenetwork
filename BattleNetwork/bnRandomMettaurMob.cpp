@@ -21,6 +21,9 @@ Mob* RandomMettaurMob::Build() {
   for (int i = 0; i < field->GetWidth(); i++) {
     for (int j = 0; j < field->GetHeight(); j++) {
       Tile* tile = field->GetAt(i + 1, j + 1);
+
+      tile->SetState((TileState)(rand() % (int)TileState::EMPTY)); // Make it random excluding an empty tile
+
       if (tile->IsWalkable() && tile->GetTeam() == Team::RED) {
         if (rand() % 50 > 30) {
           if (rand() % 10 > 8) {

@@ -12,5 +12,6 @@ enum ShaderType {
   WHITE,
   WHITE_FADE, 
   YELLOW,
+  DISTORTION,
   SHADER_TYPE_SIZE
 };

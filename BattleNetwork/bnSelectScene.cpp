@@ -67,6 +67,30 @@ int SelectScene::Run()
   mob.setOrigin(mob.getLocalBounds().width / 2.f, mob.getLocalBounds().height / 2.f);
   mob.setPosition(110.f, 130.f);
 
+  // Distortion effect
+  sf::Texture& distortionMap = *TEXTURES.GetTexture(TextureType::DISTORTION_TEXTURE);
+
+  // It is important to set repeated to true to enable scrolling upwards
+  distortionMap.setRepeated(true);
+
+  // Setting smooth to true lets us use small maps even on larger images
+  distortionMap.setSmooth(true);
+
+
+  //sf::RenderTexture distortionBuffer;
+  //distortionBuffer.create(camera.GetView().getSize().x*2, camera.GetView().getSize().y*2);
+
+  //sf::Sprite distortionPost;
+  //distortionPost.setTexture(distortionBuffer.getTexture());
+
+  sf::Shader& shader = *SHADERS.GetShader(ShaderType::DISTORTION);
+
+  shader.setUniform("currentTexture", sf::Shader::CurrentTexture);
+  shader.setUniform("distortionMapTexture", distortionMap);
+
+  float distortionFactor = .05f;
+  float riseFactor = .2f;
+
   // Current selection index
   int mobSelectionIndex = 0;
 
@@ -75,10 +99,12 @@ int SelectScene::Run()
 
   Clock clock;
   float elapsed = 0.0f;
-
+  float totalTime = 0.f;
   while (ENGINE.Running()) {
     
     float elapsedSeconds = clock.restart().asSeconds();
+    totalTime += elapsedSeconds;
+
     float FPS = 0.f;
 
     if (elapsedSeconds > 0.f) {
@@ -90,10 +116,10 @@ int SelectScene::Run()
   
     INPUT.update();
 
-    camera.Update(elapsed);
-
     ENGINE.Clear();
     ENGINE.SetView(camera.GetView());
+
+    camera.Update(elapsed);
 
     ENGINE.Draw(bg);
     ENGINE.Draw(menuLabel);
@@ -125,8 +151,6 @@ int SelectScene::Run()
     // Draw hp
     ENGINE.Draw(hpLabel);
 
-    ENGINE.Draw(mob);
-
     ENGINE.DrawUnderlay();
     ENGINE.DrawLayers();
     ENGINE.DrawOverlay();
@@ -143,7 +167,7 @@ int SelectScene::Run()
         // Number scramble effect
         numberCooldown = maxNumberCooldown;
 
-        //AUDIO.Play(AudioType::CHIP_CHOOSE, 0);
+        AUDIO.Play(AudioType::CHIP_SELECT, 1);
       }
     } else if (INPUT.has(PRESSED_RIGHT)) {
       selectInputCooldown -= elapsed;
@@ -156,7 +180,7 @@ int SelectScene::Run()
         // Number scramble effect
         numberCooldown = maxNumberCooldown;
 
-        //AUDIO.Play(AudioType::CHIP_CHOOSE, 0);
+        AUDIO.Play(AudioType::CHIP_SELECT, 1);
       }
     }
     else {
@@ -204,6 +228,7 @@ int SelectScene::Run()
         } else {
           if (mobLabel->getString()[i] != ' ') {
             newstr += (char)(((rand() % (90 - 65)) + 65) + 1);
+            AUDIO.Play(AudioType::TEXT, 0);
           }
           else {
             newstr += ' ';
@@ -218,10 +243,52 @@ int SelectScene::Run()
       speedLabel->setString(std::to_string(randSpeed));
       mobLabel->setString(sf::String(newstr));
     }
+             
+    if (INPUT.has(PRESSED_UP)) {
+      distortionFactor *= 2.f;
+    }
+
+    if (INPUT.has(PRESSED_DOWN)) {
+      distortionFactor /= 2.f;
+    }
+
+    if (INPUT.has(PRESSED_ACTION2)) {
+      riseFactor *= 2.f;
+    }
+
+    if (INPUT.has(PRESSED_ACTION3)) {
+      riseFactor /= 2.f;
+    }
+
+    float progress = (maxNumberCooldown - numberCooldown) / maxNumberCooldown;
+
+    if (progress > 1.f) progress = 1.f;
+
+    mob.setTextureRect(sf::IntRect(0, (int)((1.f-progress) * mob.getTexture()->getSize().y), mob.getTexture()->getSize().x, mob.getTexture()->getSize().y));
+    mob.setColor(sf::Color(255, 255, 255, (sf::Uint32)(255.0*progress)));
+
+    shader.setUniform("time", 1.f-progress);
+    shader.setUniform("distortionFactor", 2.f*(1.f-progress));
+    shader.setUniform("riseFactor", riseFactor);
+
 
     // Refresh mob graphic origin every frame as it may change
-    mob.setOrigin(mob.getLocalBounds().width / 2.f, mob.getLocalBounds().height / 2.f);
+    mob.setOrigin(mob.getTextureRect().width / 2.f, mob.getTextureRect().height / 2.f);
+    //distortionPost.setOrigin(distortionPost.getLocalBounds().width / 2.f, distortionPost.getLocalBounds().height / 2.f);
+
     hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
+
+
+    //distortionBuffer.clear();
+    //distortionBuffer.draw(mob);
+    //distortionBuffer.display();
+
+    //ENGINE.Draw(mob);
+    LayeredDrawable* bake = new LayeredDrawable(sf::Sprite(mob));
+    bake->SetShader(&shader);
+
+    ENGINE.Draw(bake);
+    delete bake;
 
     // Make a selection
     if (INPUT.has(PRESSED_ACTION1)) {
