@@ -27,7 +27,7 @@ Player::Player(void)
   AI<Player>(this) 
 {
   SetLayer(0);
-  team = Team::BLUE;
+  team = Team::RED;
 
   moveCount = hitCount = 0;
 

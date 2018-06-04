@@ -35,7 +35,7 @@ Mettaur::Mettaur(void)
   : animationComponent(this), AI<Mettaur>(this) {
   this->StateChange<MettaurIdleState>();
   name = "Mettaur";
-  Entity::team = Team::RED;
+  Entity::team = Team::BLUE;
   health = 20;
   hitHeight = 0;
   textureType = TextureType::MOB_METTAUR_IDLE;

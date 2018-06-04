@@ -15,9 +15,9 @@ Tile::Tile(int _x, int _y) {
   x = _x;
   y = _y;
   if (x <= 3) {
-    team = Team::BLUE;
-  } else {
     team = Team::RED;
+  } else {
+    team = Team::BLUE;
   }
   cooldown = 0.0f;
   cooldownLength = COOLDOWN;

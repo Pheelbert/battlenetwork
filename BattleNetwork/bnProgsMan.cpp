@@ -21,7 +21,7 @@ ProgsMan::ProgsMan(void)
   : animationComponent(this),
     AI<ProgsMan>(this) {
   name = "ProgsMan";
-  Entity::team = Team::RED;
+  Entity::team = Team::BLUE;
   health = 300;
   hitHeight = 0;
   state = MobState::MOB_IDLE;
