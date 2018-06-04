@@ -201,26 +201,6 @@ int Player::GetHitCount() const
 }
 
 void Player::RefreshTexture() {
-  /*switch (state) {
-  case PlayerState::PLAYER_IDLE:
-    textureType = TextureType::NAVI_MEGAMAN_MOVE;
-    break;
-  case PlayerState::PLAYER_MOVING:
-    textureType = TextureType::NAVI_MEGAMAN_MOVE;
-    break;
-  case PlayerState::PLAYER_SHOOTING:
-    textureType = TextureType::NAVI_MEGAMAN_SHOOT;
-    break;
-  case PlayerState::PLAYER_HIT:
-    textureType = TextureType::NAVI_MEGAMAN_HIT;
-    break;
-  case PlayerState::PLAYER_SLASHING:
-    textureType = TextureType::NAVI_MEGAMAN_ATLAS;
-    break;
-  default:
-    assert(false && "Invalid player state.");
-  }*/
-
   if (tile != nullptr) {
     setPosition(tile->getPosition().x + (tile->GetWidth()/2.0f), tile->getPosition().y + (tile->GetHeight()/2.0f));
   }

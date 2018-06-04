@@ -264,7 +264,7 @@ int SelectScene::Run()
 
     if (progress > 1.f) progress = 1.f;
 
-    mob.setTextureRect(sf::IntRect(0, (int)((1.f-progress) * mob.getTexture()->getSize().y), mob.getTexture()->getSize().x, mob.getTexture()->getSize().y));
+    mob.setTextureRect(sf::IntRect(0, 0, mob.getTexture()->getSize().x, (int)((progress) * mob.getTexture()->getSize().y)));
     mob.setColor(sf::Color(255, 255, 255, (sf::Uint32)(255.0*progress)));
 
     shader.setUniform("time", 1.f-progress);
