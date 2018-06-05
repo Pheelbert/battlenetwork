@@ -143,7 +143,22 @@ int BattleScene::Run(Mob* mob) {
   customBarShader.setUniform("factor", 0);
   customBarSprite.SetShader(&customBarShader);
 
+  // Heat distortion effect
+  sf::Texture& distortionMap = *TEXTURES.GetTexture(TextureType::HEAT_TEXTURE);
+  distortionMap.setRepeated(true);
+  distortionMap.setSmooth(true);
+
+  sf::Shader& heatShader = *SHADERS.GetShader(ShaderType::SPOT_DISTORTION);
+  heatShader.setUniform("currentTexture", sf::Shader::CurrentTexture);
+  heatShader.setUniform("distortionMapTexture", distortionMap);
+
+  sf::Shader& iceShader = *SHADERS.GetShader(ShaderType::SPOT_REFLECTION);
+  iceShader.setUniform("currentTexture", sf::Shader::CurrentTexture);
+  iceShader.setUniform("sceneTexture", sf::Shader::CurrentTexture);
+  iceShader.setUniform("shine", 0.3f);
+
   bool inBattleState = true;
+  float totalTime = 0;
   while (ENGINE.Running() && inBattleState) {
     // check every frame 
     if (!isPlayerDeleted) {
@@ -157,6 +172,9 @@ int BattleScene::Run(Mob* mob) {
     isBattleRoundOver = (isPlayerDeleted || isMobDeleted);
 
     float elapsedSeconds = clock.restart().asSeconds();
+
+    totalTime += elapsedSeconds;
+
     float FPS = 0.f;
 
     if (elapsedSeconds > 0.f) {
@@ -245,6 +263,60 @@ int BattleScene::Run(Mob* mob) {
     ENGINE.DrawUnderlay();
     ENGINE.DrawLayers();
     ENGINE.DrawOverlay();
+
+    /*
+      Post processing shaders
+
+      TODO: Make this step happen in layers only so that the heat is not visible on top of
+      entities in the front of the screen
+    */
+ 
+    heatShader.setUniform("time", totalTime);
+    heatShader.setUniform("distortionFactor", 0.006f);
+    heatShader.setUniform("riseFactor", 0.2f);
+
+    heatShader.setUniform("w", tile->GetWidth()-8.f);
+    heatShader.setUniform("h", tile->GetHeight()*1.5f);
+
+    iceShader.setUniform("w", tile->GetWidth() - 8.f);
+    iceShader.setUniform("h", tile->GetHeight());
+
+    while (field->GetNextTile(tile)) {
+      if (tile->GetState() == TileState::PURPLE) {
+        heatShader.setUniform("x", tile->getPosition().x+4.f);
+
+        float repos = (float)(tile->getPosition().y - 4.f) - (tile->GetHeight()/1.5f);
+        heatShader.setUniform("y", repos);
+
+        sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
+
+        sf::Sprite distortionPost;
+        distortionPost.setTexture(postprocessing);
+
+        LayeredDrawable* bake = new LayeredDrawable(distortionPost);
+        bake->SetShader(&heatShader);
+
+        ENGINE.Draw(bake);
+        delete bake;
+      }
+      else if (tile->GetState() == TileState::ICE) {
+        iceShader.setUniform("x", tile->getPosition().x + 4.f);
+
+        float repos = (float)(tile->getPosition().y - 4.f);
+        iceShader.setUniform("y", repos);
+
+        sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
+
+        sf::Sprite reflectionPost;
+        reflectionPost.setTexture(postprocessing);
+
+        LayeredDrawable* bake = new LayeredDrawable(reflectionPost);
+        bake->SetShader(&iceShader);
+
+        ENGINE.Draw(bake);
+        delete bake;
+      }
+    }
 
     float nextLabelHeight = 0;
     if (!mob->IsSpawningDone() || isInChipSelect) {

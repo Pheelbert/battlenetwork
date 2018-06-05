@@ -50,6 +50,8 @@ ShaderResourceManager::ShaderResourceManager(void) {
   paths.push_back("resources/shaders/white_fade.frag.txt");
   paths.push_back("resources/shaders/yellow.frag.txt");
   paths.push_back("resources/shaders/distortion.frag.txt");
+  paths.push_back("resources/shaders/spot_distortion.frag.txt");
+  paths.push_back("resources/shaders/spot_reflection.frag.txt");
 }
 
 ShaderResourceManager::~ShaderResourceManager(void) {

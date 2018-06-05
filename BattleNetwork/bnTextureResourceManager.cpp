@@ -138,6 +138,7 @@ TextureResourceManager::TextureResourceManager(void) {
 
   // other misc
   paths.push_back("resources/shaders/textures/distortion.png");
+  paths.push_back("resources/shaders/textures/heat.png");
 }
 
 TextureResourceManager::~TextureResourceManager(void) {

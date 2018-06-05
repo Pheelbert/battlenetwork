@@ -88,9 +88,6 @@ int SelectScene::Run()
   shader.setUniform("currentTexture", sf::Shader::CurrentTexture);
   shader.setUniform("distortionMapTexture", distortionMap);
 
-  float distortionFactor = .05f;
-  float riseFactor = .2f;
-
   // Current selection index
   int mobSelectionIndex = 0;
 
@@ -244,22 +241,6 @@ int SelectScene::Run()
       mobLabel->setString(sf::String(newstr));
     }
              
-    if (INPUT.has(PRESSED_UP)) {
-      distortionFactor *= 2.f;
-    }
-
-    if (INPUT.has(PRESSED_DOWN)) {
-      distortionFactor /= 2.f;
-    }
-
-    if (INPUT.has(PRESSED_ACTION2)) {
-      riseFactor *= 2.f;
-    }
-
-    if (INPUT.has(PRESSED_ACTION3)) {
-      riseFactor /= 2.f;
-    }
-
     float progress = (maxNumberCooldown - numberCooldown) / maxNumberCooldown;
 
     if (progress > 1.f) progress = 1.f;
@@ -269,21 +250,13 @@ int SelectScene::Run()
 
     shader.setUniform("time", 1.f-progress);
     shader.setUniform("distortionFactor", 2.f*(1.f-progress));
-    shader.setUniform("riseFactor", riseFactor);
+    shader.setUniform("riseFactor", 0.2f);
 
 
     // Refresh mob graphic origin every frame as it may change
     mob.setOrigin(mob.getTextureRect().width / 2.f, mob.getTextureRect().height / 2.f);
-    //distortionPost.setOrigin(distortionPost.getLocalBounds().width / 2.f, distortionPost.getLocalBounds().height / 2.f);
-
     hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
 
-
-    //distortionBuffer.clear();
-    //distortionBuffer.draw(mob);
-    //distortionBuffer.display();
-
-    //ENGINE.Draw(mob);
     LayeredDrawable* bake = new LayeredDrawable(sf::Sprite(mob));
     bake->SetShader(&shader);
 

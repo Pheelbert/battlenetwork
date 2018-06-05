@@ -64,6 +64,10 @@ float Tile::GetHeight() const {
   return height;
 }
 
+const TileState Tile::GetState() const {
+  return state;
+}
+
 void Tile::SetState(TileState _state) {
   if (_state == TileState::CRACKED && (state == TileState::EMPTY || state == TileState::BROKEN)) {
     return;

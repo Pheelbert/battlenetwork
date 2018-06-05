@@ -21,6 +21,8 @@ public:
   Tile(int _x, int _y);
   ~Tile(void);
 
+  const TileState GetState() const;
+
   void SetField(Field* _field);
 
   int GetX() const;
