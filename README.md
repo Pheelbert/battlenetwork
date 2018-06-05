@@ -1,10 +1,8 @@
 # Videos w/ SOUND
-#### Branch: master as of 6/01/2018
+#### Branch: master as of 6/04/2018
 Click the thumbnail to watch on youtube. 
 
-[![Video of engine 6/01/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
-
-[![sword.png](https://s15.postimg.cc/l91tx2baj/sword.png)](https://www.youtube.com/watch?v=D6uHYNMeqxM) 
+[![Video of engine 6/4/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://youtu.be/fCYp4VubD_s) 
 
 [![image.png](https://s15.postimg.cc/mik119uuj/image.png)](https://postimg.cc/image/6kbbb50mf/)
 
@@ -118,6 +116,8 @@ New:
 * MMBN Chrono X Config reader
 * Gamepad support
 * Battle Select Screen
+* Distortion shader for dark/acid panels 
+* Reflection shader for ice panels
 
 Changes from original author:
 
@@ -135,15 +135,4 @@ Changes from original author:
 * Done away with Thor:: dependencies and wrote my own animation class and animation editor
 
 # Author Pheelbert
-Wrote the foundation for the battle engine. He wrote the tile-based movement and update system emulating an authentic mmbn player experience.
-
-## battlenetwork
-## =============
-
-https://www.youtube.com/watch?v=GQa0HsVPNE8&feature=youtu.be
-
-A Megaman Battle Network project that I work on occasionally. Made from scratch with SFML and Thor in C++.
-
-'extern/dlls/*(-d).dll' must be copied to the Release/ or Debug/
-
-Be wary of the license, this project was created and I am still working on it for academic reasons. It would be a shame if someone were to steal my project and call it their own!
+Wrote the foundation. He wrote the tile-based movement and update system emulating an authentic mmbn player experience compared to others out there.
