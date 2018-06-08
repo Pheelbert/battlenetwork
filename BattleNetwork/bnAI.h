@@ -2,12 +2,12 @@
 #include "bnMeta.h"
 #include "bnAIState.h"
 #include "bnEntity.h"
+#include "bnAgent.h"
 
 template<typename T>
-class AI {
+class AI : public Agent {
 private:
   AIState<T>* stateMachine;
-  Entity* target;
   T* ref;
   int lock;
 
@@ -26,8 +26,8 @@ public:
     lock = AI<T>::StateLock::Unlocked;
   }
 
-  AI(T* _ref) { stateMachine = nullptr; ref = _ref; lock = AI<T>::StateLock::Unlocked; }
-  ~AI() { if (stateMachine) { delete stateMachine; ref = nullptr; target = nullptr; } }
+  AI(T* _ref) : Agent() { stateMachine = nullptr; ref = _ref; lock = AI<T>::StateLock::Unlocked; }
+  ~AI() { if (stateMachine) { delete stateMachine; ref = nullptr; this->FreeTarget(); } }
 
   template<typename U>
   void StateChange() {
@@ -89,11 +89,5 @@ public:
       stateMachine->OnUpdate(_elapsed, *ref);
     }
   }
-
-  void SetTarget(Entity* _target) {
-    target = _target;
-  }
-
-  Entity* GetTarget() const { return target;  }
 };
 

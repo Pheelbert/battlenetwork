@@ -66,8 +66,7 @@ ChipSelectionCust::~ChipSelectionCust() {
 
 bool ChipSelectionCust::CursorRight() {
   if (++cursorPos > 5) {
-    cursorPos = 5;
-    return false;
+    cursorPos = 0;
   }
 
   return true;
@@ -75,8 +74,7 @@ bool ChipSelectionCust::CursorRight() {
 
 bool ChipSelectionCust::CursorLeft() {
   if (--cursorPos < 0) {
-    cursorPos = 0;
-    return false;
+    cursorPos = 5;
   }
 
   return true;

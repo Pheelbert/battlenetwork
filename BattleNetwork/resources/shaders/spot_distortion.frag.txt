@@ -51,10 +51,15 @@ void main()
     // We use the t (a.k.a. y) texture coordinate of the original texture
     // to tell us how "high up" we are and damp accordingly
     // Remember, OpenGL 0 is at the bottom
-    distortionPositionOffset *= 1.f- (((y+h)-screenCoord.y )/ h);
+
+    float percentage = 1.0f - (((y+h)-screenCoord.y )/ h);
+
+    float percentage2 = 1.0f - (((y+(h*2.0))-screenCoord.y )/ (h*2.0));
+
+    distortionPositionOffset *= percentage;
     
     vec2 distortedTextureCoordinate = gl_TexCoord[0].st + distortionPositionOffset;
 
-    gl_FragColor = gl_Color * texture2D(currentTexture, distortedTextureCoordinate);
+    gl_FragColor = gl_Color * texture2D(currentTexture, distortedTextureCoordinate) + (vec4(0.5,0.0,0.0,1.0)*percentage2);
   }
 }

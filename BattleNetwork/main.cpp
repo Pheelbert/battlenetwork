@@ -3,7 +3,7 @@
 #include "bnShaderResourceManager.h"
 #include "bnInputManager.h"
 #include "bnEngine.h"
-#include "bnSelectScene.h"
+#include "bnSelectMobScene.h"
 #include "bnChronoXConfigReader.h"
 #include "SFML/System.hpp"
 #include <Thor/Animations.hpp>
@@ -19,20 +19,28 @@ using sf::Clock;
 #define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
 
 void RunGraphicsInit(std::atomic<int> * progress) {
-  sf::sleep(sf::milliseconds(1000)); // Simulate long loading to see title better
   clock_t begin_time = clock();
   TEXTURES.LoadAllTextures(*progress);
+
+  Logger::GetMutex()->lock();
   Logger::Logf("Loaded textures: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  Logger::GetMutex()->unlock();
 
   begin_time = clock();
   SHADERS.LoadAllShaders(*progress);
+
+  Logger::GetMutex()->lock();
   Logger::Logf("Loaded shaders: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  Logger::GetMutex()->unlock();
 }
 
 void RunAudioInit(std::atomic<int> * progress) {
   const clock_t begin_time = clock();
   AUDIO.LoadAllSources(*progress);
+
+  Logger::GetMutex()->lock();
   Logger::Logf("Loaded audio sources: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  Logger::GetMutex()->unlock();
 }
 
 int main(int argc, char** argv) {
@@ -48,9 +56,25 @@ int main(int argc, char** argv) {
   SHADERS;
   AUDIO;
 
+  // State flags
+  bool inConfigMessageState = true;
+
   ChronoXConfigReader config("options.ini");
-  INPUT.SupportChronoXGamepad(config);
-  AUDIO.EnableAudio(config.IsAudioEnabled());
+
+  if (!config.IsOK()) {
+    inConfigMessageState = false; // skip the state
+  }
+  else {
+    AUDIO.EnableAudio(config.IsAudioEnabled());
+    INPUT.SupportChronoXGamepad(config);
+  }
+
+  sf::Texture* alert = TEXTURES.LoadTextureFromFile("resources/ui/alert.png");
+  sf::Sprite alertSprite(*alert);
+  alertSprite.setScale(2.f, 2.f);
+  alertSprite.setOrigin(alertSprite.getLocalBounds().width / 2, alertSprite.getLocalBounds().height / 2);
+  sf::Vector2f alertPos = (sf::Vector2f)((sf::Vector2i)ENGINE.GetWindow()->getSize() / 2);
+  alertSprite.setPosition(sf::Vector2f(100.f, alertPos.y));
 
   // Title screen logo
   sf::Texture* logo = TEXTURES.LoadTextureFromFile("resources/backgrounds/title/tile_en.png");
@@ -73,6 +97,49 @@ int main(int argc, char** argv) {
   startLabel->setCharacterSize(24);
   startLabel->setOrigin(0.f, startLabel->getLocalBounds().height);
   startLabel->setPosition(sf::Vector2f(180.0f, 240.f));
+
+  /* 
+  Give a message to the player before loading 
+  */
+
+  sf::Text* message = new sf::Text("Your Chrono X config settings\nhave been imported", *startFont);
+  message->setCharacterSize(24);
+  message->setOrigin(message->getLocalBounds().width/2.f, message->getLocalBounds().height*2);
+  message->setPosition(sf::Vector2f(300.f, 200.f));
+
+  Clock clock;
+  float elapsed = 0.0f;
+  float messageCooldown = 5000; 
+
+  while (inConfigMessageState && ENGINE.Running()) {
+    clock.restart();
+
+    INPUT.update();
+
+    // Prepare for next draw calls
+    ENGINE.Clear();
+
+    // Write contents to screen
+    ENGINE.Display();
+
+    if (messageCooldown <= 0) {
+      inConfigMessageState = false;
+      messageCooldown = 0;
+    }
+
+    float alpha = std::min((messageCooldown/1000.f)*255.f, 255.f);
+    alertSprite.setColor(sf::Color((sf::Uint8)255.f, (sf::Uint8)255.f, (sf::Uint8)255.f, (sf::Uint8)alpha));
+    message->setFillColor(sf::Color((sf::Uint8)255.f, (sf::Uint8)255.f, (sf::Uint8)255.f, (sf::Uint8)alpha));
+    messageCooldown -= elapsed;
+
+    ENGINE.Draw(alertSprite);
+    ENGINE.Draw(message);
+
+    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+  }
+
+  // Cleanup
+  ENGINE.Clear();
 
   // Title screen background
   // This will be loaded from the resource manager AFTER it's ready
@@ -105,9 +172,6 @@ int main(int argc, char** argv) {
   double logFadeOutSpeed = 2000;
 
   sf::Shader* whiteShader = nullptr;
-
-  Clock clock;
-  float elapsed = 0.0f;
 
   while(inLoadState && ENGINE.Running()) {
     clock.restart();
@@ -270,7 +334,7 @@ int main(int argc, char** argv) {
 
   // Make sure we didn't quit the loop prematurely
   while (ENGINE.Running()) {
-    int win = SelectScene::Run();
+    int win = SelectMobScene::Run();
 
     if (win != 1) {
       // Start the game over music

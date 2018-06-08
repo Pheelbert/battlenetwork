@@ -131,7 +131,7 @@ void InputManager::update() {
     } else if (Event::KeyPressed == event.type) {
       /* Gamepad not connected. Strictly use keyboard events. */
       std::string action = "";
-      if (config->IsOK()) {
+      if (config && config->IsOK()) {
         action = config->GetPairedAction(event.key.code);
 
         if (action == "Select") {
@@ -179,7 +179,7 @@ void InputManager::update() {
       }
     } else if (Event::KeyReleased == event.type) {
       std::string action = "";
-      if (config->IsOK()) {
+      if (config && config->IsOK()) {
         action = config->GetPairedAction(event.key.code);
 
         if (action == "Select") {
@@ -296,5 +296,5 @@ bool InputManager::empty() {
 
 bool InputManager::HasChronoXGamepadSupport()
 {
-  return config->IsOK() && sf::Joystick::isConnected(GAMEPAD_1);
+  return config && (config->IsOK() && sf::Joystick::isConnected(GAMEPAD_1));
 }

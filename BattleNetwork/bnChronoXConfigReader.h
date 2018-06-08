@@ -448,7 +448,7 @@ private:
 
 public:
 
-  ChronoXConfigReader(std::string filepath) {
+  ChronoXConfigReader(std::string filepath) : isOK(false) {
     isOK = Parse(FileUtil::Read(filepath));
   }
 

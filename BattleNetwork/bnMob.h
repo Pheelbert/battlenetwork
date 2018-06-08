@@ -175,7 +175,7 @@ Mob* Mob::Spawn(int tileX, int tileY) {
     if (cast) {
       auto onFinish = [this]() { this->nextReady = true; };
       cast->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
-    }  
+    }
   };
 
   pixelStateInvokers.push_back(pixelStateInvoker);

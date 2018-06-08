@@ -140,9 +140,6 @@
     <Filter Include="Engine\Resources\ShaderResource">
       <UniqueIdentifier>{49b19f7e-5aec-46e0-967f-2e0f585adcef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Select">
-      <UniqueIdentifier>{2c22d20c-e987-4431-9a4b-554d71926008}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Backgrounds">
       <UniqueIdentifier>{dc29490c-a264-4350-a55e-b02202ddc325}</UniqueIdentifier>
     </Filter>
@@ -157,6 +154,9 @@
     </Filter>
     <Filter Include="Engine\Resources\FontResource">
       <UniqueIdentifier>{439edcdf-bce0-4360-b0e4-4fe0e780bf66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SelectMobScene">
+      <UniqueIdentifier>{2c22d20c-e987-4431-9a4b-554d71926008}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -316,11 +316,14 @@
     <ClCompile Include="bnBackground.cpp">
       <Filter>Engine\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="bnSelectScene.cpp">
-      <Filter>Select</Filter>
-    </ClCompile>
     <ClCompile Include="bnProgsManBossFight.cpp">
       <Filter>Battle\Mob\Boss\ProgsMan</Filter>
+    </ClCompile>
+    <ClCompile Include="bnAgent.h">
+      <Filter>Battle\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="bnSelectMobScene.cpp">
+      <Filter>SelectMobScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -539,14 +542,14 @@
     <ClInclude Include="bnVirusBackground.h">
       <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
-    <ClInclude Include="bnSelectScene.h">
-      <Filter>Select</Filter>
-    </ClInclude>
     <ClInclude Include="bnBattleScene.h">
       <Filter>Battle</Filter>
     </ClInclude>
     <ClInclude Include="bnProgsManBossFight.h">
       <Filter>Battle\Mob\Boss\ProgsMan</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSelectMobScene.h">
+      <Filter>SelectMobScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

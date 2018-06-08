@@ -125,7 +125,7 @@ void Tile::RefreshTexture() {
       textureType = TextureType::TILE_RED_GRASS;
     }
   }
-  else if (state == TileState::PURPLE) {
+  else if (state == TileState::LAVA) {
     if (team == Team::BLUE) {
       textureType = TextureType::TILE_BLUE_PURPLE;
     }

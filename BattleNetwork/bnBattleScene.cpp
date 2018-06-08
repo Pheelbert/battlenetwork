@@ -40,6 +40,11 @@ int BattleScene::Run(Mob* mob) {
   float listStepCooldown = 500.f;
   float listStepCounter  = listStepCooldown;
 
+  sf::Sprite programAdvanceSprite(*TEXTURES.GetTexture(TextureType::PROGRAM_ADVANCE));
+  programAdvanceSprite.setScale(2.f, 2.f);
+  programAdvanceSprite.setOrigin(0, 0);
+  programAdvanceSprite.setPosition(40.0f, 50.f);
+
   /*
   Mob labels*/
   std::vector<std::string> mobNames;
@@ -187,18 +192,10 @@ int BattleScene::Run(Mob* mob) {
     if (mob->NextMobReady()) {
       Mob::MobData* data = mob->GetNextMob();
       
-      // TODO Use a base type that has a target instead of dynamic casting? Or force all Entity classes to have a state.
-      // Therefore spells and artifacts will no longer be Entities and instead they will be SceneNodes
-      Mettaur* cast = dynamic_cast<Mettaur*>(data->mob);
-
+      Agent* cast = dynamic_cast<Agent*>(data->mob);
+      
       if (cast) {
         cast->SetTarget(player);
-      }
-
-      ProgsMan* cast2 = dynamic_cast<ProgsMan*>(data->mob);
-
-      if (cast2) {
-        cast2->SetTarget(player);
       }
 
       field->AddEntity(data->mob, data->tileX, data->tileY);
@@ -230,6 +227,16 @@ int BattleScene::Run(Mob* mob) {
     while (field->GetNextTile(tile)) {
       tile->move(ENGINE.GetViewOffset());
 
+      heatShader.setUniform("time", totalTime);
+      heatShader.setUniform("distortionFactor", 0.01f);
+      heatShader.setUniform("riseFactor", 0.02f);
+
+      heatShader.setUniform("w", tile->GetWidth() - 8.f);
+      heatShader.setUniform("h", tile->GetHeight()*1.5f);
+
+      iceShader.setUniform("w", tile->GetWidth() - 8.f);
+      iceShader.setUniform("h", tile->GetHeight());
+
       if (tile->IsHighlighted()) {
         LayeredDrawable* coloredTile = new LayeredDrawable(*(sf::Sprite*)tile);
         coloredTile->SetShader(&yellowShader);
@@ -237,11 +244,56 @@ int BattleScene::Run(Mob* mob) {
         delete coloredTile;
       }
       else {
-        ENGINE.LayUnder(tile);
+        ENGINE.Draw(tile);
       }
+
+      Entity* entity = nullptr;
+
+      while (tile->GetNextEntity(entity)) {
+        if (!entity->IsDeleted()) {
+          ENGINE.Draw(entity);
+          ENGINE.Draw(entity->GetMiscComponents());
+        }
+      }
+
+ 
+      if(tile->GetState() == TileState::LAVA) {
+        heatShader.setUniform("x", tile->getPosition().x + 4.f);
+
+        float repos = (float)(tile->getPosition().y - 4.f) - (tile->GetHeight() / 1.5f);
+        heatShader.setUniform("y", repos);
+
+        sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
+
+        sf::Sprite distortionPost;
+        distortionPost.setTexture(postprocessing);
+
+        LayeredDrawable* bake = new LayeredDrawable(distortionPost);
+        bake->SetShader(&heatShader);
+
+        ENGINE.Draw(bake);
+        delete bake;
+      }
+      else if (tile->GetState() == TileState::ICE) {
+        iceShader.setUniform("x", tile->getPosition().x + 4.f);
+
+        float repos = (float)(tile->getPosition().y - 4.f);
+        iceShader.setUniform("y", repos);
+
+        sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
+
+        sf::Sprite reflectionPost;
+        reflectionPost.setTexture(postprocessing);
+
+        LayeredDrawable* bake = new LayeredDrawable(reflectionPost);
+        bake->SetShader(&iceShader);
+
+        ENGINE.Draw(bake);
+        delete bake;
+      } 
     }
 
-    for (int d = 1; d <= field->GetHeight(); d++) {
+    /*for (int d = 1; d <= field->GetHeight(); d++) {
       Entity* entity = nullptr;
       while (field->GetNextEntity(entity, d)) {
         if (!entity->IsDeleted()) {
@@ -249,19 +301,19 @@ int BattleScene::Run(Mob* mob) {
           ENGINE.Lay(entity->GetMiscComponents());
         }
       }
-    }
+    }*/
 
     // NOTE: Although HUD, it fades dark when on chip cust screen and paused.
     if(!isBattleRoundOver && !isInChipSelect)
-      ENGINE.Push(&customBarSprite);
+      ENGINE.Draw(&customBarSprite);
 
     if (isPaused || isInChipSelect) {
       // apply shader on draw calls below
       ENGINE.SetShader(&pauseShader);
     }
 
-    ENGINE.DrawUnderlay();
-    ENGINE.DrawLayers();
+    //ENGINE.DrawUnderlay();
+    //ENGINE.DrawLayers();
     ENGINE.DrawOverlay();
 
     /*
@@ -271,9 +323,9 @@ int BattleScene::Run(Mob* mob) {
       entities in the front of the screen
     */
  
-    heatShader.setUniform("time", totalTime);
-    heatShader.setUniform("distortionFactor", 0.006f);
-    heatShader.setUniform("riseFactor", 0.2f);
+ /*   heatShader.setUniform("time", totalTime);
+    heatShader.setUniform("distortionFactor", 0.01f);
+    heatShader.setUniform("riseFactor", 0.02f);
 
     heatShader.setUniform("w", tile->GetWidth()-8.f);
     heatShader.setUniform("h", tile->GetHeight()*1.5f);
@@ -282,7 +334,7 @@ int BattleScene::Run(Mob* mob) {
     iceShader.setUniform("h", tile->GetHeight());
 
     while (field->GetNextTile(tile)) {
-      if (tile->GetState() == TileState::PURPLE) {
+      if (tile->GetState() == TileState::LAVA) {
         heatShader.setUniform("x", tile->getPosition().x+4.f);
 
         float repos = (float)(tile->getPosition().y - 4.f) - (tile->GetHeight()/1.5f);
@@ -316,7 +368,7 @@ int BattleScene::Run(Mob* mob) {
         ENGINE.Draw(bake);
         delete bake;
       }
-    }
+    } */
 
     float nextLabelHeight = 0;
     if (!mob->IsSpawningDone() || isInChipSelect) {
@@ -475,13 +527,15 @@ int BattleScene::Run(Mob* mob) {
 
           float nextLabelHeight = 0;
 
+          ENGINE.Draw(programAdvanceSprite, false);
+
           if (paStepIndex <= paSteps.size()) {
             for (int i = 0; i < paStepIndex; i++) {
               sf::Text stepLabel = sf::Text(paSteps[i].first, *mobFont);
 
               stepLabel.setOrigin(0, 0);
-              stepLabel.setPosition(40.0f, 40.f + nextLabelHeight);
-              stepLabel.setScale(0.8f, 0.8f);
+              stepLabel.setPosition(40.0f, 80.f + (nextLabelHeight*2.f));
+              stepLabel.setScale(1.0f, 1.0f);
               stepLabel.setOutlineColor(sf::Color(48, 56, 80));
               stepLabel.setOutlineThickness(2.f);
               ENGINE.Draw(stepLabel, false);
@@ -502,8 +556,8 @@ int BattleScene::Run(Mob* mob) {
             sf::Text stepLabel = sf::Text(programAdvance.GetAdvanceChip()->GetShortName(), *mobFont);
 
             stepLabel.setOrigin(0, 0);
-            stepLabel.setPosition(40.0f, 40.f + nextLabelHeight);
-            stepLabel.setScale(0.8f, 0.8f);
+            stepLabel.setPosition(40.0f, 80.f);
+            stepLabel.setScale(1.0f, 1.0f);
             stepLabel.setOutlineColor(sf::Color((sf::Uint32)(sin(increment) * 255), (sf::Uint32)(cos(increment+90*(22.f/7.f)) * 255), (sf::Uint32)(sin(increment+180*(22.f/7.f)) * 255)));
             stepLabel.setOutlineThickness(2.f);
             ENGINE.Draw(stepLabel, false);

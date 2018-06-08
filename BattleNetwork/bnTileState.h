@@ -5,6 +5,6 @@ enum TileState {
   BROKEN,
   ICE,
   GRASS,
-  PURPLE,
+  LAVA,
   EMPTY
 };
