@@ -13,7 +13,7 @@ ProgsManIdleState::~ProgsManIdleState()
 }
 
 void ProgsManIdleState::OnEnter(ProgsMan& progs) {
-  progs.SetAnimation(MobState::MOB_IDLE);
+  progs.SetAnimation(MOB_IDLE);
 }
 
 void ProgsManIdleState::OnUpdate(float _elapsed, ProgsMan& progs) {

@@ -1,7 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "bnEntity.h"
+#include <map>
+#include <functional>
+#include <assert.h>
 
 struct Frame {
   float duration;
@@ -36,6 +38,31 @@ public:
 };
 
 class Animate {
+private:
+  std::map<int, std::function<void()>> callbacks;
+  std::function<void()> onFinish;
 public:
-  void operator() (float progress, Entity& target, FrameList& sequence, std::function<void()> callback = nullptr) const;
+  class On {
+    int id;
+    std::function<void()> callback;
+
+  public:
+    friend class Animate;
+    On(int id, std::function<void()> callback) : id(id), callback(callback) {
+      ;
+    }
+  };
+
+  Animate();
+  Animate(Animate& rhs);
+  ~Animate();
+
+  void Clear() { callbacks.clear(); onFinish = nullptr; }
+
+  void operator() (float progress, sf::Sprite& target, FrameList& sequence) const;
+  Animate& operator << (On& rhs);
+  void operator << (std::function<void()> finishNotifier);
+
+  void SetFrame(int frameIndex, sf::Sprite& target, FrameList& sequence) const;
+
 };

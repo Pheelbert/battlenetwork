@@ -40,15 +40,14 @@ public:
   PlayerHealthUI* GetHealthUI() const;
   SelectedChipsUI * GetChipsUI() const;
 
-  virtual int GetStateFromString(string _string);
-  virtual void SetAnimation(int _state, std::function<void()> onFinish = nullptr);
+  virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
 private:
   int health;
   int moveCount;
   int hitCount;
 
   TextureType textureType;
-  PlayerState state;
+  string state;
   PlayerHealthUI* healthUI;
   SelectedChipsUI* chipsUI;
 

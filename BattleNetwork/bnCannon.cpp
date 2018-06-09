@@ -109,6 +109,17 @@ void Cannon::Attack(Entity* _entity) {
     isMob->Hit(damage);
     hitHeight = isMob->GetHitHeight();
     hit = true;
+
+    if (isMob->IsCountered()) {
+      AUDIO.Play(AudioType::COUNTER, 0);
+      isMob->Stun(1000);
+
+      if (isMob->GetHealth() == 0) {
+        // Slide entity back a few pixels
+        isMob->setPosition(isMob->getPosition().x + 50.f, isMob->getPosition().y);
+      }
+    }
+
   }
   else {
     ProgsMan* isProgs = dynamic_cast<ProgsMan*>(_entity);
@@ -126,11 +137,6 @@ void Cannon::Attack(Entity* _entity) {
 
 vector<Drawable*> Cannon::GetMiscComponents() {
   return vector<Drawable*>();
-}
-
-int Cannon::GetStateFromString(string _string) {
-  assert(false && "Buster does not have states");
-  return 0;
 }
 
 void Cannon::AddAnimation(int _state, FrameAnimation _animation, float _duration) {

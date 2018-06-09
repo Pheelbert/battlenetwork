@@ -23,9 +23,6 @@
     <Filter Include="Battle\Entity\Spell\Buster">
       <UniqueIdentifier>{a5b0fd9b-980a-4240-9250-0d06444c60a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Component">
-      <UniqueIdentifier>{dfa2cbcd-8575-45f2-93b6-c5d98a64e469}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Enumerations">
       <UniqueIdentifier>{5c9d2cbc-eb6d-4112-b2aa-bafcdf47830a}</UniqueIdentifier>
     </Filter>
@@ -44,14 +41,8 @@
     <Filter Include="Battle\Chips\Database">
       <UniqueIdentifier>{96b71ad6-be68-4e35-bd67-349eeadc6ac8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Component\Animation">
-      <UniqueIdentifier>{32f5b123-7c10-4d87-abfc-a9326380e103}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\AI">
       <UniqueIdentifier>{b0e97f40-0be3-48ff-a3c0-924576c7938e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Battle\Component\Animation\Charge">
-      <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Battle\Entity\Artifact">
       <UniqueIdentifier>{9be22663-7ffb-4d72-afb7-0ae8f6b0b8d6}</UniqueIdentifier>
@@ -143,9 +134,6 @@
     <Filter Include="Battle\Backgrounds">
       <UniqueIdentifier>{dc29490c-a264-4350-a55e-b02202ddc325}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Scene">
-      <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Mob\Boss">
       <UniqueIdentifier>{e66292ed-1af5-4333-930f-cd53c65a9e48}</UniqueIdentifier>
     </Filter>
@@ -155,8 +143,29 @@
     <Filter Include="Engine\Resources\FontResource">
       <UniqueIdentifier>{439edcdf-bce0-4360-b0e4-4fe0e780bf66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SelectMobScene">
+    <Filter Include="Battle\Components">
+      <UniqueIdentifier>{dfa2cbcd-8575-45f2-93b6-c5d98a64e469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\Animation">
+      <UniqueIdentifier>{32f5b123-7c10-4d87-abfc-a9326380e103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\Animation\Charge">
+      <UniqueIdentifier>{ab250ee0-5fc9-498e-97e9-3b1f28a188c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
       <UniqueIdentifier>{2c22d20c-e987-4431-9a4b-554d71926008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Battle">
+      <UniqueIdentifier>{10976369-a638-4250-b08c-f835a7bbfe7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Main Menu">
+      <UniqueIdentifier>{d2dc3e83-cab6-4455-9e10-e5295c5f8d2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Select Mob">
+      <UniqueIdentifier>{82986475-2577-4085-b6c9-d114b769337c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Props">
+      <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -182,13 +191,10 @@
       <Filter>Battle\Entity\Character\Mettaur</Filter>
     </ClCompile>
     <ClCompile Include="bnChargeComponent.cpp">
-      <Filter>Battle\Component\Animation\Charge</Filter>
+      <Filter>Battle\Components\Animation\Charge</Filter>
     </ClCompile>
     <ClCompile Include="bnEntity.cpp">
       <Filter>Battle\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="bnBattleScene.cpp">
-      <Filter>Battle</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayerHealthUI.cpp">
       <Filter>Battle\Entity\Character\Player</Filter>
@@ -224,7 +230,7 @@
       <Filter>Battle\Entity\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="bnAnimationComponent.cpp">
-      <Filter>Battle\Component\Animation</Filter>
+      <Filter>Battle\Components\Animation</Filter>
     </ClCompile>
     <ClCompile Include="bnMettaurIdleState.cpp">
       <Filter>Battle\Entity\Character\Mettaur\States</Filter>
@@ -295,9 +301,6 @@
     <ClCompile Include="bnInputManager.cpp">
       <Filter>Engine\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Animate.cpp">
-      <Filter>Engine\Animate</Filter>
-    </ClCompile>
     <ClCompile Include="bnBasicSword.cpp">
       <Filter>Battle\Entity\Spell\Sword\Basic</Filter>
     </ClCompile>
@@ -314,7 +317,7 @@
       <Filter>Battle\Backgrounds</Filter>
     </ClCompile>
     <ClCompile Include="bnBackground.cpp">
-      <Filter>Engine\Scene</Filter>
+      <Filter>Engine\Props</Filter>
     </ClCompile>
     <ClCompile Include="bnProgsManBossFight.cpp">
       <Filter>Battle\Mob\Boss\ProgsMan</Filter>
@@ -322,8 +325,20 @@
     <ClCompile Include="bnAgent.h">
       <Filter>Battle\AI</Filter>
     </ClCompile>
+    <ClCompile Include="bnAnimate.cpp">
+      <Filter>Engine\Animate</Filter>
+    </ClCompile>
+    <ClCompile Include="bnBattleScene.cpp">
+      <Filter>Scenes\Battle</Filter>
+    </ClCompile>
     <ClCompile Include="bnSelectMobScene.cpp">
-      <Filter>SelectMobScene</Filter>
+      <Filter>Scenes\Select Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="bnMainMenuScene.cpp">
+      <Filter>Scenes\Main Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="bnAnimation.cpp">
+      <Filter>Engine\Animate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,7 +376,7 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="bnChargeComponent.h">
-      <Filter>Battle\Component\Animation\Charge</Filter>
+      <Filter>Battle\Components\Animation\Charge</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerState.h">
       <Filter>Battle\Enumerations</Filter>
@@ -421,7 +436,7 @@
       <Filter>Battle\Chips\Database</Filter>
     </ClInclude>
     <ClInclude Include="bnAnimationComponent.h">
-      <Filter>Battle\Component\Animation</Filter>
+      <Filter>Battle\Components\Animation</Filter>
     </ClInclude>
     <ClInclude Include="bnAIState.h">
       <Filter>Battle\AI</Filter>
@@ -542,14 +557,20 @@
     <ClInclude Include="bnVirusBackground.h">
       <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
-    <ClInclude Include="bnBattleScene.h">
-      <Filter>Battle</Filter>
-    </ClInclude>
     <ClInclude Include="bnProgsManBossFight.h">
       <Filter>Battle\Mob\Boss\ProgsMan</Filter>
     </ClInclude>
+    <ClInclude Include="bnBattleScene.h">
+      <Filter>Scenes\Battle</Filter>
+    </ClInclude>
     <ClInclude Include="bnSelectMobScene.h">
-      <Filter>SelectMobScene</Filter>
+      <Filter>Scenes\Select Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMainMenuScene.h">
+      <Filter>Scenes\Main Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="bnAnimation.h">
+      <Filter>Engine\Animate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

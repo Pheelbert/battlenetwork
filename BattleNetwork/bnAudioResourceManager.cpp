@@ -83,9 +83,16 @@ void AudioResourceManager::LoadAllSources(std::atomic<int> &status) {
 
 void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {
   if (!sources[type].loadFromFile(path)) {
+
+    Logger::GetMutex()->lock();
     Logger::Logf("Failed loading audio: %s\n", path.c_str());
+    Logger::GetMutex()->unlock();
+
   } else {
+
+    Logger::GetMutex()->lock();
     Logger::Logf("Loaded audio: %s\n", path.c_str());
+    Logger::GetMutex()->unlock();
   }
 }
 

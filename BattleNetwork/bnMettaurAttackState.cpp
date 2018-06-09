@@ -10,7 +10,8 @@ MettaurAttackState::~MettaurAttackState() { ; }
 
 void MettaurAttackState::OnEnter(Mettaur& met) {
   auto onFinish = [this, &met]() {this->Attack(met); };
-  met.SetAnimation(MobState::MOB_ATTACKING, onFinish);
+  met.SetAnimation(MOB_ATTACKING, onFinish);
+  met.SetCounterFrame(4);
 }
 
 void MettaurAttackState::OnUpdate(float _elapsed, Mettaur& met) {

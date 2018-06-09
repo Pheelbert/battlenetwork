@@ -14,7 +14,7 @@ PlayerHitState::~PlayerHitState()
 
 void PlayerHitState::OnEnter(Player& player) {
   auto onFinished = [&player]() { player.StateChange<PlayerControlledState>(); };
-  player.SetAnimation(PlayerState::PLAYER_HIT,onFinished);
+  player.SetAnimation(PLAYER_HIT,onFinished);
   AUDIO.Play(AudioType::HURT, 0);
 }
 

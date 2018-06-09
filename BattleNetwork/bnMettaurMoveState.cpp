@@ -105,7 +105,7 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
     met.tile->AddEntity((Entity*)&met);
     temp->RemoveEntity((Entity*)&met);
     auto onFinish = [&met]() { met.StateChange<MettaurIdleState>(); };
-    met.SetAnimation(MobState::MOB_MOVING, onFinish);
+    met.SetAnimation(MOB_MOVING, onFinish);
     isMoving = true;
   }
   else {

@@ -24,7 +24,7 @@ ProgsMan::ProgsMan(void)
   Entity::team = Team::BLUE;
   health = 300;
   hitHeight = 0;
-  state = MobState::MOB_IDLE;
+  state = MOB_IDLE;
   textureType = TextureType::MOB_PROGSMAN_IDLE;
   healthUI = new MobHealthUI(this);
 
@@ -36,8 +36,8 @@ ProgsMan::ProgsMan(void)
   this->SetHealth(health);
 
   //Components setup and load
-  animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
-  animationComponent.load();
+  animationComponent.Setup(RESOURCE_PATH);
+  animationComponent.Load();
 
   whiteout = SHADERS.GetShader(ShaderType::WHITE);
 }
@@ -79,7 +79,7 @@ void ProgsMan::Update(float _elapsed) {
   }
   else {
     this->RefreshTexture();
-    animationComponent.update(_elapsed);
+    animationComponent.Update(_elapsed);
   }
 
   healthUI->Update();
@@ -87,13 +87,13 @@ void ProgsMan::Update(float _elapsed) {
 }
 
 void ProgsMan::RefreshTexture() {
-  if (state == MobState::MOB_IDLE) {
+  if (state == MOB_IDLE) {
     textureType = TextureType::MOB_PROGSMAN_IDLE;
-  } else if (state == MobState::MOB_MOVING) {
+  } else if (state == MOB_MOVING) {
     textureType = TextureType::MOB_PROGSMAN_MOVE;
-  } else if (state == MobState::MOB_ATTACKING) {
+  } else if (state == MOB_ATTACKING) {
     textureType = TextureType::MOB_PROGSMAN_PUNCH;
-  } else if (state == MobState::MOB_THROW) {
+  } else if (state == MOB_THROW) {
     textureType = TextureType::MOB_PROGSMAN_THROW;
   }
 
@@ -120,20 +120,6 @@ vector<Drawable*> ProgsMan::GetMiscComponents() {
   return drawables;
 }
 
-int ProgsMan::GetStateFromString(string _string) {
-  int size = 5;
-  string MOB_STATE_STRINGS[] = { "MOB_MOVING", "MOB_IDLE", "MOB_HIT", "MOB_ATTACKING", "MOB_THROW" };
-
-  for (int i = 0; i < size; i++) {
-    if (_string == MOB_STATE_STRINGS[i]) {
-      return static_cast<MobState>(i);
-    }
-  }
-  Logger::Log(string("Failed to find corresponding enum: " + _string));
-  assert(false);
-  return -1;
-}
-
 TextureType ProgsMan::GetTextureType() const {
   return textureType;
 }
@@ -156,7 +142,7 @@ float ProgsMan::GetHitHeight() const {
   return hitHeight;
 }
 
-void ProgsMan::SetAnimation(int _state, std::function<void()> onFinish) {
-  this->state = static_cast<MobState>(_state);
-  animationComponent.setAnimation(_state, onFinish);
+void ProgsMan::SetAnimation(string _state, std::function<void()> onFinish) {
+  state = _state;
+  animationComponent.SetAnimation(_state, onFinish);
 }

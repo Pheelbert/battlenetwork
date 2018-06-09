@@ -30,6 +30,9 @@ public:
   }
 
   static void Log(string _message) {
+    if (_message.empty())
+      return;
+
     if (!file.is_open()) {
       file.open("log.txt");
       file << "StartTime " << time(0) << endl;
@@ -72,6 +75,6 @@ public:
   }
 
 private:
-  Logger() { file.close(); }
-  ~Logger() = default;
+  Logger() { ; }
+  ~Logger() { file.close(); while (!logs.empty()) { logs.pop(); }  }
 };

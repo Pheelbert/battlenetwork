@@ -5,33 +5,27 @@
 
 #include <iostream>
 
-#include "bnEntity.h"
-#include "bnAnimate.h"
+#include "bnAnimation.h"
 
 using std::string;
 using std::to_string;
 
-#define ANIMATION_EXTENSION ".animation"
+class Entity;
 
 class AnimationComponent {
 public:
   AnimationComponent(Entity* _entity);
   ~AnimationComponent();
 
-  void setup(string _name, string _path);
-  void load();
-  void update(float _elapsed);
-  void setAnimation(int state, std::function<void()> onFinish = nullptr);
-  string valueOf(string _key, string _line);
+  void Update(float _elapsed);
+  void Setup(string _path);
+  void Load();
+  void SetAnimation(string state, std::function<void()> onFinish);
+  void AddCallback(int frame, std::function<void()> onFrame, std::function<void()> outFrame);
 
 private:
-  Entity * entity;
-  string name;
+  Entity* entity;
+  string entityName;
   string path;
-  int currAnimationID;
-  std::function<void()> finishCallback;
-  float progress;
-  std::map<int, sf::Sprite> textures;
-  std::map<int, FrameList> animations;
-  Animate animator;
+  Animation animation;
 };

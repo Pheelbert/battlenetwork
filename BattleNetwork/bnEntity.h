@@ -1,6 +1,7 @@
 #pragma once
-#include <Thor/Animations.hpp>
-using thor::FrameAnimation;
+#include "bnAnimationComponent.h"
+#include "bnAnimation.h"
+
 #include <string>
 using std::string;
 
@@ -16,15 +17,15 @@ class Entity : public LayeredDrawable {
   friend class Field;
 
 public:
-  Entity(void);
-  virtual ~Entity(void);
+  Entity();
+  virtual ~Entity();
 
   virtual void Update(float _elapsed);
   virtual bool Move(Direction _direction);
   virtual vector<Drawable*> GetMiscComponents();
-  virtual int GetStateFromString(string _string);
-  virtual void AddAnimation(int _state, FrameAnimation _animation, float _duration);
-  virtual void SetAnimation(int _state);
+  virtual void AddAnimation(string _state, FrameList _frameList, float _duration);
+  virtual void SetAnimation(string _state);
+  virtual void SetCounterFrame(int frame);
   virtual int GetHealth();
   virtual TextureType GetTextureType();
   virtual int* GetAnimOffset();
@@ -46,7 +47,9 @@ public:
   bool IsPassthrough();
   bool IsDeleted() const;
   void TryDelete();
-
+  void ToggleCounter(bool on=true);
+  void Stun(double maxCooldown);
+  bool IsCountered();
   // For mob UI
   const std::string GetName() const;
 
@@ -60,5 +63,7 @@ protected:
   int health;
   bool passthrough;
   bool deleted;
+  bool counterable;
   std::string name;
+  double stunCooldown;
 };

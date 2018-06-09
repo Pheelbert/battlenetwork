@@ -28,9 +28,17 @@ void TextureResourceManager::LoadAllTextures(std::atomic<int> &status) {
 Texture* TextureResourceManager::LoadTextureFromFile(string _path) {
   Texture* texture = new Texture();
   if (!texture->loadFromFile(_path)) {
+
+    Logger::GetMutex()->lock();
     Logger::Logf("Failed loading texture: %s\n", _path.c_str());
+    Logger::GetMutex()->unlock();
+
   } else {
+
+    Logger::GetMutex()->lock();
     Logger::Logf("Loaded texture: %s\n", _path.c_str());
+    Logger::GetMutex()->unlock();
+
   }
   return texture;
 }
@@ -138,6 +146,7 @@ TextureResourceManager::TextureResourceManager(void) {
 
   // other icons
   paths.push_back("resources/ui/gamepad_support_icon.png");
+  paths.push_back("resources/ui/main_menu_ui.png");
 
   // other misc
   paths.push_back("resources/shaders/textures/distortion.png");

@@ -153,7 +153,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animate.cpp" />
+    <ClCompile Include="bnAnimate.cpp" />
+    <ClCompile Include="bnAnimation.cpp" />
     <ClCompile Include="bnBackground.cpp" />
     <ClCompile Include="bnBasicSword.cpp" />
     <ClCompile Include="bnBattleResults.h">
@@ -178,6 +179,7 @@
     <ClCompile Include="bnField.cpp" />
     <ClCompile Include="bnBattleScene.cpp" />
     <ClCompile Include="bnLogger.cpp" />
+    <ClCompile Include="bnMainMenuScene.cpp" />
     <ClCompile Include="bnMettaurAttackState.cpp" />
     <ClCompile Include="bnMettaurIdleState.cpp" />
     <ClCompile Include="bnMettaurMoveState.cpp" />
@@ -216,6 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAnimate.h" />
+    <ClInclude Include="bnAnimation.h" />
     <ClInclude Include="bnBackground.h" />
     <ClInclude Include="bnBasicSword.h" />
     <ClInclude Include="bnBattleItem.h" />
@@ -243,6 +246,7 @@
     <ClInclude Include="bnBattleScene.h" />
     <ClInclude Include="bnLayered.h" />
     <ClInclude Include="bnLongExplosion.h" />
+    <ClInclude Include="bnMainMenuScene.h" />
     <ClInclude Include="bnMemory.h" />
     <ClInclude Include="bnMettaurIdleState.h" />
     <ClInclude Include="bnMettaurMoveState.h" />

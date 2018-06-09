@@ -27,7 +27,7 @@ PlayerControlledState::~PlayerControlledState()
 }
 
 void PlayerControlledState::OnEnter(Player& player) {
-  player.SetAnimation(PlayerState::PLAYER_IDLE);
+  player.SetAnimation(PLAYER_IDLE);
 }
 
 void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
@@ -38,15 +38,15 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
     player.chargeComponent.SetCharging(false);
     attackToIdleCooldown = 0.0f;
 
-    auto onFinish = [&player]() {player.SetAnimation(PlayerState::PLAYER_IDLE); };
-    player.SetAnimation(PlayerState::PLAYER_SHOOTING, onFinish);
+    auto onFinish = [&player]() {player.SetAnimation(PLAYER_IDLE); };
+    player.SetAnimation(PLAYER_SHOOTING, onFinish);
   }
   else if (InputManager->has(RELEASED_ACTION2)) {
     player.GetChipsUI()->UseNextChip();
   }
 
   // Movement increments are restricted based on anim speed
-  if (player.state != PlayerState::PLAYER_IDLE)
+  if (player.state != PLAYER_IDLE)
     return;
 
   moveKeyPressCooldown += _elapsed;
@@ -78,8 +78,8 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
   }
 
   if (InputManager->empty()) {
-    if (player.state != PlayerState::PLAYER_SHOOTING) {
-      player.SetAnimation(PlayerState::PLAYER_IDLE);
+    if (player.state != PLAYER_SHOOTING) {
+      player.SetAnimation(PLAYER_IDLE);
     }
   }
 
@@ -96,7 +96,7 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
     direction = Direction::NONE;
   }
 
-  if (direction != Direction::NONE && player.state != PlayerState::PLAYER_SHOOTING) {
+  if (direction != Direction::NONE && player.state != PLAYER_SHOOTING) {
     bool moved = player.Move(direction);
     if (moved) {
       auto onFinish = [&player]() {
@@ -110,12 +110,12 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
           
           player.AdoptNextTile();
         }
-        player.SetAnimation(PlayerState::PLAYER_IDLE);
+        player.SetAnimation(PLAYER_IDLE);
       }; // end lambda
-      player.SetAnimation(PlayerState::PLAYER_MOVING, onFinish);
+      player.SetAnimation(PLAYER_MOVING, onFinish);
     }
     else {
-      player.SetAnimation(PlayerState::PLAYER_IDLE);
+      player.SetAnimation(PLAYER_IDLE);
     }
     moveKeyPressCooldown = 0.0f;
   }

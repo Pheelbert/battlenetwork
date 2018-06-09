@@ -102,9 +102,9 @@ void SelectedChipsUI::UseNextChip() {
     player->SetHealth(player->GetHealth() + selectedChips[curr]->GetDamage());
     AUDIO.Play(AudioType::RECOVER);
 
-    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
 
-    player->SetAnimation(PlayerState::PLAYER_HEAL, onFinish);
+    player->SetAnimation(PLAYER_HEAL, onFinish);
 
   } else if (selectedChips[curr]->GetID() == ChipType::CRCKPNL) {
     Tile* top = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 1);
@@ -132,8 +132,8 @@ void SelectedChipsUI::UseNextChip() {
 
     ENGINE.GetCamera().ShakeCamera(25, sf::seconds(1));
 
-    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
-    player->SetAnimation(PlayerState::PLAYER_CANNON, onFinish);
+    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
+    player->SetAnimation(PLAYER_CANNON, onFinish);
     AUDIO.Play(AudioType::CANNON);
 
     xtreme1->SetDirection(Direction::RIGHT);
@@ -146,8 +146,8 @@ void SelectedChipsUI::UseNextChip() {
   }
   else if (chip == "Cannon1") {
     Cannon* cannon = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
-    player->SetAnimation(PlayerState::PLAYER_CANNON, onFinish);
+    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
+    player->SetAnimation(PLAYER_CANNON, onFinish);
     AUDIO.Play(AudioType::CANNON);
 
     cannon->SetDirection(Direction::RIGHT);
@@ -155,9 +155,9 @@ void SelectedChipsUI::UseNextChip() {
     player->GetField()->OwnEntity(cannon, player->GetTile()->GetX()+1, player->GetTile()->GetY());
   }
   else if (chip == "Swrd") {
-    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
 
-    player->SetAnimation(PlayerState::PLAYER_SLASHING, onFinish);
+    player->SetAnimation(PLAYER_SLASHING, onFinish);
 
     BasicSword* sword  = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
 
@@ -165,9 +165,9 @@ void SelectedChipsUI::UseNextChip() {
 
     player->GetField()->OwnEntity(sword,  player->GetTile()->GetX() + 1, player->GetTile()->GetY());
   } else if (chip == "LongSwrd") {
-    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
 
-    player->SetAnimation(PlayerState::PLAYER_SLASHING, onFinish);
+    player->SetAnimation(PLAYER_SLASHING, onFinish);
 
     BasicSword* sword  = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
     BasicSword* sword2 = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
@@ -183,9 +183,9 @@ void SelectedChipsUI::UseNextChip() {
     }
   }
   else if (chip == "WideSwrd") {
-    auto onFinish = [this]() { this->player->SetAnimation(PlayerState::PLAYER_IDLE);  };
+    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
 
-    player->SetAnimation(PlayerState::PLAYER_SLASHING, onFinish);
+    player->SetAnimation(PLAYER_SLASHING, onFinish);
 
     BasicSword* sword = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
     BasicSword* sword2 = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());

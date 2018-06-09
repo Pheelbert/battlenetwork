@@ -20,12 +20,13 @@
 
 Player::Player(void)
   : health(99),
-  state(PlayerState::PLAYER_IDLE),
+  state(PLAYER_IDLE),
   textureType(TextureType::NAVI_MEGAMAN_MOVE),
   chargeComponent(this),
   animationComponent(this),
   AI<Player>(this) 
 {
+  name = "Megaman";
   SetLayer(0);
   team = Team::RED;
 
@@ -41,8 +42,8 @@ Player::Player(void)
   //Components setup and load
   chargeComponent.load();
 
-  animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
-  animationComponent.load();
+  animationComponent.Setup(RESOURCE_PATH);
+  animationComponent.Load();
 
   textureType = TextureType::NAVI_MEGAMAN_ATLAS;
   setTexture(*TEXTURES.GetTexture(textureType));
@@ -78,7 +79,7 @@ void Player::Update(float _elapsed) {
 
   //Components updates
   chargeComponent.update(_elapsed);
-  animationComponent.update(_elapsed);
+  animationComponent.Update(_elapsed);
 
   Entity::Update(_elapsed);
 }
@@ -214,19 +215,7 @@ SelectedChipsUI* Player::GetChipsUI() const {
   return chipsUI;
 }
 
-int Player::GetStateFromString(string _string) {
-  int size = 7;
-  string PLAYER_STATE_STRINGS[] = { "PLAYER_IDLE", "PLAYER_MOVING", "PLAYER_HIT", "PLAYER_SHOOTING", "PLAYER_SLASHING", "PLAYER_HEAL", "PLAYER_CANNON" };
-  for (int i = 0; i < size; i++) {
-    if (_string == PLAYER_STATE_STRINGS[i]) {
-      return static_cast<PlayerState>(i);
-    }
-  }
-  Logger::Logf("Failed to find corresponding enum: %s\n", _string);
-  return -1;
-}
-
-void Player::SetAnimation(int _state, std::function<void()> onFinish) {
-  this->state = static_cast<PlayerState>(_state);
-  animationComponent.setAnimation(_state, onFinish);
+void Player::SetAnimation(string _state, std::function<void()> onFinish) {
+  state = _state;
+  animationComponent.SetAnimation(_state, onFinish);
 }

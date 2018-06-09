@@ -36,7 +36,7 @@ Mettaur::Mettaur(void)
   this->StateChange<MettaurIdleState>();
   name = "Mettaur";
   Entity::team = Team::BLUE;
-  health = 20;
+  health = 40;
   hitHeight = 0;
   textureType = TextureType::MOB_METTAUR_IDLE;
   healthUI = new MobHealthUI(this);
@@ -47,10 +47,11 @@ Mettaur::Mettaur(void)
   this->SetHealth(health);
 
   //Components setup and load
-  animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
-  animationComponent.load();
+  animationComponent.Setup(RESOURCE_PATH);
+  animationComponent.Load();
 
   whiteout = SHADERS.GetShader(ShaderType::WHITE);
+  stun = SHADERS.GetShader(ShaderType::YELLOW);
 
   metID = (int)Mettaur::metIDs.size();
   Mettaur::metIDs.push_back((int)Mettaur::metIDs.size());
@@ -83,6 +84,25 @@ int* Mettaur::GetAnimOffset() {
 void Mettaur::Update(float _elapsed) {
   this->SetShader(nullptr);
 
+  if (stunCooldown > 0) {
+    stunCooldown -= _elapsed;
+    healthUI->Update();
+    Entity::Update(_elapsed);
+
+    if (stunCooldown <= 0) {
+      stunCooldown = 0;
+      animationComponent.Update(_elapsed);
+    }
+
+    if ((int)stunCooldown % 5 == 0) {
+      this->SetShader(stun);
+    }
+
+    if (GetHealth() > 0) {
+      return;
+    }
+  }
+
   this->StateUpdate(_elapsed);
 
   // Explode if health depleted
@@ -106,7 +126,7 @@ void Mettaur::Update(float _elapsed) {
     this->Lock();
   } else {
     this->RefreshTexture();
-    animationComponent.update(_elapsed);
+    animationComponent.Update(_elapsed);
   }
 
   healthUI->Update();
@@ -114,11 +134,11 @@ void Mettaur::Update(float _elapsed) {
 }
 
 void Mettaur::RefreshTexture() {
-  if (state == MobState::MOB_IDLE) {
+  if (state == MOB_IDLE) {
     textureType = TextureType::MOB_METTAUR_IDLE;
-  } else if (state == MobState::MOB_MOVING) {
+  } else if (state == MOB_MOVING) {
     textureType = TextureType::MOB_MOVE;
-  } else if (state == MobState::MOB_ATTACKING) {
+  } else if (state == MOB_ATTACKING) {
     textureType = TextureType::MOB_METTAUR_ATTACK;
   }
   setTexture(*TEXTURES.GetTexture(textureType));
@@ -141,22 +161,16 @@ vector<Drawable*> Mettaur::GetMiscComponents() {
   return drawables;
 }
 
-int Mettaur::GetStateFromString(string _string) {
-  int size = 4;
-  string MOB_STATE_STRINGS[] = { "MOB_MOVING", "MOB_IDLE", "MOB_HIT", "MOB_ATTACKING" };
-  for (int i = 0; i < size; i++) {
-    if (_string == MOB_STATE_STRINGS[i]) {
-      return static_cast<MobState>(i);
-    }
-  }
-  Logger::Logf("Failed to find corresponding enum: %s\n", _string);
-  return -1;
+void Mettaur::SetAnimation(string _state, std::function<void()> onFinish) {
+  state = _state;
+  animationComponent.SetAnimation(_state, onFinish);
 }
 
-
-void Mettaur::SetAnimation(int _state, std::function<void()> onFinish) {
-  this->state = static_cast<MobState>(_state);
-  animationComponent.setAnimation(_state, onFinish);
+void Mettaur::SetCounterFrame(int frame)
+{
+  auto onFinish = [&]() { this->ToggleCounter(); };
+  auto onNext = [&]() { this->ToggleCounter(false); };
+  animationComponent.AddCallback(frame, onFinish, onNext);
 }
 
 TextureType Mettaur::GetTextureType() const {
@@ -174,6 +188,7 @@ void Mettaur::SetHealth(int _health) {
 int Mettaur::Hit(int _damage) {
   (health - _damage < 0) ? health = 0 : health -= _damage;
   SetShader(whiteout);
+
   return health;
 }
 

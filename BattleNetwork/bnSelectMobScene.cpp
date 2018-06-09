@@ -184,6 +184,10 @@ int SelectMobScene::Run()
       selectInputCooldown = 0; 
     }
 
+    if (INPUT.has(PRESSED_ACTION2)) {
+      return 2; 
+    }
+
     mobSelectionIndex = std::max(0, mobSelectionIndex);
     mobSelectionIndex = std::min(2, mobSelectionIndex);
 
@@ -316,7 +320,6 @@ int SelectMobScene::Run()
   delete menuLabel;
   delete hpLabel;
 
-  AUDIO.StopStream();
   ENGINE.RevokeShader();
 
   return 0; // signal game over to the main stack

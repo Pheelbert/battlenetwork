@@ -3,7 +3,7 @@
 #include "bnShaderResourceManager.h"
 #include "bnInputManager.h"
 #include "bnEngine.h"
-#include "bnSelectMobScene.h"
+#include "bnMainMenuScene.h"
 #include "bnChronoXConfigReader.h"
 #include "SFML/System.hpp"
 #include <Thor/Animations.hpp>
@@ -109,7 +109,7 @@ int main(int argc, char** argv) {
 
   Clock clock;
   float elapsed = 0.0f;
-  float messageCooldown = 5000; 
+  float messageCooldown = 3000; 
 
   while (inConfigMessageState && ENGINE.Running()) {
     clock.restart();
@@ -334,7 +334,7 @@ int main(int argc, char** argv) {
 
   // Make sure we didn't quit the loop prematurely
   while (ENGINE.Running()) {
-    int win = SelectMobScene::Run();
+    int win = MainMenuScene::Run(); // MainMenuScene::Run();
 
     if (win != 1) {
       // Start the game over music

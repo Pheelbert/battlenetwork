@@ -133,11 +133,6 @@ vector<Drawable*> Buster::GetMiscComponents() {
   return vector<Drawable*>();
 }
 
-int Buster::GetStateFromString(string _string) {
-  assert(false && "Buster does not have states");
-  return 0;
-}
-
 void Buster::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
   //animator.addAnimation(static_cast<Buster>(_state), _animation, sf::seconds(_duration));
   assert(false && "Buster does not have an animator");

@@ -12,7 +12,7 @@ PlayerIdleState::~PlayerIdleState()
 }
 
 void PlayerIdleState::OnEnter(Player& player) {
-  player.SetAnimation(PlayerState::PLAYER_IDLE);
+  player.SetAnimation(PLAYER_IDLE);
 }
 
 void PlayerIdleState::OnUpdate(float _elapsed, Player& player) {

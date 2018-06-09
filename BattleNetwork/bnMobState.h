@@ -1,8 +1,8 @@
 #pragma once
-enum MobState {
-  MOB_MOVING,
-  MOB_IDLE,
-  MOB_HIT,
-  MOB_ATTACKING,
-  MOB_THROW // TODO: navis should have their own state enum since they are unique...
-};
+#include <string>
+
+#define MOB_MOVING    std::string("MOB_MOVING")
+#define MOB_IDLE      std::string("MOB_IDLE")
+#define MOB_HIT       std::string("MOB_HIT")
+#define MOB_ATTACKING std::string("MOB_ATTACKING")
+#define MOB_THROW     std::string("MOB_THROW")

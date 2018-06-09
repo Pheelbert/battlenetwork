@@ -26,13 +26,20 @@ void ShaderResourceManager::LoadAllShaders(std::atomic<int> &status) {
 sf::Shader* ShaderResourceManager::LoadShaderFromFile(string _path) {
   sf::Shader* shader = new sf::Shader();
   if (!shader->loadFromFile(_path, sf::Shader::Fragment)) {
+
+    Logger::GetMutex()->lock();
     Logger::Log("Error loading shader: " + _path);
+    Logger::GetMutex()->unlock();
+
     exit(EXIT_FAILURE);
     return nullptr;
   }
   //shader->setUniform("texture", sf::Shader::CurrentTexture);
 
+  Logger::GetMutex()->lock();
   Logger::Log("Loaded shader: " + _path);
+  Logger::GetMutex()->unlock();
+
   return shader;
 }
 

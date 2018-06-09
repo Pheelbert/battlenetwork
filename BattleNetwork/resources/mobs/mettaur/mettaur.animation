@@ -1,4 +1,4 @@
-entity name="mettaur"
+entity name="Mettaur"
 
 animation state="MOB_MOVING" width="32" height="41"
 frame duration="0.05" startx="0" starty="0"
