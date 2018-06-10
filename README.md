@@ -3,9 +3,13 @@
 Click the thumbnail to watch on youtube. 
 
 [![Video of engine 6/4/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://youtu.be/fCYp4VubD_s) 
+
 [![Video of engine 6/4/2018](https://img.youtube.com/vi/fCYp4VubD_s/0.jpg)](https://youtu.be/fCYp4VubD_s) 
 
 [![image.png](https://s15.postimg.cc/mik119uuj/image.png)](https://postimg.cc/image/6kbbb50mf/)
+
+[![preview.png](https://s15.postimg.cc/6cpgwlocr/preview.png)](https://postimg.cc/image/phsq6d30n/)
+
 
 # Features
 
@@ -51,14 +55,11 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 
 # Author TheMaverickProgrammer
 
-## Update 6/03/2018
-The menu now goes to the Battle Select screen where you can choose which mob to net battle against. The screen displays subjective information like the mob's attack, speed, and has a place for HP and description at the bottom. 
-
-Added battle results to the end of the match that shows time, ranking, and a new item. Items can be registered with `Mob` objects inside the `MobFactory` specialization. The ranking is authentically calculated from the official strategy guide for MMBN 6. The rewarded item is random but based on rank.
-
-[![preview.png](https://s15.postimg.cc/6cpgwlocr/preview.png)](https://postimg.cc/image/phsq6d30n/)
-
-Added animations for health, sword, and cannon chips. Made the tiles blink yellow for spells that enable this behavior `EnableTileHighlight(true);` in the `Spells` child classes.
+## Update 6/10/2018
+Added a new PET menu to that will serve as the battle config which will allow a player to toggle between navis and mobs.
+Added a shader-based transition effect between screens.
+Added counter and counter-death animation (slide right). 
+Rewrote a lot of the animation classes and added new features to the playback (like optional looping)
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -117,8 +118,10 @@ New:
 * MMBN Chrono X Config reader
 * Gamepad support
 * Battle Select Screen
-* Distortion shader for dark/acid panels 
+* Distortion shader for lava panels 
 * Reflection shader for ice panels
+* Counter system
+* Transition effects between screens
 
 Changes from original author:
 
