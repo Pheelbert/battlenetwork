@@ -8,7 +8,7 @@
 #include "bnLogger.h"
 
 #define RESOURCE_NAME "megaman"
-#define RESOURCE_PATH "resources/navis/megaman/megaman.animation"
+#define RESOURCE_PATH "resources/navis/starman/starman.animation"
 
 #define MOVE_ANIMATION_SPRITES 4
 #define MOVE_ANIMATION_WIDTH 38
@@ -19,9 +19,8 @@
 #define SHOOT_ANIMATION_HEIGHT 58
 
 Player::Player(void)
-  : health(99),
+  : health(200),
   state(PLAYER_IDLE),
-  textureType(TextureType::NAVI_MEGAMAN_MOVE),
   chargeComponent(this),
   animationComponent(this),
   AI<Player>(this) 
@@ -45,7 +44,7 @@ Player::Player(void)
   animationComponent.Setup(RESOURCE_PATH);
   animationComponent.Load();
 
-  textureType = TextureType::NAVI_MEGAMAN_ATLAS;
+  textureType = TextureType::NAVI_STARMAN_ATLAS;
   setTexture(*TEXTURES.GetTexture(textureType));
 
   previous = nullptr;
@@ -217,5 +216,12 @@ SelectedChipsUI* Player::GetChipsUI() const {
 
 void Player::SetAnimation(string _state, std::function<void()> onFinish) {
   state = _state;
-  animationComponent.SetAnimation(_state, onFinish);
+
+  if (state == PLAYER_IDLE) {
+    int playback = Animate::Mode::Loop;
+    animationComponent.SetAnimation(_state, Animate::Mode(playback), onFinish);
+  }
+  else {
+    animationComponent.SetAnimation(_state, onFinish);
+  }
 }

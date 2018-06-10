@@ -77,11 +77,11 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
     }
   }
 
-  if (InputManager->empty()) {
+  /*if (InputManager->empty()) {
     if (player.state != PLAYER_SHOOTING) {
       player.SetAnimation(PLAYER_IDLE);
     }
-  }
+  }*/
 
   if (InputManager->has(RELEASED_UP)) {
     direction = Direction::NONE;

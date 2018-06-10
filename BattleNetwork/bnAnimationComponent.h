@@ -20,9 +20,9 @@ public:
   void Update(float _elapsed);
   void Setup(string _path);
   void Load();
-  void SetAnimation(string state, std::function<void()> onFinish);
+  void SetAnimation(string state, std::function<void()> onFinish = nullptr);
+  void SetAnimation(string state, Animate::Mode playbackMode, std::function<void()> onFinish = nullptr);
   void AddCallback(int frame, std::function<void()> onFrame, std::function<void()> outFrame);
-
 private:
   Entity* entity;
   string entityName;

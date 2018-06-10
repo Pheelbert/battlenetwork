@@ -24,7 +24,9 @@ public:
   void SetAnimation(string state);
 
   Animation& operator<<(Animate::On& rhs);
+  Animation& operator<<(Animate::Mode& rhs);
   void operator<<(std::function<void()> onFinish);
+
 private:
   string ValueOf(string _key, string _line);
 protected:

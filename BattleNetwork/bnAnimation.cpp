@@ -148,6 +148,12 @@ Animation & Animation::operator<<(Animate::On & rhs)
   return *this;
 }
 
+Animation & Animation::operator<<(Animate::Mode & rhs)
+{
+  animator << rhs;
+  return *this;
+}
+
 void Animation::operator<<(std::function<void()> onFinish)
 {
   animator << onFinish;

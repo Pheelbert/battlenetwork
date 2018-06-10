@@ -77,9 +77,6 @@
     <Filter Include="Battle\Entity\Character\Player">
       <UniqueIdentifier>{10c1c4d0-3a84-4a71-bef9-04835d2185da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Entity\Character\Player\States">
-      <UniqueIdentifier>{ce04f5a8-3636-4a36-8ba1-192b3f0785eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Entity\Character\ProgsMan">
       <UniqueIdentifier>{5d15a7de-9f57-48f4-8d8a-3dcff2b9cefc}</UniqueIdentifier>
     </Filter>
@@ -164,7 +161,19 @@
     <Filter Include="Scenes\Select Mob">
       <UniqueIdentifier>{82986475-2577-4085-b6c9-d114b769337c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Props">
+    <Filter Include="Battle\Entity\Character\Player\Megaman">
+      <UniqueIdentifier>{8cbbf029-e0d4-4f36-96ba-f9d11ea106df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Player\Megaman\States">
+      <UniqueIdentifier>{ce04f5a8-3636-4a36-8ba1-192b3f0785eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Player\Starman">
+      <UniqueIdentifier>{96b1d867-02b9-449d-89c5-42ddcc67c189}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Player\Starman\States">
+      <UniqueIdentifier>{b7b66854-d776-4a16-ac13-be8464927b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resources\TextureResource\Props">
       <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -174,9 +183,6 @@
     </ClCompile>
     <ClCompile Include="bnTile.cpp">
       <Filter>Battle\Field\Tile</Filter>
-    </ClCompile>
-    <ClCompile Include="bnPlayer.cpp">
-      <Filter>Battle\Entity\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="bnSpell.cpp">
       <Filter>Battle\Entity\Spell</Filter>
@@ -195,9 +201,6 @@
     </ClCompile>
     <ClCompile Include="bnEntity.cpp">
       <Filter>Battle\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="bnPlayerHealthUI.cpp">
-      <Filter>Battle\Entity\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="bnMobHealthUI.cpp">
       <Filter>Battle\Entity\Character\Mettaur</Filter>
@@ -226,9 +229,6 @@
     <ClCompile Include="bnChip.cpp">
       <Filter>Battle\Chips\Database</Filter>
     </ClCompile>
-    <ClCompile Include="bnSelectedChipsUI.cpp">
-      <Filter>Battle\Entity\Character\Player</Filter>
-    </ClCompile>
     <ClCompile Include="bnAnimationComponent.cpp">
       <Filter>Battle\Components\Animation</Filter>
     </ClCompile>
@@ -242,10 +242,10 @@
       <Filter>Battle\Entity\Character\Mettaur\States</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayerControlledState.cpp">
-      <Filter>Battle\Entity\Character\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\Megaman\States</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayerHitState.cpp">
-      <Filter>Battle\Entity\Character\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\Megaman\States</Filter>
     </ClCompile>
     <ClCompile Include="bnLongExplosion.cpp">
       <Filter>Battle\Entity\Artifact\Explosion</Filter>
@@ -263,7 +263,7 @@
       <Filter>Engine\Camera</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayerIdleState.cpp">
-      <Filter>Battle\Entity\Character\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\Megaman\States</Filter>
     </ClCompile>
     <ClCompile Include="bnRandomMettaurMob.cpp">
       <Filter>Battle\Mob\Random</Filter>
@@ -317,7 +317,7 @@
       <Filter>Battle\Backgrounds</Filter>
     </ClCompile>
     <ClCompile Include="bnBackground.cpp">
-      <Filter>Engine\Props</Filter>
+      <Filter>Engine\Resources\TextureResource\Props</Filter>
     </ClCompile>
     <ClCompile Include="bnProgsManBossFight.cpp">
       <Filter>Battle\Mob\Boss\ProgsMan</Filter>
@@ -340,6 +340,15 @@
     <ClCompile Include="bnAnimation.cpp">
       <Filter>Engine\Animate</Filter>
     </ClCompile>
+    <ClCompile Include="bnPlayer.cpp">
+      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
+    </ClCompile>
+    <ClCompile Include="bnSelectedChipsUI.cpp">
+      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
+    </ClCompile>
+    <ClCompile Include="bnPlayerHealthUI.cpp">
+      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -353,9 +362,6 @@
     </ClInclude>
     <ClInclude Include="bnMemory.h">
       <Filter>Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="bnPlayer.h">
-      <Filter>Battle\Entity\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="bnSpell.h">
       <Filter>Battle\Entity\Spell</Filter>
@@ -393,9 +399,6 @@
     <ClInclude Include="bnDirection.h">
       <Filter>Battle\Enumerations</Filter>
     </ClInclude>
-    <ClInclude Include="bnPlayerHealthUI.h">
-      <Filter>Battle\Entity\Character\Player</Filter>
-    </ClInclude>
     <ClInclude Include="bnMobHealthUI.h">
       <Filter>Battle\Entity\Character\Mettaur</Filter>
     </ClInclude>
@@ -429,9 +432,6 @@
     <ClInclude Include="bnChip.h">
       <Filter>Battle\Chips\Database</Filter>
     </ClInclude>
-    <ClInclude Include="bnSelectedChipsUI.h">
-      <Filter>Battle\Entity\Character\Player</Filter>
-    </ClInclude>
     <ClInclude Include="bnChipType.h">
       <Filter>Battle\Chips\Database</Filter>
     </ClInclude>
@@ -457,10 +457,10 @@
       <Filter>Battle\Entity\Character\Any\States</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerControlledState.h">
-      <Filter>Battle\Entity\Character\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\Megaman\States</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerHitState.h">
-      <Filter>Battle\Entity\Character\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\Megaman\States</Filter>
     </ClInclude>
     <ClInclude Include="bnMeta.h">
       <Filter>Utilities</Filter>
@@ -478,7 +478,7 @@
       <Filter>Battle\Entity\Character\Any\States</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerIdleState.h">
-      <Filter>Battle\Entity\Character\Player\States</Filter>
+      <Filter>Battle\Entity\Character\Player\Megaman\States</Filter>
     </ClInclude>
     <ClInclude Include="bnMob.h">
       <Filter>Battle\Mob</Filter>
@@ -571,6 +571,15 @@
     </ClInclude>
     <ClInclude Include="bnAnimation.h">
       <Filter>Engine\Animate</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayer.h">
+      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerHealthUI.h">
+      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSelectedChipsUI.h">
+      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

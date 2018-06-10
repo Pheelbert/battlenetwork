@@ -29,7 +29,7 @@ frame duration="0.1" x="110" y="33" w="70" h="14" originx="0" originy="0"
 
 animation state="NAVI_LABEL"
 frame duration="0.1" x="37" y="49" w="70" h="14" originx="0" originy="0"
-frame duration="0.1" x="109" y="49" w="70" h="14" originx="0" originy="0"
+frame duration="0.1" x="108" y="49" w="70" h="14" originx="0" originy="0"
 
 animation state="MOB_SELECT_LABEL"
 frame duration="0.1" x="38" y="82" w="70" h="14" originx="0" originy="0"

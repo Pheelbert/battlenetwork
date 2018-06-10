@@ -41,6 +41,7 @@ class Animate {
 private:
   std::map<int, std::function<void()>> callbacks;
   std::function<void()> onFinish;
+  char playbackMode;
 public:
   class On {
     int id;
@@ -53,14 +54,33 @@ public:
     }
   };
 
+  class Mode {
+  private:
+    int playback;
+  public:
+
+    friend class Animate;
+
+    static const int Loop = 0x1;
+    static const int Bounce = 0x1 << 1;
+    static const int Reverse = 0x1 << 2;
+
+    Mode(int playback) {
+      this->playback = playback;
+    }
+
+    ~Mode() { ; }
+  };
+
   Animate();
   Animate(Animate& rhs);
   ~Animate();
 
-  void Clear() { callbacks.clear(); onFinish = nullptr; }
+  void Clear() { callbacks.clear(); onFinish = nullptr; playbackMode = 0; }
 
   void operator() (float progress, sf::Sprite& target, FrameList& sequence) const;
   Animate& operator << (On& rhs);
+  Animate& operator << (Mode& rhs);
   void operator << (std::function<void()> finishNotifier);
 
   void SetFrame(int frameIndex, sf::Sprite& target, FrameList& sequence) const;
