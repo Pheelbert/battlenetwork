@@ -1,6 +1,8 @@
 #include "bnEngine.h"
 #include <time.h>       /* time */
 
+#include "mmbn.ico.c"
+
 Engine& Engine::GetInstance() {
   static Engine instance;
   return instance;
@@ -13,6 +15,9 @@ void Engine::Initialize() {
 
   window = new RenderWindow(VideoMode((unsigned int)view.getSize().x, (unsigned int)view.getSize().y), "Battle Network : Prototype");
   window->setFramerateLimit(60);
+
+  window->setIcon(sfml_icon.width, sfml_icon.height, sfml_icon.pixel_data);
+
   postprocessing.create((unsigned int)view.getSize().x, (unsigned int)view.getSize().y); // Same as display
 
   // See the random generator with current time
