@@ -152,6 +152,8 @@ TextureResourceManager::TextureResourceManager(void) {
   // other misc
   paths.push_back("resources/shaders/textures/distortion.png");
   paths.push_back("resources/shaders/textures/heat.png");
+  paths.push_back("resources/shaders/textures/noise.png");
+  paths.push_back("resources/shaders/textures/noise_invert.png");
 }
 
 TextureResourceManager::~TextureResourceManager(void) {

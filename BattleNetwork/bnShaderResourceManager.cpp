@@ -59,6 +59,7 @@ ShaderResourceManager::ShaderResourceManager(void) {
   paths.push_back("resources/shaders/distortion.frag.txt");
   paths.push_back("resources/shaders/spot_distortion.frag.txt");
   paths.push_back("resources/shaders/spot_reflection.frag.txt");
+  paths.push_back("resources/shaders/transition.frag.txt");
 }
 
 ShaderResourceManager::~ShaderResourceManager(void) {

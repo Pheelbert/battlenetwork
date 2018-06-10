@@ -34,6 +34,14 @@ int MainMenuScene::Run()
   // Stream menu music 
   AUDIO.Stream("resources/loops/loop_navi_customizer.ogg", true);
 
+  // Transition
+  sf::Shader& transition = *SHADERS.GetShader(ShaderType::TRANSITION);
+  transition.setUniform("texture", sf::Shader::CurrentTexture);
+  transition.setUniform("map", *TEXTURES.GetTexture(TextureType::NOISE_TEXTURE));
+  transition.setUniform("progress", 0.f);
+  float transitionProgress = 1.f;
+  ENGINE.RevokeShader();
+
   Clock clock;
   float elapsed = 0.0f;
   float totalTime = 0.f;
@@ -43,6 +51,8 @@ int MainMenuScene::Run()
   overlay.setScale(2.f, 2.f);
 
   Background* bg = new LanBackground();
+
+  bool gotoNextScene = false;
 
   while (ENGINE.Running()) {
 
@@ -60,40 +70,64 @@ int MainMenuScene::Run()
 
     INPUT.update();
 
+    ENGINE.Clear();
+    ENGINE.SetView(camera.GetView());
+
+    camera.Update(elapsed);
+
     int lastMenuSelectionIndex = menuSelectionIndex;
 
     // Scene keyboard controls
-    if (INPUT.has(PRESSED_UP)) {
-      selectInputCooldown -= elapsed;
+    if (!gotoNextScene && transitionProgress == 0.f) {
+      if (INPUT.has(PRESSED_UP)) {
+        selectInputCooldown -= elapsed;
 
-      if (selectInputCooldown <= 0) {
-        // Go to previous mob 
-        selectInputCooldown = maxSelectInputCooldown;
-        menuSelectionIndex--;
-      }
-    }
-    else if (INPUT.has(PRESSED_DOWN)) {
-      selectInputCooldown -= elapsed;
-
-      if (selectInputCooldown <= 0) {
-        // Go to next mob 
-        selectInputCooldown = maxSelectInputCooldown;
-        menuSelectionIndex++;
-      }
-    }
-    else {
-      selectInputCooldown = 0;
-    }
-
-    if (INPUT.has(PRESSED_ACTION1)) {
-      // Mob select
-      if (menuSelectionIndex == 3) {
-        int result = SelectMobScene::Run();
-
-        if (result == 0) {
-          break;
+        if (selectInputCooldown <= 0) {
+          // Go to previous mob 
+          selectInputCooldown = maxSelectInputCooldown;
+          menuSelectionIndex--;
         }
       }
+      else if (INPUT.has(PRESSED_DOWN)) {
+        selectInputCooldown -= elapsed;
+
+        if (selectInputCooldown <= 0) {
+          // Go to next mob 
+          selectInputCooldown = maxSelectInputCooldown;
+          menuSelectionIndex++;
+        }
+      }
+      else {
+        selectInputCooldown = 0;
+      }
+
+      if (INPUT.has(PRESSED_ACTION1)) {
+        // Mob select
+        if (menuSelectionIndex == 3) {
+          gotoNextScene = true;
+          AUDIO.Play(AudioType::CHIP_DESC);
+        }
+      }
+    }
+
+    if (gotoNextScene) {
+      transitionProgress += 0.05f;
+    }
+    else {
+      transitionProgress -= 0.05f;
+    }
+
+    transitionProgress = std::max(0.f, transitionProgress);
+    transitionProgress = std::min(1.f, transitionProgress);
+
+    if (transitionProgress == 1.f) {
+      int result = SelectMobScene::Run();
+
+      if (result == 0) {
+        break;
+      }
+
+      gotoNextScene = false;
     }
 
     menuSelectionIndex = std::max(0, menuSelectionIndex);
@@ -104,7 +138,7 @@ int MainMenuScene::Run()
     }
 
     bg->Draw();
-    ENGINE.Draw(overlay);;
+    ENGINE.Draw(overlay);
 
     uiAnimator.SetAnimation("CHIP_FOLDER");
 
@@ -200,10 +234,17 @@ int MainMenuScene::Run()
 
     ENGINE.Draw(ui);
 
-    ENGINE.Clear();
-    ENGINE.SetView(camera.GetView());
+    sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
+    sf::Sprite transitionPost;
+    transitionPost.setTexture(postprocessing);
 
-    camera.Update(elapsed);
+    transition.setUniform("progress", transitionProgress);
+
+    LayeredDrawable* bake = new LayeredDrawable(transitionPost);
+    bake->SetShader(&transition);
+
+    ENGINE.Draw(bake);
+    delete bake;
 
     // Write contents to screen (always last step)
     ENGINE.Display();

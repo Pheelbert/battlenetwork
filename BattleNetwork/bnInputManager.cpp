@@ -235,54 +235,56 @@ void InputManager::update() {
       }
     }
   } // end event poll
-
   // Check these every frame regardless of input state...
 
   float axisXPower = 0.f;
   float axisYPower = 0.f;
 
-  if (sf::Joystick::hasAxis(GAMEPAD_1, sf::Joystick::PovX)) {
-    axisXPower = sf::Joystick::getAxisPosition(GAMEPAD_1, sf::Joystick::PovX);
-  }
+  if (sf::Joystick::isConnected(GAMEPAD_1)) {
 
-  if (sf::Joystick::hasAxis(GAMEPAD_1, sf::Joystick::PovY)) {
-    axisYPower = sf::Joystick::getAxisPosition(GAMEPAD_1, sf::Joystick::PovY);
-  }
+    if (sf::Joystick::hasAxis(GAMEPAD_1, sf::Joystick::PovX)) {
+      axisXPower = sf::Joystick::getAxisPosition(GAMEPAD_1, sf::Joystick::PovX);
+    }
 
-  if (axisXPower <= -GAMEPAD_1_AXIS_SENSITIVITY) {
-    events.push_back(PRESSED_LEFT);
-    gamepadPressed["Left"] = true;
-  }
-  else if (gamepadPressed["Left"]) {
-    events.push_back(RELEASED_LEFT);
-    gamepadPressed["Left"] = false;
-  }
+    if (sf::Joystick::hasAxis(GAMEPAD_1, sf::Joystick::PovY)) {
+      axisYPower = sf::Joystick::getAxisPosition(GAMEPAD_1, sf::Joystick::PovY);
+    }
 
-  if (axisXPower >= GAMEPAD_1_AXIS_SENSITIVITY) {
-    events.push_back(PRESSED_RIGHT);
-    gamepadPressed["Right"] = true;
-  }
-  else if (gamepadPressed["Right"]) {
-    events.push_back(RELEASED_RIGHT);
-    gamepadPressed["Right"] = false;
-  }
+    if (axisXPower <= -GAMEPAD_1_AXIS_SENSITIVITY) {
+      events.push_back(PRESSED_LEFT);
+      gamepadPressed["Left"] = true;
+    }
+    else if (gamepadPressed["Left"]) {
+      events.push_back(RELEASED_LEFT);
+      gamepadPressed["Left"] = false;
+    }
 
-  if (axisYPower >= GAMEPAD_1_AXIS_SENSITIVITY) {
-    events.push_back(PRESSED_UP);
-    gamepadPressed["Up"] = true;
-  }
-  else if (gamepadPressed["Up"]) {
-    events.push_back(RELEASED_UP);
-    gamepadPressed["Up"] = false;
-  }
+    if (axisXPower >= GAMEPAD_1_AXIS_SENSITIVITY) {
+      events.push_back(PRESSED_RIGHT);
+      gamepadPressed["Right"] = true;
+    }
+    else if (gamepadPressed["Right"]) {
+      events.push_back(RELEASED_RIGHT);
+      gamepadPressed["Right"] = false;
+    }
 
-  if (axisYPower <= -GAMEPAD_1_AXIS_SENSITIVITY) {
-    events.push_back(PRESSED_DOWN);
-    gamepadPressed["Down"] = true;
-  }
-  else if (gamepadPressed["Down"]) {
-    events.push_back(RELEASED_DOWN);
-    gamepadPressed["Down"] = false;
+    if (axisYPower >= GAMEPAD_1_AXIS_SENSITIVITY) {
+      events.push_back(PRESSED_UP);
+      gamepadPressed["Up"] = true;
+    }
+    else if (gamepadPressed["Up"]) {
+      events.push_back(RELEASED_UP);
+      gamepadPressed["Up"] = false;
+    }
+
+    if (axisYPower <= -GAMEPAD_1_AXIS_SENSITIVITY) {
+      events.push_back(PRESSED_DOWN);
+      gamepadPressed["Down"] = true;
+    }
+    else if (gamepadPressed["Down"]) {
+      events.push_back(RELEASED_DOWN);
+      gamepadPressed["Down"] = false;
+    }
   }
 }
 

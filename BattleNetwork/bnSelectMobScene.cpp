@@ -73,15 +73,15 @@ int SelectMobScene::Run()
   // It is important to set repeated to true to enable scrolling upwards
   distortionMap.setRepeated(true);
 
-  // Setting smooth to true lets us use small maps even on larger images
-  //distortionMap.setSmooth(true);
+  // Transition
+  sf::Shader& transition = *SHADERS.GetShader(ShaderType::TRANSITION);
+  transition.setUniform("texture", sf::Shader::CurrentTexture);
+  transition.setUniform("map", *TEXTURES.GetTexture(TextureType::NOISE_TEXTURE));
+  transition.setUniform("progress", 0.f);
+  float transitionProgress = 1.f;
+  ENGINE.RevokeShader();
 
-
-  //sf::RenderTexture distortionBuffer;
-  //distortionBuffer.create(camera.GetView().getSize().x*2, camera.GetView().getSize().y*2);
-
-  //sf::Sprite distortionPost;
-  //distortionPost.setTexture(distortionBuffer.getTexture());
+  bool gotoNextScene = false;
 
   sf::Shader& shader = *SHADERS.GetShader(ShaderType::DISTORTION);
 
@@ -150,39 +150,55 @@ int SelectMobScene::Run()
     ENGINE.DrawOverlay();
 
     // Scene keyboard controls
-    if (INPUT.has(PRESSED_LEFT)) {
-      selectInputCooldown -= elapsed;
+    if (!gotoNextScene && transitionProgress == 0.f) {
+      if (INPUT.has(PRESSED_LEFT)) {
+        selectInputCooldown -= elapsed;
 
-      if (selectInputCooldown <= 0) {
-        // Go to previous mob 
-        selectInputCooldown = maxSelectInputCooldown;
-        mobSelectionIndex--;
+        if (selectInputCooldown <= 0) {
+          // Go to previous mob 
+          selectInputCooldown = maxSelectInputCooldown;
+          mobSelectionIndex--;
 
-        // Number scramble effect
-        numberCooldown = maxNumberCooldown;
-
-        AUDIO.Play(AudioType::CHIP_SELECT, 1);
+          // Number scramble effect
+          numberCooldown = maxNumberCooldown;
+        }
       }
-    } else if (INPUT.has(PRESSED_RIGHT)) {
-      selectInputCooldown -= elapsed;
+      else if (INPUT.has(PRESSED_RIGHT)) {
+        selectInputCooldown -= elapsed;
 
-      if (selectInputCooldown <= 0) {
-        // Go to next mob 
-        selectInputCooldown = maxSelectInputCooldown;
-        mobSelectionIndex++;
+        if (selectInputCooldown <= 0) {
+          // Go to next mob 
+          selectInputCooldown = maxSelectInputCooldown;
+          mobSelectionIndex++;
 
-        // Number scramble effect
-        numberCooldown = maxNumberCooldown;
-
-        AUDIO.Play(AudioType::CHIP_SELECT, 1);
+          // Number scramble effect
+          numberCooldown = maxNumberCooldown;
+        }
       }
+      else {
+        selectInputCooldown = 0;
+      }
+
+      if (INPUT.has(PRESSED_ACTION2)) {
+        gotoNextScene = true;
+        AUDIO.Play(AudioType::CHIP_DESC_CLOSE);
+      }
+    }
+
+    if (gotoNextScene) {
+      transitionProgress += 0.05f;
     }
     else {
-      selectInputCooldown = 0; 
+      transitionProgress -= 0.05f;
     }
 
-    if (INPUT.has(PRESSED_ACTION2)) {
-      return 2; 
+    transitionProgress = std::max(0.f, transitionProgress);
+    transitionProgress = std::min(1.f, transitionProgress);
+
+    if (transitionProgress == 1.f) {
+      return 2;
+
+      gotoNextScene = false;
     }
 
     mobSelectionIndex = std::max(0, mobSelectionIndex);
@@ -302,6 +318,17 @@ int SelectMobScene::Run()
       AUDIO.Stream("resources/loops/loop_navi_customizer.ogg", true);
     }
 
+    sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
+    sf::Sprite transitionPost;
+    transitionPost.setTexture(postprocessing);
+
+    transition.setUniform("progress", transitionProgress);
+
+    bake = new LayeredDrawable(transitionPost);
+    bake->SetShader(&transition);
+
+    ENGINE.Draw(bake);
+    delete bake;
 
     // Write contents to screen (always last step)
     ENGINE.Display();
