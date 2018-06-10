@@ -213,7 +213,8 @@ int MainMenuScene::Run()
       alpha = (int)std::min((double)alpha, ((*iter)->GetY() / 220.0) * 255);
 
       ow.setColor(sf::Color(255, 255, 255, alpha));
-      (*iter)->Move(-50.0*(elapsed/1000.0), (-26.59*(elapsed / 1000.0)));
+
+      (*iter)->Move(-50.0*(elapsed/1000.0), (-24.495*(elapsed / 1000.0)));
       ENGINE.Draw(ow);
 
       iter++;
@@ -271,6 +272,12 @@ int MainMenuScene::Run()
 
     if (transitionProgress == 1.f) {
       int result = SelectMobScene::Run();
+
+      // reset internal clock (or everything will teleport)
+      elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+      std::cout << "time slept: " << elapsed << "\n";
+      clock.restart();
+      elapsed = 0;
 
       if (result == 0) {
         break;
