@@ -193,7 +193,7 @@ int MainMenuScene::Run()
     bg->Draw();
 
     while (iter != map.end()) {
-      if ((*iter)->GetY() < 10 || (*iter)->GetX() < -50 || (*iter)->GetX() > 300) {
+      if ((*iter)->GetY() < 10 || (*iter)->GetX() < -50) {
         delete (*iter);
         *iter = nullptr;
         iter = map.erase(iter);
