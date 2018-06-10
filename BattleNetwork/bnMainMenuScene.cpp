@@ -149,37 +149,40 @@ int MainMenuScene::Run()
 
       mainStrip = tile;
 
-
-      std::sort(map.begin(), map.end(), SortByDepth);
-
       int depth = 0;
-      while (rand() % 50 > 10 && depth < 40) {
+
+      OWTile* chain = tile;
+
+      while (rand() % 50 > 10 && depth < 10) {
         depth++;
 
         x = 0;
         y = 0;
 
         if (dir == 0) {
-          x += map.back()->GetX() + (map.back()->GetW()*1.9);
-          y += map.back()->GetY() - (map.back()->GetH()*1.5);
+          x += chain->GetX() + (chain->GetW()*1.9);
+          y += chain->GetY() - (chain->GetH()*1.5);
 
           OWTile* tile = new OWTile(x, y);
+          chain = tile;
 
           map.push_back(tile);
         }
         else if(dir ==1) {
-          x += map.back()->GetX() - (map.back()->GetW()*1.9);
-          y += map.back()->GetY() + (map.back()->GetH()*1.5);
+          x += chain->GetX() - (chain->GetW()*1.9);
+          y += chain->GetY() + (chain->GetH()*1.5);
 
           OWTile* tile = new OWTile(x, y);
+          chain = tile;
 
           map.push_back(tile);
         }
         else if(depth > 1) {
-          x += map.back()->GetX() + (map.back()->GetW()*1.9);
-          y += map.back()->GetY() + (map.back()->GetH()*1.5);
+          x += chain->GetX() + (chain->GetW()*1.9);
+          y += chain->GetY() + (chain->GetH()*1.5);
 
           OWTile* tile = new OWTile(x, y);
+          chain = tile;
 
           map.push_back(tile);
         }
@@ -210,7 +213,7 @@ int MainMenuScene::Run()
       alpha = (int)std::min((double)alpha, ((*iter)->GetY() / 220.0) * 255);
 
       ow.setColor(sf::Color(255, 255, 255, alpha));
-      (*iter)->Move(-50.0*(elapsed/1000.0), (-24.6*(elapsed / 1000.0)));
+      (*iter)->Move(-50.0*(elapsed/1000.0), (-26.59*(elapsed / 1000.0)));
       ENGINE.Draw(ow);
 
       iter++;

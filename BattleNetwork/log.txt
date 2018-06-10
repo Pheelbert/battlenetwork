@@ -1,5 +1,5 @@
-StartTime 1528664617
-Engine initialized: 0.320000 secs
+StartTime 1528666158
+Engine initialized: 0.299000 secs
 Loaded texture: resources/ui/alert.png
 
 Loaded texture: resources/backgrounds/title/tile_en.png
@@ -12,6 +12,8 @@ Loaded audio: resources/sfx/appear.ogg
 
 Loaded texture: resources/tiles/img_blue_normal.png
 
+Loaded audio: resources/sfx/area_grab.ogg
+
 Loaded texture: resources/tiles/img_blue_cracked.png
 
 Loaded texture: resources/tiles/img_blue_broken.png
@@ -20,11 +22,11 @@ Loaded texture: resources/tiles/img_blue_ice.png
 
 Loaded texture: resources/tiles/img_blue_grass.png
 
-Loaded audio: resources/sfx/area_grab.ogg
-
 Loaded texture: resources/tiles/img_blue_purple.png
 
 Loaded texture: resources/tiles/img_blue_empty.png
+
+Loaded audio: resources/sfx/area_grab_touchdown.ogg
 
 Loaded texture: resources/tiles/img_red_normal.png
 
@@ -33,8 +35,6 @@ Loaded texture: resources/tiles/img_red_cracked.png
 Loaded texture: resources/tiles/img_red_broken.png
 
 Loaded texture: resources/tiles/img_red_ice.png
-
-Loaded audio: resources/sfx/area_grab_touchdown.ogg
 
 Loaded texture: resources/tiles/img_red_grass.png
 
@@ -60,25 +60,27 @@ Loaded audio: resources/sfx/chip_desc.ogg
 
 Loaded audio: resources/sfx/chip_desc_close.ogg
 
-Loaded texture: resources/navis/megaman/navi_megaman_atlas.png
-
 Loaded audio: resources/sfx/chip_select.ogg
 
+Loaded texture: resources/navis/megaman/navi_megaman_atlas.png
+
 Loaded audio: resources/sfx/chip_error.ogg
+
+Loaded audio: resources/sfx/custom_bar_full.ogg
 
 Loaded texture: resources/navis/starman/navi_starman_atlas.png
 
 Loaded texture: resources/mobs/mob_move.png
 
-Loaded audio: resources/sfx/custom_bar_full.ogg
+Loaded audio: resources/sfx/chip_screen_open.ogg
 
 Loaded texture: resources/mobs/mob_explosion.png
 
 Loaded texture: resources/mobs/mettaur/mob_mettaur_move.png
 
-Loaded audio: resources/sfx/chip_screen_open.ogg
-
 Loaded texture: resources/mobs/mettaur/mob_mettaur_hit.png
+
+Loaded audio: resources/sfx/item_get.ogg
 
 Loaded texture: resources/mobs/mettaur/mob_mettaur_attack.png
 
@@ -86,13 +88,11 @@ Loaded texture: resources/mobs/progsman/mob_progsman_idle.png
 
 Loaded texture: resources/mobs/progsman/mob_progsman_move.png
 
-Loaded audio: resources/sfx/item_get.ogg
-
 Loaded texture: resources/mobs/progsman/mob_progsman_shoot.png
 
-Loaded texture: resources/mobs/progsman/mob_progsman_hit.png
-
 Loaded audio: resources/sfx/deleted.ogg
+
+Loaded texture: resources/mobs/progsman/mob_progsman_hit.png
 
 Loaded texture: resources/mobs/progsman/mob_progsman_punch.png
 
@@ -100,9 +100,9 @@ Loaded texture: resources/mobs/progsman/mob_progsman_throw.png
 
 Loaded texture: resources/mobs/select/random.png
 
-Loaded texture: resources/spells/spell_bullet_hit.png
-
 Loaded audio: resources/sfx/explode.ogg
+
+Loaded texture: resources/spells/spell_bullet_hit.png
 
 Loaded texture: resources/spells/spell_buster_charge.png
 
@@ -110,13 +110,13 @@ Loaded texture: resources/spells/spell_wave.png
 
 Loaded texture: resources/spells/spell_prog_bomb.png
 
+Loaded audio: resources/sfx/gun.ogg
+
 Loaded texture: resources/ui/chip_select.png
 
 Loaded texture: resources/ui/chip_cursor_small.png
 
 Loaded texture: resources/ui/chip_cursor_big.png
-
-Loaded audio: resources/sfx/gun.ogg
 
 Loaded audio: resources/sfx/health_alert.ogg
 
@@ -132,6 +132,8 @@ Loaded audio: resources/sfx/pre_battle.ogg
 
 Loaded texture: resources/ui/chip_cards.png
 
+Loaded audio: resources/sfx/recover.ogg
+
 Loaded texture: resources/ui/chip_icons.png
 
 Loaded texture: resources/ui/chip_nodata.png
@@ -142,21 +144,23 @@ Loaded texture: resources/ui/program_advance.png
 
 Loaded texture: resources/ui/battle_results.png
 
-Loaded texture: resources/ui/zenny.png
+Loaded audio: resources/sfx/spreader.ogg
 
-Loaded audio: resources/sfx/recover.ogg
+Loaded texture: resources/ui/zenny.png
 
 Loaded texture: resources/ui/nodata.png
 
-Loaded texture: resources/backgrounds/title/bg_blue.png
-
-Loaded audio: resources/sfx/spreader.ogg
-
 Loaded audio: resources/sfx/sword_swing.ogg
+
+Loaded texture: resources/backgrounds/title/bg_blue.png
 
 Loaded audio: resources/sfx/toss_item.ogg
 
+Loaded audio: resources/sfx/wave.ogg
+
 Loaded texture: resources/backgrounds/title/prog-pulse.png
+
+Loaded audio: resources/sfx/invisible.ogg
 
 Loaded texture: resources/backgrounds/game_over/game_over.png
 
@@ -168,30 +172,26 @@ Loaded texture: resources/backgrounds/main_menu/ow.png
 
 Loaded texture: resources/ui/gamepad_support_icon.png
 
-Loaded audio: resources/sfx/wave.ogg
+Loaded audio: resources/sfx/pa_advance.ogg
 
 Loaded texture: resources/ui/main_menu_ui.png
 
-Loaded audio: resources/sfx/invisible.ogg
+Loaded audio: resources/sfx/point.ogg
 
 Loaded texture: resources/shaders/textures/distortion.png
-
-Loaded audio: resources/sfx/pa_advance.ogg
-
-Loaded audio: resources/sfx/point.ogg
 
 Loaded audio: resources/sfx/new_game.ogg
 
 Loaded audio: resources/sfx/text.ogg
 
-Loaded audio sources: 0.188000 secs
+Loaded audio sources: 0.147000 secs
 Loaded texture: resources/shaders/textures/heat.png
 
 Loaded texture: resources/shaders/textures/noise.png
 
 Loaded texture: resources/shaders/textures/noise_invert.png
 
-Loaded textures: 0.193000 secs
+Loaded textures: 0.158000 secs
 Loaded shader: resources/shaders/black_fade.frag.txt
 Loaded shader: resources/shaders/custom_bar.frag.txt
 Loaded shader: resources/shaders/greyscale.frag.txt
