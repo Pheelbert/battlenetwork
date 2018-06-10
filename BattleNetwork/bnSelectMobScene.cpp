@@ -91,9 +91,6 @@ int SelectMobScene::Run()
   // Current selection index
   int mobSelectionIndex = 0;
 
-  // Stream menu music 
-  AUDIO.Stream("resources/loops/loop_navi_customizer.ogg", true);
-
   Clock clock;
   float elapsed = 0.0f;
   float totalTime = 0.f;

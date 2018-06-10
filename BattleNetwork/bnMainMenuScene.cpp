@@ -39,6 +39,9 @@ int MainMenuScene::Run()
   float totalTime = 0.f;
   int menuSelectionIndex = 0;
 
+  sf::Sprite overlay(*TEXTURES.GetTexture(TextureType::MAIN_MENU));
+  overlay.setScale(2.f, 2.f);
+
   Background* bg = new LanBackground();
 
   while (ENGINE.Running()) {
@@ -57,6 +60,8 @@ int MainMenuScene::Run()
 
     INPUT.update();
 
+    int lastMenuSelectionIndex = menuSelectionIndex;
+
     // Scene keyboard controls
     if (INPUT.has(PRESSED_UP)) {
       selectInputCooldown -= elapsed;
@@ -65,8 +70,6 @@ int MainMenuScene::Run()
         // Go to previous mob 
         selectInputCooldown = maxSelectInputCooldown;
         menuSelectionIndex--;
-
-        AUDIO.Play(AudioType::CHIP_SELECT, 1);
       }
     }
     else if (INPUT.has(PRESSED_DOWN)) {
@@ -76,8 +79,6 @@ int MainMenuScene::Run()
         // Go to next mob 
         selectInputCooldown = maxSelectInputCooldown;
         menuSelectionIndex++;
-
-        AUDIO.Play(AudioType::CHIP_SELECT, 1);
       }
     }
     else {
@@ -98,28 +99,33 @@ int MainMenuScene::Run()
     menuSelectionIndex = std::max(0, menuSelectionIndex);
     menuSelectionIndex = std::min(3, menuSelectionIndex);
 
+    if (menuSelectionIndex != lastMenuSelectionIndex) {
+      AUDIO.Play(AudioType::CHIP_SELECT, 1);
+    }
+
     bg->Draw();
+    ENGINE.Draw(overlay);;
 
     uiAnimator.SetAnimation("CHIP_FOLDER");
 
     if (menuSelectionIndex == 0) {
       uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(50.f, 20.f);
+      ui.setPosition(50.f, 50.f);
       ENGINE.Draw(ui);
 
       uiAnimator.SetAnimation("CHIP_FOLDER_LABEL");
       uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(100.f, 20.f);
+      ui.setPosition(100.f, 50.f);
       ENGINE.Draw(ui);
     }
     else {
       uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(20.f, 20.f);
+      ui.setPosition(20.f, 50.f);
       ENGINE.Draw(ui);
 
       uiAnimator.SetAnimation("CHIP_FOLDER_LABEL");
       uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(100.f, 20.f);
+      ui.setPosition(100.f, 50.f);
       ENGINE.Draw(ui);
     }
 
@@ -127,33 +133,10 @@ int MainMenuScene::Run()
 
     if (menuSelectionIndex == 1) {
       uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(50.f, 70.f);
-      ENGINE.Draw(ui);
-
-      uiAnimator.SetAnimation("LIBRARY_LABEL");
-      uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(100.f, 70.f);
-      ENGINE.Draw(ui);
-    }
-    else {
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(20.f, 70.f);
-      ENGINE.Draw(ui);
-
-      uiAnimator.SetAnimation("LIBRARY_LABEL");
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(100.f, 70.f);
-      ENGINE.Draw(ui);
-    }
-
-    uiAnimator.SetAnimation("NAVI");
-
-    if (menuSelectionIndex == 2) {
-      uiAnimator.SetFrame(2, &ui);
       ui.setPosition(50.f, 120.f);
       ENGINE.Draw(ui);
 
-      uiAnimator.SetAnimation("NAVI_LABEL");
+      uiAnimator.SetAnimation("LIBRARY_LABEL");
       uiAnimator.SetFrame(2, &ui);
       ui.setPosition(100.f, 120.f);
       ENGINE.Draw(ui);
@@ -163,9 +146,32 @@ int MainMenuScene::Run()
       ui.setPosition(20.f, 120.f);
       ENGINE.Draw(ui);
 
-      uiAnimator.SetAnimation("NAVI_LABEL");
+      uiAnimator.SetAnimation("LIBRARY_LABEL");
       uiAnimator.SetFrame(1, &ui);
       ui.setPosition(100.f, 120.f);
+      ENGINE.Draw(ui);
+    }
+
+    uiAnimator.SetAnimation("NAVI");
+
+    if (menuSelectionIndex == 2) {
+      uiAnimator.SetFrame(2, &ui);
+      ui.setPosition(50.f, 190.f);
+      ENGINE.Draw(ui);
+
+      uiAnimator.SetAnimation("NAVI_LABEL");
+      uiAnimator.SetFrame(2, &ui);
+      ui.setPosition(100.f, 190.f);
+      ENGINE.Draw(ui);
+    }
+    else {
+      uiAnimator.SetFrame(1, &ui);
+      ui.setPosition(20.f, 190.f);
+      ENGINE.Draw(ui);
+
+      uiAnimator.SetAnimation("NAVI_LABEL");
+      uiAnimator.SetFrame(1, &ui);
+      ui.setPosition(100.f, 190.f);
       ENGINE.Draw(ui);
     }
 
@@ -173,22 +179,22 @@ int MainMenuScene::Run()
 
     if (menuSelectionIndex == 3) {
       uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(50.f, 170.f);
+      ui.setPosition(50.f, 260.f);
       ENGINE.Draw(ui);
 
       uiAnimator.SetAnimation("MOB_SELECT_LABEL");
       uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(100.f, 170.f);
+      ui.setPosition(100.f, 260.f);
       ENGINE.Draw(ui);
     }
     else {
       uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(20.f, 170.f);
+      ui.setPosition(20.f, 260.f);
       ENGINE.Draw(ui);
 
       uiAnimator.SetAnimation("MOB_SELECT_LABEL");
       uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(100.f, 170.f);
+      ui.setPosition(100.f, 260.f);
       ENGINE.Draw(ui);
     }
 

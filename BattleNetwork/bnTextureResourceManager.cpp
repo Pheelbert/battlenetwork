@@ -143,6 +143,7 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/backgrounds/title/prog-pulse.png");
   paths.push_back("resources/backgrounds/game_over/game_over.png");
   paths.push_back("resources/backgrounds/select/battle_select.png");
+  paths.push_back("resources/backgrounds/main_menu/bg.png");
 
   // other icons
   paths.push_back("resources/ui/gamepad_support_icon.png");
