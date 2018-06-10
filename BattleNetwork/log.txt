@@ -1,0 +1,10 @@
+StartTime 1528664565
+Engine initialized: 0.322000 secs
+Loaded texture: resources/ui/alert.png
+
+Loaded texture: resources/backgrounds/title/tile_en.png
+
+Loaded font: resources/fonts/mmbnthin_regular.ttf
+
+Loaded font: resources/fonts/mmbnthick_regular.ttf
+

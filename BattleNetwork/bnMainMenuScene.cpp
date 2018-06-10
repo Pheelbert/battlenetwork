@@ -138,7 +138,7 @@ int MainMenuScene::Run()
       double x = 0;
       double y = 0;
 
-      int dir = rand() % 2;
+      int dir = rand() % 3;
 
       x += mainStrip->GetX() + (mainStrip->GetW()*1.9);
       y += mainStrip->GetY() + (mainStrip->GetH()*1.5);
@@ -152,7 +152,10 @@ int MainMenuScene::Run()
 
       std::sort(map.begin(), map.end(), SortByDepth);
 
-      if (rand() % 50 > 25) {
+      int depth = 0;
+      while (rand() % 50 > 10 && depth < 40) {
+        depth++;
+
         x = 0;
         y = 0;
 
@@ -164,8 +167,16 @@ int MainMenuScene::Run()
 
           map.push_back(tile);
         }
-        else {
+        else if(dir ==1) {
           x += map.back()->GetX() - (map.back()->GetW()*1.9);
+          y += map.back()->GetY() + (map.back()->GetH()*1.5);
+
+          OWTile* tile = new OWTile(x, y);
+
+          map.push_back(tile);
+        }
+        else if(depth > 1) {
+          x += map.back()->GetX() + (map.back()->GetW()*1.9);
           y += map.back()->GetY() + (map.back()->GetH()*1.5);
 
           OWTile* tile = new OWTile(x, y);
@@ -182,7 +193,7 @@ int MainMenuScene::Run()
     bg->Draw();
 
     while (iter != map.end()) {
-      if ((*iter)->GetY() < 10 || (*iter)->GetX() < 10) {
+      if ((*iter)->GetY() < 10 || (*iter)->GetX() < -50 || (*iter)->GetX() > 300) {
         delete (*iter);
         *iter = nullptr;
         iter = map.erase(iter);
@@ -191,15 +202,15 @@ int MainMenuScene::Run()
       }
 
       ow.setOrigin(24.f, 15.f);
-      ow.setPosition((int)((*iter)->GetX()), (int)((*iter)->GetY()));
+      ow.setPosition((float)((*iter)->GetX()), (float)((*iter)->GetY()));
 
-      int alpha = std::min(255.0, ((*iter)->GetX() / 40.0) * 255);
-      alpha = std::min((double)alpha, ((*iter)->GetY() / 50.0) * 255);
 
-      alpha = std::min((double)alpha, ((*iter)->GetY() / 220.0) * 255);
+      int alpha = (int)std::min((double)255, ((*iter)->GetY() / 50.0) * 255);
+
+      alpha = (int)std::min((double)alpha, ((*iter)->GetY() / 220.0) * 255);
 
       ow.setColor(sf::Color(255, 255, 255, alpha));
-      (*iter)->Move(-50.0*(elapsed/1000.0), (-24.9*(elapsed / 1000.0)));
+      (*iter)->Move(-50.0*(elapsed/1000.0), (-24.6*(elapsed / 1000.0)));
       ENGINE.Draw(ow);
 
       iter++;
