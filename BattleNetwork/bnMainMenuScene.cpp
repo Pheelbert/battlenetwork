@@ -17,8 +17,57 @@ using sf::Clock;
 using sf::Event;
 using sf::Font;
 
+class OWTile {
+  double x;
+  double y;
+  double w;
+  double h;
+
+public:
+  OWTile(double x, double y) : x(x), y(y) {
+    w = 48 / 2.0;
+    h = 30 / 2.0;
+  }
+
+  const double GetY() const { return y; } 
+  const double GetX() const { return x; } 
+  const double GetW() const { return w; } 
+  const double GetH() const { return h; }
+
+  void Move(double offx, double offy) {
+    x += offx;
+    y += offy;
+  }
+
+};
+
+bool SortByDepth(const OWTile* lhs, const OWTile* rhs)
+{
+  return lhs->GetY() < rhs->GetY();
+}
+
+std::vector<OWTile*> map;
+
 int MainMenuScene::Run()
 {
+  // Begin the chain
+  map.push_back(new OWTile(240, 160));
+
+  while (map.size() < 10) {
+    double x = 0;
+    double y = 0;
+    x += map.back()->GetX() + (map.back()->GetW()*1.9);
+    y += map.back()->GetY() + (map.back()->GetH()*1.5);
+
+    OWTile* tile = new OWTile(x, y);
+
+    map.push_back(tile);
+  }
+
+  std::sort(map.begin(), map.end());
+
+  OWTile* mainStrip = map.back();
+
   Camera& camera(ENGINE.GetCamera());
 
   // Selection input delays
@@ -50,7 +99,17 @@ int MainMenuScene::Run()
   sf::Sprite overlay(*TEXTURES.GetTexture(TextureType::MAIN_MENU));
   overlay.setScale(2.f, 2.f);
 
+  sf::Sprite ow(*TEXTURES.GetTexture(TextureType::MAIN_MENU_OW));
+  ow.setScale(2.f, 2.f);
+
   Background* bg = new LanBackground();
+
+  sf::Sprite owNavi(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS));
+  owNavi.setScale(2.f, 2.f);
+  Animation naviAnimator("owNavi", "resources/navis/starman/starman.animation");
+  naviAnimator.Load();
+  naviAnimator.SetAnimation("navi_starman_walk_DownLR");
+  naviAnimator << Animate::Mode(Animate::Mode::Loop);
 
   bool gotoNextScene = false;
 
@@ -74,6 +133,82 @@ int MainMenuScene::Run()
     ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
+
+    if(map.size() < 100) {
+      double x = 0;
+      double y = 0;
+
+      int dir = rand() % 2;
+
+      x += mainStrip->GetX() + (mainStrip->GetW()*1.9);
+      y += mainStrip->GetY() + (mainStrip->GetH()*1.5);
+
+      OWTile* tile = new OWTile(x, y);
+
+      map.push_back(tile);
+
+      mainStrip = tile;
+
+
+      std::sort(map.begin(), map.end(), SortByDepth);
+
+      if (rand() % 50 > 25) {
+        x = 0;
+        y = 0;
+
+        if (dir == 0) {
+          x += map.back()->GetX() + (map.back()->GetW()*1.9);
+          y += map.back()->GetY() - (map.back()->GetH()*1.5);
+
+          OWTile* tile = new OWTile(x, y);
+
+          map.push_back(tile);
+        }
+        else {
+          x += map.back()->GetX() - (map.back()->GetW()*1.9);
+          y += map.back()->GetY() + (map.back()->GetH()*1.5);
+
+          OWTile* tile = new OWTile(x, y);
+
+          map.push_back(tile);
+        }
+      }
+
+      std::sort(map.begin(), map.end(), SortByDepth);
+    }
+
+    std::vector<OWTile*>::iterator iter = map.begin();
+
+    bg->Draw();
+
+    while (iter != map.end()) {
+      if ((*iter)->GetY() < 10 || (*iter)->GetX() < 10) {
+        delete (*iter);
+        *iter = nullptr;
+        iter = map.erase(iter);
+
+        continue;
+      }
+
+      ow.setOrigin(24.f, 15.f);
+      ow.setPosition((int)((*iter)->GetX()), (int)((*iter)->GetY()));
+
+      int alpha = std::min(255.0, ((*iter)->GetX() / 40.0) * 255);
+      alpha = std::min((double)alpha, ((*iter)->GetY() / 50.0) * 255);
+
+      alpha = std::min((double)alpha, ((*iter)->GetY() / 220.0) * 255);
+
+      ow.setColor(sf::Color(255, 255, 255, alpha));
+      (*iter)->Move(-50.0*(elapsed/1000.0), (-24.9*(elapsed / 1000.0)));
+      ENGINE.Draw(ow);
+
+      iter++;
+    }
+
+    // Draw navi moving
+    naviAnimator.Update(elapsed, &owNavi);
+    owNavi.setPosition(320, 195);
+    ENGINE.Draw(owNavi);
 
     int lastMenuSelectionIndex = menuSelectionIndex;
 
@@ -137,7 +272,6 @@ int MainMenuScene::Run()
       AUDIO.Play(AudioType::CHIP_SELECT, 1);
     }
 
-    bg->Draw();
     ENGINE.Draw(overlay);
 
     uiAnimator.SetAnimation("CHIP_FOLDER");
