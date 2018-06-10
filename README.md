@@ -10,6 +10,7 @@ Click the thumbnail to watch on youtube.
 
 [![preview.png](https://s15.postimg.cc/6cpgwlocr/preview.png)](https://postimg.cc/image/phsq6d30n/)
 
+[![menu.png](https://s15.postimg.cc/k819ndp6z/Untitled.png)](https://postimg.cc/image/hdy49xn0n/)
 
 # Features
 
@@ -122,6 +123,7 @@ New:
 * Reflection shader for ice panels
 * Counter system
 * Transition effects between screens
+* Randomly generated overworld map
 
 Changes from original author:
 
