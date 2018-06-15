@@ -1,5 +1,5 @@
 #include "bnPlayerControlledState.h"
-#include "bnControllableComponent.h"
+#include "bnInputManager.h"
 #include "bnPlayer.h"
 #include "bnTile.h"
 #include "bnAudioResourceManager.h"
@@ -12,7 +12,7 @@
 #define ATTACK_TO_IDLE_COOLDOWN 150.0f
 #define HIT_COOLDOWN 300.0f
 
-PlayerControlledState::PlayerControlledState() : controllableComponent(&ControllableComponent::GetInstance()), AIState<Player>()
+PlayerControlledState::PlayerControlledState() : InputManager(&InputManager::GetInstance()), AIState<Player>()
 {
   //Cooldowns
   moveKeyPressCooldown = 0.0f;
@@ -23,30 +23,30 @@ PlayerControlledState::PlayerControlledState() : controllableComponent(&Controll
 
 PlayerControlledState::~PlayerControlledState()
 {
-  controllableComponent = nullptr;
+  InputManager = nullptr;
 }
 
 void PlayerControlledState::OnEnter(Player& player) {
-  player.SetAnimation(PlayerState::PLAYER_IDLE);
+  player.SetAnimation(PLAYER_IDLE);
 }
 
 void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
 
   // Action controls take priority over movement
-  if (controllableComponent->has(RELEASED_ACTION1)) {
+  if (InputManager->has(RELEASED_ACTION1)) {
     player.Attack(player.chargeComponent.GetChargeCounter());
     player.chargeComponent.SetCharging(false);
     attackToIdleCooldown = 0.0f;
 
-    auto onFinish = [&player]() {player.SetAnimation(PlayerState::PLAYER_IDLE); };
-    player.SetAnimation(PlayerState::PLAYER_SHOOTING, onFinish);
+    auto onFinish = [&player]() {player.SetAnimation(PLAYER_IDLE); };
+    player.SetAnimation(PLAYER_SHOOTING, onFinish);
   }
-  else if (controllableComponent->has(RELEASED_ACTION2)) {
+  else if (InputManager->has(RELEASED_ACTION2)) {
     player.GetChipsUI()->UseNextChip();
   }
 
   // Movement increments are restricted based on anim speed
-  if (player.state == PlayerState::PLAYER_MOVING)
+  if (player.state != PLAYER_IDLE)
     return;
 
   moveKeyPressCooldown += _elapsed;
@@ -55,48 +55,48 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
 
   Direction direction = Direction::NONE;
   if (moveKeyPressCooldown >= MOVE_KEY_PRESS_COOLDOWN) {
-    if (controllableComponent->has(PRESSED_UP)) {
+    if (InputManager->has(PRESSED_UP)) {
       direction = Direction::UP;
     }
-    else if (controllableComponent->has(PRESSED_LEFT)) {
+    else if (InputManager->has(PRESSED_LEFT)) {
       direction = Direction::LEFT;
     }
-    else if (controllableComponent->has(PRESSED_DOWN)) {
+    else if (InputManager->has(PRESSED_DOWN)) {
       direction = Direction::DOWN;
     }
-    else if (controllableComponent->has(PRESSED_RIGHT)) {
+    else if (InputManager->has(PRESSED_RIGHT)) {
       direction = Direction::RIGHT;
     }
   }
  
 
   if (attackKeyPressCooldown >= ATTACK_KEY_PRESS_COOLDOWN) {
-    if (controllableComponent->has(PRESSED_ACTION1)) {
+    if (InputManager->has(PRESSED_ACTION1)) {
       attackKeyPressCooldown = 0.0f;
       player.chargeComponent.SetCharging(true);
     }
   }
 
-  if (controllableComponent->empty()) {
-    if (player.state != PlayerState::PLAYER_SHOOTING) {
-      player.SetAnimation(PlayerState::PLAYER_IDLE);
+  /*if (InputManager->empty()) {
+    if (player.state != PLAYER_SHOOTING) {
+      player.SetAnimation(PLAYER_IDLE);
     }
+  }*/
+
+  if (InputManager->has(RELEASED_UP)) {
+    direction = Direction::NONE;
+  }
+  else if (InputManager->has(RELEASED_LEFT)) {
+    direction = Direction::NONE;
+  }
+  else if (InputManager->has(RELEASED_DOWN)) {
+    direction = Direction::NONE;
+  }
+  else if (InputManager->has(RELEASED_RIGHT)) {
+    direction = Direction::NONE;
   }
 
-  if (controllableComponent->has(RELEASED_UP)) {
-    direction = Direction::NONE;
-  }
-  else if (controllableComponent->has(RELEASED_LEFT)) {
-    direction = Direction::NONE;
-  }
-  else if (controllableComponent->has(RELEASED_DOWN)) {
-    direction = Direction::NONE;
-  }
-  else if (controllableComponent->has(RELEASED_RIGHT)) {
-    direction = Direction::NONE;
-  }
-
-  if (direction != Direction::NONE && player.state != PlayerState::PLAYER_SHOOTING) {
+  if (direction != Direction::NONE && player.state != PLAYER_SHOOTING) {
     bool moved = player.Move(direction);
     if (moved) {
       auto onFinish = [&player]() {
@@ -104,18 +104,18 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
         //Cooldown until player's movement catches up to actual position (avoid walking through spells)
         if (player.previous) {
           if (player.previous->IsCracked()) {
-            AudioResourceManager::GetInstance().Play(AudioType::PANEL_CRACK);
+            AUDIO.Play(AudioType::PANEL_CRACK);
             player.previous->SetState(TileState::BROKEN);
           }
           
           player.AdoptNextTile();
         }
-        player.SetAnimation(PlayerState::PLAYER_IDLE);
+        player.SetAnimation(PLAYER_IDLE);
       }; // end lambda
-      player.SetAnimation(PlayerState::PLAYER_MOVING, onFinish);
+      player.SetAnimation(PLAYER_MOVING, onFinish);
     }
     else {
-      player.SetAnimation(PlayerState::PLAYER_IDLE);
+      player.SetAnimation(PLAYER_IDLE);
     }
     moveKeyPressCooldown = 0.0f;
   }

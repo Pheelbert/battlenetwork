@@ -21,6 +21,8 @@ public:
   Tile(int _x, int _y);
   ~Tile(void);
 
+  const TileState GetState() const;
+
   void SetField(Field* _field);
 
   int GetX() const;
@@ -37,6 +39,8 @@ public:
 
   bool IsWalkable() const;
   bool IsCracked() const;
+
+  bool IsHighlighted() const;
 
   void AddEntity(Entity* _entity);
   void RemoveEntity(Entity* _entity);
@@ -60,6 +64,7 @@ private:
   Field* field;
   float cooldown;
   float cooldownLength;
+  bool hasSpell;
 };
 
 

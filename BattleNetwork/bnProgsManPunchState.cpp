@@ -12,7 +12,7 @@ ProgsManPunchState::~ProgsManPunchState()
 
 void ProgsManPunchState::OnEnter(ProgsMan& progs) {
   auto onFinish = [this, &progs]() { this->Attack(progs); };
-  progs.SetAnimation(MobState::MOB_ATTACKING, onFinish);
+  progs.SetAnimation(MOB_ATTACKING, onFinish);
 }
 
 void ProgsManPunchState::OnLeave(ProgsMan& progs) {

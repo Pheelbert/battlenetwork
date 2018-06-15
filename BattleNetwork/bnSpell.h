@@ -7,21 +7,24 @@ using sf::Texture;
 class Spell : public Entity {
 public:
   Spell(void);
-  Spell(Field* _field, Team _team);
   virtual ~Spell(void);
+
+  const bool IsTileHighlightEnabled() const;
 
   virtual void Update(float _elapsed) = 0;
   virtual bool Move(Direction _direction) = 0;
   virtual void Attack(Entity* _entity) = 0;
   virtual vector<Drawable*> GetMiscComponents() = 0;
-  virtual int GetStateFromString(string _string) = 0;
   virtual void AddAnimation(int _state, FrameAnimation _animation, float _duration) = 0;
 
   void SetDirection(Direction _direction);
   Direction GetDirection() const;
 
+  void EnableTileHighlight(bool enable);
+
 protected:
   bool hit;
+  bool markTile;
   int random;
   float cooldown;
   float damageCooldown;

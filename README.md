@@ -1,16 +1,36 @@
 # Videos w/ SOUND
-#### Branch: master
+#### Branch: master as of 6/04/2018
 Click the thumbnail to watch on youtube. 
 
-[![Video of engine 5/26/2018](https://img.youtube.com/vi/2NdjhPiUJGQ/0.jpg)](https://youtu.be/2NdjhPiUJGQ)
-[![Video of engine 5/26/2018](https://img.youtube.com/vi/2NdjhPiUJGQ/1.jpg)](https://youtu.be/2NdjhPiUJGQ) 
+[![Video of engine 6/4/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://youtu.be/fCYp4VubD_s) 
+
+[![Video of engine 6/4/2018](https://img.youtube.com/vi/fCYp4VubD_s/0.jpg)](https://youtu.be/fCYp4VubD_s) 
+
+[![image.png](https://s15.postimg.cc/mik119uuj/image.png)](https://postimg.cc/image/6kbbb50mf/)
+
+[![preview.png](https://s15.postimg.cc/6cpgwlocr/preview.png)](https://postimg.cc/image/phsq6d30n/)
+
+[![menu.png](https://s15.postimg.cc/k819ndp6z/Untitled.png)](https://postimg.cc/image/hdy49xn0n/)
 
 # Features
-In this demo, you can move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
+
+**Keyboard support for MMBN Chrono X Config .ini files**
+[![tool.png](https://s15.postimg.cc/hdqmp92i3/tool.png)](https://postimg.cc/image/wmgk30w6f/)
+
+Just copy and paste your `options.ini` file to the same folder as the executable and the engine will read it. Plug in your controller. You'll know if everything is good because the GamePad icon will show up on the title screen:
+
+[![gamepad_support.png](https://s15.postimg.cc/nmm2cu7ij/gamepad_support.png)](https://postimg.cc/image/ib75s4lfr/)
+
+There is joystick support but the tricky thing about joysticks are that each vendor has different configurations. If you have a problem with your joystick, file an issue on the project page [here](https://github.com/TheMaverickProgrammer/battlenetwork/issues). 
+
+--------
+
+In this demo, you can choose which mob to battle, move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
 
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
 
-At this time only 3 chips are implemented: HP+10, CrckPnl, and Invsble.
+At this time only 5 chip types are implemented: All heath+ chips, Invsible, Cannon, CrckPanel, and Sword.
+`BasicSword` is the default behavior for all the sword chips at the moment. It behaves as wide-sword attacking one panel ahead and one panel below. Each chip plays the appropriate animation.
 
 Rename the file in `resources/database/library.txt - Copy`to `resources/database/library.txt` for a full library while playing the game.
 
@@ -18,14 +38,16 @@ There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1
 There other other PAs that can be triggered through system but are not implemented and do not do any damage. 
 You can write your own PA's and add your own chips by editting the `/database` textfiles.
 
-Mega can also be deleted. Sound has been rebalanced through the Audio Priorty system.
+Mega can also be deleted, ending the demo. If mega wins, the battle results will show up with your time, ranking, and a random chip based on score.
 
 # Controls
+If not using [MMBN Chrono X Config Utility](http://www.mmbnchronox.com/download.php), these are the default bindings
+
 ```
 ARROWS -> Move
 SPACE  -> Shoot (hold to charge)
 P      -> Pause/Unpause 
-Return -> Bring up chip select GUI / Hide 
+Return -> Bring up chip select GUI / Hide / Continue
 R CTRL -> Use a chip
 ```
 
@@ -34,22 +56,11 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 
 # Author TheMaverickProgrammer
 
-## Update 5/26/2018
-The PA system is bug free and acts just like the game: only matching codes or chip names can be queued together. To activate PA's, order matters. 
-The engine has support for a basic camera and can shake with a stress amount and a duration. You can see this live with the XtremeCannon PA.
-Previously an animation bug with the Thor library caused a crash. I wrote our own animation class in the AnimationComponent with complete success.
-
-## Update 5/4/2018
-Mobs can now be dynamically created by `MobFactory` classes. This allows for a whole set of fun spawning random enemy groups.
-The `Mob` class has utility functions that are used in the intro to spawn enemies one at a time and with a pixel intro effect just like the games.
-Chip menu opens up after intro just like the games.
-Chip database script loads and maps to correct card and icon images.
-PA (Program Advance) system is the latest feature. The `PA` class stores recipes called "steps" that are loaded from a script. After chip select, the chips are then filtered by the `PA` object and returns a matching PA combo chip.
-Mob class now handles deletion of enemy objects. Field class has a new `OwnEntity(e,x,y)` method for objects that need to be cleaned up by field when deleted (like Spells and other effects). 
-
-## Update 5/3/2018
-Created a loading screen. Rewrote logger to store output into a queue that I dequeue in the screen and draw the missing textures 
-once evereything is loaded from seperate threads. The loading screen calculates % complete and flashes when 100%.
+## Update 6/10/2018
+Added a new PET menu to that will serve as the battle config which will allow a player to toggle between navis and mobs.
+Added a shader-based transition effect between screens.
+Added counter and counter-death animation (slide right). 
+Rewrote a lot of the animation classes and added new features to the playback (like optional looping)
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -85,6 +96,7 @@ New:
 * HP+10 chip works in-battle
 * CrckPnl chip works in-battle
 * Invsble chip works in-battle
+* Sword chips work in-battle 
 * Chip icons are rendered in battle
 * Chip icons are rendered in select
 * Chip combo select system is now working
@@ -100,6 +112,18 @@ New:
 * Loading screen + loading screen custom graphics
 * Camera quakes
 * New animation support
+* Battle results 
+* Post-battle reward system
+* Authentic MMBN 6 ranking system 
+* Tile highlighting as seen in the games by enemy attacks and some player chips
+* MMBN Chrono X Config reader
+* Gamepad support
+* Battle Select Screen
+* Distortion shader for lava panels 
+* Reflection shader for ice panels
+* Counter system
+* Transition effects between screens
+* Randomly generated overworld map
 
 Changes from original author:
 
@@ -117,15 +141,4 @@ Changes from original author:
 * Done away with Thor:: dependencies and wrote my own animation class and animation editor
 
 # Author Pheelbert
-Wrote the foundation for the battle engine. He wrote the tile-based movement and update system emulating an authentic mmbn player experience.
-
-## battlenetwork
-## =============
-
-https://www.youtube.com/watch?v=GQa0HsVPNE8&feature=youtu.be
-
-A Megaman Battle Network project that I work on occasionally. Made from scratch with SFML and Thor in C++.
-
-'extern/dlls/*(-d).dll' must be copied to the Release/ or Debug/
-
-Be wary of the license, this project was created and I am still working on it for academic reasons. It would be a shame if someone were to steal my project and call it their own!
+Wrote the foundation. He wrote the tile-based movement and update system emulating an authentic mmbn player experience compared to others out there.

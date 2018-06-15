@@ -8,7 +8,7 @@
 #include "bnLogger.h"
 
 #define RESOURCE_NAME "megaman"
-#define RESOURCE_PATH "resources/navis/megaman/megaman.animation"
+#define RESOURCE_PATH "resources/navis/starman/starman.animation"
 
 #define MOVE_ANIMATION_SPRITES 4
 #define MOVE_ANIMATION_WIDTH 38
@@ -19,15 +19,17 @@
 #define SHOOT_ANIMATION_HEIGHT 58
 
 Player::Player(void)
-  : health(99),
-  state(PlayerState::PLAYER_IDLE),
-  textureType(TextureType::NAVI_MEGAMAN_MOVE),
+  : health(200),
+  state(PLAYER_IDLE),
   chargeComponent(this),
   animationComponent(this),
   AI<Player>(this) 
 {
+  name = "Megaman";
   SetLayer(0);
-  team = Team::BLUE;
+  team = Team::RED;
+
+  moveCount = hitCount = 0;
 
   //Animation
   animationProgress = 0.0f;
@@ -39,10 +41,15 @@ Player::Player(void)
   //Components setup and load
   chargeComponent.load();
 
-  animationComponent.setup(RESOURCE_NAME, RESOURCE_PATH);
-  animationComponent.load();
+  animationComponent.Setup(RESOURCE_PATH);
+  animationComponent.Load();
+
+  textureType = TextureType::NAVI_STARMAN_ATLAS;
+  setTexture(*TEXTURES.GetTexture(textureType));
 
   previous = nullptr;
+
+  moveCount = 0;
 }
 
 Player::~Player(void) {
@@ -71,7 +78,7 @@ void Player::Update(float _elapsed) {
 
   //Components updates
   chargeComponent.update(_elapsed);
-  animationComponent.update(_elapsed);
+  animationComponent.Update(_elapsed);
 
   Entity::Update(_elapsed);
 }
@@ -130,6 +137,7 @@ void Player::AdoptNextTile() {
   previous->RemoveEntity(this);
   previous = nullptr;
   next = nullptr;
+  moveCount++;
 }
 
 void Player::Attack(float _charge) {
@@ -175,42 +183,26 @@ int Player::Hit(int _damage) {
     result = true;
   } else {
     health -= _damage;
-    /*if (previous) {
-      // Go back where we were hit
-      this->tile->RemoveEntity(this);
-      this->SetTile(previous);
-      previous->AddEntity(this);
-      previous = nullptr;
-      next = nullptr;
-    }*/
+    hitCount++;
     this->StateChange<PlayerHitState, float>({ 600.0f });
   }
 
   return result;
 }
 
+int Player::GetMoveCount() const
+{
+  return moveCount;
+}
+
+int Player::GetHitCount() const
+{
+  return hitCount;
+}
+
 void Player::RefreshTexture() {
-  switch (state) {
-  case PlayerState::PLAYER_IDLE:
-    textureType = TextureType::NAVI_MEGAMAN_MOVE;
-    break;
-  case PlayerState::PLAYER_MOVING:
-    textureType = TextureType::NAVI_MEGAMAN_MOVE;
-    break;
-  case PlayerState::PLAYER_SHOOTING:
-    textureType = TextureType::NAVI_MEGAMAN_SHOOT;
-    break;
-  case PlayerState::PLAYER_HIT:
-    textureType = TextureType::NAVI_MEGAMAN_HIT;
-    break;
-  default:
-    assert(false && "Invalid player state.");
-  }
-
-  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
-
   if (tile != nullptr) {
-    setPosition(tile->getPosition().x + 2.f, tile->getPosition().y - 76.f);
+    setPosition(tile->getPosition().x + (tile->GetWidth()/2.0f), tile->getPosition().y + (tile->GetHeight()/2.0f));
   }
 }
 
@@ -222,19 +214,14 @@ SelectedChipsUI* Player::GetChipsUI() const {
   return chipsUI;
 }
 
-int Player::GetStateFromString(string _string) {
-  int size = 4;
-  string PLAYER_STATE_STRINGS[] = { "PLAYER_IDLE", "PLAYER_MOVING", "PLAYER_HIT", "PLAYER_SHOOTING" };
-  for (int i = 0; i < size; i++) {
-    if (_string == PLAYER_STATE_STRINGS[i]) {
-      return static_cast<PlayerState>(i);
-    }
-  }
-  Logger::Failf("Failed to find corresponding enum: %s\n", _string);
-  return -1;
-}
+void Player::SetAnimation(string _state, std::function<void()> onFinish) {
+  state = _state;
 
-void Player::SetAnimation(int _state, std::function<void()> onFinish) {
-  this->state = static_cast<PlayerState>(_state);
-  animationComponent.setAnimation(_state, onFinish);
+  if (state == PLAYER_IDLE) {
+    int playback = Animate::Mode::Loop;
+    animationComponent.SetAnimation(_state, Animate::Mode(playback), onFinish);
+  }
+  else {
+    animationComponent.SetAnimation(_state, onFinish);
+  }
 }

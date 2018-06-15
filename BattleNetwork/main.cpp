@@ -1,16 +1,15 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 #include "bnShaderResourceManager.h"
-#include "bnControllableComponent.h"
+#include "bnInputManager.h"
 #include "bnEngine.h"
-#include "bnBattleScene.h"
-#include "bnMobFactory.h"
-#include "bnRandomMettaurMob.h"
-#include "bnTwoMettaurMob.h"
+#include "bnMainMenuScene.h"
+#include "bnChronoXConfigReader.h"
 #include "SFML/System.hpp"
 #include <Thor/Animations.hpp>
 #include <time.h>
 #include <queue>
+#include <atomic>
 
 using sf::Clock;
 
@@ -19,21 +18,29 @@ using sf::Clock;
 #define TITLE_ANIM_CHAR_HEIGHT 221
 #define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
 
-void RunGraphicsInit(unsigned * progress) {
-  sf::sleep(sf::milliseconds(1000)); // Simulate long loading to see title better
+void RunGraphicsInit(std::atomic<int> * progress) {
   clock_t begin_time = clock();
-  TextureResourceManager::GetInstance().LoadAllTextures(*progress);
+  TEXTURES.LoadAllTextures(*progress);
+
+  Logger::GetMutex()->lock();
   Logger::Logf("Loaded textures: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  Logger::GetMutex()->unlock();
 
   begin_time = clock();
-  ShaderResourceManager::GetInstance().LoadAllShaders(*progress);
+  SHADERS.LoadAllShaders(*progress);
+
+  Logger::GetMutex()->lock();
   Logger::Logf("Loaded shaders: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  Logger::GetMutex()->unlock();
 }
 
-void RunAudioInit(unsigned * progress) {
+void RunAudioInit(std::atomic<int> * progress) {
   const clock_t begin_time = clock();
-  AudioResourceManager::GetInstance().LoadAllSources(*progress);
+  AUDIO.LoadAllSources(*progress);
+
+  Logger::GetMutex()->lock();
   Logger::Logf("Loaded audio sources: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  Logger::GetMutex()->unlock();
 }
 
 int main(int argc, char** argv) {
@@ -41,28 +48,98 @@ int main(int argc, char** argv) {
   //                    1) always run from main thread and 
   //                    2) load before we do any loading screen rendering
   const clock_t begin_time = clock();
-  Engine::GetInstance().Initialize();
+  ENGINE.Initialize();
   Logger::Logf("Engine initialized: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
 
   // lazy init
-  //TextureResourceManager::GetInstance();
-  ShaderResourceManager::GetInstance();
-  AudioResourceManager::GetInstance();
+  TEXTURES;
+  SHADERS;
+  AUDIO;
+
+  // State flags
+  bool inConfigMessageState = true;
+
+  ChronoXConfigReader config("options.ini");
+
+  if (!config.IsOK()) {
+    inConfigMessageState = false; // skip the state
+  }
+  else {
+    AUDIO.EnableAudio(config.IsAudioEnabled());
+    INPUT.SupportChronoXGamepad(config);
+  }
+
+  sf::Texture* alert = TEXTURES.LoadTextureFromFile("resources/ui/alert.png");
+  sf::Sprite alertSprite(*alert);
+  alertSprite.setScale(2.f, 2.f);
+  alertSprite.setOrigin(alertSprite.getLocalBounds().width / 2, alertSprite.getLocalBounds().height / 2);
+  sf::Vector2f alertPos = (sf::Vector2f)((sf::Vector2i)ENGINE.GetWindow()->getSize() / 2);
+  alertSprite.setPosition(sf::Vector2f(100.f, alertPos.y));
 
   // Title screen logo
-  sf::Texture* logo = TextureResourceManager::GetInstance().LoadTextureFromFile("resources/backgrounds/title/tile.png");
+  sf::Texture* logo = TEXTURES.LoadTextureFromFile("resources/backgrounds/title/tile_en.png");
   LayeredDrawable logoSprite;
   logoSprite.setTexture(*logo);
   logoSprite.setOrigin(logoSprite.getLocalBounds().width / 2, logoSprite.getLocalBounds().height / 2);
-  sf::Vector2f logoPos = (sf::Vector2f)((sf::Vector2i)Engine::GetInstance().GetWindow()->getSize() / 2);
+  sf::Vector2f logoPos = (sf::Vector2f)((sf::Vector2i)ENGINE.GetWindow()->getSize() / 2);
   logoSprite.setPosition(logoPos);
 
   // Log output text
-  sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthin_regular.ttf");
+  sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthin_regular.ttf");
   sf::Text* logLabel = new sf::Text("...", *font);
   logLabel->setCharacterSize(10);
   logLabel->setOrigin(0.f, logLabel->getLocalBounds().height);
   std::vector<std::string> logs;
+
+  // Press Start text
+  sf::Font* startFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
+  sf::Text* startLabel = new sf::Text("PRESS START", *startFont);
+  startLabel->setCharacterSize(24);
+  startLabel->setOrigin(0.f, startLabel->getLocalBounds().height);
+  startLabel->setPosition(sf::Vector2f(180.0f, 240.f));
+
+  /* 
+  Give a message to the player before loading 
+  */
+
+  sf::Text* message = new sf::Text("Your Chrono X config settings\nhave been imported", *startFont);
+  message->setCharacterSize(24);
+  message->setOrigin(message->getLocalBounds().width/2.f, message->getLocalBounds().height*2);
+  message->setPosition(sf::Vector2f(300.f, 200.f));
+
+  Clock clock;
+  float elapsed = 0.0f;
+  float messageCooldown = 3000; 
+
+  while (inConfigMessageState && ENGINE.Running()) {
+    clock.restart();
+
+    INPUT.update();
+
+    // Prepare for next draw calls
+    ENGINE.Clear();
+
+    // Write contents to screen
+    ENGINE.Display();
+
+    if (messageCooldown <= 0) {
+      inConfigMessageState = false;
+      messageCooldown = 0;
+    }
+
+    float alpha = std::min((messageCooldown/1000.f)*255.f, 255.f);
+    alertSprite.setColor(sf::Color((sf::Uint8)255.f, (sf::Uint8)255.f, (sf::Uint8)255.f, (sf::Uint8)alpha));
+    message->setFillColor(sf::Color((sf::Uint8)255.f, (sf::Uint8)255.f, (sf::Uint8)255.f, (sf::Uint8)alpha));
+    messageCooldown -= elapsed;
+
+    ENGINE.Draw(alertSprite);
+    ENGINE.Draw(message);
+
+    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+  }
+
+  // Cleanup
+  ENGINE.Clear();
 
   // Title screen background
   // This will be loaded from the resource manager AFTER it's ready
@@ -73,9 +150,8 @@ int main(int argc, char** argv) {
   LayeredDrawable bgSprite;
   LayeredDrawable progSprite;
 
-  // TODO: Add shaders to this list
-  unsigned totalObjects = (unsigned)TextureType::TEXTURE_TYPE_SIZE + (unsigned)AudioType::AUDIO_TYPE_SIZE + (unsigned)ShaderType::SHADER_TYPE_SIZE;
-  unsigned progress = 0;
+  int totalObjects = (unsigned)TextureType::TEXTURE_TYPE_SIZE + (unsigned)AudioType::AUDIO_TYPE_SIZE + (unsigned)ShaderType::SHADER_TYPE_SIZE;
+  std::atomic<int> progress = 0;
 
   sf::Thread graphicsLoad(&RunGraphicsInit, &progress);
   sf::Thread audioLoad(&RunAudioInit, &progress);
@@ -84,8 +160,8 @@ int main(int argc, char** argv) {
   audioLoad.launch();
 
   // play some music while we wait
-  AudioResourceManager::GetInstance().SetStreamVolume(10);
-  AudioResourceManager::GetInstance().Stream("resources/loops/loop_theme.ogg", true);
+  AUDIO.SetStreamVolume(10);
+  AUDIO.Stream("resources/loops/loop_theme.ogg", true);
 
   // Draw some stats while we wait 
   bool inLoadState = true;
@@ -97,17 +173,14 @@ int main(int argc, char** argv) {
 
   sf::Shader* whiteShader = nullptr;
 
-  Clock clock;
-  float elapsed = 0.0f;
-
-  while(inLoadState && Engine::GetInstance().Running()) {
+  while(inLoadState && ENGINE.Running()) {
     clock.restart();
 
     float percentage = (float)progress / (float)totalObjects;
     std::string percentageStr = std::to_string((int)(percentage*100));
-    Engine::GetInstance().GetWindow()->setTitle(sf::String(std::string("Loading: ") + percentageStr + "%"));
+    ENGINE.GetWindow()->setTitle(sf::String(std::string("Loading: ") + percentageStr + "%"));
 
-    ControllableComponent::GetInstance().update();
+    INPUT.update();
 
     /*
       Get next logs. One at a time for effect.
@@ -129,7 +202,7 @@ int main(int argc, char** argv) {
         if (!bg) {
           // NOW we can load resources from internal storage throughout the game
           try {
-            bg = TextureResourceManager::GetInstance().GetTexture(TextureType::BACKGROUND_BLUE);
+            bg = TEXTURES.GetTexture(TextureType::BACKGROUND_BLUE);
             bgSprite.setTexture(*bg);
             bgSprite.setScale(2.f, 2.f);
           }
@@ -141,7 +214,7 @@ int main(int argc, char** argv) {
         if (!progs) {
           // NOW we can load resources from internal storage throughout the game
           try {
-            progs = TextureResourceManager::GetInstance().GetTexture(TextureType::TITLE_ANIM_CHAR);
+            progs = TEXTURES.GetTexture(TextureType::TITLE_ANIM_CHAR);
 
             progSprite.setTexture(*progs);
             progSprite.setPosition(200.f, 0.f);
@@ -161,9 +234,9 @@ int main(int argc, char** argv) {
 
         if (!whiteShader) {
           try {
-            whiteShader = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE_FADE);
+            whiteShader = SHADERS.GetShader(ShaderType::WHITE_FADE);
             whiteShader->setUniform("opacity", 0.0f);
-            Engine::GetInstance().SetShader(whiteShader);
+            ENGINE.SetShader(whiteShader);
           }
           catch (std::exception e) {
             // didnt catchup? debug
@@ -199,18 +272,25 @@ int main(int argc, char** argv) {
         whiteShader->setUniform("opacity", (float)(shaderCooldown / 1000.f)*0.5f);
       }
 
-      if (ControllableComponent::GetInstance().has(PRESSED_ACTION3)) {
+      if (INPUT.has(PRESSED_ACTION3)) {
         inLoadState = false;
       }
     }
 
     // Prepare for next draw calls
-    Engine::GetInstance().Clear();
+    ENGINE.Clear();
 
     // if background is ready and loaded from threads...
     if (ready) {
       // show it 
-      Engine::GetInstance().Draw(&bgSprite);
+      ENGINE.Draw(&bgSprite);
+
+      if (INPUT.HasChronoXGamepadSupport()) {
+        sf::Sprite gamePadICon(*TEXTURES.GetTexture(TextureType::GAMEPAD_SUPPORT_ICON));
+        gamePadICon.setScale(2.f, 2.f);
+        gamePadICon.setPosition(10.f, 5.0f);
+        ENGINE.Draw(gamePadICon);
+      }
     }
 
     // Draw logs on top of bg
@@ -221,53 +301,84 @@ int main(int argc, char** argv) {
       logLabel->setString(logs[i]);
       logLabel->setPosition(0.f, 320 - (i * 10.f) - 5.f);
       logLabel->setFillColor(sf::Color(255, 255, 255, (sf::Uint8)((logFadeOutSpeed/2000.f)*fmax(0, 255 - (255 / 30)*i))));
-      Engine::GetInstance().Draw(logLabel);
+      ENGINE.Draw(logLabel);
     }
 
     if (progs) {
       progAnim(progSprite, progAnimProgress);
-      Engine::GetInstance().Draw(&progSprite);
+      ENGINE.Draw(&progSprite);
+      ENGINE.Draw(startLabel);
     }
 
-    Engine::GetInstance().Draw(&logoSprite);
+    ENGINE.Draw(&logoSprite);
 
-    Engine::GetInstance().DrawUnderlay();
-    Engine::GetInstance().DrawLayers();
-    Engine::GetInstance().DrawOverlay();
+    ENGINE.DrawUnderlay();
+    ENGINE.DrawLayers();
+    ENGINE.DrawOverlay();
 
     // Write contents to screen
-    Engine::GetInstance().Display();
+    ENGINE.Display();
 
     elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
   }
 
   // Cleanup
-  Engine::GetInstance().RevokeShader();
-  Engine::GetInstance().Clear();
+  ENGINE.RevokeShader();
+  ENGINE.Clear();
   delete logLabel;
   delete font;
   delete logo;
 
-  // Stop music and go to battle 
-  AudioResourceManager::GetInstance().StopStream();
+  // Stop music and go to select screen 
+  AUDIO.StopStream();
 
   // Make sure we didn't quit the loop prematurely
-  while(Engine::GetInstance().Running()) {
+  while (ENGINE.Running()) {
+    int win = MainMenuScene::Run(); // MainMenuScene::Run();
 
-    Field* field(new Field(6, 3));
-    // TODO: Field factory 
-    // see how the random mob works around holes
-    field->GetAt((rand())%3+4, (rand()%3)+1)->SetState(TileState::EMPTY);
+    if (win != 1) {
+      // Start the game over music
+      AUDIO.Stream("resources/loops/game_over.ogg");
+      ENGINE.Clear();
+      break;
+    }
+  }
 
-    //MobFactory* factory = new TwoMettaurMob(field);
-    MobFactory* factory = new RandomMettaurMob(field);
-    Mob* mob = factory->Build();
+  sf::Sprite gameOver;
+  gameOver.setTexture(*TEXTURES.GetTexture(TextureType::GAME_OVER));
+  gameOver.setScale(2.f, 2.f);
+  gameOver.setOrigin(gameOver.getLocalBounds().width / 2, gameOver.getLocalBounds().height / 2);
+  gameOver.setPosition(logoPos);
+  float fadeInCooldown = 500.0f; // half a second
 
-    BattleScene::Run(mob);
+  // Show gameover screen
+  while (ENGINE.Running()) {
+    clock.restart();
 
-    delete mob;
-    delete factory;
-    delete field;
+    INPUT.update();
+
+    fadeInCooldown -= elapsed;
+
+    if (fadeInCooldown < 0) {
+      fadeInCooldown = 0;
+    }
+
+    gameOver.setColor(sf::Color(255, 255, 255, (sf::Uint32)(255 - (255 * (fadeInCooldown / 500.f)))));
+    ENGINE.Draw(gameOver);
+
+    // Draw loop
+    ENGINE.DrawUnderlay();
+    ENGINE.DrawLayers();
+    ENGINE.DrawOverlay();
+
+    // Write contents to screen
+    ENGINE.Display();
+
+    // Prepare for next render 
+    ENGINE.Clear();
+
+    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+
   }
   
   return EXIT_SUCCESS;

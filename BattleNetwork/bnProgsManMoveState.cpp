@@ -125,7 +125,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
     progs.tile->AddEntity((Entity*)&progs);
     temp->RemoveEntity((Entity*)&progs);
     auto onFinish = [&progs]() { progs.StateChange<ProgsManIdleState>(); };
-    progs.SetAnimation(MobState::MOB_MOVING, onFinish);
+    progs.SetAnimation(MOB_MOVING, onFinish);
     isMoving = true;
   }
   else {

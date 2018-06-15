@@ -1,3 +1,9 @@
 # Lines beginning with pound '#' are comments and are ignored
 
-Chip name="Cannon1"  cardIndex="0" iconIndex="0" damage="20" type="Normal" codes="A,A,A,B,B,B,C,C,C"
+Chip name="Cannon1"  cardIndex="0" iconIndex="0" damage="20" type="Normal" codes="A,B,C,A,A,A,A,A,A"
+
+# Chip name="Swrd"     cardIndex="15" iconIndex="30" damage="20" type="Normal" codes="A,"
+# Chip name="WideSwrd" cardIndex="16" iconIndex="31" damage="30" type="Normal" codes="A,J"
+# Chip name="LongSwrd" cardIndex="17" iconIndex="32" damage="40" type="Normal" codes="A"
+
+# Chip name="Recov1" cardIndex="74" iconIndex="146" damage="10" type="Normal" codes="A,*"

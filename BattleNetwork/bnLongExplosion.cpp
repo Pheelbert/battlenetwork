@@ -18,9 +18,9 @@ LongExplosion::LongExplosion(Field* _field, Team _team)
   explosionProgress = 0.0f;
   explosionProgress2 = 0.0f;
 
-  explosion.setTexture(*TextureResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
+  explosion.setTexture(*TEXTURES.GetTexture(TextureType::MOB_EXPLOSION));
   explosion.setScale(2.0f, 2.0f);
-  explosion2.setTexture(*TextureResourceManager::GetInstance().GetTexture(TextureType::MOB_EXPLOSION));
+  explosion2.setTexture(*TEXTURES.GetTexture(TextureType::MOB_EXPLOSION));
   explosion2.setScale(2.0f, 2.0f);
   int i = 0;
   int y = 0;
@@ -39,7 +39,7 @@ LongExplosion::LongExplosion(Field* _field, Team _team)
 
 void LongExplosion::Update(float _elapsed) {
   if (explosionProgress <= 0.0f) {
-    AudioResourceManager::GetInstance().Play(AudioType::EXPLODE);
+    AUDIO.Play(AudioType::EXPLODE);
     x1 = tile->getPosition().x - 10.0f;
     y1 = tile->getPosition().y - 35.f;
   }

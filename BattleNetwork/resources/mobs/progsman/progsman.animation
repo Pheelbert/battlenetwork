@@ -1,4 +1,4 @@
-entity name="progsman"
+entity name="ProgsMan"
 
 animation state="MOB_MOVING" width="59" height="75"
 frame duration="0.05" startx="0" starty="0"

@@ -137,7 +137,8 @@
       <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <EnablePREfast>false</EnablePREfast>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -152,19 +153,33 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bnAnimate.cpp" />
+    <ClCompile Include="bnAnimation.cpp" />
+    <ClCompile Include="bnBackground.cpp" />
+    <ClCompile Include="bnBasicSword.cpp" />
+    <ClCompile Include="bnBattleResults.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="bnArtifact.cpp" />
     <ClCompile Include="bnAudioResourceManager.cpp" />
-    <ClCompile Include="bnBackgroundUI.cpp" />
+    <ClCompile Include="bnGraveyardBackground.cpp" />
+    <ClCompile Include="bnLanBackground.cpp" />
+    <ClCompile Include="bnBattleResults.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="bnCannodumbMob.cpp" />
     <ClCompile Include="bnCannon.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
     <ClCompile Include="bnChip.cpp" />
     <ClCompile Include="bnChipLibrary.cpp" />
     <ClCompile Include="bnChipSelectionCust.cpp" />
-    <ClCompile Include="bnControllableComponent.cpp" />
+    <ClCompile Include="bnInputManager.cpp" />
     <ClCompile Include="bnEntity.cpp" />
     <ClCompile Include="bnField.cpp" />
     <ClCompile Include="bnBattleScene.cpp" />
     <ClCompile Include="bnLogger.cpp" />
+    <ClCompile Include="bnMainMenuScene.cpp" />
     <ClCompile Include="bnMettaurAttackState.cpp" />
     <ClCompile Include="bnMettaurIdleState.cpp" />
     <ClCompile Include="bnMettaurMoveState.cpp" />
@@ -175,6 +190,7 @@
     <ClCompile Include="bnProgBomb.cpp" />
     <ClCompile Include="bnProgsMan.cpp" />
     <ClCompile Include="bnAnimationComponent.cpp" />
+    <ClCompile Include="bnProgsManBossFight.cpp" />
     <ClCompile Include="bnProgsManIdleState.cpp" />
     <ClCompile Include="bnRandomMettaurMob.cpp" />
     <ClCompile Include="bnShaderResourceManager.cpp" />
@@ -196,22 +212,33 @@
     <ClCompile Include="bnProgsManMoveState.cpp" />
     <ClCompile Include="bnProgsManPunchState.cpp" />
     <ClCompile Include="bnSmartShader.cpp" />
+    <ClCompile Include="bnVirusBackground.cpp" />
+    <ClCompile Include="bnSelectMobScene.cpp" />
+    <ClCompile Include="bnAgent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bnAnimate.h" />
+    <ClInclude Include="bnAnimation.h" />
+    <ClInclude Include="bnBackground.h" />
+    <ClInclude Include="bnBasicSword.h" />
+    <ClInclude Include="bnBattleItem.h" />
     <ClInclude Include="bnAI.h" />
     <ClInclude Include="bnArtifact.h" />
     <ClInclude Include="bnAudioResourceManager.h" />
     <ClInclude Include="bnAudioType.h" />
-    <ClInclude Include="bnBackgroundUI.h" />
+    <ClInclude Include="bnGraveyardBackground.h" />
+    <ClInclude Include="bnLanBackground.h" />
     <ClInclude Include="bnCamera.h" />
+    <ClInclude Include="bnCannodumbMob.h" />
     <ClInclude Include="bnCannon.h" />
     <ClInclude Include="bnChargeComponent.h" />
     <ClInclude Include="bnChip.h" />
     <ClInclude Include="bnChipLibrary.h" />
     <ClInclude Include="bnChipSelectionCust.h" />
     <ClInclude Include="bnChipType.h" />
-    <ClInclude Include="bnControllableComponent.h" />
-    <ClInclude Include="bnControllableEvent.h" />
+    <ClInclude Include="bnChronoXConfigReader.h" />
+    <ClInclude Include="bnInputManager.h" />
+    <ClInclude Include="bnInputEvent.h" />
     <ClInclude Include="bnEntity.h" />
     <ClInclude Include="bnAIState.h" />
     <ClInclude Include="bnExplodeState.h" />
@@ -219,6 +246,7 @@
     <ClInclude Include="bnBattleScene.h" />
     <ClInclude Include="bnLayered.h" />
     <ClInclude Include="bnLongExplosion.h" />
+    <ClInclude Include="bnMainMenuScene.h" />
     <ClInclude Include="bnMemory.h" />
     <ClInclude Include="bnMettaurIdleState.h" />
     <ClInclude Include="bnMettaurMoveState.h" />
@@ -234,13 +262,16 @@
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnAnimationComponent.h" />
+    <ClInclude Include="bnProgsManBossFight.h" />
     <ClInclude Include="bnProgsManIdleState.h" />
     <ClInclude Include="bnProgsManMoveState.h" />
     <ClInclude Include="bnProgsManPunchState.h" />
     <ClInclude Include="bnRandomMettaurMob.h" />
+    <ClInclude Include="bnSelectMobScene.h" />
     <ClInclude Include="bnShaderResourceManager.h" />
     <ClInclude Include="bnShaderType.h" />
     <ClInclude Include="bnSmartShader.h" />
+    <ClInclude Include="bnStringEncoder.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />
     <ClInclude Include="bnTile.h" />
@@ -254,16 +285,22 @@
     <ClInclude Include="bnPlayerHealthUI.h" />
     <ClInclude Include="bnBuster.h" />
     <ClInclude Include="bnTwoMettaurMob.h" />
+    <ClInclude Include="bnVirusBackground.h" />
     <ClInclude Include="bnWave.h" />
     <ClInclude Include="bnMettaur.h" />
     <ClInclude Include="bnEngine.h" />
     <ClInclude Include="bnSelectedChipsUI.h" />
     <ClInclude Include="bnMettaurAttackState.h" />
     <ClInclude Include="bnMeta.h" />
+    <ClInclude Include="bnTimer.h" />
+    <ClInclude Include="bnFileUtil.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="mmbn.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

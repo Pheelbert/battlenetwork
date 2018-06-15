@@ -1,6 +1,8 @@
 #include "bnPA.h"
-#include "bnTextureResourceManager.h"
+#include "bnLogger.h"
+#include "bnFileUtil.h"
 #include <assert.h>
+#include <iostream>
 
 PA::PA()
 {
@@ -24,7 +26,7 @@ void PA::LoadPA()
   advances.clear();
 
   // TODO: put this utility in an input stream class and inhert from that
-  string data = TextureResourceManager::GetInstance().LoadDataFromFile("resources/database/PA.txt");
+  string data = FileUtil::Read("resources/database/PA.txt");
 
   int endline = 0;
   std::vector<PA::PAData::Required> currSteps;

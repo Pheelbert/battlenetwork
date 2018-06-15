@@ -37,11 +37,11 @@ void Camera::Update(float elapsed) {
 
   if (sf::Time(sf::milliseconds((sf::Int32)shakeProgress)) < shakeDur) {
     // Drop off to zero by end of shake
-    stress *= 1 - (shakeProgress / shakeDur.asMilliseconds());
+    double currStress = stress * (1 - (shakeProgress / shakeDur.asMilliseconds()));
 
-    float factor = (-stress) + (int)((double)(stress - (-stress)) * (rand() / (RAND_MAX + 1.0)));
-    float factor2 = (-stress) + (int)((double)(stress - (-stress)) * (rand() / (RAND_MAX + 1.0)));
-    sf::Vector2f offset = sf::Vector2f(factor, factor2);
+    double factor = (-currStress) + (double)((double)(currStress - (-currStress)) * (rand() / (RAND_MAX + 1.0)));
+    double factor2 = (-currStress) + (double)((double)(currStress - (-currStress)) * (rand() / (RAND_MAX + 1.0)));
+    sf::Vector2f offset = sf::Vector2f((float)factor, (float)factor2);
 
     PlaceCamera(focus.getCenter() + offset);
   }

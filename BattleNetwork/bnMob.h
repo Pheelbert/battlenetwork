@@ -2,7 +2,9 @@
 #include "bnEntity.h"
 #include "bnPixelInState.h"
 #include "bnMeta.h"
+#include "bnBattleItem.h"
 #include <vector>
+#include <map>
 
 class Mob
 {
@@ -19,16 +21,65 @@ private:
   std::vector<MobData*>::iterator iter;
   std::vector<std::function<void(Entity*)>> defaultStateInvokers;
   std::vector<std::function<void(Entity*)>> pixelStateInvokers;
+  std::multimap<int, BattleItem> rewards;
   bool nextReady;
   Field* field;
+  bool isBoss;
 public:
   Mob(Field* _field) {
     nextReady = true;
     field = _field;
+    isBoss = false;
+    iter = spawn.end();
   }
 
   ~Mob() {
     Cleanup();
+  }
+
+  // Cap ranks between 1-10 and where 11 is Rank S
+  void RegisterRankedReward(int rank, BattleItem item) {
+    rank = std::max(1, rank);
+    rank = std::min(11, rank);
+
+    rewards.insert(std::make_pair(rank, item));
+  }
+
+  // TODO: Off chance that there's no item
+  BattleItem* GetRankedReward(int score) {
+    if (rewards.empty()) {
+      return nullptr;
+    }
+    
+    // Collect only the items we can be rewarded with...
+    std::vector<BattleItem> possible;
+
+    // Populate the possible
+    std::multimap<int, BattleItem>::iterator mapIter = rewards.begin();
+
+    while (mapIter != rewards.end()) {
+      if (mapIter->first <= score) {
+        possible.push_back(mapIter->second);
+      }
+
+      mapIter++;
+    }
+
+    if (possible.empty()) {
+      return nullptr;
+    }
+
+    int random = rand() % possible.size();
+
+    std::vector<BattleItem>::iterator possibleIter;
+    possibleIter = possible.begin();
+      
+    while (random > 0) {
+      --random;
+      possibleIter++;
+    }
+
+    return new BattleItem(*possibleIter);
   }
 
   void Cleanup() {
@@ -46,6 +97,14 @@ public:
 
   const int GetMobCount() {
     return (int)spawn.size();
+  }
+
+  void ToggleBossFlag() {
+    isBoss = !isBoss;
+  }
+
+  bool IsBoss() {
+    return isBoss;
   }
 
   const Entity& GetMobAt(int index) {
@@ -116,7 +175,7 @@ Mob* Mob::Spawn(int tileX, int tileY) {
     if (cast) {
       auto onFinish = [this]() { this->nextReady = true; };
       cast->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
-    }  
+    }
   };
 
   pixelStateInvokers.push_back(pixelStateInvoker);

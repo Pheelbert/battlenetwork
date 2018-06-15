@@ -39,14 +39,14 @@ int Field::GetHeight() const {
 bool Field::GetNextTile(Tile*& out) {
   static int y = 0;
   while (y < height) {
-    static int x = 0;
-    while (x < width) {
+    static int x = width-1;
+    while (x >= 0) {
       out = tiles[y][x];
-      x++;
+      x--;
       return true;
     }
     y++;
-    x = 0;
+    x = width-1;
   }
   y = 0;
   return false;

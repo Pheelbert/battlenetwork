@@ -2,7 +2,7 @@
 #include "bnTile.h"
 #include "bnField.h"
 
-Entity::Entity(void)
+Entity::Entity()
   : tile(nullptr),
   next(nullptr),
   previous(nullptr),
@@ -11,11 +11,13 @@ Entity::Entity(void)
   health(0),
   deleted(false),
   passthrough(false),
+  counterable(false),
   ownedByField(false),
+  stunCooldown(0),
   name("unnamed") {
 }
 
-Entity::~Entity(void) {
+Entity::~Entity() {
 }
 
 void Entity::Update(float _elapsed) {
@@ -34,17 +36,17 @@ vector<Drawable*> Entity::GetMiscComponents() {
   return vector<Drawable*>();
 }
 
-int Entity::GetStateFromString(string _string) {
-  assert(false && "GetStateFromString shouldn't be called directly from Entity");
-  return 0;
-}
-
-void Entity::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
+void Entity::AddAnimation(string _state, FrameList _frameList, float _duration) {
   assert(false && "AddAnimation shouldn't be called directly from Entity");
 }
 
-void Entity::SetAnimation(int _state) {
+void Entity::SetAnimation(string _state) {
   assert(false && "SetAnimation shouldn't be called directly from Entity");
+}
+
+void Entity::SetCounterFrame(int frame)
+{
+  assert(false && "SetCounterFrame shouldn't be called directly from Entity");
 }
 
 int Entity::GetHealth() {
@@ -108,6 +110,21 @@ bool Entity::IsDeleted() const {
 
 void Entity::TryDelete() {
   deleted = (health <= 0);
+}
+
+void Entity::ToggleCounter(bool on)
+{
+  counterable = on;
+}
+
+void Entity::Stun(double maxCooldown)
+{
+  stunCooldown = maxCooldown;
+}
+
+bool Entity::IsCountered()
+{
+  return (counterable && stunCooldown <= 0);
 }
 
 const std::string Entity::GetName() const

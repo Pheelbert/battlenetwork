@@ -13,17 +13,12 @@ PlayerHitState::~PlayerHitState()
 }
 
 void PlayerHitState::OnEnter(Player& player) {
-  player.SetAnimation(PlayerState::PLAYER_HIT);
-  AudioResourceManager::GetInstance().Play(AudioType::HURT, 0);
+  auto onFinished = [&player]() { player.StateChange<PlayerControlledState>(); };
+  player.SetAnimation(PLAYER_HIT,onFinished);
+  AUDIO.Play(AudioType::HURT, 0);
 }
 
 void PlayerHitState::OnUpdate(float _elapsed, Player& player) {
-  cooldown -= _elapsed;
-
-  // Cant do anything if hit/stunned
-  if (cooldown < 0) {
-    player.StateChange<PlayerControlledState>();
-  }
 }
 
 void PlayerHitState::OnLeave(Player& player) {

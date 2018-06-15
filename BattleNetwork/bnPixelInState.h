@@ -46,7 +46,7 @@ PixelInState<Any>::PixelInState(FinishNotifier onFinish) : AIState<Any>() {
   callback = onFinish;
   factor = 125.f;
 
-  pixelated = ShaderResourceManager::GetInstance().GetShader(ShaderType::PIXEL_BLUR);
+  pixelated = SHADERS.GetShader(ShaderType::PIXEL_BLUR);
 }
 
 template<typename Any>
@@ -56,7 +56,7 @@ PixelInState<Any>::~PixelInState() {
 template<typename Any>
 void PixelInState<Any>::OnEnter(Any& e) {
   // play swoosh
-  AudioResourceManager::GetInstance().Play(AudioType::APPEAR);
+  AUDIO.Play(AudioType::APPEAR);
 }
 
 template<typename Any>
@@ -72,6 +72,11 @@ void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
 
     if (callback) { callback(); callback = nullptr; /* do once */ }
   }
+
+  // TODO: Replace elapse ratios with accurate sf::Time %
+  // That way we can control the precise speed on faster/slower hardware
+  float range = (125.f - factor) / 125.f;
+  e.setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 * range)));
 
   pixelated.SetUniform("pixel_threshold", (float)(factor/400.f));
 }

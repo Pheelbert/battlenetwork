@@ -7,7 +7,7 @@ MettaurIdleState::MettaurIdleState() : cooldown(500), AIState<Mettaur>() { ; }
 MettaurIdleState::~MettaurIdleState() { ; }
 
 void MettaurIdleState::OnEnter(Mettaur& met) {
-  met.SetAnimation(MobState::MOB_IDLE);
+  met.SetAnimation(MOB_IDLE);
 }
 
 void MettaurIdleState::OnUpdate(float _elapsed, Mettaur& met) {

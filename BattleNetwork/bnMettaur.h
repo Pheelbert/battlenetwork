@@ -18,8 +18,8 @@ public:
   virtual void Update(float _elapsed);
   virtual void RefreshTexture();
   virtual vector<Drawable*> GetMiscComponents();
-  virtual int GetStateFromString(string _string);
-  virtual void SetAnimation(int _state, std::function<void()> onFinish = nullptr);
+  virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
+  virtual void SetCounterFrame(int frame);
   virtual int GetHealth() const;
   virtual TextureType GetTextureType() const;
 
@@ -34,12 +34,13 @@ private:
   void NextMettaurTurn();
 
   sf::Shader* whiteout;
+  sf::Shader* stun;
 
   static vector<int> metIDs;
   static int currMetIndex;
   int metID;
 
-  MobState state;
+  string state;
 
   AnimationComponent animationComponent;
 

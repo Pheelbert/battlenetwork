@@ -22,7 +22,7 @@ Wave::Wave(Field* _field, Team _team) {
   direction = Direction::NONE;
   deleted = false;
   hit = false;
-  texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_WAVE);
+  texture = TEXTURES.GetTexture(TextureType::SPELL_WAVE);
   for (int x = 0; x < WAVE_ANIMATION_SPRITES; x++) {
     animation.addFrame(0.3f, IntRect(WAVE_ANIMATION_WIDTH*x, 0, WAVE_ANIMATION_WIDTH, WAVE_ANIMATION_HEIGHT));
   }
@@ -30,7 +30,9 @@ Wave::Wave(Field* _field, Team _team) {
   hitHeight = 0.0f;
   random = 0;
 
-  AudioResourceManager::GetInstance().Play(AudioType::WAVE);
+  AUDIO.Play(AudioType::WAVE);
+
+  EnableTileHighlight(true);
 }
 
 Wave::~Wave(void) {
@@ -39,6 +41,7 @@ Wave::~Wave(void) {
 void Wave::Update(float _elapsed) {
   if (!tile->IsWalkable()) {
     deleted = true;
+    Entity::Update(_elapsed);
     return;
   }
 
@@ -59,7 +62,7 @@ void Wave::Update(float _elapsed) {
   cooldown += _elapsed;
   if (cooldown >= COOLDOWN) {
     Move(direction);
-    AudioResourceManager::GetInstance().Play(AudioType::WAVE, 1);
+    AUDIO.Play(AudioType::WAVE, 1);
     cooldown = 0;
     progress = 0.0f;
   }
@@ -116,11 +119,6 @@ void Wave::Attack(Entity* _entity) {
 
 vector<Drawable*> Wave::GetMiscComponents() {
   return vector<Drawable*>();
-}
-
-int Wave::GetStateFromString(string _string) {
-  assert(false && "Wave does not have states");
-  return 0;
 }
 
 void Wave::AddAnimation(int _state, FrameAnimation _animation, float _duration) {

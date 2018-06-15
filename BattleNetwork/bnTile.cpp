@@ -15,9 +15,9 @@ Tile::Tile(int _x, int _y) {
   x = _x;
   y = _y;
   if (x <= 3) {
-    team = Team::BLUE;
-  } else {
     team = Team::RED;
+  } else {
+    team = Team::BLUE;
   }
   cooldown = 0.0f;
   cooldownLength = COOLDOWN;
@@ -29,6 +29,7 @@ Tile::Tile(int _x, int _y) {
   width = getTextureRect().width * getScale().x;
   height = getTextureRect().height * getScale().y;
   setPosition(((x - 1) * width) + START_X, ((y - 1) * (height - Y_OFFSET)) + START_Y);
+  hasSpell = false;
 }
 
 Tile::~Tile(void) {
@@ -63,6 +64,10 @@ float Tile::GetHeight() const {
   return height;
 }
 
+const TileState Tile::GetState() const {
+  return state;
+}
+
 void Tile::SetState(TileState _state) {
   if (_state == TileState::CRACKED && (state == TileState::EMPTY || state == TileState::BROKEN)) {
     return;
@@ -95,16 +100,42 @@ void Tile::RefreshTexture() {
     } else {
       textureType = ((int)(cooldown * 5) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_RED_NORMAL : TextureType::TILE_RED_BROKEN;
     }
-  } else if (state == TileState::EMPTY) {
+  }
+  else if (state == TileState::EMPTY) {
     if (team == Team::BLUE) {
       textureType = TextureType::TILE_BLUE_EMPTY;
-    } else {
+    }
+    else {
       textureType = TextureType::TILE_RED_EMPTY;
+    }
+  }
+  else if (state == TileState::ICE) {
+    if (team == Team::BLUE) {
+      textureType = TextureType::TILE_BLUE_ICE;
+    }
+    else {
+      textureType = TextureType::TILE_RED_ICE;
+    }
+  }
+  else if (state == TileState::GRASS) {
+    if (team == Team::BLUE) {
+      textureType = TextureType::TILE_BLUE_GRASS;
+    }
+    else {
+      textureType = TextureType::TILE_RED_GRASS;
+    }
+  }
+  else if (state == TileState::LAVA) {
+    if (team == Team::BLUE) {
+      textureType = TextureType::TILE_BLUE_PURPLE;
+    }
+    else {
+      textureType = TextureType::TILE_RED_PURPLE;
     }
   } else {
     assert(false && "Tile in invalid state");
   }
-  setTexture(*TextureResourceManager::GetInstance().GetTexture(textureType));
+  setTexture(*TEXTURES.GetTexture(textureType));
 }
 
 bool Tile::IsWalkable() const {
@@ -113,6 +144,10 @@ bool Tile::IsWalkable() const {
 
 bool Tile::IsCracked() const {
   return state == TileState::CRACKED;
+}
+
+bool Tile::IsHighlighted() const {
+  return hasSpell;
 }
 
 void Tile::AddEntity(Entity* _entity) {
@@ -130,7 +165,8 @@ void Tile::RemoveEntity(Entity* _entity) {
 }
 
 bool Tile::ContainsEntity(Entity* _entity) const {
-  return find(entities.begin(), entities.end(), _entity) != entities.end();
+  vector<Entity*> copy = this->entities;
+  return find(copy.begin(), copy.end(), _entity) != copy.end();
 }
 
 void Tile::AffectEntities(Spell* caller) {
@@ -154,8 +190,16 @@ bool Tile::GetNextEntity(Entity*& out) const {
 }
 
 void Tile::Update(float _elapsed) {
+  hasSpell = false;
+
   vector<Entity*> copies = entities;
   for (vector<Entity*>::iterator entity = copies.begin(); entity != copies.end(); entity++) {
+    if (!hasSpell) {
+      Spell* isSpell = dynamic_cast<Spell*>(*entity);
+
+      hasSpell = !(isSpell == nullptr) && isSpell->IsTileHighlightEnabled();
+    }
+
     (*entity)->Update(_elapsed);
   }
 

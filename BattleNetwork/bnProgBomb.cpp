@@ -16,7 +16,7 @@ ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, float _duration) {
   direction = Direction::NONE;
   deleted = false;
   hit = false;
-  texture = TextureResourceManager::GetInstance().GetTexture(TextureType::SPELL_PROG_BOMB);
+  texture = TEXTURES.GetTexture(TextureType::SPELL_PROG_BOMB);
 
   progress = 0.0f;
   hitHeight = 0.0f;
@@ -29,7 +29,7 @@ ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, float _duration) {
   target = _target;
 
   setOrigin(sf::Vector2f(19, 24) / 2.f);
-  AudioResourceManager::GetInstance().Play(AudioType::TOSS_ITEM);
+  AUDIO.Play(AudioType::TOSS_ITEM);
 }
 
 ProgBomb::~ProgBomb(void) {
@@ -99,11 +99,6 @@ void ProgBomb::Attack(Entity* _entity) {
 
 vector<Drawable*> ProgBomb::GetMiscComponents() {
   return vector<Drawable*>();
-}
-
-int ProgBomb::GetStateFromString(string _string) {
-  assert(false && "Wave does not have states");
-  return 0;
 }
 
 void ProgBomb::AddAnimation(int _state, FrameAnimation _animation, float _duration) {

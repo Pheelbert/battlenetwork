@@ -39,6 +39,10 @@ public:
   const sf::View GetDefaultView();
   Camera& GetCamera();
 
+  sf::RenderTexture& GetPostProcessingBuffer() {
+    return postprocessing;
+  }
+
   // TODO: make this private again
   const sf::Vector2f GetViewOffset(); // for drawing 
 private:
@@ -56,3 +60,5 @@ private:
   Camera cam;
 
 };
+
+#define ENGINE Engine::GetInstance()

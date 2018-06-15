@@ -10,7 +10,7 @@ ShaderResourceManager& ShaderResourceManager::GetInstance() {
   return instance;
 }
 
-void ShaderResourceManager::LoadAllShaders(unsigned &status) {
+void ShaderResourceManager::LoadAllShaders(std::atomic<int> &status) {
   ShaderType shaderType = static_cast<ShaderType>(0);
   while (shaderType != SHADER_TYPE_SIZE) {
     status++;
@@ -26,13 +26,20 @@ void ShaderResourceManager::LoadAllShaders(unsigned &status) {
 sf::Shader* ShaderResourceManager::LoadShaderFromFile(string _path) {
   sf::Shader* shader = new sf::Shader();
   if (!shader->loadFromFile(_path, sf::Shader::Fragment)) {
+
+    Logger::GetMutex()->lock();
     Logger::Log("Error loading shader: " + _path);
+    Logger::GetMutex()->unlock();
+
     exit(EXIT_FAILURE);
     return nullptr;
   }
-  shader->setUniform("texture", sf::Shader::CurrentTexture);
+  //shader->setUniform("texture", sf::Shader::CurrentTexture);
 
+  Logger::GetMutex()->lock();
   Logger::Log("Loaded shader: " + _path);
+  Logger::GetMutex()->unlock();
+
   return shader;
 }
 
@@ -49,6 +56,10 @@ ShaderResourceManager::ShaderResourceManager(void) {
   paths.push_back("resources/shaders/white.frag.txt");
   paths.push_back("resources/shaders/white_fade.frag.txt");
   paths.push_back("resources/shaders/yellow.frag.txt");
+  paths.push_back("resources/shaders/distortion.frag.txt");
+  paths.push_back("resources/shaders/spot_distortion.frag.txt");
+  paths.push_back("resources/shaders/spot_reflection.frag.txt");
+  paths.push_back("resources/shaders/transition.frag.txt");
 }
 
 ShaderResourceManager::~ShaderResourceManager(void) {

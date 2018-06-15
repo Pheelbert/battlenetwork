@@ -3,34 +3,45 @@
 #include "bnShaderResourceManager.h"
 
 ChipSelectionCust::ChipSelectionCust(int cap) : 
-  greyscale(*ShaderResourceManager::GetInstance().GetShader(ShaderType::GREYSCALE)) 
+  greyscale(*SHADERS.GetShader(ShaderType::GREYSCALE)) 
 {
+  cap = std::min(cap, 8);
   chipCap = cap;
   queue = new Bucket[chipCap];
   selectQueue = new Bucket*[chipCap];
 
   chipCount = selectCount = cursorPos = 0;
 
-  custSprite = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_SELECT_MENU));
+  custSprite = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_SELECT_MENU));
   custSprite.setScale(2.f, 2.f);
   custSprite.setPosition(-custSprite.getTextureRect().width*2.f, 0);
 
-  icon.setTexture(*TextureResourceManager::GetInstance().GetTexture(CHIP_ICONS));
+  icon.setTexture(*TEXTURES.GetTexture(CHIP_ICONS));
   icon.setScale(sf::Vector2f(2.f, 2.f));
 
-  cursorSmall = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_CURSOR_SMALL));
+  cursorSmall = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_CURSOR_SMALL));
   cursorSmall.setScale(sf::Vector2f(2.f, 2.f));
 
-  cursorBig = sf::Sprite(*TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_CURSOR_BIG));
+  cursorBig = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_CURSOR_BIG));
   cursorBig.setScale(sf::Vector2f(2.f, 2.f));
   cursorBig.setPosition(sf::Vector2f(2.f*92.f, 2.f*111.f));
 
-  sf::Texture* card = TextureResourceManager::GetInstance().GetTexture(TextureType::CHIP_CARDS);
+  sf::Texture* card = TEXTURES.GetTexture(TextureType::CHIP_CARDS);
   chipCard.setTexture(*card);
   chipCard.setScale(2.f, 2.f);
   chipCard.setPosition(2.f*16.f, 48.f);
 
-  sf::Font* font = TextureResourceManager::GetInstance().LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
+  sf::Texture* nodata = TEXTURES.GetTexture(TextureType::CHIP_NODATA);
+  chipNoData.setTexture(*nodata);
+  chipNoData.setScale(2.f, 2.f);
+  chipNoData.setPosition(2.f*16.f, 48.f);
+
+  sf::Texture* senddata = TEXTURES.GetTexture(TextureType::CHIP_SENDDATA);
+  chipSendData.setTexture(*senddata);
+  chipSendData.setScale(2.f, 2.f);
+  chipSendData.setPosition(2.f*16.f, 48.f);
+
+  sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
   label.setFont(*font);
 
   ChipLibrary::GetInstance().LoadLibrary();
@@ -55,8 +66,7 @@ ChipSelectionCust::~ChipSelectionCust() {
 
 bool ChipSelectionCust::CursorRight() {
   if (++cursorPos > 5) {
-    cursorPos = 5;
-    return false;
+    cursorPos = 0;
   }
 
   return true;
@@ -64,8 +74,7 @@ bool ChipSelectionCust::CursorRight() {
 
 bool ChipSelectionCust::CursorLeft() {
   if (--cursorPos < 0) {
-    cursorPos = 0;
-    return false;
+    cursorPos = 5;
   }
 
   return true;
@@ -87,7 +96,7 @@ bool ChipSelectionCust::CursorAction() {
         char code = queue[cursorPos].data->GetCode();
 
         for (int i = 0; i < chipCount; i++) {
-          if (i == cursorPos || (queue[i].state == 0 && queue[i].data->GetCode() - 1 != code) || queue[i].state == 2) continue;
+          if (i == cursorPos || (queue[i].state == 0) || queue[i].state == 2) continue;
           char otherCode = queue[i].data->GetCode();
           bool isSameChip = (queue[i].data->GetShortName() == queue[cursorPos].data->GetShortName());
           if (code == '=' || otherCode == '=' || otherCode == code || isSameChip ) { queue[i].state = 1; }
@@ -177,8 +186,8 @@ void ChipSelectionCust::Move(sf::Vector2f delta) {
 void ChipSelectionCust::GetNextChips() {
   ClearChips();
 
+  int perTurn = 3; // Limit how many new chips we get per turn
   for (int i = chipCount; i < chipCap; i++) {
-
     queue[i].data = ChipLibrary::GetInstance().Next();
     queue[i].state = 1;
 
@@ -187,26 +196,29 @@ void ChipSelectionCust::GetNextChips() {
       return;
     }
     chipCount++;
+    perTurn--;
+
+    if (perTurn == 0) return;
   }
 }
 
 void ChipSelectionCust::Draw() {
-  Engine::GetInstance().Draw(custSprite, false);
+  ENGINE.Draw(custSprite, false);
 
   if (IsInView()) {
     cursorSmall.setPosition(2.f*(7.0f + (cursorPos*16.0f)), 2.f*103.f); // TODO: Make this relative to cust instead of screen
 
     for (int i = 0; i < chipCount; i++) {
       icon.setPosition(2.f*(9.0f + (i*16.0f)), 2.f*105.f);
-      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromID(queue[i].data->GetIconID());
+      sf::IntRect iconSubFrame = TEXTURES.GetIconRectFromID(queue[i].data->GetIconID());
       icon.setTextureRect(iconSubFrame);
       icon.SetShader(nullptr);
 
       if (queue[i].state == 0) {
         icon.SetShader(&greyscale);
-        Engine::GetInstance().Draw(&icon);
+        ENGINE.Draw(&icon);
       } else if (queue[i].state == 1) {
-        Engine::GetInstance().Draw(icon, false);
+        ENGINE.Draw(icon, false);
       }
     }
 
@@ -215,9 +227,9 @@ void ChipSelectionCust::Draw() {
 
     for (int i = 0; i < selectCount; i++) {
       icon.setPosition(2 * 97.f, 2.f*(25.0f + (i*16.0f)));
-      sf::IntRect iconSubFrame = TextureResourceManager::GetInstance().GetIconRectFromID((*selectQueue[i]).data->GetIconID());
+      sf::IntRect iconSubFrame = TEXTURES.GetIconRectFromID((*selectQueue[i]).data->GetIconID());
       icon.setTextureRect(iconSubFrame);
-      Engine::GetInstance().Draw(icon, false);
+      ENGINE.Draw(icon, false);
     }
 
 
@@ -227,41 +239,47 @@ void ChipSelectionCust::Draw() {
 
       if (cursorPos < chipCount) {
         // Draw the selected chip card
-        sf::IntRect cardSubFrame = TextureResourceManager::GetInstance().GetCardRectFromID(queue[cursorPos].data->GetID());
+        sf::IntRect cardSubFrame = TEXTURES.GetCardRectFromID(queue[cursorPos].data->GetID());
         chipCard.setTextureRect(cardSubFrame);
 
         chipCard.SetShader(nullptr);
 
         if (!queue[cursorPos].state) {
           chipCard.SetShader(&greyscale);
-          Engine::GetInstance().Draw((LayeredDrawable*)&chipCard);
+          ENGINE.Draw((LayeredDrawable*)&chipCard);
         } else {
-          Engine::GetInstance().Draw(chipCard, false);
+          ENGINE.Draw(chipCard, false);
         }
 
         label.setPosition(2.f*16.f, 16.f);
         label.setString(queue[cursorPos].data->GetShortName());
-        Engine::GetInstance().Draw(label, false);
+        ENGINE.Draw(label, false);
 
         // the order here is very important:
         if (queue[cursorPos].data->GetDamage() > 0) {
           label.setString(std::to_string(queue[cursorPos].data->GetDamage()));
           label.setOrigin(label.getLocalBounds().width*2.f, 0);
-          label.setPosition(2.f*(label.getLocalBounds().width + 60.f), 143.f);
-          Engine::GetInstance().Draw(label, false);
+          label.setPosition(2.f*(84.f), 143.f);
+          ENGINE.Draw(label, false);
         }
 
         label.setPosition(2.f*16.f, 143.f);
         label.setOrigin(0, 0);
         label.setString(std::string() + queue[cursorPos].data->GetCode());
         label.setFillColor(sf::Color(225, 180, 0));
-        Engine::GetInstance().Draw(label, false);
+        ENGINE.Draw(label, false);
+      }
+      else {
+        ENGINE.Draw(chipNoData, false);
       }
 
       // Draw the small cursor
-      Engine::GetInstance().Draw(cursorSmall, false);
-    } else
-      Engine::GetInstance().Draw(cursorBig, false);
+      ENGINE.Draw(cursorSmall, false);
+    }
+    else {
+      ENGINE.Draw(chipSendData, false);
+      ENGINE.Draw(cursorBig, false);
+    }
   }
 }
 
@@ -276,13 +294,15 @@ Chip** ChipSelectionCust::GetChips() {
 }
 
 void ChipSelectionCust::ClearChips() {
-  for (int i = 0; i < selectCount; i++) {
-    if (*(selectedChips+i) != nullptr) {
-      delete selectedChips[i];
-    }
+  if (areChipsReady) {
+    for (int i = 0; i < selectCount; i++) {
+      if (*(selectedChips + i) != nullptr) {
+        delete selectedChips[i];
+      }
 
-    (*(selectQueue[i])).data = nullptr;
-    selectedChips[i] = nullptr;
+      (*(selectQueue[i])).data = nullptr;
+      selectedChips[i] = nullptr;
+    }
   }
 
   if (selectCount > 0)

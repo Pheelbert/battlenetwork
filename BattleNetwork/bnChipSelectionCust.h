@@ -19,6 +19,8 @@ private:
   sf::Sprite cursorBig;
   LayeredDrawable icon;
   LayeredDrawable chipCard;
+  LayeredDrawable chipNoData;
+  LayeredDrawable chipSendData;
   sf::Shader& greyscale;
   sf::Text label;
   int chipCount;

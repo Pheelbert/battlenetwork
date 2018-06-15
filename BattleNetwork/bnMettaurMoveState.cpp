@@ -30,9 +30,18 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
       nextDirection = Direction::DOWN;
     }
     else {
-      // Just attack
-      met.StateChange<MettaurAttackState>();
-      return;
+      // Try attacking if facing an available tile
+      Tile* forward = met.GetField()->GetAt(temp->GetX() - 1, temp->GetY());
+
+      if (forward && forward->IsWalkable()) {
+        return met.StateChange<MettaurAttackState>();
+      }
+      else {
+        // Forfeit turn.
+        met.StateChange<MettaurIdleState>();
+        met.NextMettaurTurn();
+        return;
+      }
     }
   }
 
@@ -96,7 +105,7 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
     met.tile->AddEntity((Entity*)&met);
     temp->RemoveEntity((Entity*)&met);
     auto onFinish = [&met]() { met.StateChange<MettaurIdleState>(); };
-    met.SetAnimation(MobState::MOB_MOVING, onFinish);
+    met.SetAnimation(MOB_MOVING, onFinish);
     isMoving = true;
   }
   else {

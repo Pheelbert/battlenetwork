@@ -44,7 +44,7 @@ ExplodeState<Any>::ExplodeState() : AIState<Any>() {
   // If we make it here, we are the proper type
   explosion = nullptr;
 
-  whiteout = ShaderResourceManager::GetInstance().GetShader(ShaderType::WHITE);
+  whiteout = SHADERS.GetShader(ShaderType::WHITE);
 }
 
 template<typename Any>
