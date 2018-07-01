@@ -1,6 +1,7 @@
 #pragma once
 #include "bnCanodumbIdleState.h"
 #include "bnCanodumbAttackState.h"
+#include "bnTile.h"
 #include <iostream>
 
 CanodumbIdleState::CanodumbIdleState() : AIState<Canodumb>() { ; }
@@ -11,7 +12,9 @@ void CanodumbIdleState::OnEnter(Canodumb& can) {
 }
 
 void CanodumbIdleState::OnUpdate(float _elapsed, Canodumb& can) {
-  can.StateChange<CanodumbAttackState>();
+  if (can.GetTarget()->GetTile()->GetY() == can.GetTile()->GetY()) {
+    can.StateChange<CanodumbAttackState>();
+  }
 }
 
 void CanodumbIdleState::OnLeave(Canodumb& can) {

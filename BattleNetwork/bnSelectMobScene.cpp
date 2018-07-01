@@ -67,6 +67,9 @@ int SelectMobScene::Run()
   mob.setOrigin(mob.getLocalBounds().width / 2.f, mob.getLocalBounds().height / 2.f);
   mob.setPosition(110.f, 130.f);
 
+  // Animator for mobs
+  Animation mobAnimator;
+
   // Distortion effect
   sf::Texture& distortionMap = *TEXTURES.GetTexture(TextureType::DISTORTION_TEXTURE);
 
@@ -222,7 +225,13 @@ int SelectMobScene::Run()
     }
     else if (mobSelectionIndex == 2) {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
-      mob.setPosition(100.f, 110.f);
+      mob.setPosition(90.f, 130.f);
+
+      mobAnimator = Animation("mob", "resources/mobs/canodumb/canodumb.animation");
+      mobAnimator.Load();
+      mobAnimator.SetAnimation(MOB_CANODUMB_IDLE_1);
+      mobAnimator.SetFrame(1, &mob);
+
       mobLabel->setString("Canodumb");
       speedLabel->setString("1");
       attackLabel->setString("4");
@@ -270,7 +279,6 @@ int SelectMobScene::Run()
 
     if (progress > 1.f) progress = 1.f;
 
-    mob.setTextureRect(sf::IntRect(0, 0, mob.getTexture()->getSize().x, (int)((progress) * mob.getTexture()->getSize().y)));
     mob.setColor(sf::Color(255, 255, 255, (sf::Uint32)(255.0*progress)));
 
     shader.setUniform("time", 1.f-progress);

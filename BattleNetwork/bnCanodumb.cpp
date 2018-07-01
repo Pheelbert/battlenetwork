@@ -30,7 +30,7 @@ Canodumb::Canodumb(void)
   //Components setup and load
   animationComponent.Setup(RESOURCE_PATH);
   animationComponent.Load();
-  animationComponent.Update(0);
+  animationComponent.SetAnimation(MOB_CANODUMB_IDLE_1);
 
   whiteout = SHADERS.GetShader(ShaderType::WHITE);
   stun = SHADERS.GetShader(ShaderType::YELLOW);
@@ -41,17 +41,7 @@ Canodumb::~Canodumb(void) {
 }
 
 int* Canodumb::GetAnimOffset() {
-  Canodumb* mob = this;
-
-  int* res = new int[2];
-  res[0] = 35;  res[1] = 35;
-
-  if (mob->GetTextureType() == TextureType::MOB_CANODUMB_ATLAS) {
-    res[0] = 35;
-    res[1] = 35;
-  }
-
-  return res;
+  return nullptr;
 }
 
 void Canodumb::Update(float _elapsed) {
@@ -93,10 +83,7 @@ void Canodumb::Update(float _elapsed) {
 }
 
 void Canodumb::RefreshTexture() {
-  textureType = TextureType::MOB_CANODUMB_ATLAS;
-  setTexture(*TEXTURES.GetTexture(textureType));
-
-  setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 55.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 105.0f);
+  setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 1.0f , tile->getPosition().y + tile->GetHeight() / 2.0f - 5.0f);
   hitHeight = getLocalBounds().height;
 }
 
