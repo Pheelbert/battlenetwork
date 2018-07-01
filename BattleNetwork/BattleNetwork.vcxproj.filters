@@ -197,6 +197,9 @@
     <Filter Include="Battle\Entity\Character\Canodumb\States">
       <UniqueIdentifier>{3d0d6159-bd37-4923-8112-d6facaa68b3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Character\Canodumb\Misc">
+      <UniqueIdentifier>{ba685902-7150-4751-9f50-780a74f3ff76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -387,6 +390,9 @@
     </ClCompile>
     <ClCompile Include="bnCanodumbMob.cpp">
       <Filter>Battle\Mob\Easy</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumbCursor.cpp">
+      <Filter>Battle\Entity\Character\Canodumb\Misc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -639,6 +645,9 @@
     </ClInclude>
     <ClInclude Include="bnCanodumbMob.h">
       <Filter>Battle\Mob\Easy</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumbCursor.h">
+      <Filter>Battle\Entity\Character\Canodumb\Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

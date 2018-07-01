@@ -1,5 +1,5 @@
-StartTime 1530453393
-Engine initialized: 0.364000 secs
+StartTime 1530471828
+Engine initialized: 0.326000 secs
 Loaded texture: resources/ui/alert.png
 
 Loaded texture: resources/backgrounds/title/tile_en.png
@@ -24,13 +24,13 @@ Loaded texture: resources/tiles/img_blue_purple.png
 
 Loaded texture: resources/tiles/img_blue_empty.png
 
-Loaded audio: resources/sfx/area_grab.ogg
-
 Loaded texture: resources/tiles/img_red_normal.png
 
 Loaded texture: resources/tiles/img_red_cracked.png
 
 Loaded texture: resources/tiles/img_red_broken.png
+
+Loaded audio: resources/sfx/area_grab.ogg
 
 Loaded texture: resources/tiles/img_red_ice.png
 
@@ -58,25 +58,27 @@ Loaded audio: resources/sfx/chip_confirm.ogg
 
 Loaded audio: resources/sfx/chip_desc.ogg
 
-Loaded texture: resources/navis/megaman/navi_megaman_atlas.png
-
 Loaded audio: resources/sfx/chip_desc_close.ogg
+
+Loaded texture: resources/navis/megaman/navi_megaman_atlas.png
 
 Loaded audio: resources/sfx/chip_select.ogg
 
-Loaded texture: resources/navis/starman/navi_starman_atlas.png
-
 Loaded audio: resources/sfx/chip_error.ogg
+
+Loaded texture: resources/navis/starman/navi_starman_atlas.png
 
 Loaded texture: resources/mobs/mob_move.png
 
+Loaded audio: resources/sfx/custom_bar_full.ogg
+
 Loaded texture: resources/mobs/mob_explosion.png
+
+Loaded audio: resources/sfx/chip_screen_open.ogg
 
 Loaded texture: resources/mobs/mettaur/mob_mettaur_move.png
 
 Loaded texture: resources/mobs/mettaur/mob_mettaur_hit.png
-
-Loaded audio: resources/sfx/custom_bar_full.ogg
 
 Loaded texture: resources/mobs/mettaur/mob_mettaur_attack.png
 
@@ -84,17 +86,15 @@ Loaded texture: resources/mobs/progsman/mob_progsman_idle.png
 
 Loaded texture: resources/mobs/progsman/mob_progsman_move.png
 
-Loaded audio: resources/sfx/chip_screen_open.ogg
+Loaded audio: resources/sfx/item_get.ogg
 
 Loaded texture: resources/mobs/progsman/mob_progsman_shoot.png
 
 Loaded texture: resources/mobs/progsman/mob_progsman_hit.png
 
-Loaded audio: resources/sfx/item_get.ogg
+Loaded audio: resources/sfx/deleted.ogg
 
 Loaded texture: resources/mobs/progsman/mob_progsman_punch.png
-
-Loaded audio: resources/sfx/deleted.ogg
 
 Loaded texture: resources/mobs/progsman/mob_progsman_throw.png
 
@@ -106,9 +106,9 @@ Loaded texture: resources/spells/spell_bullet_hit.png
 
 Loaded texture: resources/spells/spell_buster_charge.png
 
-Loaded texture: resources/spells/spell_wave.png
-
 Loaded audio: resources/sfx/explode.ogg
+
+Loaded texture: resources/spells/spell_wave.png
 
 Loaded texture: resources/spells/spell_prog_bomb.png
 
@@ -164,11 +164,11 @@ Loaded texture: resources/backgrounds/title/prog-pulse.png
 
 Loaded texture: resources/backgrounds/game_over/game_over.png
 
+Loaded audio: resources/sfx/invisible.ogg
+
 Loaded texture: resources/backgrounds/select/battle_select.png
 
 Loaded texture: resources/backgrounds/main_menu/overlay.png
-
-Loaded audio: resources/sfx/invisible.ogg
 
 Loaded texture: resources/backgrounds/main_menu/ow.png
 
@@ -178,9 +178,9 @@ Loaded texture: resources/backgrounds/main_menu/arrow.png
 
 Loaded texture: resources/ui/gamepad_support_icon.png
 
-Loaded texture: resources/ui/main_menu_ui.png
-
 Loaded audio: resources/sfx/pa_advance.ogg
+
+Loaded texture: resources/ui/main_menu_ui.png
 
 Loaded audio: resources/sfx/point.ogg
 
@@ -190,7 +190,7 @@ Loaded audio: resources/sfx/new_game.ogg
 
 Loaded audio: resources/sfx/text.ogg
 
-Loaded audio sources: 0.191000 secs
+Loaded audio sources: 0.194000 secs
 Loaded texture: resources/shaders/textures/heat.png
 
 Loaded texture: resources/shaders/textures/noise.png
@@ -199,7 +199,7 @@ Loaded texture: resources/shaders/textures/noise_invert.png
 
 Loaded texture: resources/ui/light.png
 
-Loaded textures: 0.201000 secs
+Loaded textures: 0.232000 secs
 Loaded shader: resources/shaders/black_fade.frag.txt
 Loaded shader: resources/shaders/custom_bar.frag.txt
 Loaded shader: resources/shaders/greyscale.frag.txt
@@ -225,6 +225,10 @@ Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
 
 Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
 
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
 Error. PA "No Entry": only has 1 required chip for recipe. PA's must have 2 or more chips. Skipping entry.
 Loaded font: resources/fonts/mmbnthick_regular.ttf
 
@@ -236,15 +240,11 @@ Loaded font: resources/fonts/mmbnthick_regular.ttf
 
 Loaded texture: resources/spells/spell_buster_charge.png
 
-Loaded texture: resources/backgrounds/green/bg_green.png
-
-Loaded texture: resources/backgrounds/green/fg_green.png
+Loaded texture: resources/backgrounds/grave/fg.png
 
 Loaded font: resources/fonts/dr_cain_terminal.ttf
 
 Loaded texture: resources/ui/custom.png
-
-Loaded font: resources/fonts/mmbnthick_regular.ttf
 
 Loaded font: resources/fonts/mmbnthick_regular.ttf
 

@@ -70,9 +70,10 @@ void Field::RemoveEntity(Entity* _entity) {
       _entity->GetTile()->RemoveEntity(_entity);
     }
 
-    if ((*it)->ownedByField) {
-      delete *it;
-      *it = nullptr;
+    Entity* ptr = *it;
+    if (ptr->ownedByField) {
+      delete ptr;
+      ptr = nullptr;
     }
 
     entities.erase(it);

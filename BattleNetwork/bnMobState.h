@@ -14,4 +14,7 @@
 #define MOB_CANODUMB_SHOOT_2 std::string("SHOOT2")
 
 #define MOB_CANODUMB_IDLE_3 std::string("IDLE3")
-#define MOB_CANODUMB_SHOOT_4 std::string("SHOOT3")
+#define MOB_CANODUMB_SHOOT_3 std::string("SHOOT3")
+
+#define MOB_CANODUMB_CURSOR std::string("CURSOR")
+#define MOB_CANODUMB_SMOKE std::string("SMOKE")

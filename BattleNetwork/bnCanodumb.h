@@ -12,7 +12,14 @@ class Canodumb : public Entity, public AI<Canodumb> {
   friend class CanodumbAttackState;
 
 public:
-  Canodumb(void);
+  enum Rank {
+    _1,
+    _2,
+    _3,
+    SIZE
+  };
+
+  Canodumb(Rank rank=_1);
   virtual ~Canodumb(void);
 
   virtual void Update(float _elapsed);
@@ -33,6 +40,9 @@ private:
   sf::Shader* stun;
 
   string state;
+  Rank rank;
+
+  const Rank GetRank() const;
 
   AnimationComponent animationComponent;
 

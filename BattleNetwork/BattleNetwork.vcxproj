@@ -221,6 +221,7 @@
     <ClCompile Include="bnVirusBackground.cpp" />
     <ClCompile Include="bnSelectMobScene.cpp" />
     <ClCompile Include="bnAgent.h" />
+    <ClCompile Include="bnCanodumbCursor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAnimate.h" />
@@ -307,6 +308,7 @@
     <ClInclude Include="bnTimer.h" />
     <ClInclude Include="bnFileUtil.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="bnCanodumbCursor.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

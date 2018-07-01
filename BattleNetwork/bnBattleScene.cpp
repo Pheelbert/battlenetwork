@@ -490,11 +490,11 @@ int BattleScene::Run(Mob* mob) {
 
     if (isInChipSelect && customProgress > 0.f) {
       if (!chipCustGUI.IsInView()) {
-        chipCustGUI.Move(sf::Vector2f(150.f / elapsed, 0));
+        chipCustGUI.Move(sf::Vector2f(60.f / elapsed, 0));
       }
     } else {
       if (!chipCustGUI.IsOutOfView()) {
-        chipCustGUI.Move(sf::Vector2f(-150.f / elapsed, 0));
+        chipCustGUI.Move(sf::Vector2f(-60.f / elapsed, 0));
       } else if (isInChipSelect) { // we're leaving a state
         // Start Program Advance checks
         if(isPAComplete && !hasPA) {

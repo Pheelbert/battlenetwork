@@ -2,8 +2,12 @@
 #include "bnAIState.h"
 #include "bnCanodumb.h"
 
+class CanodumbCursor;
+
 class CanodumbIdleState : public AIState<Canodumb>
 {
+  CanodumbCursor* cursor;
+
 public:
   CanodumbIdleState();
   ~CanodumbIdleState();

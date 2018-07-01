@@ -12,8 +12,8 @@
 #define RESOURCE_NAME "canodumb"
 #define RESOURCE_PATH "resources/mobs/canodumb/canodumb.animation"
 
-Canodumb::Canodumb(void)
-  : animationComponent(this), AI<Canodumb>(this) {
+Canodumb::Canodumb(Rank rank)
+  : rank(rank), animationComponent(this), AI<Canodumb>(this) {
   this->StateChange<CanodumbIdleState>();
   name = "Canodumb";
   Entity::team = Team::BLUE;
@@ -30,7 +30,18 @@ Canodumb::Canodumb(void)
   //Components setup and load
   animationComponent.Setup(RESOURCE_PATH);
   animationComponent.Load();
-  animationComponent.SetAnimation(MOB_CANODUMB_IDLE_1);
+
+  switch (rank) {
+  case _1:
+    animationComponent.SetAnimation(MOB_CANODUMB_IDLE_1);
+    break;
+  case _2:
+    animationComponent.SetAnimation(MOB_CANODUMB_IDLE_2);
+    break;
+  case _3:
+    animationComponent.SetAnimation(MOB_CANODUMB_IDLE_3);
+    break;
+  }
 
   whiteout = SHADERS.GetShader(ShaderType::WHITE);
   stun = SHADERS.GetShader(ShaderType::YELLOW);
@@ -83,7 +94,7 @@ void Canodumb::Update(float _elapsed) {
 }
 
 void Canodumb::RefreshTexture() {
-  setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 1.0f , tile->getPosition().y + tile->GetHeight() / 2.0f - 5.0f);
+  setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 1.0f , tile->getPosition().y + tile->GetHeight() / 2.0f - 10.0f);
   hitHeight = getLocalBounds().height;
 }
 
@@ -127,4 +138,9 @@ const bool Canodumb::Hit(int _damage) {
 
 const float Canodumb::GetHitHeight() const {
   return hitHeight;
+}
+
+const Canodumb::Rank Canodumb::GetRank() const
+{
+  return rank;
 }
