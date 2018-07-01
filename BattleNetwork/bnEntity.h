@@ -20,6 +20,8 @@ public:
   Entity();
   virtual ~Entity();
 
+  virtual const bool Hit(int damage);
+  virtual const float GetHitHeight() const;
   virtual void Update(float _elapsed);
   virtual bool Move(Direction _direction);
   virtual vector<Drawable*> GetMiscComponents();

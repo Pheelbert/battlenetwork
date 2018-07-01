@@ -1,5 +1,7 @@
 #include <time.h>
 #include "bnMainMenuScene.h"
+#include "bnOverworldMap.h"
+#include "bnInfiniteMap.h"
 #include "bnSelectMobScene.h"
 #include "bnMemory.h"
 #include "bnCamera.h"
@@ -17,57 +19,14 @@ using sf::Clock;
 using sf::Event;
 using sf::Font;
 
-class OWTile {
-  double x;
-  double y;
-  double w;
-  double h;
-
-public:
-  OWTile(double x, double y) : x(x), y(y) {
-    w = 48 / 2.0;
-    h = 30 / 2.0;
-  }
-
-  const double GetY() const { return y; } 
-  const double GetX() const { return x; } 
-  const double GetW() const { return w; } 
-  const double GetH() const { return h; }
-
-  void Move(double offx, double offy) {
-    x += offx;
-    y += offy;
-  }
-
+enum class SelectedNavi {
+  STARMAN,
+  MEGAMAN,
+  SIZE // denotes length of list and if we've reached the end
 };
-
-bool SortByDepth(const OWTile* lhs, const OWTile* rhs)
-{
-  return lhs->GetY() < rhs->GetY();
-}
-
-std::vector<OWTile*> map;
 
 int MainMenuScene::Run()
 {
-  // Begin the chain
-  map.push_back(new OWTile(240, 160));
-
-  while (map.size() < 10) {
-    double x = 0;
-    double y = 0;
-    x += map.back()->GetX() + (map.back()->GetW()*1.9);
-    y += map.back()->GetY() + (map.back()->GetH()*1.5);
-
-    OWTile* tile = new OWTile(x, y);
-
-    map.push_back(tile);
-  }
-
-  std::sort(map.begin(), map.end());
-
-  OWTile* mainStrip = map.back();
-
   Camera& camera(ENGINE.GetCamera());
 
   // Selection input delays
@@ -104,12 +63,23 @@ int MainMenuScene::Run()
 
   Background* bg = new LanBackground();
 
-  sf::Sprite owNavi(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS));
+  Overworld::Map* map = new Overworld::InfiniteMap(10, 40, 47, 24);
+  map->SetCamera(&camera);
+
+  // Keep track of selected navi
+
+  SelectedNavi currentNavi = SelectedNavi::MEGAMAN;
+  sf::Sprite owNavi(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
   owNavi.setScale(2.f, 2.f);
-  Animation naviAnimator("owNavi", "resources/navis/starman/starman.animation");
+  owNavi.setPosition(0, 0);
+  Animation naviAnimator("owNavi", "resources/navis/megaman/megaman.animation");
   naviAnimator.Load();
-  naviAnimator.SetAnimation("navi_starman_walk_DownLR");
+  naviAnimator.SetAnimation("PLAYER_OW_RD");
   naviAnimator << Animate::Mode(Animate::Mode::Loop);
+
+  map->AddSprite(&owNavi);
+
+
 
   bool gotoNextScene = false;
 
@@ -128,106 +98,23 @@ int MainMenuScene::Run()
     }
 
     INPUT.update();
+    map->Update();
 
     ENGINE.Clear();
     ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
 
-    if(map.size() < 100) {
-      double x = 0;
-      double y = 0;
-
-      int dir = rand() % 3;
-
-      x += mainStrip->GetX() + (mainStrip->GetW()*1.9);
-      y += mainStrip->GetY() + (mainStrip->GetH()*1.5);
-
-      OWTile* tile = new OWTile(x, y);
-
-      map.push_back(tile);
-
-      mainStrip = tile;
-
-      int depth = 0;
-
-      OWTile* chain = tile;
-
-      while (rand() % 50 > 10 && depth < 10) {
-        depth++;
-
-        x = 0;
-        y = 0;
-
-        if (dir == 0) {
-          x += chain->GetX() + (chain->GetW()*1.9);
-          y += chain->GetY() - (chain->GetH()*1.5);
-
-          OWTile* tile = new OWTile(x, y);
-          chain = tile;
-
-          map.push_back(tile);
-        }
-        else if(dir ==1) {
-          x += chain->GetX() - (chain->GetW()*1.9);
-          y += chain->GetY() + (chain->GetH()*1.5);
-
-          OWTile* tile = new OWTile(x, y);
-          chain = tile;
-
-          map.push_back(tile);
-        }
-        else if(depth > 1) {
-          x += chain->GetX() + (chain->GetW()*1.9);
-          y += chain->GetY() + (chain->GetH()*1.5);
-
-          OWTile* tile = new OWTile(x, y);
-          chain = tile;
-
-          map.push_back(tile);
-        }
-      }
-
-      std::sort(map.begin(), map.end(), SortByDepth);
-    }
-
-    std::vector<OWTile*>::iterator iter = map.begin();
-
     bg->Draw();
-
-    while (iter != map.end()) {
-      if ((*iter)->GetY() < 10 || (*iter)->GetX() < -50) {
-        delete (*iter);
-        *iter = nullptr;
-        iter = map.erase(iter);
-
-        continue;
-      }
-
-      ow.setOrigin(24.f, 15.f);
-      ow.setPosition((float)((*iter)->GetX()), (float)((*iter)->GetY()));
-
-
-      int alpha = (int)std::min((double)255, ((*iter)->GetY() / 50.0) * 255);
-
-      alpha = (int)std::min((double)alpha, ((*iter)->GetY() / 220.0) * 255);
-
-      ow.setColor(sf::Color(255, 255, 255, alpha));
-
-      (*iter)->Move(-50.0*(elapsed/1000.0), (-24.495*(elapsed / 1000.0)));
-      ENGINE.Draw(ow);
-
-      iter++;
-    }
+    ENGINE.Draw(map);
 
     // Draw navi moving
     naviAnimator.Update(elapsed, &owNavi);
-    owNavi.setPosition(320, 195);
-    ENGINE.Draw(owNavi);
 
     int lastMenuSelectionIndex = menuSelectionIndex;
 
-    // Scene keyboard controls
+    // Scene keyboard controls 
+    
     if (!gotoNextScene && transitionProgress == 0.f) {
       if (INPUT.has(PRESSED_UP)) {
         selectInputCooldown -= elapsed;
@@ -251,14 +138,46 @@ int MainMenuScene::Run()
         selectInputCooldown = 0;
       }
 
+      owNavi.setPosition(owNavi.getPosition() + sf::Vector2f(0.5, 0));
+
+      // camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition()));
+
+      
       if (INPUT.has(PRESSED_ACTION1)) {
+
+        // Navi select
+        if (menuSelectionIndex == 2) {
+          int nextNavi = (int)currentNavi + 1;
+          currentNavi = (SelectedNavi)nextNavi;
+
+          if (currentNavi == SelectedNavi::SIZE) {
+            currentNavi = SelectedNavi::STARMAN;
+          }
+
+          if (currentNavi == SelectedNavi::MEGAMAN) {
+  
+            owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
+            naviAnimator = Animation("owNavi", "resources/navis/megaman/megaman.animation");
+            naviAnimator.Load();
+            naviAnimator.SetAnimation("PLAYER_OW_RD");
+            naviAnimator << Animate::Mode(Animate::Mode::Loop);
+          }
+          else if (currentNavi == SelectedNavi::STARMAN) {
+            owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS));
+            naviAnimator = Animation("owNavi", "resources/navis/starman/starman.animation");
+            naviAnimator.Load();
+            naviAnimator.SetAnimation("PLAYER_OW_RD");
+            naviAnimator << Animate::Mode(Animate::Mode::Loop);
+          }
+        }
+
         // Mob select
         if (menuSelectionIndex == 3) {
           gotoNextScene = true;
           AUDIO.Play(AudioType::CHIP_DESC);
         }
       }
-    }
+    } 
 
     if (gotoNextScene) {
       transitionProgress += 0.05f;
@@ -289,6 +208,7 @@ int MainMenuScene::Run()
     menuSelectionIndex = std::max(0, menuSelectionIndex);
     menuSelectionIndex = std::min(3, menuSelectionIndex);
 
+    
     if (menuSelectionIndex != lastMenuSelectionIndex) {
       AUDIO.Play(AudioType::CHIP_SELECT, 1);
     }
@@ -387,7 +307,7 @@ int MainMenuScene::Run()
       ENGINE.Draw(ui);
     }
 
-    ENGINE.Draw(ui);
+    ENGINE.Draw(ui); 
 
     sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
     sf::Sprite transitionPost;

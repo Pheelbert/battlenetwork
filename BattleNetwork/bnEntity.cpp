@@ -50,8 +50,17 @@ void Entity::SetCounterFrame(int frame)
 }
 
 int Entity::GetHealth() {
-  // assert(false && "GetHealth shouldn't be called directly from Entity");
   return health;
+}
+
+const float Entity::GetHitHeight() const {
+  //assert(false && "GetHitHeight shouldn't be called directly from Entity");
+  return 0;
+}
+
+const bool Entity::Hit(int damage) {
+  //assert(false && "Hit shouldn't be called directly from Entity");
+  return false;
 }
 
 TextureType Entity::GetTextureType() {

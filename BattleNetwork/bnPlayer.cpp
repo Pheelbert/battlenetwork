@@ -173,7 +173,7 @@ int Player::GetHealth() const {
   return health;
 }
 
-int Player::Hit(int _damage) {
+const bool Player::Hit(int _damage) {
   if (this->IsPassthrough()) return false;
 
   bool result = false;

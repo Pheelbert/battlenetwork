@@ -12,7 +12,7 @@
 #include "bnRandomMettaurMob.h"
 #include "bnProgsManBossFight.h"
 #include "bnTwoMettaurMob.h"
-#include "bnCannodumbMob.h"
+#include "bnCanodumbMob.h"
 
 #include <SFML/Graphics.hpp>
 using sf::RenderWindow;
@@ -202,13 +202,13 @@ int SelectMobScene::Run()
     }
 
     mobSelectionIndex = std::max(0, mobSelectionIndex);
-    mobSelectionIndex = std::min(2, mobSelectionIndex);
+    mobSelectionIndex = std::min(3, mobSelectionIndex);
 
     if (mobSelectionIndex == 0) {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE),true);
       mob.setPosition(110.f, 130.f);
       mobLabel->setString("Mettaur");
-      speedLabel->setString("1");
+      speedLabel->setString("2");
       attackLabel->setString("1");
       hpLabel->setString("20");
     }
@@ -219,6 +219,14 @@ int SelectMobScene::Run()
       speedLabel->setString("4");
       attackLabel->setString("3");
       hpLabel->setString("300");
+    }
+    else if (mobSelectionIndex == 2) {
+      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
+      mob.setPosition(100.f, 110.f);
+      mobLabel->setString("Canodumb");
+      speedLabel->setString("1");
+      attackLabel->setString("4");
+      hpLabel->setString("60");
     }
     else {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_ANYTHING_GOES),true);
@@ -297,6 +305,9 @@ int SelectMobScene::Run()
       }
       else if (mobSelectionIndex == 1) {
         factory = new ProgsManBossFight(field);
+      }
+      else if (mobSelectionIndex == 2) {
+        factory = new CanodumbMob(field);
       }
       else {
         factory = new RandomMettaurMob(field);

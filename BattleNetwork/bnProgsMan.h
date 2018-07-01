@@ -27,8 +27,8 @@ public:
   virtual TextureType GetTextureType() const;
 
   void SetHealth(int _health);
-  int Hit(int _damage);
-  float GetHitHeight() const;
+  virtual const bool Hit(int _damage);
+  virtual const float GetHitHeight() const;
   int* GetAnimOffset();
 
 private:

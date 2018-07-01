@@ -119,7 +119,7 @@ frame duration="0.1" x="275" y="96" w="24" h="43" originx="12" originy="39"
 frame duration="0.1" x="301" y="94" w="28" h="47" originx="14" originy="42"
 frame duration="0.1" x="331" y="94" w="24" h="45" originx="12" originy="41"
 
-animation state="navi_starman_walk_DownLR"
+animation state="PLAYER_OW_RD"
 frame duration="0.1" x="164" y="138" w="32" h="51" originx="19" originy="46"
 frame duration="0.1" x="198" y="139" w="37" h="50" originx="22" originy="45"
 frame duration="0.1" x="237" y="141" w="36" h="47" originx="20" originy="43"

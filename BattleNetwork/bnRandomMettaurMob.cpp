@@ -22,17 +22,17 @@ Mob* RandomMettaurMob::Build() {
     for (int j = 0; j < field->GetHeight(); j++) {
       Tile* tile = field->GetAt(i + 1, j + 1);
 
-      //tile->SetState((TileState)(rand() % (int)TileState::EMPTY)); // Make it random excluding an empty tile
-      tile->SetState(TileState::LAVA); 
+      tile->SetState((TileState)(rand() % (int)TileState::EMPTY)); // Make it random excluding an empty tile
+      //tile->SetState(TileState::LAVA); 
 
       if (tile->IsWalkable() && tile->GetTeam() == Team::BLUE) {
         if (rand() % 50 > 30) {
-          if (rand() % 10 > 8) {
-            mob->Spawn<ProgsMan, ProgsManIdleState>(i + 1, j + 1);
-          }
-          else {
+          //if (rand() % 10 > 8) {
+          //  mob->Spawn<ProgsMan, ProgsManIdleState>(i + 1, j + 1);
+          //}
+          //else {
             mob->Spawn<Mettaur, MettaurIdleState>(i + 1, j + 1);
-          }
+          //}
         }
       }
     }

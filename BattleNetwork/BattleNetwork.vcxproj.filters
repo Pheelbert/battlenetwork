@@ -176,6 +176,27 @@
     <Filter Include="Engine\Resources\TextureResource\Props">
       <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Overworld">
+      <UniqueIdentifier>{380f4ec8-7bec-4707-ac1e-38788c83c4b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Overworld\Map">
+      <UniqueIdentifier>{835dd9d2-1448-4cee-9144-0efdeac68187}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Overworld\Map\Lights">
+      <UniqueIdentifier>{fae5d589-c746-4a71-893a-9cfea9ad596c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Overworld\Map\Dynamic">
+      <UniqueIdentifier>{18a112b3-8ba5-4851-82b8-4d75444b101c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Artifact\Cannon">
+      <UniqueIdentifier>{24bc03bc-251a-4156-a2c4-318d0d5f4bfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Canodumb">
+      <UniqueIdentifier>{9613c3d8-ce86-4941-9b80-353a5108787a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Canodumb\States">
+      <UniqueIdentifier>{3d0d6159-bd37-4923-8112-d6facaa68b3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -304,9 +325,6 @@
     <ClCompile Include="bnBasicSword.cpp">
       <Filter>Battle\Entity\Spell\Sword\Basic</Filter>
     </ClCompile>
-    <ClCompile Include="bnCannodumbMob.cpp">
-      <Filter>Battle\Mob\Easy</Filter>
-    </ClCompile>
     <ClCompile Include="bnLanBackground.cpp">
       <Filter>Battle\Backgrounds</Filter>
     </ClCompile>
@@ -348,6 +366,27 @@
     </ClCompile>
     <ClCompile Include="bnPlayerHealthUI.cpp">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
+    </ClCompile>
+    <ClCompile Include="bnOverworldMap.cpp">
+      <Filter>Overworld\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="bnOverworldLight.cpp">
+      <Filter>Overworld\Map\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="bnInfiniteMap.cpp">
+      <Filter>Overworld\Map\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumbAttackState.cpp">
+      <Filter>Battle\Entity\Character\Canodumb\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumbIdleState.cpp">
+      <Filter>Battle\Entity\Character\Canodumb\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumb.cpp">
+      <Filter>Battle\Entity\Character\Canodumb</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumbMob.cpp">
+      <Filter>Battle\Mob\Easy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -544,16 +583,12 @@
     <ClInclude Include="bnChronoXConfigReader.h">
       <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="bnCannodumbMob.h">
-      <Filter>Battle\Mob\Easy</Filter>
-    </ClInclude>
     <ClInclude Include="bnLanBackground.h">
       <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
     <ClInclude Include="bnGraveyardBackground.h">
       <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
-    <ClInclude Include="bnBackground.h" />
     <ClInclude Include="bnVirusBackground.h">
       <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
@@ -580,6 +615,30 @@
     </ClInclude>
     <ClInclude Include="bnSelectedChipsUI.h">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBackground.h">
+      <Filter>Engine\Resources\TextureResource\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="bnOverworldMap.h">
+      <Filter>Overworld\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="bnOverworldLight.h">
+      <Filter>Overworld\Map\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="bnInfiniteMap.h">
+      <Filter>Overworld\Map\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumbAttackState.h">
+      <Filter>Battle\Entity\Character\Canodumb\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumbIdleState.h">
+      <Filter>Battle\Entity\Character\Canodumb\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumb.h">
+      <Filter>Battle\Entity\Character\Canodumb</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumbMob.h">
+      <Filter>Battle\Mob\Easy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

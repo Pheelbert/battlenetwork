@@ -132,13 +132,13 @@ void ProgsMan::SetHealth(int _health) {
   health = _health;
 }
 
-int ProgsMan::Hit(int _damage) {
+const bool ProgsMan::Hit(int _damage) {
   SetShader(whiteout);
   (health - _damage < 0) ? health = 0 : health -= _damage;
   return health;
 }
 
-float ProgsMan::GetHitHeight() const {
+const float ProgsMan::GetHitHeight() const {
   return hitHeight;
 }
 

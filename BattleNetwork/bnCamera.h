@@ -20,6 +20,8 @@ public:
   void Update(float elapsed);
   void MoveCamera(sf::Vector2f destination, sf::Time duration);
   void PlaceCamera(sf::Vector2f pos);
+  void OffsetCamera(sf::Vector2f offset);
+  bool IsInView(sf::Sprite & sprite);
   void ShakeCamera(double stress, sf::Time duration);
   const sf::View GetView() const;
 };

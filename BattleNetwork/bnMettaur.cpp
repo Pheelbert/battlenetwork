@@ -185,14 +185,14 @@ void Mettaur::SetHealth(int _health) {
   health = _health;
 }
 
-int Mettaur::Hit(int _damage) {
+const bool Mettaur::Hit(int _damage) {
   (health - _damage < 0) ? health = 0 : health -= _damage;
   SetShader(whiteout);
 
   return health;
 }
 
-float Mettaur::GetHitHeight() const {
+const float Mettaur::GetHitHeight() const {
   return hitHeight;
 }
 

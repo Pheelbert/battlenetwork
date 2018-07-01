@@ -33,7 +33,7 @@ public:
 
   int GetHealth() const;
   void SetHealth(int _health);
-  int Hit(int _damage);
+  virtual const bool Hit(int _damage);
   int GetMoveCount() const;
   int GetHitCount() const;
 

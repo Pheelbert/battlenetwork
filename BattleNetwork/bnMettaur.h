@@ -25,8 +25,8 @@ public:
 
   void SetHealth(int _health);
   int* GetAnimOffset();
-  int Hit(int _damage);
-  float GetHitHeight() const;
+  virtual const bool Hit(int _damage);
+  virtual const float GetHitHeight() const;
 
 private:
   const bool IsMettaurTurn() const;

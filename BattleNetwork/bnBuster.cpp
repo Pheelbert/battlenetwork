@@ -108,20 +108,11 @@ bool Buster::Move(Direction _direction) {
 void Buster::Attack(Entity* _entity) {
   if (deleted) return;
 
-  Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
-  if (isMob) {
-    isMob->Hit(damage);
-    hitHeight = isMob->GetHitHeight();
+  if (_entity && _entity->GetTeam() != this->GetTeam()) {
+    _entity->Hit(damage);
+    hitHeight = _entity->GetHitHeight();
     hit = true;
     deleted = true;
-  } else {
-    ProgsMan* isProgs = dynamic_cast<ProgsMan*>(_entity);
-    if (isProgs) {
-      isProgs->Hit(damage);
-      hitHeight = isProgs->GetHitHeight();
-      hit = true;
-      deleted = true;
-    }
   }
 
   if (hit) {
