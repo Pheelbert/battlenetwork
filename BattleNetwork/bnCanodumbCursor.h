@@ -11,7 +11,8 @@ class CanodumbCursor : public Artifact
 private:
   Canodumb* parent;
   Entity* target;
-  int movecooldown;
+  float movecooldown;
+  float maxcooldown;
   Direction direction;
 
   // Frame select through animation system

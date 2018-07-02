@@ -10,7 +10,7 @@ class Mob
 {
 public:
   struct MobData {
-    Entity* mob;
+    Character* mob;
     int tileX;
     int tileY;
     unsigned index;
@@ -19,8 +19,8 @@ public:
 private:
   std::vector<MobData*> spawn;
   std::vector<MobData*>::iterator iter;
-  std::vector<std::function<void(Entity*)>> defaultStateInvokers;
-  std::vector<std::function<void(Entity*)>> pixelStateInvokers;
+  std::vector<std::function<void(Character*)>> defaultStateInvokers;
+  std::vector<std::function<void(Character*)>> pixelStateInvokers;
   std::multimap<int, BattleItem> rewards;
   bool nextReady;
   Field* field;
@@ -107,7 +107,7 @@ public:
     return isBoss;
   }
 
-  const Entity& GetMobAt(int index) {
+  const Character& GetMobAt(int index) {
     if (index < 0 || index >= spawn.size()) {
       throw new std::exception("Invalid index range for Mob::GetMobAt()");
     }
@@ -159,7 +159,7 @@ template<class T, class DefaultState>
 Mob* Mob::Spawn(int tileX, int tileY) {
   // TODO: assert that tileX and tileY exist in field
 
-  _DerivedFrom<T, Entity>();
+  _DerivedFrom<T, Character>();
   _DerivedFrom<T, AI<T>>();
 
   MobData* data = new MobData();
@@ -172,7 +172,7 @@ Mob* Mob::Spawn(int tileX, int tileY) {
 
   // This retains the current entity type and stores it in a function. We do this to transform the 
   // unknown type back later and can call the proper state change
-  auto pixelStateInvoker = [this](Entity* mob) {
+  auto pixelStateInvoker = [this](Character* mob) {
     T* cast = dynamic_cast<T*>(mob); 
     
     if (cast) {
@@ -183,7 +183,7 @@ Mob* Mob::Spawn(int tileX, int tileY) {
 
   pixelStateInvokers.push_back(pixelStateInvoker);
 
-  auto defaultStateInvoker = [](Entity* mob) { T* cast = dynamic_cast<T*>(mob); if (cast) { cast->StateChange<DefaultState>(); } };
+  auto defaultStateInvoker = [](Character* mob) { T* cast = dynamic_cast<T*>(mob); if (cast) { cast->StateChange<DefaultState>(); } };
   defaultStateInvokers.push_back(defaultStateInvoker);
 
   spawn.push_back(data);
@@ -197,7 +197,7 @@ template<class T, typename TArgs, class DefaultState>
 Mob* Mob::Spawn(int tileX, int tileY, TArgs args) {
   // TODO: assert that tileX and tileY exist in field
 
-  _DerivedFrom<T, Entity>();
+  _DerivedFrom<T, Character>();
   _DerivedFrom<T, AI<T>>();
 
   MobData* data = new MobData();
@@ -210,7 +210,7 @@ Mob* Mob::Spawn(int tileX, int tileY, TArgs args) {
 
   // This retains the current entity type and stores it in a function. We do this to transform the 
   // unknown type back later and can call the proper state change
-  auto pixelStateInvoker = [this](Entity* mob) {
+  auto pixelStateInvoker = [this](Character* mob) {
     T* cast = dynamic_cast<T*>(mob);
 
     if (cast) {
@@ -221,7 +221,7 @@ Mob* Mob::Spawn(int tileX, int tileY, TArgs args) {
 
   pixelStateInvokers.push_back(pixelStateInvoker);
 
-  auto defaultStateInvoker = [](Entity* mob) { T* cast = dynamic_cast<T*>(mob); if (cast) { cast->StateChange<DefaultState>(); } };
+  auto defaultStateInvoker = [](Character* mob) { T* cast = dynamic_cast<T*>(mob); if (cast) { cast->StateChange<DefaultState>(); } };
   defaultStateInvokers.push_back(defaultStateInvoker);
 
   spawn.push_back(data);

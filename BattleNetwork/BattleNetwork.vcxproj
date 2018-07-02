@@ -165,6 +165,7 @@
     <ClCompile Include="bnCanodumb.cpp" />
     <ClCompile Include="bnCanodumbAttackState.cpp" />
     <ClCompile Include="bnCanodumbIdleState.cpp" />
+    <ClCompile Include="bnCharacter.cpp" />
     <ClCompile Include="bnGraveyardBackground.cpp" />
     <ClCompile Include="bnInfiniteMap.cpp" />
     <ClCompile Include="bnLanBackground.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="bnCanodumb.h" />
     <ClInclude Include="bnCanodumbAttackState.h" />
     <ClInclude Include="bnCanodumbIdleState.h" />
+    <ClInclude Include="bnCharacter.h" />
     <ClInclude Include="bnGraveyardBackground.h" />
     <ClInclude Include="bnInfiniteMap.h" />
     <ClInclude Include="bnLanBackground.h" />

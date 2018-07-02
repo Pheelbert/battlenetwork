@@ -35,5 +35,8 @@ void CanodumbIdleState::OnUpdate(float _elapsed, Canodumb& can) {
 }
 
 void CanodumbIdleState::OnLeave(Canodumb& can) {
+  if (cursor) {
+    cursor->Delete();
+  }
 }
 

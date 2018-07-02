@@ -15,7 +15,7 @@ using std::to_string;
 class Animation {
 public:
   Animation();
-  Animation(string _name, string _path);
+  Animation(string _path);
   ~Animation();
 
   void Load();
@@ -32,7 +32,6 @@ private:
 protected:
   Animate animator;
 
-  string name;
   string path;
   string currAnimation;
   float progress;

@@ -172,6 +172,11 @@ bool Tile::ContainsEntity(Entity* _entity) const {
 void Tile::AffectEntities(Spell* caller) {
   vector<Entity*> copy = this->entities;
   for (std::vector<Entity*>::iterator it = copy.begin(); it < copy.end(); ++it) {
+    if ((*it) == nullptr) {
+      entities.erase(it);
+      continue;
+    }
+
     if (*it != caller && !(*it)->IsPassthrough()) {
       caller->Attack(*it);
     }

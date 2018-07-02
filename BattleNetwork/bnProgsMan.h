@@ -2,7 +2,7 @@
 #include <SFML\Graphics.hpp>
 using sf::IntRect;
 
-#include "bnEntity.h"
+#include "bnCharacter.h"
 #include "bnMobState.h"
 #include "bnTextureType.h"
 #include "bnMobHealthUI.h"
@@ -10,7 +10,7 @@ using sf::IntRect;
 #include "bnAnimationComponent.h"
 #include "bnAI.h"
 
-class ProgsMan : public Entity, public AI<ProgsMan> {
+class ProgsMan : public Character, public AI<ProgsMan> {
 public:
   friend class ProgsManIdleState;
   friend class ProgsManMoveState;

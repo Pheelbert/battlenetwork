@@ -26,7 +26,7 @@ namespace Overworld {
 
 
   void InfiniteMap::DrawTiles(sf::RenderTarget& target, sf::RenderStates states) const {
-    std::cout << "map size: " << map.size() << "\n";
+    //std::cout << "map size: " << map.size() << "\n";
     for (int i = 0; i < map.size(); i++) {
       sf::Sprite tileSprite(map[i]->GetTexture());
 

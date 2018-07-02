@@ -5,10 +5,15 @@
 
 using sf::IntRect;
 
-#define MAX_COOLDOWN 500.0f
+#define MAX_COOLDOWN_1 500.0f
+#define MAX_COOLDOWN_2 250.0f
+#define MAX_COOLDOWN_3 175.0f
+
 #define RESOURCE_PATH "resources/mobs/canodumb/canodumb.animation"
 
 CanodumbCursor::CanodumbCursor(Field* _field, Team _team, Canodumb* _parent) : animationComponent(this) {
+  SetPassthrough(true);
+
   parent = _parent;
   target = parent->GetTarget();
 
@@ -27,7 +32,19 @@ CanodumbCursor::CanodumbCursor(Field* _field, Team _team, Canodumb* _parent) : a
   animationComponent.SetAnimation(MOB_CANODUMB_CURSOR);
   animationComponent.Update(0);
 
-  movecooldown = MAX_COOLDOWN;
+  switch (parent->GetRank()) {
+  case Canodumb::Rank::_1:
+    maxcooldown = MAX_COOLDOWN_1;
+    break;
+  case Canodumb::Rank::_2:
+    maxcooldown = MAX_COOLDOWN_2;
+    break;
+  case Canodumb::Rank::_3:
+    maxcooldown = MAX_COOLDOWN_3;
+    break;
+  }
+
+  movecooldown = maxcooldown;
 }
 
 void CanodumbCursor::Update(float _elapsed) {
@@ -44,7 +61,7 @@ void CanodumbCursor::Update(float _elapsed) {
       parent->StateChange<CanodumbAttackState>();
     }
     else {
-      movecooldown = MAX_COOLDOWN;
+      movecooldown = maxcooldown;
 
       Field* f = this->GetField();
       Tile* t = f->GetAt(this->GetTile()->GetX() - 1, this->GetTile()->GetY());

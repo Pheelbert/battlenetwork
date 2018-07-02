@@ -2,7 +2,7 @@
 using std::to_string;
 
 #include "bnMobHealthUI.h"
-#include "bnEntity.h"
+#include "bnCharacter.h"
 #include "bnTextureResourceManager.h"
 
 #include "bnLogger.h"
@@ -12,7 +12,7 @@ MobHealthUI::MobHealthUI(void)
   font(nullptr) {
 }
 
-MobHealthUI::MobHealthUI(Entity* _mob)
+MobHealthUI::MobHealthUI(Character* _mob)
   : mob(_mob) {
   font = TEXTURES.LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
   setFont(*font);

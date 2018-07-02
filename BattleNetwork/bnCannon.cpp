@@ -18,6 +18,8 @@
 #define BULLET_ANIMATION_HEIGHT 27
 
 Cannon::Cannon(Field* _field, Team _team, int _damage) {
+  SetPassthrough(true);
+
   field = _field;
   team = _team;
   direction = Direction::NONE;
@@ -51,6 +53,7 @@ void Cannon::Update(float _elapsed) {
     animation(*this, fmin(progress, 1.0f));
     if (progress >= 1.f) {
       deleted = true;
+      Entity::Update(_elapsed);
     }
     return;
   }
@@ -62,6 +65,8 @@ void Cannon::Update(float _elapsed) {
     Move(direction);
     cooldown = 0;
   }
+
+  Entity::Update(_elapsed);
 }
 
 bool Cannon::Move(Direction _direction) {
@@ -104,24 +109,29 @@ bool Cannon::Move(Direction _direction) {
 }
 
 void Cannon::Attack(Entity* _entity) {
+  if (hit) {
+    return;
+  }
+
   if (_entity && _entity->GetTeam() != this->GetTeam()) {
     _entity->Hit(damage);
     hitHeight = _entity->GetHitHeight();
-    hit = true;
 
-    if (_entity->IsCountered()) {
+    if (!_entity->IsPassthrough()) {
+      hit = true;
+    }
+
+    Character* isCharacter = dynamic_cast<Character*>(_entity);
+
+    if (isCharacter && isCharacter->IsCountered()) {
       AUDIO.Play(AudioType::COUNTER, 0);
-      _entity->Stun(1000);
+      isCharacter->Stun(1000);
 
-      if (_entity->GetHealth() == 0) {
+      if (isCharacter->GetHealth() == 0) {
         // Slide entity back a few pixels
-        _entity->setPosition(_entity->getPosition().x + 50.f, _entity->getPosition().y);
+        isCharacter->setPosition(isCharacter->getPosition().x + 50.f, isCharacter->getPosition().y);
       }
     }
-  }
-
-  if (hit) {
-   //  AUDIO.Play(AudioType::HURT, 0);
   }
 }
 

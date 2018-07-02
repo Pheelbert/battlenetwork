@@ -18,6 +18,8 @@
 #define BULLET_ANIMATION_HEIGHT 27
 
 Buster::Buster(Field* _field, Team _team, bool _charged) {
+  SetPassthrough(true);
+
   cooldown = 0;
   damageCooldown = 0;
   field = _field;
@@ -56,12 +58,11 @@ void Buster::Update(float _elapsed) {
     animation(*this, fmin(progress, 1.0f));
     if (progress >= 1.f) {
       deleted = true;
+      Entity::Update(_elapsed);
     }
     return;
   }
 
-  // NOTE: This probably had a cool down because the original dev wanted it to do damage at the end of the buster frame
-  // Doing this made direct shots miss. Spawning the bullet should happen at the end frame in the player class. 
   tile->AffectEntities(this);
 
   cooldown += _elapsed;
@@ -69,6 +70,8 @@ void Buster::Update(float _elapsed) {
     Move(direction);
     cooldown = 0;
   }
+
+  Entity::Update(_elapsed);
 }
 
 bool Buster::Move(Direction _direction) {
@@ -106,13 +109,15 @@ bool Buster::Move(Direction _direction) {
 }
 
 void Buster::Attack(Entity* _entity) {
-  if (deleted) return;
+  if (hit || deleted) return;
 
   if (_entity && _entity->GetTeam() != this->GetTeam()) {
     _entity->Hit(damage);
     hitHeight = _entity->GetHitHeight();
-    hit = true;
-    deleted = true;
+
+    if (!_entity->IsPassthrough()) {
+      hit = true;
+    }
   }
 
   if (hit) {

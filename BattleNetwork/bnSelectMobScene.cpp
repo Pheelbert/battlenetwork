@@ -81,7 +81,7 @@ int SelectMobScene::Run()
   transition.setUniform("texture", sf::Shader::CurrentTexture);
   transition.setUniform("map", *TEXTURES.GetTexture(TextureType::NOISE_TEXTURE));
   transition.setUniform("progress", 0.f);
-  float transitionProgress = 1.f;
+  float transitionProgress = 0.9f;
   ENGINE.RevokeShader();
 
   bool gotoNextScene = false;
@@ -114,7 +114,7 @@ int SelectMobScene::Run()
     INPUT.update();
 
     ENGINE.Clear();
-    ENGINE.SetView(camera.GetView());
+    //ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
 
@@ -188,17 +188,19 @@ int SelectMobScene::Run()
       }
     }
 
-    if (gotoNextScene) {
-      transitionProgress += 0.05f;
-    }
-    else {
-      transitionProgress -= 0.05f;
+    if (elapsed > 0) {
+      if (gotoNextScene) {
+        transitionProgress += 0.1f / elapsed;
+      }
+      else {
+        transitionProgress -= 0.1f / elapsed;
+      }
     }
 
     transitionProgress = std::max(0.f, transitionProgress);
     transitionProgress = std::min(1.f, transitionProgress);
 
-    if (transitionProgress == 1.f) {
+    if (transitionProgress >= 1.f) {
       return 2;
 
       gotoNextScene = false;
@@ -227,7 +229,7 @@ int SelectMobScene::Run()
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
       mob.setPosition(90.f, 130.f);
 
-      mobAnimator = Animation("mob", "resources/mobs/canodumb/canodumb.animation");
+      mobAnimator = Animation("resources/mobs/canodumb/canodumb.animation");
       mobAnimator.Load();
       mobAnimator.SetAnimation(MOB_CANODUMB_IDLE_1);
       mobAnimator.SetFrame(1, &mob);

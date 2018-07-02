@@ -1,10 +1,8 @@
 #pragma once
-#include "bnAnimationComponent.h"
-#include "bnAnimation.h"
-
 #include <string>
 using std::string;
 
+#include "bnAnimation.h"
 #include "bnDirection.h"
 #include "bnTeam.h"
 #include "bnMemory.h"
@@ -27,10 +25,7 @@ public:
   virtual vector<Drawable*> GetMiscComponents();
   virtual void AddAnimation(string _state, FrameList _frameList, float _duration);
   virtual void SetAnimation(string _state);
-  virtual void SetCounterFrame(int frame);
-  virtual int GetHealth();
   virtual TextureType GetTextureType();
-  virtual int* GetAnimOffset();
 
   bool Teammate(Team _team);
 
@@ -43,17 +38,11 @@ public:
   Team GetTeam() const;
   void SetTeam(Team _team);
 
-  void SetHealth(int _health);
-
   void SetPassthrough(bool state);
   bool IsPassthrough();
+
+  void Delete();
   bool IsDeleted() const;
-  void TryDelete();
-  void ToggleCounter(bool on=true);
-  void Stun(double maxCooldown);
-  bool IsCountered();
-  // For mob UI
-  const std::string GetName() const;
 
 protected:
   bool ownedByField;
@@ -62,10 +51,6 @@ protected:
   Tile* previous;
   Field* field;
   Team team;
-  int health;
   bool passthrough;
   bool deleted;
-  bool counterable;
-  std::string name;
-  double stunCooldown;
 };

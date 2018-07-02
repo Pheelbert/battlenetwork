@@ -394,6 +394,9 @@
     <ClCompile Include="bnCanodumbCursor.cpp">
       <Filter>Battle\Entity\Character\Canodumb\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="bnCharacter.cpp">
+      <Filter>Battle\Entity\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -648,6 +651,9 @@
     </ClInclude>
     <ClInclude Include="bnCanodumbCursor.h">
       <Filter>Battle\Entity\Character\Canodumb\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCharacter.h">
+      <Filter>Battle\Entity\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

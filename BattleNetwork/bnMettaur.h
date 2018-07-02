@@ -1,12 +1,12 @@
 #pragma once
-#include "bnEntity.h"
+#include "bnCharacter.h"
 #include "bnMobState.h"
 #include "bnAI.h"
 #include "bnTextureType.h"
 #include "bnMobHealthUI.h"
 #include "bnAnimationComponent.h"
 
-class Mettaur : public Entity, public AI<Mettaur> {
+class Mettaur : public Character, public AI<Mettaur> {
   friend class MettaurIdleState;
   friend class MettaurMoveState;
   friend class MettaurAttackState;

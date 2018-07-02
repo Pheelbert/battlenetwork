@@ -50,24 +50,27 @@ bool BasicSword::Move(Direction _direction) {
 }
 
 void BasicSword::Attack(Entity* _entity) {
+
   if (_entity && _entity->GetTeam() != this->GetTeam()) {
     _entity->Hit(damage);
     hitHeight = _entity->GetHitHeight();
     hit = true;
 
-    if (_entity->IsCountered()) {
-      AUDIO.Play(AudioType::COUNTER, 0);
-      _entity->Stun(1000);
+    Character* isCharacter = dynamic_cast<Character*>(_entity);
 
-      if (_entity->GetHealth() == 0) {
-        // Slide entity back a few pixels
-        _entity->setPosition(_entity->getPosition().x + 50.f, _entity->getPosition().y);
+    if (isCharacter && isCharacter->IsCountered()) {
+      AUDIO.Play(AudioType::COUNTER, 0);
+      isCharacter->Stun(1000);
+
+      if (isCharacter->GetHealth() == 0) {
+        // Slide character back a few pixels
+        isCharacter->setPosition(_entity->getPosition().x + 50.f, _entity->getPosition().y);
       }
     }
   }
 
   if (hit) {
-    //  AUDIO.Play(AudioType::HURT, 0);
+   //  AUDIO.Play(AudioType::HURT, 0);
   }
 }
 

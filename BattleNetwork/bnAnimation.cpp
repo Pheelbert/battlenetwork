@@ -7,11 +7,11 @@ using sf::IntRect;
 #include "bnLogger.h"
 #include "bnEntity.h"
 
-Animation::Animation() : animator(), name(""), path("") {
+Animation::Animation() : animator(), path("") {
   ;
 }
 
-Animation::Animation(string _name, string _path) : animator(), name(_name), path(_path) {
+Animation::Animation(string _path) : animator(), path(_path) {
 }
 
 Animation::~Animation() {
@@ -40,10 +40,6 @@ void Animation::Load() {
 
       if (version != "1.0") legacySupport = false;
 
-    }
-    else if (line.find("entity") != string::npos) {
-      string sname = ValueOf("name", line);
-      assert(name == sname && "Wrong class name specified in .animation file");
     }
     else if (line.find("animation") != string::npos) {
       if (!frameLists.empty()) {

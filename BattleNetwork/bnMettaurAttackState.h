@@ -13,6 +13,6 @@ public:
   void OnLeave(Mettaur& met);
 
   // specialized state functions
-  void Attack(Mettaur& met);
+  void DoAttack(Mettaur& met);
 };
 

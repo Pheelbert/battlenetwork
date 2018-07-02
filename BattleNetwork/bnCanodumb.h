@@ -1,15 +1,16 @@
 #pragma once
-#include "bnEntity.h"
+#include "bnCharacter.h"
 #include "bnMobState.h"
 #include "bnAI.h"
 #include "bnTextureType.h"
 #include "bnMobHealthUI.h"
 #include "bnAnimationComponent.h"
 
-class Canodumb : public Entity, public AI<Canodumb> {
+class Canodumb : public Character, public AI<Canodumb> {
   friend class CanodumbIdleState;
   friend class CanodumbMoveState;
   friend class CanodumbAttackState;
+  friend class CanodumbCursor;
 
 public:
   enum Rank {

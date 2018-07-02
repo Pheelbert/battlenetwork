@@ -49,9 +49,9 @@ void LongExplosion::Update(float _elapsed) {
     y2 = tile->getPosition().y - 50.0f;
   }
 
-  explosionProgress += 0.02f/_elapsed;
+  explosionProgress += 0.1f/_elapsed;
   if (explosionProgress >= 0.3f) {
-    explosionProgress2 += 0.02f/_elapsed;
+    explosionProgress2 += 0.1f/_elapsed;
     explosion2.setScale(2.f, 2.f);
     explosion2.setPosition(x2, y2);
     explode(explosion2, fmin(explosionProgress2, 1.0f));
@@ -66,6 +66,8 @@ void LongExplosion::Update(float _elapsed) {
   if (explosionProgress2 >= 0.8f) {
     deleted = true;
   }
+
+  Entity::Update(_elapsed);
 }
 
 vector<Drawable*> LongExplosion::GetMiscComponents() {

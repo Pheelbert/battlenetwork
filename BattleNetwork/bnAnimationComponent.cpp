@@ -21,12 +21,11 @@ void AnimationComponent::Update(float _elapsed)
 
 void AnimationComponent::Setup(string _path)
 {
-  entityName = entity->GetName();
   path = _path;
 }
 
 void AnimationComponent::Load() {
-  animation = Animation(entityName, path);
+  animation = Animation(path);
   animation.Load();
 }
 

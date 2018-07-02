@@ -51,6 +51,7 @@ public:
 
   void Update(float _elapsed);
 
+  vector<Entity*> entities;
 private:
   int x;
   int y;
@@ -58,7 +59,7 @@ private:
   TileState state;
   TextureType textureType;
   float elapsed;
-  vector<Entity*> entities;
+ 
   float width;
   float height;
   Field* field;

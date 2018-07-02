@@ -36,7 +36,7 @@ int MainMenuScene::Run()
   // ui sprite maps
   sf::Sprite ui(*TEXTURES.GetTexture(TextureType::MAIN_MENU_UI));
   ui.setScale(2.f, 2.f);
-  Animation uiAnimator("ui", "resources/ui/main_menu_ui.animation");
+  Animation uiAnimator("resources/ui/main_menu_ui.animation");
   uiAnimator.Load();
 
   // Stream menu music 
@@ -47,7 +47,7 @@ int MainMenuScene::Run()
   transition.setUniform("texture", sf::Shader::CurrentTexture);
   transition.setUniform("map", *TEXTURES.GetTexture(TextureType::NOISE_TEXTURE));
   transition.setUniform("progress", 0.f);
-  float transitionProgress = 1.f;
+  float transitionProgress = 0.9f;
   ENGINE.RevokeShader();
 
   Clock clock;
@@ -72,14 +72,12 @@ int MainMenuScene::Run()
   sf::Sprite owNavi(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
   owNavi.setScale(2.f, 2.f);
   owNavi.setPosition(0, 0);
-  Animation naviAnimator("owNavi", "resources/navis/megaman/megaman.animation");
+  Animation naviAnimator("resources/navis/megaman/megaman.animation");
   naviAnimator.Load();
   naviAnimator.SetAnimation("PLAYER_OW_RD");
   naviAnimator << Animate::Mode(Animate::Mode::Loop);
 
   map->AddSprite(&owNavi);
-
-
 
   bool gotoNextScene = false;
 
@@ -157,14 +155,14 @@ int MainMenuScene::Run()
           if (currentNavi == SelectedNavi::MEGAMAN) {
   
             owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
-            naviAnimator = Animation("owNavi", "resources/navis/megaman/megaman.animation");
+            naviAnimator = Animation("resources/navis/megaman/megaman.animation");
             naviAnimator.Load();
             naviAnimator.SetAnimation("PLAYER_OW_RD");
             naviAnimator << Animate::Mode(Animate::Mode::Loop);
           }
           else if (currentNavi == SelectedNavi::STARMAN) {
             owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS));
-            naviAnimator = Animation("owNavi", "resources/navis/starman/starman.animation");
+            naviAnimator = Animation("resources/navis/starman/starman.animation");
             naviAnimator.Load();
             naviAnimator.SetAnimation("PLAYER_OW_RD");
             naviAnimator << Animate::Mode(Animate::Mode::Loop);
@@ -179,17 +177,19 @@ int MainMenuScene::Run()
       }
     } 
 
-    if (gotoNextScene) {
-      transitionProgress += 0.05f;
-    }
-    else {
-      transitionProgress -= 0.05f;
+    if (elapsed > 0) {
+      if (gotoNextScene) {
+        transitionProgress += 0.1f / elapsed;
+      }
+      else {
+        transitionProgress -= 0.1f / elapsed;
+      }
     }
 
     transitionProgress = std::max(0.f, transitionProgress);
     transitionProgress = std::min(1.f, transitionProgress);
 
-    if (transitionProgress == 1.f) {
+    if (transitionProgress >= 1.f) {
       int result = SelectMobScene::Run();
 
       // reset internal clock (or everything will teleport)

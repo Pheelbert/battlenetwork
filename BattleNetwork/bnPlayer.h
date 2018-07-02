@@ -4,7 +4,7 @@ using thor::FrameAnimation;
 using thor::Animator;
 using sf::IntRect;
 
-#include "bnEntity.h"
+#include "bnCharacter.h"
 #include "bnPlayerState.h"
 #include "bnTextureType.h"
 #include "bnPlayerHealthUI.h"
@@ -16,7 +16,7 @@ using sf::IntRect;
 #include "bnPlayerIdleState.h"
 #include "bnPlayerHitState.h"
 
-class Player : public Entity, public AI<Player> {
+class Player : public Character, public AI<Player> {
 public:
   friend class PlayerControlledState;
   friend class PlayerIdleState;
