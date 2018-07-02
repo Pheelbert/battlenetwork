@@ -12,13 +12,11 @@
 #define RESOURCE_NAME "canodumb"
 #define RESOURCE_PATH "resources/mobs/canodumb/canodumb.animation"
 
-Canodumb::Canodumb(Rank rank)
-  : rank(rank), animationComponent(this), AI<Canodumb>(this) {
+Canodumb::Canodumb(Rank _rank)
+  : animationComponent(this), AI<Canodumb>(this), Character(_rank) {
   this->StateChange<CanodumbIdleState>();
-  name = "Canodumb";
   Entity::team = Team::BLUE;
-  health = 40;
-  hitHeight = 0;
+  hitHeight = 50;
   textureType = TextureType::MOB_CANODUMB_ATLAS;
   healthUI = new MobHealthUI(this);
 
@@ -31,15 +29,21 @@ Canodumb::Canodumb(Rank rank)
   animationComponent.Setup(RESOURCE_PATH);
   animationComponent.Load();
 
-  switch (rank) {
+  switch (GetRank()) {
   case _1:
     animationComponent.SetAnimation(MOB_CANODUMB_IDLE_1);
+    name = "Canodumb";
+    health = 60;
     break;
   case _2:
     animationComponent.SetAnimation(MOB_CANODUMB_IDLE_2);
+    name = "Canodumb2";
+    health = 90;
     break;
   case _3:
     animationComponent.SetAnimation(MOB_CANODUMB_IDLE_3);
+    name = "Canodumb3";
+    health = 130;
     break;
   }
 
@@ -138,9 +142,4 @@ const bool Canodumb::Hit(int _damage) {
 
 const float Canodumb::GetHitHeight() const {
   return hitHeight;
-}
-
-const Canodumb::Rank Canodumb::GetRank() const
-{
-  return rank;
 }

@@ -16,7 +16,7 @@ public:
   friend class ProgsManMoveState;
   friend class ProgsManAttackState;
 
-  ProgsMan(void);
+  ProgsMan(Rank _rank);
   virtual ~ProgsMan(void);
 
   virtual void Update(float _elapsed);

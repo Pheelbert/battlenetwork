@@ -17,9 +17,9 @@
 #define PROGS_WAIT_COOLDOWN 100.0f
 #define PROGS_ATTACK_DELAY 500.0f
 
-ProgsMan::ProgsMan(void)
+ProgsMan::ProgsMan(Rank _rank)
   : animationComponent(this),
-    AI<ProgsMan>(this) {
+    AI<ProgsMan>(this), Character(_rank) {
   name = "ProgsMan";
   Entity::team = Team::BLUE;
   health = 300;

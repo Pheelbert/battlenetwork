@@ -2,14 +2,19 @@
 #include "bnTile.h"
 #include "bnField.h"
 
-Character::Character() :
+Character::Character(Rank _rank) :
   health(0),
   counterable(false),
   stunCooldown(0),
-  name("unnamed") {
+  name("unnamed"),
+  rank(_rank) {
 }
 
 Character::~Character() {
+}
+
+const Character::Rank Character::GetRank() const {
+  return rank;
 }
 
 void Character::Update(float _elapsed) {

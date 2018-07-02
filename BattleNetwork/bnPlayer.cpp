@@ -23,7 +23,8 @@ Player::Player(void)
   state(PLAYER_IDLE),
   chargeComponent(this),
   animationComponent(this),
-  AI<Player>(this) 
+  AI<Player>(this),
+  Character(Rank::_1)
 {
   name = "Megaman";
   SetLayer(0);

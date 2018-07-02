@@ -10,7 +10,18 @@ class Character : public Entity {
   friend class Field;
 
 public:
-  Character();
+  enum Rank {
+    _1,
+    _2,
+    _3,
+    SP,
+    EX = SP,
+    Rare1,
+    Rare2,
+    SIZE
+  };
+
+  Character(Rank _rank);
   virtual ~Character();
 
   virtual const bool Hit(int damage);
@@ -30,6 +41,7 @@ public:
   void ToggleCounter(bool on = true);
   void Stun(double maxCooldown);
   bool IsCountered();
+  const Rank GetRank() const;
   // For mob UI
   const std::string GetName() const;
 
@@ -38,4 +50,5 @@ protected:
   bool counterable;
   std::string name;
   double stunCooldown;
+  Rank rank;
 };

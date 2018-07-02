@@ -31,8 +31,8 @@
 vector<int> Mettaur::metIDs = vector<int>();
 int Mettaur::currMetIndex = 0;
 
-Mettaur::Mettaur(void)
-  : animationComponent(this), AI<Mettaur>(this) {
+Mettaur::Mettaur(Rank _rank)
+  : animationComponent(this), AI<Mettaur>(this), Character(_rank) {
   this->StateChange<MettaurIdleState>();
   name = "Mettaur";
   Entity::team = Team::BLUE;

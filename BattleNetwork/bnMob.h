@@ -149,21 +149,18 @@ public:
   }
 
   template<class T, class DefaultState>
-  Mob* Spawn(int tileX, int tileY);
-
-  template<class T, typename TArgs, class DefaultState>
-  Mob* Spawn(int tileX, int tileY, TArgs args);
+  Mob* Spawn(int tileX, int tileY, Character::Rank rank = Character::Rank::_1);
 };
 
 template<class T, class DefaultState>
-Mob* Mob::Spawn(int tileX, int tileY) {
+Mob* Mob::Spawn(int tileX, int tileY, Character::Rank rank) {
   // TODO: assert that tileX and tileY exist in field
 
   _DerivedFrom<T, Character>();
   _DerivedFrom<T, AI<T>>();
 
   MobData* data = new MobData();
-  T* mob = new T();
+  T* mob = new T(rank);
 
   data->mob = mob;
   data->tileX = tileX;
@@ -175,44 +172,6 @@ Mob* Mob::Spawn(int tileX, int tileY) {
   auto pixelStateInvoker = [this](Character* mob) {
     T* cast = dynamic_cast<T*>(mob); 
     
-    if (cast) {
-      auto onFinish = [this]() { this->nextReady = true; };
-      cast->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
-    }
-  };
-
-  pixelStateInvokers.push_back(pixelStateInvoker);
-
-  auto defaultStateInvoker = [](Character* mob) { T* cast = dynamic_cast<T*>(mob); if (cast) { cast->StateChange<DefaultState>(); } };
-  defaultStateInvokers.push_back(defaultStateInvoker);
-
-  spawn.push_back(data);
-
-  iter = spawn.begin();
-
-  return this;
-}
-
-template<class T, typename TArgs, class DefaultState>
-Mob* Mob::Spawn(int tileX, int tileY, TArgs args) {
-  // TODO: assert that tileX and tileY exist in field
-
-  _DerivedFrom<T, Character>();
-  _DerivedFrom<T, AI<T>>();
-
-  MobData* data = new MobData();
-  T* mob = new T(args);
-
-  data->mob = mob;
-  data->tileX = tileX;
-  data->tileY = tileY;
-  data->index = (unsigned)spawn.size();
-
-  // This retains the current entity type and stores it in a function. We do this to transform the 
-  // unknown type back later and can call the proper state change
-  auto pixelStateInvoker = [this](Character* mob) {
-    T* cast = dynamic_cast<T*>(mob);
-
     if (cast) {
       auto onFinish = [this]() { this->nextReady = true; };
       cast->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
