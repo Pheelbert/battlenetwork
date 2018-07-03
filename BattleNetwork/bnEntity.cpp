@@ -32,10 +32,6 @@ vector<Drawable*> Entity::GetMiscComponents() {
   return vector<Drawable*>();
 }
 
-void Entity::AddAnimation(string _state, FrameList _frameList, float _duration) {
-  assert(false && "AddAnimation shouldn't be called directly from Entity");
-}
-
 void Entity::SetAnimation(string _state) {
   assert(false && "SetAnimation shouldn't be called directly from Entity");
 }

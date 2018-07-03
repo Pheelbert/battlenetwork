@@ -8,6 +8,8 @@
 #include "bnCannon.h"
 #include <iostream>
 
+#include "bnCanonSmoke.h"
+
 CanodumbAttackState::CanodumbAttackState() : AIState<Canodumb>() { ; }
 CanodumbAttackState::~CanodumbAttackState() { ; }
 
@@ -25,6 +27,9 @@ void CanodumbAttackState::OnEnter(Canodumb& can) {
     can.SetAnimation(MOB_CANODUMB_SHOOT_3, onFinish);
     break;
   }
+
+  CanonSmoke* smoke = new CanonSmoke(can.GetField(), can.GetTeam());
+  can.GetField()->OwnEntity(smoke, can.GetTile()->GetX() - 1, can.GetTile()->GetY());
 
   can.SetCounterFrame(2);
 }

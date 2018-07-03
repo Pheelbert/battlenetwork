@@ -215,6 +215,7 @@
     <ClCompile Include="bnLongExplosion.cpp" />
     <ClCompile Include="bnPlayerControlledState.cpp" />
     <ClCompile Include="bnCamera.cpp" />
+    <ClCompile Include="bnCanonSmoke.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="bnProgsManMoveState.cpp" />
     <ClCompile Include="bnProgsManPunchState.cpp" />
@@ -309,6 +310,7 @@
     <ClInclude Include="bnMeta.h" />
     <ClInclude Include="bnTimer.h" />
     <ClInclude Include="bnFileUtil.h" />
+    <ClInclude Include="bnCanonSmoke.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="bnCanodumbCursor.h" />
   </ItemGroup>

@@ -35,9 +35,6 @@ void Animation::Load() {
     // NOTE: Support older animation files until we upgrade completely...
     if (line.find("VERSION") != string::npos) {
       string version = ValueOf("VERSION", line);
-
-      std::cout << "version: " << version << "\n";
-
       if (version != "1.0") legacySupport = false;
 
     }

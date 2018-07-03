@@ -86,12 +86,3 @@ vector<Drawable*> LongExplosion::GetMiscComponents() {
 LongExplosion::~LongExplosion()
 {
 }
-
-int LongExplosion::GetStateFromString(string _string) {
-  assert(false && "LongExplosion does not have states");
-  return 0;
-}
-
-void LongExplosion::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
-  assert(false && "LongExplosion does not have an animator");
-}

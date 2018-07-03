@@ -23,7 +23,6 @@ public:
   virtual void Update(float _elapsed);
   virtual bool Move(Direction _direction);
   virtual vector<Drawable*> GetMiscComponents();
-  virtual void AddAnimation(string _state, FrameList _frameList, float _duration);
   virtual void SetAnimation(string _state);
   virtual TextureType GetTextureType();
 

@@ -397,6 +397,9 @@
     <ClCompile Include="bnCharacter.cpp">
       <Filter>Battle\Entity\Character</Filter>
     </ClCompile>
+    <ClCompile Include="bnCanonSmoke.cpp">
+      <Filter>Battle\Entity\Artifact\Cannon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -654,6 +657,9 @@
     </ClInclude>
     <ClInclude Include="bnCharacter.h">
       <Filter>Battle\Entity\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanonSmoke.h">
+      <Filter>Battle\Entity\Artifact\Cannon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

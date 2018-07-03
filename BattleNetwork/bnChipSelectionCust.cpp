@@ -198,7 +198,7 @@ void ChipSelectionCust::GetNextChips() {
     chipCount++;
     perTurn--;
 
-    if (perTurn == 0) return;
+   // if (perTurn == 0) return;
   }
 }
 

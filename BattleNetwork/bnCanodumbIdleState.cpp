@@ -6,7 +6,6 @@
 
 #include <iostream>
 
-
 CanodumbIdleState::CanodumbIdleState() : AIState<Canodumb>() { cursor = nullptr; }
 CanodumbIdleState::~CanodumbIdleState() { ; }
 
