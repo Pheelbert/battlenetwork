@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Utilities">
-      <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -202,6 +199,12 @@
     </Filter>
     <Filter Include="Battle\Chips\Folder">
       <UniqueIdentifier>{bef66beb-f219-4d07-8d52-25a90241ac54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Folder">
+      <UniqueIdentifier>{4207b872-406d-4138-948a-a0d7c9fbdfa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +408,9 @@
     </ClCompile>
     <ClCompile Include="bnChipFolder.cpp">
       <Filter>Battle\Chips\Folder</Filter>
+    </ClCompile>
+    <ClCompile Include="bnFolderScene.cpp">
+      <Filter>Scenes\Folder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -672,6 +678,9 @@
     </ClInclude>
     <ClInclude Include="bnElements.h">
       <Filter>Battle\Enumerations</Filter>
+    </ClInclude>
+    <ClInclude Include="bnFolderScene.h">
+      <Filter>Scenes\Folder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

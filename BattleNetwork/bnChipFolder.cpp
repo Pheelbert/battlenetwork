@@ -4,7 +4,7 @@
 #include <algorithm>
 
 ChipFolder::ChipFolder() {
-  folderSize = initialSize = ChipLibrary::GetInstance().GetSize() / 3;
+  folderSize = initialSize = ChipLibrary::GetInstance().GetSize();
   folderList = new Chip*[folderSize];
 
   for (int i = 0; i < folderSize; i++) {

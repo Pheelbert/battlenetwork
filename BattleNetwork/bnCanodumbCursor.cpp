@@ -11,7 +11,7 @@ using sf::IntRect;
 
 #define RESOURCE_PATH "resources/mobs/canodumb/canodumb.animation"
 
-CanodumbCursor::CanodumbCursor(Field* _field, Team _team, Canodumb* _parent) : animationComponent(this) {
+CanodumbCursor::CanodumbCursor(Field* _field, Team _team, Canodumb* _parent) : animationComponent(this), Artifact(_field, _team) {
   parent = _parent;
   target = parent->GetTarget();
 
@@ -53,7 +53,7 @@ void CanodumbCursor::Update(float _elapsed) {
   movecooldown -= _elapsed;
 
   if (movecooldown <= 0) {
-    if (this->GetTile() == target->GetTile()) {
+    if (this->GetTile() == target->GetTile() && !target->IsPassthrough()) {
       deleted = true;
 
       parent->StateChange<CanodumbAttackState>();

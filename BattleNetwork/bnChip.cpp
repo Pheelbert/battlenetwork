@@ -1,8 +1,13 @@
 #include "bnChip.h"
 #include <iostream>
 
+#undef  _ITERATOR_DEBUG_LEVEL
+#define _ITERATOR_DEBUG_LEVEL 0
+
 Chip::Chip(unsigned id, unsigned icon, char code, unsigned damage, Element element, string sname, string desc) :
-  ID(id), icon(icon), code(code), damage(damage), element(element), shortname(sname.c_str()), description(desc.c_str()) {
+  ID(id), icon(icon), code(code), damage(damage), element(element) {
+  this->shortname = sname;
+  this->description = "";
 }
 
 Chip::Chip(const Chip & copy) {
@@ -11,12 +16,18 @@ Chip::Chip(const Chip & copy) {
   code = copy.code;
   damage = copy.damage;
   shortname = copy.shortname;
-  description = copy.description;
+  description = "";
   element = copy.element;
 }
 
 Chip::~Chip() {
+  if (!description.empty()) {
+    description.clear();
+  }
 
+  if (!shortname.empty()) {
+    shortname.clear();
+  }
 }
 
 const string Chip::GetDescription() {

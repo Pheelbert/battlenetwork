@@ -1,5 +1,6 @@
 #include <time.h>
 #include "bnMainMenuScene.h"
+#include "bnFolderScene.h"
 #include "bnOverworldMap.h"
 #include "bnInfiniteMap.h"
 #include "bnSelectMobScene.h"
@@ -18,7 +19,6 @@ using sf::VideoMode;
 using sf::Clock;
 using sf::Event;
 using sf::Font;
-
 enum class SelectedNavi {
   STARMAN,
   MEGAMAN,
@@ -31,7 +31,7 @@ int MainMenuScene::Run()
 
   // Selection input delays
   double maxSelectInputCooldown = 1000.0f / 2.f; // half of a second
-  double selectInputCooldown = maxSelectInputCooldown;                                     
+  double selectInputCooldown = maxSelectInputCooldown;        
 
   // ui sprite maps
   sf::Sprite ui(*TEXTURES.GetTexture(TextureType::MAIN_MENU_UI));
@@ -143,6 +143,12 @@ int MainMenuScene::Run()
       
       if (INPUT.has(PRESSED_ACTION1)) {
 
+        // Folder Select
+        if (menuSelectionIndex == 1) {
+          gotoNextScene = true;
+          AUDIO.Play(AudioType::CHIP_DESC);
+        }
+
         // Navi select
         if (menuSelectionIndex == 2) {
           int nextNavi = (int)currentNavi + 1;
@@ -190,17 +196,32 @@ int MainMenuScene::Run()
     transitionProgress = std::min(1.f, transitionProgress);
 
     if (transitionProgress >= 1.f) {
-      int result = SelectMobScene::Run();
 
-      // reset internal clock (or everything will teleport)
-      elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
-      std::cout << "time slept: " << elapsed << "\n";
-      clock.restart();
-      elapsed = 0;
+      if (menuSelectionIndex == 1) {
+        int result = FolderScene::Run();
 
-      if (result == 0) {
-        break;
-      }
+        // reset internal clock (or everything will teleport)
+        elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+        std::cout << "time slept: " << elapsed << "\n";
+        clock.restart();
+        elapsed = 0;
+
+        if (result == 0) {
+          break; // Breaks the while-loop
+        }
+      } else if (menuSelectionIndex == 3) {
+        int result = SelectMobScene::Run();
+
+        // reset internal clock (or everything will teleport)
+        elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+        std::cout << "time slept: " << elapsed << "\n";
+        clock.restart();
+        elapsed = 0;
+
+        if (result == 0) {
+          break; // Breaks the while-loop
+        }
+      } 
 
       gotoNextScene = false;
     }

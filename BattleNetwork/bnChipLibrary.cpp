@@ -18,14 +18,14 @@ ChipLibrary& ChipLibrary::GetInstance() {
   return instance;
 }
 
-const ChipLibrary::Iter ChipLibrary::Begin() const
+ChipLibrary::Iter ChipLibrary::Begin()
 {
-  return library.cbegin();
+  return library.begin();
 }
 
-const ChipLibrary::Iter ChipLibrary::End() const
+ChipLibrary::Iter ChipLibrary::End()
 {
-  return library.cend();
+  return library.end();
 }
 
 const unsigned ChipLibrary::GetSize() const

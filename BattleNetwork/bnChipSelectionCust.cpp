@@ -288,14 +288,13 @@ void ChipSelectionCust::Draw() {
 
       char code = queue[i].data->GetCode();
 
-      if (code == WILDCARD) {
+      if (code == WILDCARD && code != '*') {
         code = '*';
       }
 
       smCodeLabel.setString(code);
       ENGINE.Draw(smCodeLabel, false);
     }
-
 
     icon.SetShader(nullptr);
 

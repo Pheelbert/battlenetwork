@@ -7,14 +7,14 @@ using std::list;
 
 class ChipLibrary {
 public:
-  typedef list<Chip>::const_iterator Iter;
+  typedef list<Chip>::iterator Iter;
 
   ChipLibrary();
   ~ChipLibrary();
   static ChipLibrary & GetInstance();
 
-  const Iter Begin() const;
-  const Iter End() const;
+  Iter Begin();
+  Iter End();
   const unsigned GetSize() const;
 
   static const  Element GetElementFromStr(std::string);
@@ -26,4 +26,6 @@ private:
   list<Chip> library;
   string valueOf(string _key, string _line);
 };
+
+#define CHIPLIB ChipLibrary::GetInstance()
 
