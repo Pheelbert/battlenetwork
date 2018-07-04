@@ -4,23 +4,23 @@ Chip name="Cannon1"  cardIndex="0" iconIndex="0" damage="20" type="Normal" codes
 # Chip name="Cannon2" cardIndex="1" iconIndex="1" damage="40" type="Normal" codes="E"
 # Chip name="Cannon3" cardIndex="2" iconIndex="2" damage="60" type="Normal" codes="H,I,J"
 
-# Chip name="SprdSht1" cardIndex="5" iconIndex="10" damage="20" type="Normal" codes="Q,R,S"
-# Chip name="SprdSht2" cardIndex="4" iconIndex="11" damage="30" type="Normal" codes="T,U,V"
+# Chip name="SprdSht1" cardIndex="5" iconIndex="10" damage="20" type="Cursor" codes="Q,R,S"
+# Chip name="SprdSht2" cardIndex="4" iconIndex="11" damage="30" type="Cursor" codes="T,U,V"
 
 # Chip name="HeatSht1" cardIndex="6" iconIndex="6" damage="20" type="Fire" codes="M,U,A"
 # Chip name="HeatSht2" cardIndex="7" iconIndex="7" damage="40" type="Fire" codes="N,T,B"
 # Chip name="HeatSht3" cardIndex="8" iconIndex="8" damage="60" type="Fire" codes="O,V,C"
 
-# Chip name="Bubble1" cardIndex="9" iconIndex="15" damage="20" type="Water" codes="R"
-# Chip name="Bubble2" cardIndex="10" iconIndex="16" damage="40" type="Water" codes="F"
+# Chip name="Bubble1" cardIndex="9" iconIndex="15" damage="20" type="Aqua" codes="R"
+# Chip name="Bubble2" cardIndex="10" iconIndex="16" damage="40" type="Aqua" codes="F"
 
 Chip name="Bomb" cardIndex="11" iconIndex="20" damage="30" type="Normal" codes="A"
 
 # 11, 12, 13
 
-Chip name="Swrd"     cardIndex="15" iconIndex="30" damage="20" type="Normal" codes="H,"
-Chip name="WideSwrd" cardIndex="16" iconIndex="31" damage="30" type="Normal" codes="I,J"
-Chip name="LongSwrd" cardIndex="17" iconIndex="32" damage="40" type="Normal" codes="J"
+Chip name="Swrd"     cardIndex="15" iconIndex="30" damage="20" type="Sword" codes="H,"
+Chip name="WideSwrd" cardIndex="16" iconIndex="31" damage="30" type="Sword" codes="I,J"
+Chip name="LongSwrd" cardIndex="17" iconIndex="32" damage="40" type="Sword" codes="J"
 
 # 17 - 19
 
@@ -39,10 +39,10 @@ Chip name="Recov2" cardIndex="75" iconIndex="147" damage="30" type="Normal" code
 
 # 83 - 115
 
-Chip name="Invsble" cardIndex="115" iconIndex="162" damage="0" type="Normal" codes="A,Y,*"
+Chip name="Invsble" cardIndex="115" iconIndex="162" damage="0" type="Invis" codes="A,Y,*"
 
 # 117 - 119
 
-Chip name="Barr10" cardIndex="120" iconIndex="168" damage="0" type="Normal" codes="B,*"
+Chip name="Barr10" cardIndex="120" iconIndex="168" damage="0" type="Summon" codes="B,*"
 # Chip name="Barr100" cardIndex="121" iconIndex="169" damage="0" type="Normal" codes="U,S"
 # Chip name="Barr200" cardIndex="121" iconIndex="170" damage="0" type="Normal" codes="X"

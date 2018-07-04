@@ -7,8 +7,9 @@ using std::list;
 
 class ChipFolder {
 private:
-  // For now, the folder contains the entire library
-  ChipLibrary::Iter iter;
+  Chip** folderList;
+  int folderSize;
+  int initialSize;
 
 public:
   ChipFolder();
