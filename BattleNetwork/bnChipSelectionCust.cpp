@@ -46,8 +46,13 @@ ChipSelectionCust::ChipSelectionCust(ChipFolder* _folder, int cap) :
   chipSendData.setScale(2.f, 2.f);
   chipSendData.setPosition(2.f*16.f, 48.f);
 
-  sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
-  label.setFont(*font);
+  labelFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
+  label.setFont(*labelFont);
+
+  codeFont = TEXTURES.LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
+  smCodeLabel.setFont(*codeFont);
+  smCodeLabel.setCharacterSize(12);
+  smCodeLabel.setFillColor(sf::Color::Yellow);
 }
 
 
@@ -65,6 +70,9 @@ ChipSelectionCust::~ChipSelectionCust() {
   }
 
   chipCount = 0;
+
+  delete labelFont;
+  delete codeFont;
 }
 
 bool ChipSelectionCust::CursorUp() {
@@ -270,6 +278,17 @@ void ChipSelectionCust::Draw() {
       } else if (queue[i].state == 1) {
         ENGINE.Draw(icon, false);
       }
+
+      smCodeLabel.setPosition(2.f*(14.0f + ((i % 5)*16.0f)), 2.f*(120.f + (row*24.0f)));
+
+      char code = queue[i].data->GetCode();
+
+      if (code == WILDCARD) {
+        code = '*';
+      }
+
+      smCodeLabel.setString(code);
+      ENGINE.Draw(smCodeLabel, false);
     }
 
 

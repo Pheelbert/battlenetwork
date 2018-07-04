@@ -22,6 +22,9 @@ private:
   LayeredDrawable chipNoData;
   LayeredDrawable chipSendData;
   sf::Shader& greyscale;
+  sf::Font* labelFont;
+  sf::Font* codeFont;
+  sf::Text smCodeLabel;
   sf::Text label;
   int chipCount;
   int selectCount;
