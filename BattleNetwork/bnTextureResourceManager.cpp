@@ -153,6 +153,7 @@ TextureResourceManager::TextureResourceManager(void) {
   // other icons
   paths.push_back("resources/ui/gamepad_support_icon.png");
   paths.push_back("resources/ui/main_menu_ui.png");
+  paths.push_back("resources/ui/elements.png");
 
   // texture maps
   paths.push_back("resources/shaders/textures/distortion.png");

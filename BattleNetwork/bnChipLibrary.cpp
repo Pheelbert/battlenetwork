@@ -33,6 +33,49 @@ const unsigned ChipLibrary::GetSize() const
   return library.size();
 }
 
+const Element ChipLibrary::GetElementFromStr(std::string type)
+{
+  Element elemType;
+
+  std::transform(type.begin(), type.end(), type.begin(), ::toupper);
+
+  if (type == "FIRE") {
+    elemType = Element::FIRE;
+  }
+  else if (type == "AQUA") {
+    elemType = Element::AQUA;
+  }
+  else if (type == "WOOD") {
+    elemType = Element::WOOD;
+  }
+  else if (type == "ELEC") {
+    elemType = Element::ELEC;
+  }
+  else if (type == "WIND") {
+    elemType = Element::WIND;
+  }
+  else if (type == "SWORD") {
+    elemType = Element::SWORD;
+  }
+  else if (type == "BREAK") {
+    elemType = Element::BREAK;
+  }
+  else if (type == "CURSOR") {
+    elemType = Element::CURSOR;
+  }
+  else if (type == "PLUS") {
+    elemType = Element::PLUS;
+  }
+  else if (type == "SUMMON") {
+    elemType = Element::SUMMON;
+  }
+  else {
+    elemType = Element::NONE;
+  }
+
+  return elemType;
+}
+
 // Used as the folder in battle
 void ChipLibrary::LoadLibrary() {
   // TODO: put this utility in an input stream class and inhert from that
@@ -80,7 +123,10 @@ void ChipLibrary::LoadLibrary() {
           // transform it into the font-compatible ascii char
           code = '=';
         }
-        library.push_back(Chip(atoi(cardID.c_str()), atoi(iconID.c_str()), code[0], atoi(damage.c_str()), name, "description"));
+
+        Element elemType = GetElementFromStr(type);
+
+        library.push_back(Chip(atoi(cardID.c_str()), atoi(iconID.c_str()), code[0], atoi(damage.c_str()), elemType, name, "description"));
       }
     }
 

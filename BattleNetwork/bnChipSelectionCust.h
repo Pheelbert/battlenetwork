@@ -21,6 +21,7 @@ private:
   LayeredDrawable chipCard;
   LayeredDrawable chipNoData;
   LayeredDrawable chipSendData;
+  LayeredDrawable element;
   sf::Shader& greyscale;
   sf::Font* labelFont;
   sf::Font* codeFont;

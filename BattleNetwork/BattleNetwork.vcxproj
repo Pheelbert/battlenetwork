@@ -241,6 +241,7 @@
     <ClInclude Include="bnCanodumbIdleState.h" />
     <ClInclude Include="bnCharacter.h" />
     <ClInclude Include="bnChipFolder.h" />
+    <ClInclude Include="bnElements.h" />
     <ClInclude Include="bnGraveyardBackground.h" />
     <ClInclude Include="bnInfiniteMap.h" />
     <ClInclude Include="bnLanBackground.h" />

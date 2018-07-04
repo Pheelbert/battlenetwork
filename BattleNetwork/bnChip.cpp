@@ -1,8 +1,8 @@
 #include "bnChip.h"
 #include <iostream>
 
-Chip::Chip(unsigned id, unsigned icon, char code, unsigned damage, string sname, string desc) :
-  ID(id), icon(icon), code(code), damage(damage), shortname(sname.c_str()), description(desc.c_str()) {
+Chip::Chip(unsigned id, unsigned icon, char code, unsigned damage, Element element, string sname, string desc) :
+  ID(id), icon(icon), code(code), damage(damage), element(element), shortname(sname.c_str()), description(desc.c_str()) {
 }
 
 Chip::Chip(const Chip & copy) {
@@ -12,6 +12,7 @@ Chip::Chip(const Chip & copy) {
   damage = copy.damage;
   shortname = copy.shortname;
   description = copy.description;
+  element = copy.element;
 }
 
 Chip::~Chip() {
@@ -41,4 +42,9 @@ const unsigned Chip::GetIconID()
 
 const unsigned Chip::GetID() {
   return ID;
+}
+
+const Element Chip::GetElement()
+{
+  return element;
 }

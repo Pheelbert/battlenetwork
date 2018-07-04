@@ -670,6 +670,9 @@
     <ClInclude Include="bnChipFolder.h">
       <Filter>Battle\Chips\Folder</Filter>
     </ClInclude>
+    <ClInclude Include="bnElements.h">
+      <Filter>Battle\Enumerations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

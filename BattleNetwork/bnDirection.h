@@ -1,5 +1,5 @@
 #pragma once
-enum Direction {
+enum class Direction : int {
   NONE,
   UP,
   LEFT,

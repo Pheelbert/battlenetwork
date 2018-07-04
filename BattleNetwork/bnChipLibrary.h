@@ -16,6 +16,9 @@ public:
   const Iter Begin() const;
   const Iter End() const;
   const unsigned GetSize() const;
+
+  static const  Element GetElementFromStr(std::string);
+
 protected:
   void LoadLibrary();
 

@@ -24,6 +24,11 @@ ChipSelectionCust::ChipSelectionCust(ChipFolder* _folder, int cap) :
   icon.setTexture(*TEXTURES.GetTexture(CHIP_ICONS));
   icon.setScale(sf::Vector2f(2.f, 2.f));
 
+  sf::Texture* elementTexture = TEXTURES.GetTexture(TextureType::ELEMENT_ICON);
+  element.setTexture(*elementTexture);
+  element.setScale(2.f, 2.f);
+  element.setPosition(2.f*25.f, 146.f);
+
   cursorSmall = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_CURSOR_SMALL));
   cursorSmall.setScale(sf::Vector2f(2.f, 2.f));
 
@@ -332,11 +337,15 @@ void ChipSelectionCust::Draw() {
           ENGINE.Draw(label, false);
         }
 
-        label.setPosition(2.f*16.f, 143.f);
         label.setOrigin(0, 0);
+        label.setPosition(2.f*16.f, 143.f);
         label.setString(std::string() + queue[cursorPos + (5 * cursorRow)].data->GetCode());
         label.setFillColor(sf::Color(225, 180, 0));
         ENGINE.Draw(label, false);
+
+        int offset = (int)(queue[cursorPos + (5 * cursorRow)].data->GetElement());
+        element.setTextureRect(sf::IntRect(14 * offset, 0, 14, 14));
+        ENGINE.Draw(element, false);
       }
       else {
         ENGINE.Draw(chipNoData, false);

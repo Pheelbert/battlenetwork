@@ -22,7 +22,7 @@ class PA
     std::string name;
     unsigned icon;
     unsigned damage;
-    std::string type;
+    Element type;
 
     struct Required {
       std::string chipShortName;

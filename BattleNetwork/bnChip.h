@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "bnElements.h"
 
 using std::string;
 
@@ -8,7 +9,7 @@ using std::string;
 // Loaded chips from chip select GUI pipes into this component
 class Chip {
 public:
-  Chip(unsigned id, unsigned icon, char code, unsigned damage, string sname, string desc);
+  Chip(unsigned id, unsigned icon, char code, unsigned damage, Element element, string sname, string desc);
   Chip(const Chip& copy);
   ~Chip();
   const string GetDescription();
@@ -17,6 +18,7 @@ public:
   const unsigned GetDamage();
   const unsigned GetIconID();
   const unsigned GetID();
+  const Element GetElement();
 private:
   unsigned ID;
   unsigned icon;
@@ -24,5 +26,6 @@ private:
   char code;
   string shortname;
   string description;
+  Element element;
 };
 
