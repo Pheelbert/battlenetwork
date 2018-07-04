@@ -6,6 +6,7 @@
 #include <algorithm>
 
 ChipLibrary::ChipLibrary() {
+  LoadLibrary();
 }
 
 
@@ -17,24 +18,19 @@ ChipLibrary& ChipLibrary::GetInstance() {
   return instance;
 }
 
-Chip* ChipLibrary::Next() {
-  if (library.empty()) {
-    return nullptr;
-  }
+const ChipLibrary::Iter ChipLibrary::Begin() const
+{
+  return library.cbegin();
+}
 
-  int random = rand() % library.size();
-  Chip* next = nullptr;
+const ChipLibrary::Iter ChipLibrary::End() const
+{
+  return library.cend();
+}
 
-  list<Chip>::iterator it = library.begin();
-
-  for (int i = 0; i < random; i++) {
-    it++;
-  }
-
-  next = new Chip(*it);
-  library.erase(it);
-
-  return next;
+const unsigned ChipLibrary::GetSize() const
+{
+  return library.size();
 }
 
 // Used as the folder in battle

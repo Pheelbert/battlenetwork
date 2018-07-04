@@ -2,7 +2,7 @@
 #include <iostream>
 
 Chip::Chip(unsigned id, unsigned icon, char code, unsigned damage, string sname, string desc) :
-  ID(id), icon(icon), code(code), damage(damage), shortname(sname), description(desc) {
+  ID(id), icon(icon), code(code), damage(damage), shortname(sname.c_str()), description(desc.c_str()) {
 }
 
 Chip::Chip(const Chip & copy) {

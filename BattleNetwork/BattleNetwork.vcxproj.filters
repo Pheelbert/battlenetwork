@@ -200,6 +200,9 @@
     <Filter Include="Battle\Entity\Character\Canodumb\Misc">
       <UniqueIdentifier>{ba685902-7150-4751-9f50-780a74f3ff76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Chips\Folder">
+      <UniqueIdentifier>{bef66beb-f219-4d07-8d52-25a90241ac54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -399,6 +402,9 @@
     </ClCompile>
     <ClCompile Include="bnCanonSmoke.cpp">
       <Filter>Battle\Entity\Artifact\Cannon</Filter>
+    </ClCompile>
+    <ClCompile Include="bnChipFolder.cpp">
+      <Filter>Battle\Chips\Folder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -660,6 +666,9 @@
     </ClInclude>
     <ClInclude Include="bnCanonSmoke.h">
       <Filter>Battle\Entity\Artifact\Cannon</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipFolder.h">
+      <Filter>Battle\Chips\Folder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@ using sf::Font;
 #include "bnCamera.h"
 #include "bnInputManager.h"
 #include "bnChipSelectionCust.h"
+#include "bnChipFolder.h"
 #include "bnTimer.h"
 #include "bnShaderResourceManager.h"
 #include "bnPA.h"
@@ -53,7 +54,8 @@ int BattleScene::Run(Mob* mob) {
 
   /*
   Chips + Chip select setup*/
-  ChipSelectionCust chipCustGUI(5);
+  ChipFolder* folder = new ChipFolder(); // TODO: this would be read in from a file
+  ChipSelectionCust chipCustGUI(folder, 8);
   Chip** chips = 0;
   int chipCount = 0;
 
@@ -465,7 +467,22 @@ int BattleScene::Run(Mob* mob) {
           chipCustGUI.CursorRight() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
           chipSelectInputCooldown = maxChipSelectInputCooldown;
         }
-      } else {
+      } else if (INPUT.has(PRESSED_UP)) {
+        chipSelectInputCooldown -= elapsed;
+
+        if (chipSelectInputCooldown <= 0) {
+          chipCustGUI.CursorUp() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
+          chipSelectInputCooldown = maxChipSelectInputCooldown;
+        }
+      } else if (INPUT.has(PRESSED_DOWN)) {
+        chipSelectInputCooldown -= elapsed;
+
+        if (chipSelectInputCooldown <= 0) {
+          chipCustGUI.CursorDown() ? AUDIO.Play(AudioType::CHIP_SELECT) : 1;
+          chipSelectInputCooldown = maxChipSelectInputCooldown;
+        }
+      }
+      else {
         chipSelectInputCooldown = 0;
       }
       
@@ -679,6 +696,7 @@ int BattleScene::Run(Mob* mob) {
     elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
   }
 
+  delete folder;
   delete pauseLabel;
   delete font;
   delete mobFont;
