@@ -24,7 +24,7 @@ void CanodumbIdleState::OnEnter(Canodumb& can) {
 }
 
 void CanodumbIdleState::OnUpdate(float _elapsed, Canodumb& can) {
-  if (can.GetTarget()->GetTile()->GetY() == can.GetTile()->GetY()) {
+  if (can.GetTarget()->GetTile()->GetY() == can.GetTile()->GetY() && !can.GetTarget()->IsPassthrough()) {
     // Spawn tracking cursor object
     if (cursor == nullptr || cursor->IsDeleted()) {
       cursor = new CanodumbCursor(can.GetField(), can.GetTeam(), &can);

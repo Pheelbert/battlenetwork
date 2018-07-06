@@ -495,9 +495,6 @@
     <ClInclude Include="bnChip.h">
       <Filter>Battle\Chips\Database</Filter>
     </ClInclude>
-    <ClInclude Include="bnChipType.h">
-      <Filter>Battle\Chips\Database</Filter>
-    </ClInclude>
     <ClInclude Include="bnAnimationComponent.h">
       <Filter>Battle\Components\Animation</Filter>
     </ClInclude>

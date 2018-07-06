@@ -32,6 +32,7 @@ public:
   virtual void AddAnimation(string _state, FrameList _frameList, float _duration);
   virtual void SetAnimation(string _state);
   virtual void SetCounterFrame(int frame);
+  virtual void OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave = nullptr);
   virtual int GetHealth();
   virtual int* GetAnimOffset();
 

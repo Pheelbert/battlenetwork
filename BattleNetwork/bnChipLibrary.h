@@ -1,6 +1,5 @@
 #pragma once
 #include "bnChip.h"
-#include "bnChipType.h"
 #include <list>
 
 using std::list;

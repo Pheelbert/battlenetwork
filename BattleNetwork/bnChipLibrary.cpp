@@ -105,7 +105,7 @@ void ChipLibrary::LoadLibrary() {
       string damage = valueOf("damage", line);
       string type = valueOf("type", line);
       string codes = valueOf("codes", line);
-      // string description = valueOf("description", line);
+      string description = valueOf("desc", line);
 
       // Trime white space
       codes.erase(remove_if(codes.begin(), codes.end(), isspace), codes.end());
@@ -126,7 +126,7 @@ void ChipLibrary::LoadLibrary() {
 
         Element elemType = GetElementFromStr(type);
 
-        library.push_back(Chip(atoi(cardID.c_str()), atoi(iconID.c_str()), code[0], atoi(damage.c_str()), elemType, name, "description"));
+        library.push_back(Chip(atoi(cardID.c_str()), atoi(iconID.c_str()), code[0], atoi(damage.c_str()), elemType, name, description));
       }
     }
 

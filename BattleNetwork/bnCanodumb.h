@@ -20,6 +20,7 @@ public:
   virtual void RefreshTexture();
   virtual vector<Drawable*> GetMiscComponents();
   virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
+  virtual void OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave = nullptr);
   virtual void SetCounterFrame(int frame);
   virtual int GetHealth() const;
   virtual TextureType GetTextureType() const;

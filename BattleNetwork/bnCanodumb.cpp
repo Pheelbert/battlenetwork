@@ -114,6 +114,11 @@ void Canodumb::SetAnimation(string _state, std::function<void()> onFinish) {
   animationComponent.SetAnimation(_state, onFinish);
 }
 
+void Canodumb::OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave)
+{
+  animationComponent.AddCallback(frame, onEnter, onLeave);
+}
+
 void Canodumb::SetCounterFrame(int frame)
 {
   auto onFinish = [&]() { this->ToggleCounter(); };

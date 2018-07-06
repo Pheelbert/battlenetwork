@@ -44,6 +44,11 @@ void Character::SetCounterFrame(int frame)
   assert(false && "SetCounterFrame shouldn't be called directly from Character");
 }
 
+void Character::OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave)
+{
+  assert(false && "OnFrameCallback shouldn't be called directly from Character");
+}
+
 int Character::GetHealth() {
   return health;
 }

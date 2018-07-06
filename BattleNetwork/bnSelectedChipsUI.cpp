@@ -10,7 +10,6 @@ using std::to_string;
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 #include "bnChip.h"
-#include "bnChipType.h"
 #include "bnEngine.h"
 
 SelectedChipsUI::SelectedChipsUI(Entity* _entity)
@@ -106,7 +105,7 @@ void SelectedChipsUI::UseNextChip() {
 
     player->SetAnimation(PLAYER_HEAL, onFinish);
 
-  } else if (selectedChips[curr]->GetID() == ChipType::CRCKPNL) {
+  } else if (chip == "CrckPanel") {
     Tile* top = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 1);
     Tile* mid = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 2);
     Tile* low = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 3);
@@ -117,7 +116,7 @@ void SelectedChipsUI::UseNextChip() {
 
     AUDIO.Play(AudioType::PANEL_CRACK);
   }
-  else if (chip == "Invsble") {
+  else if (chip == "Invis") {
     // Todo make this a time-based component
     AUDIO.Play(AudioType::INVISIBLE);
     player->SetPassthrough(true);
@@ -144,7 +143,7 @@ void SelectedChipsUI::UseNextChip() {
     player->GetField()->OwnEntity(xtreme2, 4, 2);
     player->GetField()->OwnEntity(xtreme3, 4, 3);
   }
-  else if (chip == "Cannon1") {
+  else if (chip == "Cannon") {
     Cannon* cannon = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
     auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
     player->SetAnimation(PLAYER_CANNON, onFinish);

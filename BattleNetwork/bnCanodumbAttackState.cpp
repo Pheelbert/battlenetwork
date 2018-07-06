@@ -16,6 +16,11 @@ CanodumbAttackState::~CanodumbAttackState() { ; }
 void CanodumbAttackState::OnEnter(Canodumb& can) {
   auto onFinish = [&can]() { can.StateChange<CanodumbIdleState>(); };
 
+  auto spawnSmoke   = [&can]() { 
+    CanonSmoke* smoke = new CanonSmoke(can.GetField(), can.GetTeam());
+    can.GetField()->OwnEntity(smoke, can.GetTile()->GetX() - 1, can.GetTile()->GetY()); 
+  };
+
   switch (can.GetRank()) {
   case Canodumb::Rank::_1:
     can.SetAnimation(MOB_CANODUMB_SHOOT_1, onFinish);
@@ -28,10 +33,8 @@ void CanodumbAttackState::OnEnter(Canodumb& can) {
     break;
   }
 
-  CanonSmoke* smoke = new CanonSmoke(can.GetField(), can.GetTeam());
-  can.GetField()->OwnEntity(smoke, can.GetTile()->GetX() - 1, can.GetTile()->GetY());
-
   can.SetCounterFrame(2);
+  can.OnFrameCallback(1, spawnSmoke);
 }
 
 void CanodumbAttackState::OnUpdate(float _elapsed, Canodumb& can) {

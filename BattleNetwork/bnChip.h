@@ -11,6 +11,7 @@ class Chip {
 public:
   Chip(unsigned id, unsigned icon, char code, unsigned damage, Element element, string sname, string desc);
   Chip(const Chip& copy);
+  Chip();
   ~Chip();
   const string GetDescription();
   const string GetShortName();

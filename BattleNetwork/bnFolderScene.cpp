@@ -42,7 +42,15 @@ int FolderScene::Run()
   numberLabel->setOutlineThickness(2.f);
   numberLabel->setScale(0.8f, 0.8f);
   numberLabel->setOrigin(numberLabel->getLocalBounds().width, 0);
-  numberLabel->setPosition(sf::Vector2f(180.f, 33.0f));
+  numberLabel->setPosition(sf::Vector2f(170.f, 28.0f));
+
+  // Chip description font
+  sf::Font *chipDescFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthin_regular.ttf");
+  sf::Text* chipDesc = new sf::Text("", *chipDescFont);
+  chipDesc->setCharacterSize(30);
+  chipDesc->setPosition(sf::Vector2f(20.f, 185.0f));
+  //chipDesc->setLineSpacing(5);
+  chipDesc->setFillColor(sf::Color::Black);
 
   // folder menu graphic
   sf::Sprite bg(*TEXTURES.GetTexture(TextureType::FOLDER_VIEW_BG));
@@ -70,7 +78,7 @@ int FolderScene::Run()
   // Current chip graphic
   sf::Sprite chip(*TEXTURES.GetTexture(TextureType::CHIP_CARDS));
   chip.setScale(2.f, 2.f);
-  chip.setPosition(16.f, 40.f);
+  chip.setPosition(28.f, 45.f);
 
   sf::Sprite chipIcon(*TEXTURES.GetTexture(TextureType::CHIP_ICONS));
   chipIcon.setScale(2.f, 2.f);
@@ -145,14 +153,18 @@ int FolderScene::Run()
     if (iter->GetDamage() > 0) {
       chipLabel->setString(std::to_string(iter->GetDamage()));
       chipLabel->setOrigin(chipLabel->getLocalBounds().width*2.f, 0);
-      chipLabel->setPosition(2.f*(84.f), 143.f);
+      chipLabel->setPosition(2.f*(80.f), 135.f);
       ENGINE.Draw(chipLabel, false);
     }
 
     chipLabel->setOrigin(0, 0);
-    chipLabel->setPosition(2.f*16.f, 143.f);
+    chipLabel->setPosition(2.f*14.f, 135.f);
     chipLabel->setString(std::string() + iter->GetCode());
     ENGINE.Draw(chipLabel, false);
+
+    std::string formatted = FormatChipDesc(iter->GetDescription());
+    chipDesc->setString(formatted);
+    ENGINE.Draw(chipDesc, false);
 
     int offset = (int)(iter->GetElement());
     element.setTextureRect(sf::IntRect(14 * offset, 0, 14, 14));
@@ -259,11 +271,58 @@ int FolderScene::Run()
   }
   delete font;
   delete chipFont;
+  delete chipDescFont;
   delete numberFont;
   delete menuLabel;
   delete numberLabel;
+  delete chipDesc;
 
   ENGINE.RevokeShader();
 
   return 1; // signal OK to the last scene
+}
+
+std::string FolderScene::FormatChipDesc(const std::string && desc)
+{
+  // Chip docks can only fit 8 characters per line, 3 lines total
+  std::string output = desc;
+
+  int index = 0;
+  int perLine = 0;
+  int line  = 0;
+  int wordIndex = -1; // If we are breaking on a word
+  while (index != desc.size()) {
+    if (desc[index] != ' ') {
+      wordIndex = index;
+    }
+    else {
+      wordIndex = -1;
+    }
+
+    if (perLine > 0 && perLine % 8 == 0) {
+      if (wordIndex > -1) {
+        // Line break at the last word
+        while (desc[index] == ' ') { index++; }
+        output.insert(wordIndex-1, "\n");
+        while (desc[index] == ' ') { index++; }
+      }
+      else {
+        // Line break at the next word
+        while (desc[index] == ' ') { index++; }
+        output.insert(index, "\n");
+        while (desc[index] == ' ') { index++; }
+      }
+      line++;
+      perLine = 0;
+    }
+
+    if (line == 3) {
+      break;
+    }
+
+    index++;
+    perLine++;
+  }
+
+  return output;
 }
