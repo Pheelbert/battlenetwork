@@ -6,6 +6,10 @@ Click the thumbnail to watch on youtube.
 
 [![Video of engine 6/4/2018](https://img.youtube.com/vi/fCYp4VubD_s/0.jpg)](https://youtu.be/fCYp4VubD_s) 
 
+[![image.png](https://s8.postimg.cc/vqnw3d4ep/canodumbs.png)](https://s8.postimg.cc/vqnw3d4ep/canodumbs.png)
+
+[![image.png](https://s8.postimg.cc/b6j24vwdd/folder.png)](https://s8.postimg.cc/b6j24vwdd/folder.png)
+
 [![image.png](https://s15.postimg.cc/mik119uuj/image.png)](https://postimg.cc/image/6kbbb50mf/)
 
 [![preview.png](https://s15.postimg.cc/6cpgwlocr/preview.png)](https://postimg.cc/image/phsq6d30n/)
@@ -56,11 +60,14 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 
 # Author TheMaverickProgrammer
 
-## Update 6/10/2018
-Added a new PET menu to that will serve as the battle config which will allow a player to toggle between navis and mobs.
-Added a shader-based transition effect between screens.
-Added counter and counter-death animation (slide right). 
-Rewrote a lot of the animation classes and added new features to the playback (like optional looping)
+## Update 7/6/2018
+Chip database (library) can be viewed via the Chip Library menu. Each chip is displayed with proper description and rarity. Scroll through with UP and DOWN.
+
+Canodumbs are near-complete. The system now supports `Character::Rank` attributes that can help determine an enemie's color, name upgrade, and stat boosts. We can now spawn different levels up enemies such as Canodumb, Canodumb1, and Canodumb2.
+
+Wrote better Artifact class for things like the Canodumb smoke. Separated Character class types from Entity which helps further divide the responsibilities between what can be deleted (Characters), what attacks (Spells), and what is purely effect (Artifacts).
+
+Added some missing font characters.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
