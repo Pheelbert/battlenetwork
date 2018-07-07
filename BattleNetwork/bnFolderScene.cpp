@@ -131,7 +131,7 @@ int FolderScene::Run()
     ENGINE.Draw(folderDock);
     ENGINE.Draw(chipHolder);
 
-    // Top to bottom screen position when selecting first and last chip respectively
+    // ScrollBar limits: Top to bottom screen position when selecting first and last chip respectively
     float top = 50.0f; float bottom = 230.0f;
     float depth = ((float)currChipIndex / (float)numOfChips)*bottom;
     scrollbar.setPosition(452.f, top + depth);
@@ -151,6 +151,7 @@ int FolderScene::Run()
 
     // This draws the currently highlighted chip
     if (iter->GetDamage() > 0) {
+      chipLabel->setFillColor(sf::Color::White);
       chipLabel->setString(std::to_string(iter->GetDamage()));
       chipLabel->setOrigin(chipLabel->getLocalBounds().width*2.f, 0);
       chipLabel->setPosition(2.f*(80.f), 135.f);
@@ -158,6 +159,7 @@ int FolderScene::Run()
     }
 
     chipLabel->setOrigin(0, 0);
+    chipLabel->setFillColor(sf::Color::Yellow);
     chipLabel->setPosition(2.f*14.f, 135.f);
     chipLabel->setString(std::string() + iter->GetCode());
     ENGINE.Draw(chipLabel, false);
@@ -178,22 +180,25 @@ int FolderScene::Run()
         chipIcon.setPosition(2.f*104.f, 65.0f + (32.f*i));
         ENGINE.Draw(chipIcon, false);
 
+        chipLabel->setFillColor(sf::Color::White);
         chipLabel->setPosition(2.f*124.f, 60.0f + (32.f*i));
         chipLabel->setString(iter->GetShortName());
         ENGINE.Draw(chipLabel, false);
 
-        chipLabel->setOrigin(0, 0);
-        chipLabel->setPosition(2.f*178.f, 60.0f + (32.f*i));
-        chipLabel->setString(std::string() + iter->GetCode());
-        ENGINE.Draw(chipLabel, false);
 
         int offset = (int)(iter->GetElement());
         element.setTextureRect(sf::IntRect(14 * offset, 0, 14, 14));
-        element.setPosition(2.f*188.f, 65.0f + (32.f*i));
+        element.setPosition(2.f*178.f, 65.0f + (32.f*i));
         ENGINE.Draw(element, false);
 
-        // TODO: Draw rating
-        stars.setTextureRect(sf::IntRect(0, 0, 22, 14));
+        chipLabel->setOrigin(0, 0);
+        chipLabel->setPosition(2.f*195.f, 60.0f + (32.f*i));
+        chipLabel->setString(std::string() + iter->GetCode());
+        ENGINE.Draw(chipLabel, false);
+
+        //Draw rating
+        unsigned rarity = iter->GetRarity()-1;
+        stars.setTextureRect(sf::IntRect(0, 14*rarity, 22, 14));
         stars.setPosition(2.f*204.f, 74.0f + (32.f*i));
         ENGINE.Draw(stars, false);
 
@@ -210,6 +215,7 @@ int FolderScene::Run()
           // Go to previous mob 
           selectInputCooldown = maxSelectInputCooldown;
           currChipIndex--;
+          AUDIO.Play(AudioType::CHIP_SELECT, 1);
         }
       }
       else if (INPUT.has(PRESSED_DOWN)) {
@@ -219,6 +225,7 @@ int FolderScene::Run()
           // Go to next mob 
           selectInputCooldown = maxSelectInputCooldown;
           currChipIndex++;
+          AUDIO.Play(AudioType::CHIP_SELECT, 1);
         }
       }
       else {
@@ -284,7 +291,7 @@ int FolderScene::Run()
 
 std::string FolderScene::FormatChipDesc(const std::string && desc)
 {
-  // Chip docks can only fit 8 characters per line, 3 lines total
+  // Chip docks can only fit 8-9 characters per line, 3 lines total
   std::string output = desc;
 
   int index = 0;
@@ -292,18 +299,19 @@ std::string FolderScene::FormatChipDesc(const std::string && desc)
   int line  = 0;
   int wordIndex = -1; // If we are breaking on a word
   while (index != desc.size()) {
-    if (desc[index] != ' ') {
+    if (desc[index] != ' ' && wordIndex == -1) {
       wordIndex = index;
     }
-    else {
+    else if (desc[index] == ' ' && wordIndex > -1) {
       wordIndex = -1;
     }
 
-    if (perLine > 0 && perLine % 8 == 0) {
+    if (perLine > 0 && perLine % 9 == 0) {
       if (wordIndex > -1) {
         // Line break at the last word
         while (desc[index] == ' ') { index++; }
-        output.insert(wordIndex-1, "\n");
+        output.insert(wordIndex, "\n");
+        index = wordIndex; // Start counting from here
         while (desc[index] == ' ') { index++; }
       }
       else {
@@ -314,14 +322,18 @@ std::string FolderScene::FormatChipDesc(const std::string && desc)
       }
       line++;
       perLine = 0;
+      wordIndex = -1;
     }
 
-    if (line == 3) {
-      break;
+    //if (line == 3) {
+    //  break;
+   // }
+
+    if (desc[index] != ' ') {
+      perLine++;
     }
 
     index++;
-    perLine++;
   }
 
   return output;

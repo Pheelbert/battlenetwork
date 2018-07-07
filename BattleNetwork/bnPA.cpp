@@ -169,7 +169,7 @@ bool PA::FindPA(Chip ** input, unsigned size)
       // Load the PA chip
       if (advanceChipRef) { delete advanceChipRef; }
 
-       advanceChipRef = new Chip(0, iter->icon, 0, iter->damage, iter->type, iter->name, "Program Advance");
+       advanceChipRef = new Chip(0, iter->icon, 0, iter->damage, iter->type, iter->name, "Program Advance", 0);
 
       return true;
     }

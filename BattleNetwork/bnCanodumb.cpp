@@ -56,7 +56,12 @@ Canodumb::~Canodumb(void) {
 }
 
 int* Canodumb::GetAnimOffset() {
-  return nullptr;
+  int* res = new int[2];
+
+  res[0] = 15;
+  res[1] = 0;
+
+  return res;
 }
 
 void Canodumb::Update(float _elapsed) {

@@ -1,10 +1,13 @@
 #include "bnChip.h"
 #include <iostream>
+#include <algorithm>
 
-Chip::Chip(unsigned id, unsigned icon, char code, unsigned damage, Element element, string sname, string desc) :
+Chip::Chip(unsigned id, unsigned icon, char code, unsigned damage, Element element, string sname, string desc, unsigned rarity) :
   ID(id), icon(icon), code(code), damage(damage), element(element) {
   this->shortname.assign(sname);
   this->description.assign(desc);
+  this->rarity = std::max(1, (int)rarity);
+  this->rarity = std::min((int)rarity, 5);
 }
 
 Chip::Chip() {
@@ -20,6 +23,7 @@ Chip::Chip(const Chip & copy) {
   shortname = copy.shortname;
   description = copy.description;
   element = copy.element;
+  rarity = copy.rarity;
 }
 
 Chip::~Chip() {
@@ -60,4 +64,9 @@ const unsigned Chip::GetID() {
 const Element Chip::GetElement()
 {
   return element;
+}
+
+const unsigned Chip::GetRarity()
+{
+  return rarity;
 }

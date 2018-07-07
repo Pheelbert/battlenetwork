@@ -7,8 +7,7 @@
 #include "bnEngine.h"
 #include "bnLogger.h"
 
-#define RESOURCE_NAME "megaman"
-#define RESOURCE_PATH "resources/navis/starman/starman.animation"
+#define RESOURCE_PATH "resources/navis/megaman/megaman.animation"
 
 #define MOVE_ANIMATION_SPRITES 4
 #define MOVE_ANIMATION_WIDTH 38
@@ -45,7 +44,7 @@ Player::Player(void)
   animationComponent.Setup(RESOURCE_PATH);
   animationComponent.Load();
 
-  textureType = TextureType::NAVI_STARMAN_ATLAS;
+  textureType = TextureType::NAVI_MEGAMAN_ATLAS;
   setTexture(*TEXTURES.GetTexture(textureType));
 
   previous = nullptr;

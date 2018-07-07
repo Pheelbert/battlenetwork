@@ -23,7 +23,7 @@ ProgsMan::ProgsMan(Rank _rank)
   name = "ProgsMan";
   Entity::team = Team::BLUE;
   health = 300;
-  hitHeight = 0;
+  hitHeight = 64;
   state = MOB_IDLE;
   textureType = TextureType::MOB_PROGSMAN_IDLE;
   healthUI = new MobHealthUI(this);
