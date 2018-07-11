@@ -53,6 +53,7 @@ ShaderResourceManager::ShaderResourceManager(void) {
   paths.push_back("resources/shaders/greyscale.frag.txt");
   paths.push_back("resources/shaders/outline.frag.txt");
   paths.push_back("resources/shaders/pixel_blur.frag.txt");
+  paths.push_back("resources/shaders/texel_pixel_blur.frag.txt");
   paths.push_back("resources/shaders/white.frag.txt");
   paths.push_back("resources/shaders/white_fade.frag.txt");
   paths.push_back("resources/shaders/yellow.frag.txt");

@@ -9,6 +9,7 @@ enum ShaderType {
   GREYSCALE,
   OUTLINE,
   PIXEL_BLUR,
+  TEXEL_PIXEL_BLUR,
   WHITE,
   WHITE_FADE, 
   YELLOW,

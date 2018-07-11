@@ -331,8 +331,8 @@ void ChipSelectionCust::Draw() {
         // the order here is very important:
         if (queue[cursorPos + (5 * cursorRow)].data->GetDamage() > 0) {
           label.setString(std::to_string(queue[cursorPos + (5 * cursorRow)].data->GetDamage()));
-          label.setOrigin(label.getLocalBounds().width*2.f, 0);
-          label.setPosition(2.f*(84.f), 143.f);
+          label.setOrigin(label.getLocalBounds().width+label.getLocalBounds().left, 0);
+          label.setPosition(2.f*(70.f), 143.f);
           ENGINE.Draw(label, false);
         }
 

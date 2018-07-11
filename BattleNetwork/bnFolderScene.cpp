@@ -153,8 +153,9 @@ int FolderScene::Run()
     if (iter->GetDamage() > 0) {
       chipLabel->setFillColor(sf::Color::White);
       chipLabel->setString(std::to_string(iter->GetDamage()));
-      chipLabel->setOrigin(chipLabel->getLocalBounds().width*2.f, 0);
-      chipLabel->setPosition(2.f*(80.f), 135.f);
+      chipLabel->setOrigin(chipLabel->getLocalBounds().width+chipLabel->getLocalBounds().left, 0);
+      chipLabel->setPosition(2.f*(70.f), 135.f);
+
       ENGINE.Draw(chipLabel, false);
     }
 

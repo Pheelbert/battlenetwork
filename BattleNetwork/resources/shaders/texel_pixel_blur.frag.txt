@@ -1,0 +1,20 @@
+// Pixel blur inside of active texture coordinates 
+
+uniform sampler2D texture;
+uniform float pixel_threshold;
+
+uniform float x;
+uniform float y;
+uniform float w;
+uniform float h;
+
+void main()
+{
+    float factor = 1.0 / (pixel_threshold + 0.001);
+    vec2 pos = floor(gl_TexCoord[0].xy * factor + 0.5) / factor;
+    
+    pos.x = clamp(pos.x, x, x+w);
+    pos.y = clamp(pos.y, y, y+h);
+
+    gl_FragColor = texture2D(texture, pos) * gl_Color;
+}

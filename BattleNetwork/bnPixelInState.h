@@ -46,7 +46,7 @@ PixelInState<Any>::PixelInState(FinishNotifier onFinish) : AIState<Any>() {
   callback = onFinish;
   factor = 125.f;
 
-  pixelated = SHADERS.GetShader(ShaderType::PIXEL_BLUR);
+  pixelated = SHADERS.GetShader(ShaderType::TEXEL_PIXEL_BLUR);
 }
 
 template<typename Any>
@@ -78,6 +78,12 @@ void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
   float range = (125.f - factor) / 125.f;
   e.setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 * range)));
 
+  sf::IntRect t = e.getTextureRect();
+  sf::Vector2u size = e.getTexture()->getSize();
+  pixelated.SetUniform("x", (float)t.left / (float)size.x);
+  pixelated.SetUniform("y", (float)t.top / (float)size.y);
+  pixelated.SetUniform("w", (float)t.width / (float)size.x);
+  pixelated.SetUniform("h", (float)t.height / (float)size.y);
   pixelated.SetUniform("pixel_threshold", (float)(factor/400.f));
 }
 
