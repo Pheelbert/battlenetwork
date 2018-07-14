@@ -291,6 +291,7 @@
     <ClInclude Include="bnShaderResourceManager.h" />
     <ClInclude Include="bnShaderType.h" />
     <ClInclude Include="bnSmartShader.h" />
+    <ClInclude Include="bnSpawnPolicy.h" />
     <ClInclude Include="bnStringEncoder.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />

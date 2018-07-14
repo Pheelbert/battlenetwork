@@ -1,9 +1,12 @@
 #include <time.h>
 #include "bnSelectMobScene.h"
+#include "bnTile.h"
+#include "bnField.h"
 #include "bnMob.h"
 #include "bnMemory.h"
 #include "bnCamera.h"
 #include "bnInputManager.h"
+#include "bnAudioResourceManager.h"
 #include "bnShaderResourceManager.h"
 #include "bnTextureResourceManager.h"
 #include "bnEngine.h"
@@ -23,7 +26,7 @@ using sf::Font;
 
 int SelectMobScene::Run()
 {
-  Camera& camera(ENGINE.GetCamera());
+  Camera camera(ENGINE.GetDefaultView());
 
   // Menu name font
   sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");

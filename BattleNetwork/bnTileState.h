@@ -1,5 +1,5 @@
 #pragma once
-enum class TileState : int {
+enum class TileState : const int {
   NORMAL,
   CRACKED,
   BROKEN,

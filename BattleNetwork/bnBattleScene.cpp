@@ -25,7 +25,7 @@ using sf::Font;
 #include "bnShaderResourceManager.h"
 #include "bnPA.h"
 #include "bnEngine.h"
-#include "bnBattleResults.h"
+#include "bnBattleResults.cpp"
 
 int BattleScene::Run(Mob* mob) {
   /*
@@ -50,7 +50,7 @@ int BattleScene::Run(Mob* mob) {
   Mob labels*/
   std::vector<std::string> mobNames;
 
-  Camera& camera(ENGINE.GetCamera());
+  Camera camera(ENGINE.GetDefaultView());
 
   /*
   Chips + Chip select setup*/
@@ -225,9 +225,24 @@ int BattleScene::Run(Mob* mob) {
 
     sf::Vector2f cameraAntiOffset = -ENGINE.GetViewOffset();
 
+    // First tile pass: draw the tiles
     Tile* tile = nullptr;
     while (field->GetNextTile(tile)) {
       tile->move(ENGINE.GetViewOffset());
+      if (tile->IsHighlighted()) {
+        LayeredDrawable* coloredTile = new LayeredDrawable(*(sf::Sprite*)tile);
+        coloredTile->SetShader(&yellowShader);
+        ENGINE.Draw(coloredTile);
+        delete coloredTile;
+      }
+      else {
+        ENGINE.Draw(tile);
+      }
+    }
+
+    // Second tile pass: draw the entities and shaders per row
+    tile = nullptr;
+    while (field->GetNextTile(tile)) {
 
       heatShader.setUniform("time", totalTime);
       heatShader.setUniform("distortionFactor", 0.01f);
@@ -238,16 +253,6 @@ int BattleScene::Run(Mob* mob) {
 
       iceShader.setUniform("w", tile->GetWidth() - 8.f);
       iceShader.setUniform("h", tile->GetHeight());
-
-      if (tile->IsHighlighted()) {
-        LayeredDrawable* coloredTile = new LayeredDrawable(*(sf::Sprite*)tile);
-        coloredTile->SetShader(&yellowShader);
-        ENGINE.Draw(coloredTile);
-        delete coloredTile;
-      }
-      else {
-        ENGINE.Draw(tile);
-      }
 
       Entity* entity = nullptr;
 

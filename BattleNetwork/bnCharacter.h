@@ -10,18 +10,18 @@ class Character : public Entity {
   friend class Field;
 
 public:
-  enum Rank {
+  enum class Rank : const int {
     _1,
     _2,
     _3,
     SP,
-    EX = SP,
+    EX,
     Rare1,
     Rare2,
     SIZE
   };
 
-  Character(Rank _rank);
+  Character(Rank _rank = Rank::_1);
   virtual ~Character();
 
   virtual const bool Hit(int damage);
@@ -32,7 +32,7 @@ public:
   virtual void AddAnimation(string _state, FrameList _frameList, float _duration);
   virtual void SetAnimation(string _state);
   virtual void SetCounterFrame(int frame);
-  virtual void OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave = nullptr);
+  virtual void OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave = nullptr, bool doOnce = false);
   virtual int GetHealth();
   virtual int* GetAnimOffset();
 
@@ -44,6 +44,7 @@ public:
   bool IsCountered();
   const Rank GetRank() const;
   // For mob UI
+  void SetName(std::string name);
   const std::string GetName() const;
 
 protected:
@@ -51,5 +52,5 @@ protected:
   bool counterable;
   std::string name;
   double stunCooldown;
-  Rank rank;
+  Character::Rank rank;
 };

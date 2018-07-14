@@ -41,6 +41,6 @@ void AnimationComponent::SetAnimation(string state, Animate::Mode playbackMode, 
   animation << playbackMode << onFinish;
 }
 
-void AnimationComponent::AddCallback(int frame, std::function<void()> onFrame, std::function<void()> outFrame = std::function<void()>()) {
-  animation << Animate::On(frame, onFrame) << Animate::On(frame+1, outFrame);
+void AnimationComponent::AddCallback(int frame, std::function<void()> onFrame, std::function<void()> outFrame, bool doOnce) {
+  animation << Animate::On(frame, onFrame, doOnce) << Animate::On(frame+1, outFrame, doOnce);
 }

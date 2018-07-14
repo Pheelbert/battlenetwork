@@ -1,7 +1,7 @@
 #include "bnCamera.h"
 #include <iostream>
 
-Camera::Camera(sf::View& view) : focus(view)
+Camera::Camera(const sf::View& view) : focus(view)
 {
   progress = 1.f;
   dest = origin = focus.getCenter();

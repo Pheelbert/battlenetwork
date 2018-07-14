@@ -30,17 +30,17 @@ Canodumb::Canodumb(Rank _rank)
   animationComponent.Load();
 
   switch (GetRank()) {
-  case _1:
+  case Rank::_1:
     animationComponent.SetAnimation(MOB_CANODUMB_IDLE_1);
     name = "Canodumb";
     health = 60;
     break;
-  case _2:
+  case Rank::_2:
     animationComponent.SetAnimation(MOB_CANODUMB_IDLE_2);
     name = "Canodumb2";
     health = 90;
     break;
-  case _3:
+  case Rank::_3:
     animationComponent.SetAnimation(MOB_CANODUMB_IDLE_3);
     name = "Canodumb3";
     health = 130;
@@ -119,9 +119,9 @@ void Canodumb::SetAnimation(string _state, std::function<void()> onFinish) {
   animationComponent.SetAnimation(_state, onFinish);
 }
 
-void Canodumb::OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave)
+void Canodumb::OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave, bool doOnce)
 {
-  animationComponent.AddCallback(frame, onEnter, onLeave);
+  animationComponent.AddCallback(frame, onEnter, onLeave, doOnce);
 }
 
 void Canodumb::SetCounterFrame(int frame)

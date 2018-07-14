@@ -1,4 +1,5 @@
 #include "bnTwoMettaurMob.h"
+#include "bnField.h"
 
 TwoMettaurMob::TwoMettaurMob(Field* field) : MobFactory(field)
 {
@@ -18,7 +19,7 @@ Mob* TwoMettaurMob::Build() {
       Tile* tile = field->GetAt(i + 1, j + 1);
       if (tile->IsWalkable() && tile->GetTeam() == Team::BLUE) {
         if (rand() % 50 > 25 && count-- > 0)
-          mob->Spawn<Mettaur, MettaurIdleState>(i + 1, j + 1);
+          mob->Spawn<Rank1<Mettaur, MettaurIdleState>>(i + 1, j + 1);
       }
     }
   }

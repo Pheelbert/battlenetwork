@@ -44,7 +44,7 @@ void Character::SetCounterFrame(int frame)
   assert(false && "SetCounterFrame shouldn't be called directly from Character");
 }
 
-void Character::OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave)
+void Character::OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave, bool doOnce)
 {
   assert(false && "OnFrameCallback shouldn't be called directly from Character");
 }
@@ -88,6 +88,11 @@ void Character::Stun(double maxCooldown)
 bool Character::IsCountered()
 {
   return (counterable && stunCooldown <= 0);
+}
+
+void Character::SetName(std::string name)
+{
+  this->name = name;
 }
 
 const std::string Character::GetName() const

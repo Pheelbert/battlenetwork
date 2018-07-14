@@ -1,6 +1,6 @@
 #pragma once
-#include "bnEntity.h"
-#include "bnPixelInState.h"
+#include "bnCharacter.h"
+#include "bnSpawnPolicy.h"
 #include "bnMeta.h"
 #include "bnBattleItem.h"
 #include <vector>
@@ -132,6 +132,10 @@ public:
     return true;
   }
 
+  void FlagNextReady() {
+    this->nextReady = true;
+  }
+
   void DefaultState() {
     for (int i = 0; i < defaultStateInvokers.size(); i++) {
       defaultStateInvokers[i](spawn[i]->mob);
@@ -148,40 +152,28 @@ public:
     return data;
   }
 
-  template<class T, class DefaultState>
-  Mob* Spawn(int tileX, int tileY, Character::Rank rank = Character::Rank::_1);
+  template<class CustomSpawnPolicy>
+  Mob* Spawn(int tileX, int tileY);
 };
 
-template<class T, class DefaultState>
-Mob* Mob::Spawn(int tileX, int tileY, Character::Rank rank) {
-  // TODO: assert that tileX and tileY exist in field
-
-  _DerivedFrom<T, Character>();
-  _DerivedFrom<T, AI<T>>();
+template<class CustomSpawnPolicy>
+Mob* Mob::Spawn(int tileX, int tileY) {
+  // assert that tileX and tileY exist in field, otherwise abort
+  assert(tileX >= 1 && tileX <= field->GetWidth() && tileY >= 1 && tileY <= field->GetHeight());
 
   MobData* data = new MobData();
-  T* mob = new T(rank);
+  
+  CustomSpawnPolicy* spawner = new CustomSpawnPolicy(*this);
 
-  data->mob = mob;
+  data->mob = spawner->GetSpawned();
   data->tileX = tileX;
   data->tileY = tileY;
   data->index = (unsigned)spawn.size();
 
-  // This retains the current entity type and stores it in a function. We do this to transform the 
-  // unknown type back later and can call the proper state change
-  auto pixelStateInvoker = [this](Character* mob) {
-    T* cast = dynamic_cast<T*>(mob); 
-    
-    if (cast) {
-      auto onFinish = [this]() { this->nextReady = true; };
-      cast->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
-    }
-  };
+  pixelStateInvokers.push_back(std::move(spawner->GetIntroCallback()));
+  defaultStateInvokers.push_back(std::move(spawner->GetReadyCallback()));
 
-  pixelStateInvokers.push_back(pixelStateInvoker);
-
-  auto defaultStateInvoker = [](Character* mob) { T* cast = dynamic_cast<T*>(mob); if (cast) { cast->StateChange<DefaultState>(); } };
-  defaultStateInvokers.push_back(defaultStateInvoker);
+  delete spawner;
 
   spawn.push_back(data);
 

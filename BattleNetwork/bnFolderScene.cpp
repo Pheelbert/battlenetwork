@@ -19,7 +19,7 @@ using sf::Font;
 
 int FolderScene::Run()
 {
-  Camera& camera(ENGINE.GetCamera());
+  Camera camera(ENGINE.GetDefaultView());
 
   // Menu name font
   sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");

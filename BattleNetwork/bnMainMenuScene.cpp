@@ -27,7 +27,7 @@ enum class SelectedNavi {
 
 int MainMenuScene::Run()
 {
-  Camera& camera(ENGINE.GetCamera());
+  Camera camera(ENGINE.GetDefaultView());
 
   // Selection input delays
   double maxSelectInputCooldown = 1000.0f / 2.f; // half of a second
@@ -71,7 +71,7 @@ int MainMenuScene::Run()
   SelectedNavi currentNavi = SelectedNavi::MEGAMAN;
   sf::Sprite owNavi(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
   owNavi.setScale(2.f, 2.f);
-  owNavi.setPosition(0, 0);
+  owNavi.setPosition(0, -26.f);
   Animation naviAnimator("resources/navis/megaman/megaman.animation");
   naviAnimator.Load();
   naviAnimator.SetAnimation("PLAYER_OW_RD");
@@ -138,7 +138,7 @@ int MainMenuScene::Run()
 
       owNavi.setPosition(owNavi.getPosition() + sf::Vector2f(0.5, 0));
 
-      // camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition()));
+      // camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition()-(ENGINE.GetDefaultView().getSize()/32.0f)));
 
       
       if (INPUT.has(PRESSED_ACTION1)) {

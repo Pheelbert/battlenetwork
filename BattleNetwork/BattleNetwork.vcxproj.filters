@@ -679,6 +679,9 @@
     <ClInclude Include="bnFolderScene.h">
       <Filter>Scenes\Folder</Filter>
     </ClInclude>
+    <ClInclude Include="bnSpawnPolicy.h">
+      <Filter>Battle\Mob</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

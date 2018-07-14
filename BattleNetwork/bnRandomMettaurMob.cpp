@@ -3,6 +3,8 @@
 #include "bnBattleItem.h"
 #include "bnStringEncoder.h"
 #include "bnChip.h"
+#include "bnField.h"
+#include "bnTile.h"
 
 RandomMettaurMob::RandomMettaurMob(Field* field) : MobFactory(field)
 {
@@ -31,7 +33,7 @@ Mob* RandomMettaurMob::Build() {
           //  mob->Spawn<ProgsMan, ProgsManIdleState>(i + 1, j + 1);
           //}
           //else {
-            mob->Spawn<Mettaur, MettaurIdleState>(i + 1, j + 1);
+            mob->Spawn<Rank1<Mettaur, MettaurIdleState>>(i + 1, j + 1);
           //}
         }
       }
@@ -41,7 +43,7 @@ Mob* RandomMettaurMob::Build() {
   if (mob->GetMobCount() == 0) {
     int x = (field->GetWidth() / 2) + 1;
     int y = (field->GetHeight() / 2) + 1;
-    mob->Spawn<Mettaur, MettaurIdleState>(x, y);
+    mob->Spawn<Rank1<Mettaur, MettaurIdleState>>(x, y);
 
     Tile* tile = field->GetAt(x, y);
     if (!tile->IsWalkable()) { tile->SetState(TileState::NORMAL); }

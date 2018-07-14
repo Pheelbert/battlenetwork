@@ -13,14 +13,14 @@ class Canodumb : public Character, public AI<Canodumb> {
   friend class CanodumbCursor;
 
 public:
-  Canodumb(Rank _rank=_1);
+  Canodumb(Rank _rank = Character::Rank::_1);
   virtual ~Canodumb(void);
 
   virtual void Update(float _elapsed);
   virtual void RefreshTexture();
   virtual vector<Drawable*> GetMiscComponents();
   virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
-  virtual void OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave = nullptr);
+  virtual void OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave = nullptr, bool doOnce = false);
   virtual void SetCounterFrame(int frame);
   virtual int GetHealth() const;
   virtual TextureType GetTextureType() const;

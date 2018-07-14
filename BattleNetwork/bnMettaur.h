@@ -12,7 +12,7 @@ class Mettaur : public Character, public AI<Mettaur> {
   friend class MettaurAttackState;
 
 public:
-  Mettaur(Rank _rank);
+  Mettaur(Rank _rank = Rank::_1);
   virtual ~Mettaur(void);
 
   virtual void Update(float _elapsed);

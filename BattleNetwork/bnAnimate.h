@@ -40,16 +40,19 @@ public:
 class Animate {
 private:
   std::map<int, std::function<void()>> callbacks;
+  std::map<int, std::function<void()>> onetimeCallbacks;
+
   std::function<void()> onFinish;
   char playbackMode;
 public:
   class On {
     int id;
     std::function<void()> callback;
+    bool doOnce;
 
   public:
     friend class Animate;
-    On(int id, std::function<void()> callback) : id(id), callback(callback) {
+    On(int id, std::function<void()> callback, bool doOnce = false) : id(id), callback(callback), doOnce(doOnce) {
       ;
     }
   };
@@ -76,9 +79,9 @@ public:
   Animate(Animate& rhs);
   ~Animate();
 
-  void Clear() { callbacks.clear(); onFinish = nullptr; playbackMode = 0; }
+  void Clear() { callbacks.clear(); onetimeCallbacks.clear(); onFinish = nullptr; playbackMode = 0; }
 
-  void operator() (float progress, sf::Sprite& target, FrameList& sequence) const;
+  void operator() (float progress, sf::Sprite& target, FrameList& sequence);
   Animate& operator << (On& rhs);
   Animate& operator << (Mode& rhs);
   void operator << (std::function<void()> finishNotifier);
