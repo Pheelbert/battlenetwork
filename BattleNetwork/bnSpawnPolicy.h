@@ -4,6 +4,7 @@
 #include "bnCharacter.h"
 #include "bnPixelInState.h"
 #include "bnStringEncoder.h"
+#include "bnNoState.h"
 
 class Mob;
 
@@ -43,7 +44,7 @@ And when the battle begins (cue chip select), all character will revert to their
 Ranking affect enemy names and allows the programmer to change other aspects such as appearance
 e.g. Mettaur, Mettaur2, CanodumbRare1, ProgsmanEX, etc...
 */
-template<class T, class DefaultState>
+template<class T, class DefaultState = NoState>
 class RankedSpawnPolicy : public SpawnPolicy<T> {
   protected:
     virtual void PrepareCallbacks(Mob &mob) {
@@ -79,7 +80,7 @@ class RankedSpawnPolicy : public SpawnPolicy<T> {
 Special implementations of RankedSpawnPolicy
 */
 
-template<class T, class DefaultState>
+template<class T, class DefaultState = NoState>
 class Rank1 : public RankedSpawnPolicy<T, DefaultState> {
 public:
   Rank1(Mob& mob) : RankedSpawnPolicy<T, DefaultState>(mob) {
@@ -87,7 +88,7 @@ public:
   }
 };
 
-template<class T, class DefaultState>
+template<class T, class DefaultState = NoState>
 class Rank2 : public RankedSpawnPolicy<T, DefaultState> {
   public:
 
@@ -96,7 +97,7 @@ class Rank2 : public RankedSpawnPolicy<T, DefaultState> {
   }
 };
 
-template<class T, class DefaultState>
+template<class T, class DefaultState = NoState>
 class Rank3 : public RankedSpawnPolicy<T, DefaultState> {
   public:
 
@@ -105,7 +106,7 @@ class Rank3 : public RankedSpawnPolicy<T, DefaultState> {
   }
 };
 
-template<class T, class DefaultState>
+template<class T, class DefaultState = NoState>
 class RankSP : public RankedSpawnPolicy<T, DefaultState> {
 public:
 
@@ -115,7 +116,7 @@ public:
   }
 };
 
-template<class T, class DefaultState>
+template<class T, class DefaultState = NoState>
 class RankEX : public RankedSpawnPolicy<T, DefaultState> {
 public:
 

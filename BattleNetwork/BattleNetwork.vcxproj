@@ -274,6 +274,7 @@
     <ClInclude Include="bnMobFactory.h" />
     <ClInclude Include="bnMobHealthUI.h" />
     <ClInclude Include="bnMobState.h" />
+    <ClInclude Include="bnNoState.h" />
     <ClInclude Include="bnOverworldLight.h" />
     <ClInclude Include="bnOverworldMap.h" />
     <ClInclude Include="bnPA.h" />

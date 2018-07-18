@@ -688,6 +688,9 @@
     <ClInclude Include="bnAnimatedCharacter.h">
       <Filter>Battle\Entity\Character</Filter>
     </ClInclude>
+    <ClInclude Include="bnNoState.h">
+      <Filter>Battle\Entity\Character\Any\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />
