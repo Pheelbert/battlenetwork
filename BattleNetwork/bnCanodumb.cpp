@@ -13,14 +13,13 @@
 #define RESOURCE_PATH "resources/mobs/canodumb/canodumb.animation"
 
 Canodumb::Canodumb(Rank _rank)
-  : animationComponent(this), AI<Canodumb>(this), Character(_rank) {
+  :  AI<Canodumb>(this), AnimatedCharacter(_rank) {
   this->StateChange<CanodumbIdleState>();
   Entity::team = Team::BLUE;
   hitHeight = 50;
-  textureType = TextureType::MOB_CANODUMB_ATLAS;
   healthUI = new MobHealthUI(this);
 
-  setTexture(*TEXTURES.GetTexture(textureType));
+  setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
   setScale(2.f, 2.f);
 
   this->SetHealth(health);
@@ -65,6 +64,10 @@ int* Canodumb::GetAnimOffset() {
 }
 
 void Canodumb::Update(float _elapsed) {
+
+  setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 1.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 10.0f);
+  hitHeight = getLocalBounds().height;
+
   this->SetShader(nullptr);
 
   if (stunCooldown > 0) {
@@ -91,10 +94,9 @@ void Canodumb::Update(float _elapsed) {
   // Explode if health depleted
   if (GetHealth() <= 0) {
     this->StateChange<ExplodeState<Canodumb>>();
-    this->Lock();
+    this->LockState();
   }
   else {
-    this->RefreshTexture();
     animationComponent.Update(_elapsed);
   }
 
@@ -102,45 +104,11 @@ void Canodumb::Update(float _elapsed) {
   Entity::Update(_elapsed);
 }
 
-void Canodumb::RefreshTexture() {
-  setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 1.0f , tile->getPosition().y + tile->GetHeight() / 2.0f - 10.0f);
-  hitHeight = getLocalBounds().height;
-}
-
 vector<Drawable*> Canodumb::GetMiscComponents() {
   vector<Drawable*> drawables = vector<Drawable*>();
   drawables.push_back(healthUI);
 
   return drawables;
-}
-
-void Canodumb::SetAnimation(string _state, std::function<void()> onFinish) {
-  state = _state;
-  animationComponent.SetAnimation(_state, onFinish);
-}
-
-void Canodumb::OnFrameCallback(int frame, std::function<void()> onEnter, std::function<void()> onLeave, bool doOnce)
-{
-  animationComponent.AddCallback(frame, onEnter, onLeave, doOnce);
-}
-
-void Canodumb::SetCounterFrame(int frame)
-{
-  auto onFinish = [&]() { this->ToggleCounter(); };
-  auto onNext = [&]() { this->ToggleCounter(false); };
-  animationComponent.AddCallback(frame, onFinish, onNext);
-}
-
-TextureType Canodumb::GetTextureType() const {
-  return textureType;
-}
-
-int Canodumb::GetHealth() const {
-  return health;
-}
-
-void Canodumb::SetHealth(int _health) {
-  health = _health;
 }
 
 const bool Canodumb::Hit(int _damage) {

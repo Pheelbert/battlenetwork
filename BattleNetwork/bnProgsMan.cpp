@@ -75,7 +75,7 @@ void ProgsMan::Update(float _elapsed) {
   // Explode if health depleted
   if (GetHealth() <= 0) {
     this->StateChange<ExplodeState<ProgsMan>>();
-    this->Lock();
+    this->LockState();
   }
   else {
     this->RefreshTexture();

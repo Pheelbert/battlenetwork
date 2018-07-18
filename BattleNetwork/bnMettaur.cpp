@@ -123,7 +123,7 @@ void Mettaur::Update(float _elapsed) {
       }
     }
 
-    this->Lock();
+    this->LockState();
   } else {
     this->RefreshTexture();
     animationComponent.Update(_elapsed);

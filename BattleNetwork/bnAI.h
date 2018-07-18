@@ -18,11 +18,11 @@ protected:
    };
 
 public:
-  void Lock() {
+  void LockState() {
     lock = AI<T>::StateLock::Locked;
   }
 
-  void Unlock() {
+  void UnlockState() {
     lock = AI<T>::StateLock::Unlocked;
   }
 
@@ -86,7 +86,15 @@ public:
 
   void StateUpdate(float _elapsed) {
     if (stateMachine) {
-      stateMachine->OnUpdate(_elapsed, *ref);
+      AIState<T>* nextState = stateMachine->Update(_elapsed, *ref);
+
+      if (nextState) {
+        stateMachine->OnLeave(*ref);
+        delete stateMachine;
+
+        stateMachine = std::move(nextState);
+        stateMachine->OnEnter(*ref);
+      }
     }
   }
 };

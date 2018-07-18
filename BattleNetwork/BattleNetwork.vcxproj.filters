@@ -412,6 +412,9 @@
     <ClCompile Include="bnFolderScene.cpp">
       <Filter>Scenes\Folder</Filter>
     </ClCompile>
+    <ClCompile Include="bnAnimatedCharacter.cpp">
+      <Filter>Battle\Entity\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -681,6 +684,9 @@
     </ClInclude>
     <ClInclude Include="bnSpawnPolicy.h">
       <Filter>Battle\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="bnAnimatedCharacter.h">
+      <Filter>Battle\Entity\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

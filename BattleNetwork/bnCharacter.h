@@ -1,6 +1,4 @@
 #pragma once
-#include "bnAnimationComponent.h"
-#include "bnAnimation.h"
 #include "bnEntity.h"
 
 #include <string>
