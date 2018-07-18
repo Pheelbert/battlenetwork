@@ -12,6 +12,7 @@ using std::to_string;
 
 class Entity;
 
+// TODO: make component
 class AnimationComponent {
 public:
   AnimationComponent(Entity* _entity);

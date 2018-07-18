@@ -10,6 +10,8 @@ using sf::Font;
 #include "bnMob.h"
 #include "bnField.h"
 #include "bnPlayer.h"
+#include "bnSelectedChipsUI.h"
+#include "bnPlayerChipUseListener.h"
 #include "bnMemory.h"
 #include "bnMettaur.h"
 #include "bnProgsMan.h"
@@ -71,6 +73,11 @@ int BattleScene::Run(Mob* mob) {
   Player* player(new Player());
   player->StateChange<PlayerIdleState>();
   field->OwnEntity(player, 2, 2);
+
+  // Chip UI for player
+  SelectedChipsUI chipUI(player);
+  PlayerChipUseListener chipListener(player);
+  chipListener.Subscribe(chipUI);
 
   /*
   Background for scene*/
@@ -193,9 +200,9 @@ int BattleScene::Run(Mob* mob) {
 
     if (mob->NextMobReady()) {
       Mob::MobData* data = mob->GetNextMob();
-      
+
       Agent* cast = dynamic_cast<Agent*>(data->mob);
-      
+
       if (cast) {
         cast->SetTarget(player);
       }
@@ -263,8 +270,8 @@ int BattleScene::Run(Mob* mob) {
         }
       }
 
- 
-      if(tile->GetState() == TileState::LAVA) {
+
+      if (tile->GetState() == TileState::LAVA) {
         heatShader.setUniform("x", tile->getPosition().x + 4.f);
 
         float repos = (float)(tile->getPosition().y - 4.f) - (tile->GetHeight() / 1.5f);
@@ -297,7 +304,7 @@ int BattleScene::Run(Mob* mob) {
 
         ENGINE.Draw(bake);
         delete bake;
-      } 
+      }
     }
 
     /*for (int d = 1; d <= field->GetHeight(); d++) {
@@ -311,7 +318,7 @@ int BattleScene::Run(Mob* mob) {
     }*/
 
     // NOTE: Although HUD, it fades dark when on chip cust screen and paused.
-    if(!isBattleRoundOver && !isInChipSelect)
+    if (!isBattleRoundOver && !isInChipSelect)
       ENGINE.Draw(&customBarSprite);
 
     if (isPaused || isInChipSelect) {
@@ -329,53 +336,53 @@ int BattleScene::Run(Mob* mob) {
       TODO: Make this step happen in layers only so that the heat is not visible on top of
       entities in the front of the screen
     */
- 
- /*   heatShader.setUniform("time", totalTime);
-    heatShader.setUniform("distortionFactor", 0.01f);
-    heatShader.setUniform("riseFactor", 0.02f);
 
-    heatShader.setUniform("w", tile->GetWidth()-8.f);
-    heatShader.setUniform("h", tile->GetHeight()*1.5f);
+    /*   heatShader.setUniform("time", totalTime);
+       heatShader.setUniform("distortionFactor", 0.01f);
+       heatShader.setUniform("riseFactor", 0.02f);
 
-    iceShader.setUniform("w", tile->GetWidth() - 8.f);
-    iceShader.setUniform("h", tile->GetHeight());
+       heatShader.setUniform("w", tile->GetWidth()-8.f);
+       heatShader.setUniform("h", tile->GetHeight()*1.5f);
 
-    while (field->GetNextTile(tile)) {
-      if (tile->GetState() == TileState::LAVA) {
-        heatShader.setUniform("x", tile->getPosition().x+4.f);
+       iceShader.setUniform("w", tile->GetWidth() - 8.f);
+       iceShader.setUniform("h", tile->GetHeight());
 
-        float repos = (float)(tile->getPosition().y - 4.f) - (tile->GetHeight()/1.5f);
-        heatShader.setUniform("y", repos);
+       while (field->GetNextTile(tile)) {
+         if (tile->GetState() == TileState::LAVA) {
+           heatShader.setUniform("x", tile->getPosition().x+4.f);
 
-        sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
+           float repos = (float)(tile->getPosition().y - 4.f) - (tile->GetHeight()/1.5f);
+           heatShader.setUniform("y", repos);
 
-        sf::Sprite distortionPost;
-        distortionPost.setTexture(postprocessing);
+           sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
 
-        LayeredDrawable* bake = new LayeredDrawable(distortionPost);
-        bake->SetShader(&heatShader);
+           sf::Sprite distortionPost;
+           distortionPost.setTexture(postprocessing);
 
-        ENGINE.Draw(bake);
-        delete bake;
-      }
-      else if (tile->GetState() == TileState::ICE) {
-        iceShader.setUniform("x", tile->getPosition().x + 4.f);
+           LayeredDrawable* bake = new LayeredDrawable(distortionPost);
+           bake->SetShader(&heatShader);
 
-        float repos = (float)(tile->getPosition().y - 4.f);
-        iceShader.setUniform("y", repos);
+           ENGINE.Draw(bake);
+           delete bake;
+         }
+         else if (tile->GetState() == TileState::ICE) {
+           iceShader.setUniform("x", tile->getPosition().x + 4.f);
 
-        sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
+           float repos = (float)(tile->getPosition().y - 4.f);
+           iceShader.setUniform("y", repos);
 
-        sf::Sprite reflectionPost;
-        reflectionPost.setTexture(postprocessing);
+           sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
 
-        LayeredDrawable* bake = new LayeredDrawable(reflectionPost);
-        bake->SetShader(&iceShader);
+           sf::Sprite reflectionPost;
+           reflectionPost.setTexture(postprocessing);
 
-        ENGINE.Draw(bake);
-        delete bake;
-      }
-    } */
+           LayeredDrawable* bake = new LayeredDrawable(reflectionPost);
+           bake->SetShader(&iceShader);
+
+           ENGINE.Draw(bake);
+           delete bake;
+         }
+       } */
 
     float nextLabelHeight = 0;
     if (!mob->IsSpawningDone() || isInChipSelect) {
@@ -398,8 +405,11 @@ int BattleScene::Run(Mob* mob) {
     }
 
     if (!isPlayerDeleted) {
-      if (player->GetChipsUI()) {
-        player->GetChipsUI()->Update(); // DRAW 
+      chipUI.Update(); // DRAW 
+
+      Drawable* component;
+      while (chipUI.GetNextComponent(component)) {
+        ENGINE.Draw(component);
       }
     }
 
@@ -407,10 +417,11 @@ int BattleScene::Run(Mob* mob) {
       // render on top 
       ENGINE.Draw(pauseLabel, false);
     }
-  
+
 
     // Draw cust GUI on top of scene. No shaders affecting.
     chipCustGUI.Draw();
+
 
     // Scene keyboard controls
     if (INPUT.has(PRESSED_PAUSE) && !isInChipSelect && !isBattleRoundOver) {
@@ -418,9 +429,12 @@ int BattleScene::Run(Mob* mob) {
 
       if (!isPaused) {
         ENGINE.RevokeShader();
-      } else {
+      }
+      else {
         AUDIO.Play(AudioType::PAUSE);
       }
+    } else if (INPUT.has(RELEASED_ACTION2) && !isInChipSelect && !isBattleRoundOver) {
+      chipUI.UseNextChip();
     } else if ((!isMobFinished && mob->IsSpawningDone()) || (INPUT.has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isBattleRoundOver)) {
        // enemy intro finished
       if (!isMobFinished) { 
@@ -441,7 +455,7 @@ int BattleScene::Run(Mob* mob) {
         isInChipSelect = true;
 
         // Clear any chip UI queues. they will contain null data. 
-        player->GetChipsUI()->LoadChips(0, 0);
+        chipUI.LoadChips(0, 0);
 
         // Reset PA system
         isPAComplete = false;
@@ -522,7 +536,7 @@ int BattleScene::Run(Mob* mob) {
         if(isPAComplete && !hasPA) {
           // Return to game
           isInChipSelect = false;
-          player->GetChipsUI()->LoadChips(chips, chipCount);
+          chipUI.LoadChips(chips, chipCount);
           ENGINE.RevokeShader();
         }
         else if (!isPAComplete) {

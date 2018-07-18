@@ -41,9 +41,6 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
     auto onFinish = [&player]() {player.SetAnimation(PLAYER_IDLE); };
     player.SetAnimation(PLAYER_SHOOTING, onFinish);
   }
-  else if (InputManager->has(RELEASED_ACTION2)) {
-    player.GetChipsUI()->UseNextChip();
-  }
 
   // Movement increments are restricted based on anim speed
   if (player.state != PLAYER_IDLE)

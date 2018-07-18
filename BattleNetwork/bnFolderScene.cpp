@@ -199,7 +199,7 @@ int FolderScene::Run()
 
         //Draw rating
         unsigned rarity = iter->GetRarity()-1;
-        stars.setTextureRect(sf::IntRect(0, 14*rarity, 22, 14));
+        stars.setTextureRect(sf::IntRect(0, 15*rarity, 22, 14));
         stars.setPosition(2.f*204.f, 74.0f + (32.f*i));
         ENGINE.Draw(stars, false);
 

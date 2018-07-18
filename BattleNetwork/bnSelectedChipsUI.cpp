@@ -12,14 +12,8 @@ using std::to_string;
 #include "bnChip.h"
 #include "bnEngine.h"
 
-SelectedChipsUI::SelectedChipsUI(Entity* _entity)
-  : player(nullptr),
-  font(nullptr) {
-  SelectedChipsUI(dynamic_cast<Player*>(_entity));
-}
-
-SelectedChipsUI::SelectedChipsUI(Player* _player)
-  : player(_player) {
+SelectedChipsUI::SelectedChipsUI(Player* _player) : ChipUsePublisher()
+  , player(_player) {
   chipCount = curr = 0;
   icon = sf::Sprite(*TEXTURES.GetTexture(CHIP_ICONS));
   icon.setScale(sf::Vector2f(2.f, 2.f));
@@ -45,12 +39,7 @@ bool SelectedChipsUI::GetNextComponent(Drawable*& out) {
 
 void SelectedChipsUI::Update() {
   if (player) {
-    // TODO: Move chip use logic out of chip UI. Utilize component.s
-    if (invisTimer.getElapsedTime() > sf::seconds(10)) {
-      player->SetPassthrough(false);
-      player->setColor(sf::Color(255, 255, 255, 255));
-    }
-
+ 
     // TODO: Move draw out of update. Utilize components.
     int chipOrder = 0;
     for (int i = curr; i < chipCount; i++) {
@@ -95,110 +84,7 @@ void SelectedChipsUI::UseNextChip() {
     return;
   }
 
-  std::string chip = selectedChips[curr]->GetShortName();
-
-  if (chip.substr(0, 5) == "Recov") {
-    player->SetHealth(player->GetHealth() + selectedChips[curr]->GetDamage());
-    AUDIO.Play(AudioType::RECOVER);
-
-    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
-
-    player->SetAnimation(PLAYER_HEAL, onFinish);
-
-  } else if (chip == "CrckPanel") {
-    Tile* top = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 1);
-    Tile* mid = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 2);
-    Tile* low = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 3);
-
-    if (top) { top->SetState(TileState::CRACKED); }
-    if (mid) { mid->SetState(TileState::CRACKED); }
-    if (low) { low->SetState(TileState::CRACKED); }
-
-    AUDIO.Play(AudioType::PANEL_CRACK);
-  }
-  else if (chip == "Invis") {
-    // Todo make this a time-based component
-    AUDIO.Play(AudioType::INVISIBLE);
-    player->SetPassthrough(true);
-    player->setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 / 2.f)));
-    invisTimer.restart();
-  }
-  else if (chip == "XtrmeCnnon") {
-    Cannon* xtreme1 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-    Cannon* xtreme2 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-    Cannon* xtreme3 = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-
-
-    ENGINE.GetCamera().ShakeCamera(25, sf::seconds(1));
-
-    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
-    player->SetAnimation(PLAYER_CANNON, onFinish);
-    AUDIO.Play(AudioType::CANNON);
-
-    xtreme1->SetDirection(Direction::RIGHT);
-    xtreme2->SetDirection(Direction::RIGHT);
-    xtreme3->SetDirection(Direction::RIGHT);
-
-    player->GetField()->OwnEntity(xtreme1, 4, 1);
-    player->GetField()->OwnEntity(xtreme2, 4, 2);
-    player->GetField()->OwnEntity(xtreme3, 4, 3);
-  }
-  else if (chip == "Cannon") {
-    Cannon* cannon = new Cannon(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
-    player->SetAnimation(PLAYER_CANNON, onFinish);
-    AUDIO.Play(AudioType::CANNON);
-
-    cannon->SetDirection(Direction::RIGHT);
-
-    player->GetField()->OwnEntity(cannon, player->GetTile()->GetX()+1, player->GetTile()->GetY());
-  }
-  else if (chip == "Swrd") {
-    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
-
-    player->SetAnimation(PLAYER_SLASHING, onFinish);
-
-    BasicSword* sword  = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-
-    AUDIO.Play(AudioType::SWORD_SWING);
-
-    player->GetField()->OwnEntity(sword,  player->GetTile()->GetX() + 1, player->GetTile()->GetY());
-  } else if (chip == "LongSwrd") {
-    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
-
-    player->SetAnimation(PLAYER_SLASHING, onFinish);
-
-    BasicSword* sword  = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-    BasicSword* sword2 = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-
-    AUDIO.Play(AudioType::SWORD_SWING);
-
-    if (player->GetField()->GetAt(player->GetTile()->GetX() + 1, player->GetTile()->GetY())) {
-      player->GetField()->OwnEntity(sword, player->GetTile()->GetX() + 1, player->GetTile()->GetY());
-    }
-
-    if (player->GetField()->GetAt(player->GetTile()->GetX() + 2, player->GetTile()->GetY())) {
-      player->GetField()->OwnEntity(sword2, player->GetTile()->GetX() + 2, player->GetTile()->GetY());
-    }
-  }
-  else if (chip == "WideSwrd") {
-    auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
-
-    player->SetAnimation(PLAYER_SLASHING, onFinish);
-
-    BasicSword* sword = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-    BasicSword* sword2 = new BasicSword(player->GetField(), player->GetTeam(), selectedChips[curr]->GetDamage());
-
-    AUDIO.Play(AudioType::SWORD_SWING);
-
-    if (player->GetField()->GetAt(player->GetTile()->GetX() + 1, player->GetTile()->GetY())) {
-      player->GetField()->OwnEntity(sword, player->GetTile()->GetX() + 1, player->GetTile()->GetY());
-    }
-
-    if (player->GetField()->GetAt(player->GetTile()->GetX() + 1, player->GetTile()->GetY()+1)) {
-      player->GetField()->OwnEntity(sword2, player->GetTile()->GetX() + 1, player->GetTile()->GetY()+1);
-    }
-  }
+  this->Broadcast(*selectedChips[curr]);
 
   curr++;
 }

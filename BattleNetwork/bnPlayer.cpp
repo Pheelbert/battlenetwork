@@ -36,7 +36,6 @@ Player::Player(void)
   setScale(2.0f, 2.0f);
 
   healthUI = new PlayerHealthUI(this);
-  chipsUI = new SelectedChipsUI(this);
 
   //Components setup and load
   chargeComponent.load();
@@ -53,7 +52,6 @@ Player::Player(void)
 }
 
 Player::~Player(void) {
-  delete chipsUI;
   delete healthUI;
 }
 
@@ -61,20 +59,18 @@ void Player::Update(float _elapsed) {
   //Update UI of player's health (top left corner)
   healthUI->Update();
 
+  if (tile != nullptr) {
+    setPosition(tile->getPosition().x + (tile->GetWidth() / 2.0f), tile->getPosition().y + (tile->GetHeight() / 2.0f));
+  }
+
   // Explode if health depleted
   if (GetHealth() <= 0) {
-    if (chipsUI) {
-      delete chipsUI;
-      chipsUI = nullptr;
-    }
     this->StateChange<ExplodeState<Player>>();
     this->StateUpdate(_elapsed);
     return;
   }
 
   this->StateUpdate(_elapsed);
-
-  RefreshTexture();
 
   //Components updates
   chargeComponent.update(_elapsed);
@@ -156,12 +152,6 @@ vector<Drawable*> Player::GetMiscComponents() {
   }
   drawables.push_back(&chargeComponent.GetSprite());
 
-  if (chipsUI) {
-    while (chipsUI->GetNextComponent(component)) {
-      drawables.push_back(component);
-    }
-  }
-
   return drawables;
 }
 
@@ -200,18 +190,8 @@ int Player::GetHitCount() const
   return hitCount;
 }
 
-void Player::RefreshTexture() {
-  if (tile != nullptr) {
-    setPosition(tile->getPosition().x + (tile->GetWidth()/2.0f), tile->getPosition().y + (tile->GetHeight()/2.0f));
-  }
-}
-
 PlayerHealthUI* Player::GetHealthUI() const {
   return healthUI;
-}
-
-SelectedChipsUI* Player::GetChipsUI() const {
-  return chipsUI;
 }
 
 void Player::SetAnimation(string _state, std::function<void()> onFinish) {

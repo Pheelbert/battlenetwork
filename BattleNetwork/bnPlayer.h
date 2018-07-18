@@ -10,7 +10,6 @@ using sf::IntRect;
 #include "bnPlayerHealthUI.h"
 #include "bnChargeComponent.h"
 #include "bnAnimationComponent.h"
-#include "bnSelectedChipsUI.h"
 #include "bnAI.h"
 #include "bnPlayerControlledState.h"
 #include "bnPlayerIdleState.h"
@@ -29,7 +28,6 @@ public:
   void AdoptNextTile();
   void Attack(float _charge);
   virtual vector<Drawable*> GetMiscComponents();
-  void RefreshTexture();
 
   int GetHealth() const;
   void SetHealth(int _health);
@@ -38,7 +36,6 @@ public:
   int GetHitCount() const;
 
   PlayerHealthUI* GetHealthUI() const;
-  SelectedChipsUI * GetChipsUI() const;
 
   virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
 private:
@@ -49,7 +46,6 @@ private:
   TextureType textureType;
   string state;
   PlayerHealthUI* healthUI;
-  SelectedChipsUI* chipsUI;
 
   //-Animation-
   float animationProgress;

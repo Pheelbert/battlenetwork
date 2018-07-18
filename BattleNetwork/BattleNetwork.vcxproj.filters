@@ -206,6 +206,21 @@
     <Filter Include="Utilities">
       <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Components\ChipUseListener">
+      <UniqueIdentifier>{635d6105-57c6-40d2-be0b-a016ed816e8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\ChipUseListener\Player">
+      <UniqueIdentifier>{1130e585-ede8-4349-b692-28fef5025bb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\ChipUseListener\Any">
+      <UniqueIdentifier>{66d9858f-2c9d-4e25-9578-5c0dd84e32b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\ChipUsePublisher">
+      <UniqueIdentifier>{0be851a6-6c86-4ffb-a4f9-0f230a542869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\ChipUsePublisher\UI">
+      <UniqueIdentifier>{2ffdbd56-f900-4230-b51b-8239abe620b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -370,9 +385,6 @@
     <ClCompile Include="bnPlayer.cpp">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClCompile>
-    <ClCompile Include="bnSelectedChipsUI.cpp">
-      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
-    </ClCompile>
     <ClCompile Include="bnPlayerHealthUI.cpp">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClCompile>
@@ -414,6 +426,12 @@
     </ClCompile>
     <ClCompile Include="bnAnimatedCharacter.cpp">
       <Filter>Battle\Entity\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="bnSelectedChipsUI.cpp">
+      <Filter>Battle\Components\ChipUsePublisher\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="bnChipUseListener.cpp">
+      <Filter>Battle\Components\ChipUseListener</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -637,9 +655,6 @@
     <ClInclude Include="bnPlayerHealthUI.h">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClInclude>
-    <ClInclude Include="bnSelectedChipsUI.h">
-      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
-    </ClInclude>
     <ClInclude Include="bnBackground.h">
       <Filter>Engine\Resources\TextureResource\Props</Filter>
     </ClInclude>
@@ -690,6 +705,18 @@
     </ClInclude>
     <ClInclude Include="bnNoState.h">
       <Filter>Battle\Entity\Character\Any\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipUseListener.h">
+      <Filter>Battle\Components\ChipUseListener</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipUsePublisher.h">
+      <Filter>Battle\Components\ChipUsePublisher</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSelectedChipsUI.h">
+      <Filter>Battle\Components\ChipUsePublisher\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerChipUseListener.h">
+      <Filter>Battle\Components\ChipUseListener\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

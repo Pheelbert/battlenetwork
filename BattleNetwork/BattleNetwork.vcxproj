@@ -168,6 +168,7 @@
     <ClCompile Include="bnCanodumbIdleState.cpp" />
     <ClCompile Include="bnCharacter.cpp" />
     <ClCompile Include="bnChipFolder.cpp" />
+    <ClCompile Include="bnChipUseListener.cpp" />
     <ClCompile Include="bnFolderScene.cpp" />
     <ClCompile Include="bnGraveyardBackground.cpp" />
     <ClCompile Include="bnInfiniteMap.cpp" />
@@ -244,6 +245,8 @@
     <ClInclude Include="bnCanodumbIdleState.h" />
     <ClInclude Include="bnCharacter.h" />
     <ClInclude Include="bnChipFolder.h" />
+    <ClInclude Include="bnChipUseListener.h" />
+    <ClInclude Include="bnChipUsePublisher.h" />
     <ClInclude Include="bnElements.h" />
     <ClInclude Include="bnFolderScene.h" />
     <ClInclude Include="bnGraveyardBackground.h" />
@@ -282,6 +285,7 @@
     <ClInclude Include="bnPlayerControlledState.h" />
     <ClInclude Include="bnPlayerHitState.h" />
     <ClInclude Include="bnPlayerIdleState.h" />
+    <ClInclude Include="bnPlayerChipUseListener.h" />
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnAnimationComponent.h" />
