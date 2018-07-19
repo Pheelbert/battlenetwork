@@ -8,13 +8,9 @@ Entity::Entity()
   previous(nullptr),
   field(nullptr),
   team(Team::UNKNOWN),
-  health(0),
   deleted(false),
   passthrough(false),
-  counterable(false),
-  ownedByField(false),
-  stunCooldown(0),
-  name("unnamed") {
+  ownedByField(false) {
 }
 
 Entity::~Entity() {
@@ -36,22 +32,18 @@ vector<Drawable*> Entity::GetMiscComponents() {
   return vector<Drawable*>();
 }
 
-void Entity::AddAnimation(string _state, FrameList _frameList, float _duration) {
-  assert(false && "AddAnimation shouldn't be called directly from Entity");
-}
-
 void Entity::SetAnimation(string _state) {
   assert(false && "SetAnimation shouldn't be called directly from Entity");
 }
 
-void Entity::SetCounterFrame(int frame)
-{
-  assert(false && "SetCounterFrame shouldn't be called directly from Entity");
+const float Entity::GetHitHeight() const {
+  //assert(false && "GetHitHeight shouldn't be called directly from Entity");
+  return 0;
 }
 
-int Entity::GetHealth() {
-  // assert(false && "GetHealth shouldn't be called directly from Entity");
-  return health;
+const bool Entity::Hit(int damage) {
+  //assert(false && "Hit shouldn't be called directly from Entity");
+  return false;
 }
 
 TextureType Entity::GetTextureType() {
@@ -86,14 +78,6 @@ void Entity::SetTeam(Team _team) {
   team = _team;
 }
 
-int* Entity::GetAnimOffset() {
-  return nullptr;
-}
-
-void Entity::SetHealth(const int _health) {
-  health = _health;
-}
-
 void Entity::SetPassthrough(bool state)
 {
   passthrough = state;
@@ -104,30 +88,11 @@ bool Entity::IsPassthrough()
   return passthrough;
 }
 
+void Entity::Delete()
+{
+  deleted = true;
+}
+
 bool Entity::IsDeleted() const {
   return deleted;
-}
-
-void Entity::TryDelete() {
-  deleted = (health <= 0);
-}
-
-void Entity::ToggleCounter(bool on)
-{
-  counterable = on;
-}
-
-void Entity::Stun(double maxCooldown)
-{
-  stunCooldown = maxCooldown;
-}
-
-bool Entity::IsCountered()
-{
-  return (counterable && stunCooldown <= 0);
-}
-
-const std::string Entity::GetName() const
-{
-  return name;
 }

@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Utilities">
-      <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -176,6 +173,54 @@
     <Filter Include="Engine\Resources\TextureResource\Props">
       <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Overworld">
+      <UniqueIdentifier>{380f4ec8-7bec-4707-ac1e-38788c83c4b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Overworld\Map">
+      <UniqueIdentifier>{835dd9d2-1448-4cee-9144-0efdeac68187}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Overworld\Map\Lights">
+      <UniqueIdentifier>{fae5d589-c746-4a71-893a-9cfea9ad596c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Overworld\Map\Dynamic">
+      <UniqueIdentifier>{18a112b3-8ba5-4851-82b8-4d75444b101c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Artifact\Cannon">
+      <UniqueIdentifier>{24bc03bc-251a-4156-a2c4-318d0d5f4bfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Canodumb">
+      <UniqueIdentifier>{9613c3d8-ce86-4941-9b80-353a5108787a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Canodumb\States">
+      <UniqueIdentifier>{3d0d6159-bd37-4923-8112-d6facaa68b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Canodumb\Misc">
+      <UniqueIdentifier>{ba685902-7150-4751-9f50-780a74f3ff76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Chips\Folder">
+      <UniqueIdentifier>{bef66beb-f219-4d07-8d52-25a90241ac54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Folder">
+      <UniqueIdentifier>{4207b872-406d-4138-948a-a0d7c9fbdfa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\ChipUseListener">
+      <UniqueIdentifier>{635d6105-57c6-40d2-be0b-a016ed816e8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\ChipUseListener\Player">
+      <UniqueIdentifier>{1130e585-ede8-4349-b692-28fef5025bb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\ChipUseListener\Any">
+      <UniqueIdentifier>{66d9858f-2c9d-4e25-9578-5c0dd84e32b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\ChipUsePublisher">
+      <UniqueIdentifier>{0be851a6-6c86-4ffb-a4f9-0f230a542869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Components\ChipUsePublisher\UI">
+      <UniqueIdentifier>{2ffdbd56-f900-4230-b51b-8239abe620b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -304,9 +349,6 @@
     <ClCompile Include="bnBasicSword.cpp">
       <Filter>Battle\Entity\Spell\Sword\Basic</Filter>
     </ClCompile>
-    <ClCompile Include="bnCannodumbMob.cpp">
-      <Filter>Battle\Mob\Easy</Filter>
-    </ClCompile>
     <ClCompile Include="bnLanBackground.cpp">
       <Filter>Battle\Backgrounds</Filter>
     </ClCompile>
@@ -343,11 +385,53 @@
     <ClCompile Include="bnPlayer.cpp">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClCompile>
-    <ClCompile Include="bnSelectedChipsUI.cpp">
-      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
-    </ClCompile>
     <ClCompile Include="bnPlayerHealthUI.cpp">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
+    </ClCompile>
+    <ClCompile Include="bnOverworldMap.cpp">
+      <Filter>Overworld\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="bnOverworldLight.cpp">
+      <Filter>Overworld\Map\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="bnInfiniteMap.cpp">
+      <Filter>Overworld\Map\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumbAttackState.cpp">
+      <Filter>Battle\Entity\Character\Canodumb\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumbIdleState.cpp">
+      <Filter>Battle\Entity\Character\Canodumb\States</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumb.cpp">
+      <Filter>Battle\Entity\Character\Canodumb</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumbMob.cpp">
+      <Filter>Battle\Mob\Easy</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanodumbCursor.cpp">
+      <Filter>Battle\Entity\Character\Canodumb\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCharacter.cpp">
+      <Filter>Battle\Entity\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="bnCanonSmoke.cpp">
+      <Filter>Battle\Entity\Artifact\Cannon</Filter>
+    </ClCompile>
+    <ClCompile Include="bnChipFolder.cpp">
+      <Filter>Battle\Chips\Folder</Filter>
+    </ClCompile>
+    <ClCompile Include="bnFolderScene.cpp">
+      <Filter>Scenes\Folder</Filter>
+    </ClCompile>
+    <ClCompile Include="bnAnimatedCharacter.cpp">
+      <Filter>Battle\Entity\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="bnSelectedChipsUI.cpp">
+      <Filter>Battle\Components\ChipUsePublisher\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="bnChipUseListener.cpp">
+      <Filter>Battle\Components\ChipUseListener</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -430,9 +514,6 @@
       <Filter>Battle\Chips\Database</Filter>
     </ClInclude>
     <ClInclude Include="bnChip.h">
-      <Filter>Battle\Chips\Database</Filter>
-    </ClInclude>
-    <ClInclude Include="bnChipType.h">
       <Filter>Battle\Chips\Database</Filter>
     </ClInclude>
     <ClInclude Include="bnAnimationComponent.h">
@@ -544,16 +625,12 @@
     <ClInclude Include="bnChronoXConfigReader.h">
       <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="bnCannodumbMob.h">
-      <Filter>Battle\Mob\Easy</Filter>
-    </ClInclude>
     <ClInclude Include="bnLanBackground.h">
       <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
     <ClInclude Include="bnGraveyardBackground.h">
       <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
-    <ClInclude Include="bnBackground.h" />
     <ClInclude Include="bnVirusBackground.h">
       <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
@@ -578,8 +655,68 @@
     <ClInclude Include="bnPlayerHealthUI.h">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClInclude>
+    <ClInclude Include="bnBackground.h">
+      <Filter>Engine\Resources\TextureResource\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="bnOverworldMap.h">
+      <Filter>Overworld\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="bnOverworldLight.h">
+      <Filter>Overworld\Map\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="bnInfiniteMap.h">
+      <Filter>Overworld\Map\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumbAttackState.h">
+      <Filter>Battle\Entity\Character\Canodumb\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumbIdleState.h">
+      <Filter>Battle\Entity\Character\Canodumb\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumb.h">
+      <Filter>Battle\Entity\Character\Canodumb</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumbMob.h">
+      <Filter>Battle\Mob\Easy</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanodumbCursor.h">
+      <Filter>Battle\Entity\Character\Canodumb\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCharacter.h">
+      <Filter>Battle\Entity\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="bnCanonSmoke.h">
+      <Filter>Battle\Entity\Artifact\Cannon</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipFolder.h">
+      <Filter>Battle\Chips\Folder</Filter>
+    </ClInclude>
+    <ClInclude Include="bnElements.h">
+      <Filter>Battle\Enumerations</Filter>
+    </ClInclude>
+    <ClInclude Include="bnFolderScene.h">
+      <Filter>Scenes\Folder</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSpawnPolicy.h">
+      <Filter>Battle\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="bnAnimatedCharacter.h">
+      <Filter>Battle\Entity\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="bnNoState.h">
+      <Filter>Battle\Entity\Character\Any\States</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipUseListener.h">
+      <Filter>Battle\Components\ChipUseListener</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipUsePublisher.h">
+      <Filter>Battle\Components\ChipUsePublisher</Filter>
+    </ClInclude>
     <ClInclude Include="bnSelectedChipsUI.h">
-      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
+      <Filter>Battle\Components\ChipUsePublisher\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerChipUseListener.h">
+      <Filter>Battle\Components\ChipUseListener\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

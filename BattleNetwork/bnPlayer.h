@@ -4,19 +4,18 @@ using thor::FrameAnimation;
 using thor::Animator;
 using sf::IntRect;
 
-#include "bnEntity.h"
+#include "bnCharacter.h"
 #include "bnPlayerState.h"
 #include "bnTextureType.h"
 #include "bnPlayerHealthUI.h"
 #include "bnChargeComponent.h"
 #include "bnAnimationComponent.h"
-#include "bnSelectedChipsUI.h"
 #include "bnAI.h"
 #include "bnPlayerControlledState.h"
 #include "bnPlayerIdleState.h"
 #include "bnPlayerHitState.h"
 
-class Player : public Entity, public AI<Player> {
+class Player : public Character, public AI<Player> {
 public:
   friend class PlayerControlledState;
   friend class PlayerIdleState;
@@ -29,16 +28,14 @@ public:
   void AdoptNextTile();
   void Attack(float _charge);
   virtual vector<Drawable*> GetMiscComponents();
-  void RefreshTexture();
 
   int GetHealth() const;
   void SetHealth(int _health);
-  int Hit(int _damage);
+  virtual const bool Hit(int _damage);
   int GetMoveCount() const;
   int GetHitCount() const;
 
   PlayerHealthUI* GetHealthUI() const;
-  SelectedChipsUI * GetChipsUI() const;
 
   virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
 private:
@@ -49,7 +46,6 @@ private:
   TextureType textureType;
   string state;
   PlayerHealthUI* healthUI;
-  SelectedChipsUI* chipsUI;
 
   //-Animation-
   float animationProgress;

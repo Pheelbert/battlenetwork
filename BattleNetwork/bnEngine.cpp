@@ -13,8 +13,8 @@ void Engine::Initialize() {
   original = view; // never changes 
   cam = Camera(view);
 
-  window = new RenderWindow(VideoMode((unsigned int)view.getSize().x, (unsigned int)view.getSize().y), "Battle Network : Prototype");
-  window->setFramerateLimit(60);
+  window = new RenderWindow(VideoMode((unsigned int)view.getSize().x, (unsigned int)view.getSize().y), "Battle Network: Progs Edition");
+  window->setFramerateLimit(120);
 
   window->setIcon(sfml_icon.width, sfml_icon.height, sfml_icon.pixel_data);
 
@@ -110,6 +110,10 @@ void Engine::Draw(vector<Drawable*> _drawable, bool applyShaders) {
 }
 
 void Engine::Display() {
+
+  //view = cam.GetView();
+  //window->setView(view);
+
   // flip and ready buffer
   postprocessing.display();
   // Capture buffer in a drawable context

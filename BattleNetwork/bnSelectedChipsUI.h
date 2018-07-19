@@ -10,13 +10,14 @@ using std::ostringstream;
 #include <vector>
 using std::vector;
 
+#include "bnChipUsePublisher.h"
+
 class Entity;
 class Player;
 class Chip;
 
-class SelectedChipsUI {
+class SelectedChipsUI : public ChipUsePublisher {
 public:
-  SelectedChipsUI(Entity* _entity);
   SelectedChipsUI(Player* _player);
   ~SelectedChipsUI(void);
 
@@ -25,17 +26,13 @@ public:
   void LoadChips(Chip** incoming, int size);
   void UseNextChip();
 private:
-  Chip * * selectedChips;
+  Chip** selectedChips;
   int chipCount;
   int curr;
   Player* player;
-  Font* font; // TODO: Render chip text at bottom-left screen
+  Font* font;
   Text text;
   Text dmg;
   sf::Sprite icon;
   vector<Drawable*> components;
-
-  // TODO: make time-based components to pass off from UI.
-  // UI should not be responsible for managing chip use logic!
-  sf::Clock invisTimer;
 };

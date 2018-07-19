@@ -15,6 +15,7 @@
 #define BULLET_ANIMATION_HEIGHT 27
 
 Spell::Spell(void) {
+  SetPassthrough(true);
   SetLayer(1);
   hit = false;
   srand((unsigned int)time(nullptr));

@@ -1,5 +1,5 @@
 #pragma once
-enum Team {
+enum class Team : int {
   UNKNOWN,
   BLUE,
   RED

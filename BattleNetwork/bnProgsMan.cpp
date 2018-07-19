@@ -17,13 +17,13 @@
 #define PROGS_WAIT_COOLDOWN 100.0f
 #define PROGS_ATTACK_DELAY 500.0f
 
-ProgsMan::ProgsMan(void)
+ProgsMan::ProgsMan(Rank _rank)
   : animationComponent(this),
-    AI<ProgsMan>(this) {
+    AI<ProgsMan>(this), Character(_rank) {
   name = "ProgsMan";
   Entity::team = Team::BLUE;
   health = 300;
-  hitHeight = 0;
+  hitHeight = 64;
   state = MOB_IDLE;
   textureType = TextureType::MOB_PROGSMAN_IDLE;
   healthUI = new MobHealthUI(this);
@@ -75,7 +75,7 @@ void ProgsMan::Update(float _elapsed) {
   // Explode if health depleted
   if (GetHealth() <= 0) {
     this->StateChange<ExplodeState<ProgsMan>>();
-    this->Lock();
+    this->LockState();
   }
   else {
     this->RefreshTexture();
@@ -132,13 +132,13 @@ void ProgsMan::SetHealth(int _health) {
   health = _health;
 }
 
-int ProgsMan::Hit(int _damage) {
+const bool ProgsMan::Hit(int _damage) {
   SetShader(whiteout);
   (health - _damage < 0) ? health = 0 : health -= _damage;
   return health;
 }
 
-float ProgsMan::GetHitHeight() const {
+const float ProgsMan::GetHitHeight() const {
   return hitHeight;
 }
 

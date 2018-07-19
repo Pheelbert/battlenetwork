@@ -1,9 +1,12 @@
 #include <time.h>
 #include "bnSelectMobScene.h"
+#include "bnTile.h"
+#include "bnField.h"
 #include "bnMob.h"
 #include "bnMemory.h"
 #include "bnCamera.h"
 #include "bnInputManager.h"
+#include "bnAudioResourceManager.h"
 #include "bnShaderResourceManager.h"
 #include "bnTextureResourceManager.h"
 #include "bnEngine.h"
@@ -12,7 +15,7 @@
 #include "bnRandomMettaurMob.h"
 #include "bnProgsManBossFight.h"
 #include "bnTwoMettaurMob.h"
-#include "bnCannodumbMob.h"
+#include "bnCanodumbMob.h"
 
 #include <SFML/Graphics.hpp>
 using sf::RenderWindow;
@@ -23,7 +26,7 @@ using sf::Font;
 
 int SelectMobScene::Run()
 {
-  Camera& camera(ENGINE.GetCamera());
+  Camera camera(ENGINE.GetDefaultView());
 
   // Menu name font
   sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
@@ -67,6 +70,9 @@ int SelectMobScene::Run()
   mob.setOrigin(mob.getLocalBounds().width / 2.f, mob.getLocalBounds().height / 2.f);
   mob.setPosition(110.f, 130.f);
 
+  // Animator for mobs
+  Animation mobAnimator;
+
   // Distortion effect
   sf::Texture& distortionMap = *TEXTURES.GetTexture(TextureType::DISTORTION_TEXTURE);
 
@@ -78,7 +84,7 @@ int SelectMobScene::Run()
   transition.setUniform("texture", sf::Shader::CurrentTexture);
   transition.setUniform("map", *TEXTURES.GetTexture(TextureType::NOISE_TEXTURE));
   transition.setUniform("progress", 0.f);
-  float transitionProgress = 1.f;
+  float transitionProgress = 0.9f;
   ENGINE.RevokeShader();
 
   bool gotoNextScene = false;
@@ -111,7 +117,7 @@ int SelectMobScene::Run()
     INPUT.update();
 
     ENGINE.Clear();
-    ENGINE.SetView(camera.GetView());
+    //ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
 
@@ -185,30 +191,32 @@ int SelectMobScene::Run()
       }
     }
 
-    if (gotoNextScene) {
-      transitionProgress += 0.05f;
-    }
-    else {
-      transitionProgress -= 0.05f;
+    if (elapsed > 0) {
+      if (gotoNextScene) {
+        transitionProgress += 0.1f / elapsed;
+      }
+      else {
+        transitionProgress -= 0.1f / elapsed;
+      }
     }
 
     transitionProgress = std::max(0.f, transitionProgress);
     transitionProgress = std::min(1.f, transitionProgress);
 
-    if (transitionProgress == 1.f) {
+    if (transitionProgress >= 1.f) {
       return 2;
 
       gotoNextScene = false;
     }
 
     mobSelectionIndex = std::max(0, mobSelectionIndex);
-    mobSelectionIndex = std::min(2, mobSelectionIndex);
+    mobSelectionIndex = std::min(3, mobSelectionIndex);
 
     if (mobSelectionIndex == 0) {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE),true);
       mob.setPosition(110.f, 130.f);
       mobLabel->setString("Mettaur");
-      speedLabel->setString("1");
+      speedLabel->setString("2");
       attackLabel->setString("1");
       hpLabel->setString("20");
     }
@@ -219,6 +227,20 @@ int SelectMobScene::Run()
       speedLabel->setString("4");
       attackLabel->setString("3");
       hpLabel->setString("300");
+    }
+    else if (mobSelectionIndex == 2) {
+      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
+      mob.setPosition(90.f, 130.f);
+
+      mobAnimator = Animation("resources/mobs/canodumb/canodumb.animation");
+      mobAnimator.Load();
+      mobAnimator.SetAnimation(MOB_CANODUMB_IDLE_1);
+      mobAnimator.SetFrame(1, &mob);
+
+      mobLabel->setString("Canodumb");
+      speedLabel->setString("1");
+      attackLabel->setString("4");
+      hpLabel->setString("60");
     }
     else {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_ANYTHING_GOES),true);
@@ -262,7 +284,6 @@ int SelectMobScene::Run()
 
     if (progress > 1.f) progress = 1.f;
 
-    mob.setTextureRect(sf::IntRect(0, 0, mob.getTexture()->getSize().x, (int)((progress) * mob.getTexture()->getSize().y)));
     mob.setColor(sf::Color(255, 255, 255, (sf::Uint32)(255.0*progress)));
 
     shader.setUniform("time", 1.f-progress);
@@ -297,6 +318,9 @@ int SelectMobScene::Run()
       }
       else if (mobSelectionIndex == 1) {
         factory = new ProgsManBossFight(field);
+      }
+      else if (mobSelectionIndex == 2) {
+        factory = new CanodumbMob(field);
       }
       else {
         factory = new RandomMettaurMob(field);

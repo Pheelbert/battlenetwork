@@ -1,18 +1,18 @@
 #pragma once
-#include "bnEntity.h"
+#include "bnCharacter.h"
 #include "bnMobState.h"
 #include "bnAI.h"
 #include "bnTextureType.h"
 #include "bnMobHealthUI.h"
 #include "bnAnimationComponent.h"
 
-class Mettaur : public Entity, public AI<Mettaur> {
+class Mettaur : public Character, public AI<Mettaur> {
   friend class MettaurIdleState;
   friend class MettaurMoveState;
   friend class MettaurAttackState;
 
 public:
-  Mettaur(void);
+  Mettaur(Rank _rank = Rank::_1);
   virtual ~Mettaur(void);
 
   virtual void Update(float _elapsed);
@@ -25,8 +25,8 @@ public:
 
   void SetHealth(int _health);
   int* GetAnimOffset();
-  int Hit(int _damage);
-  float GetHitHeight() const;
+  virtual const bool Hit(int _damage);
+  virtual const float GetHitHeight() const;
 
 private:
   const bool IsMettaurTurn() const;

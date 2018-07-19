@@ -3,6 +3,7 @@
 #include "bnFileUtil.h"
 #include <assert.h>
 #include <iostream>
+#include "bnChipLibrary.h"
 
 PA::PA()
 {
@@ -54,7 +55,10 @@ void PA::LoadPA()
       if (!currSteps.empty()) {
         if (currSteps.size() > 1) {
           std::cout << "PA entry 1: " << currPA << " " << (unsigned)atoi(icon.c_str()) << " " << (unsigned)atoi(damage.c_str()) << " " << type << endl;
-          advances.push_back(PA::PAData({ currPA, (unsigned)atoi(icon.c_str()), (unsigned)atoi(damage.c_str()), type, currSteps }));
+
+          Element elemType = ChipLibrary::GetElementFromStr(type);
+
+          advances.push_back(PA::PAData({ currPA, (unsigned)atoi(icon.c_str()), (unsigned)atoi(damage.c_str()), elemType, currSteps }));
           currSteps.clear();
         }
         else {
@@ -82,8 +86,10 @@ void PA::LoadPA()
   } while (endline > -1);
 
   if (currSteps.size() > 1) {
+    Element elemType = ChipLibrary::GetElementFromStr(type);
+
     //std::cout << "PA entry 2: " << currPA << " " << (unsigned)atoi(icon.c_str()) << " " << (unsigned)atoi(damage.c_str()) << " " << type << endl;
-    advances.push_back(PA::PAData({ currPA, (unsigned)atoi(icon.c_str()), (unsigned)atoi(damage.c_str()), type, currSteps }));
+    advances.push_back(PA::PAData({ currPA, (unsigned)atoi(icon.c_str()), (unsigned)atoi(damage.c_str()), elemType, currSteps }));
     currSteps.clear();
   }
   else {
@@ -163,7 +169,7 @@ bool PA::FindPA(Chip ** input, unsigned size)
       // Load the PA chip
       if (advanceChipRef) { delete advanceChipRef; }
 
-       advanceChipRef = new Chip(0, iter->icon, 0, iter->damage, iter->name, "Program Advance");
+       advanceChipRef = new Chip(0, iter->icon, 0, iter->damage, iter->type, iter->name, "Program Advance", 0);
 
       return true;
     }

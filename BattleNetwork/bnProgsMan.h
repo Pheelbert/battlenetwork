@@ -2,7 +2,7 @@
 #include <SFML\Graphics.hpp>
 using sf::IntRect;
 
-#include "bnEntity.h"
+#include "bnCharacter.h"
 #include "bnMobState.h"
 #include "bnTextureType.h"
 #include "bnMobHealthUI.h"
@@ -10,13 +10,13 @@ using sf::IntRect;
 #include "bnAnimationComponent.h"
 #include "bnAI.h"
 
-class ProgsMan : public Entity, public AI<ProgsMan> {
+class ProgsMan : public Character, public AI<ProgsMan> {
 public:
   friend class ProgsManIdleState;
   friend class ProgsManMoveState;
   friend class ProgsManAttackState;
 
-  ProgsMan(void);
+  ProgsMan(Rank _rank);
   virtual ~ProgsMan(void);
 
   virtual void Update(float _elapsed);
@@ -27,8 +27,8 @@ public:
   virtual TextureType GetTextureType() const;
 
   void SetHealth(int _health);
-  int Hit(int _damage);
-  float GetHitHeight() const;
+  virtual const bool Hit(int _damage);
+  virtual const float GetHitHeight() const;
   int* GetAnimOffset();
 
 private:

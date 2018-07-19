@@ -6,6 +6,7 @@
 #include <algorithm>
 
 ChipLibrary::ChipLibrary() {
+  LoadLibrary();
 }
 
 
@@ -17,24 +18,62 @@ ChipLibrary& ChipLibrary::GetInstance() {
   return instance;
 }
 
-Chip* ChipLibrary::Next() {
-  if (library.empty()) {
-    return nullptr;
+ChipLibrary::Iter ChipLibrary::Begin()
+{
+  return library.begin();
+}
+
+ChipLibrary::Iter ChipLibrary::End()
+{
+  return library.end();
+}
+
+const unsigned ChipLibrary::GetSize() const
+{
+  return library.size();
+}
+
+const Element ChipLibrary::GetElementFromStr(std::string type)
+{
+  Element elemType;
+
+  std::transform(type.begin(), type.end(), type.begin(), ::toupper);
+
+  if (type == "FIRE") {
+    elemType = Element::FIRE;
+  }
+  else if (type == "AQUA") {
+    elemType = Element::AQUA;
+  }
+  else if (type == "WOOD") {
+    elemType = Element::WOOD;
+  }
+  else if (type == "ELEC") {
+    elemType = Element::ELEC;
+  }
+  else if (type == "WIND") {
+    elemType = Element::WIND;
+  }
+  else if (type == "SWORD") {
+    elemType = Element::SWORD;
+  }
+  else if (type == "BREAK") {
+    elemType = Element::BREAK;
+  }
+  else if (type == "CURSOR") {
+    elemType = Element::CURSOR;
+  }
+  else if (type == "PLUS") {
+    elemType = Element::PLUS;
+  }
+  else if (type == "SUMMON") {
+    elemType = Element::SUMMON;
+  }
+  else {
+    elemType = Element::NONE;
   }
 
-  int random = rand() % library.size();
-  Chip* next = nullptr;
-
-  list<Chip>::iterator it = library.begin();
-
-  for (int i = 0; i < random; i++) {
-    it++;
-  }
-
-  next = new Chip(*it);
-  library.erase(it);
-
-  return next;
+  return elemType;
 }
 
 // Used as the folder in battle
@@ -66,7 +105,8 @@ void ChipLibrary::LoadLibrary() {
       string damage = valueOf("damage", line);
       string type = valueOf("type", line);
       string codes = valueOf("codes", line);
-      // string description = valueOf("description", line);
+      string description = valueOf("desc", line);
+      string rarity = valueOf("rarity", line);
 
       // Trime white space
       codes.erase(remove_if(codes.begin(), codes.end(), isspace), codes.end());
@@ -84,7 +124,10 @@ void ChipLibrary::LoadLibrary() {
           // transform it into the font-compatible ascii char
           code = '=';
         }
-        library.push_back(Chip(atoi(cardID.c_str()), atoi(iconID.c_str()), code[0], atoi(damage.c_str()), name, "description"));
+
+        Element elemType = GetElementFromStr(type);
+
+        library.push_back(Chip(atoi(cardID.c_str()), atoi(iconID.c_str()), code[0], atoi(damage.c_str()), elemType, name, description, atoi(rarity.c_str())));
       }
     }
 

@@ -9,7 +9,7 @@ MettaurAttackState::MettaurAttackState() : AIState<Mettaur>() { ; }
 MettaurAttackState::~MettaurAttackState() { ; }
 
 void MettaurAttackState::OnEnter(Mettaur& met) {
-  auto onFinish = [this, &met]() {this->Attack(met); };
+  auto onFinish = [this, &met]() {this->DoAttack(met); };
   met.SetAnimation(MOB_ATTACKING, onFinish);
   met.SetCounterFrame(4);
 }
@@ -22,7 +22,7 @@ void MettaurAttackState::OnLeave(Mettaur& met) {
   met.NextMettaurTurn();
 }
 
-void MettaurAttackState::Attack(Mettaur& met) {
+void MettaurAttackState::DoAttack(Mettaur& met) {
   if (met.GetField()->GetAt(met.tile->GetX() - 1, met.tile->GetY())->IsWalkable()) {
     Spell* spell = new Wave(met.field, met.team);
     spell->SetDirection(Direction::LEFT);

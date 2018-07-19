@@ -38,7 +38,6 @@ void ProgsManPunchState::Attack(ProgsMan& progs) {
         isPlayer->Move(Direction::LEFT);
         isPlayer->AdoptNextTile();
         isPlayer->Hit(20);
-        isPlayer->RefreshTexture();
       }
     }
   }

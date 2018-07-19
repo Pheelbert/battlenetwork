@@ -16,7 +16,7 @@ Animate::~Animate() {
   this->onFinish = nullptr;
 }
 
-void Animate::operator() (float progress, sf::Sprite& target, FrameList& sequence) const
+void Animate::operator() (float progress, sf::Sprite& target, FrameList& sequence)
 {
   if (sequence.frames.empty()) {
     if (onFinish != nullptr) {
@@ -63,10 +63,20 @@ void Animate::operator() (float progress, sf::Sprite& target, FrameList& sequenc
       }
 
       std::map<int, std::function<void()>>::const_iterator callbackIter = this->callbacks.find(index - 1);
+      std::map<int, std::function<void()>>::iterator onetimeCallbackIter = this->onetimeCallbacks.find(index - 1);
 
       if (callbackIter != this->callbacks.end()) {
-        callbackIter->second();
+        if(callbackIter->second)
+          callbackIter->second();
       }
+
+      if (onetimeCallbackIter != this->onetimeCallbacks.end()) {
+        if(onetimeCallbackIter->second)
+          onetimeCallbackIter->second();
+
+        onetimeCallbacks.erase(onetimeCallbackIter);
+      }
+
 
       target.setTextureRect((*iter).subregion);
       if ((*iter).applyOrigin) {
@@ -82,7 +92,12 @@ void Animate::operator() (float progress, sf::Sprite& target, FrameList& sequenc
 
 Animate & Animate::operator<<(On& rhs)
 {
-  this->callbacks.insert(std::make_pair(rhs.id, rhs.callback));
+  if (rhs.doOnce) {
+    this->onetimeCallbacks.insert(std::make_pair(rhs.id, rhs.callback));
+  }
+  else {
+    this->callbacks.insert(std::make_pair(rhs.id, rhs.callback));
+  }
 
   return *this;
 }

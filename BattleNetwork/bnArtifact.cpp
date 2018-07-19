@@ -7,10 +7,16 @@
 #include "bnField.h"
 #include "bnTextureResourceManager.h"
 
+Artifact::Artifact(Field* _field, Team _team) {
+  this->SetField(_field);
+  this->SetTeam(_team);
+  this->SetPassthrough(true);
+}
+
 Artifact::Artifact(void) {
-  SetLayer(1);
+  SetLayer(0);
   texture = nullptr;
-  animation = FrameAnimation();
+  this->SetPassthrough(true);
 }
 
 Artifact::~Artifact(void) {

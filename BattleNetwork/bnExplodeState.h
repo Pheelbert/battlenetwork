@@ -54,7 +54,7 @@ ExplodeState<Any>::~ExplodeState() {
 
 template<typename Any>
 void ExplodeState<Any>::OnEnter(Any& e) {
-  e.Lock(); // Lock AI state. This is a final state.
+  e.LockState(); // Lock AI state. This is a final state.
   e.SetPassthrough(true); // Shoot through dying enemies
 
   /* Spawn an explosion */

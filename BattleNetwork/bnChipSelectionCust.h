@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
-#include "bnChipLibrary.h"
+#include "bnChipFolder.h"
 #include "bnEngine.h"
 
 class ChipSelectionCust {
@@ -21,21 +21,29 @@ private:
   LayeredDrawable chipCard;
   LayeredDrawable chipNoData;
   LayeredDrawable chipSendData;
+  LayeredDrawable element;
   sf::Shader& greyscale;
+  sf::Font* labelFont;
+  sf::Font* codeFont;
+  sf::Text smCodeLabel;
   sf::Text label;
   int chipCount;
   int selectCount;
   int chipCap;
   int cursorPos;
+  int cursorRow;
   bool areChipsReady;
+  ChipFolder* folder;
   Chip** selectedChips;
   Bucket* queue;
   Bucket** selectQueue;
 public:
-  ChipSelectionCust(int);
+  ChipSelectionCust(ChipFolder* _folder, int);
   ~ChipSelectionCust();
 
   // GUI ops
+  bool CursorUp();
+  bool CursorDown();
   bool CursorRight();
   bool CursorLeft();
   bool CursorAction();

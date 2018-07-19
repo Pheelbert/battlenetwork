@@ -50,7 +50,7 @@ void ChargeComponent::update(float _elapsed) {
       }
 
       isCharged = true;
-      animationProgress += 0.03f;
+      animationProgress += 0.1f/_elapsed;
       (animationProgress >= 1.0f) ? animationProgress = 0.0f : animationProgress = animationProgress;
       chargeSprite.setTexture(chargeTexture);
       chargeSprite.setPosition(entity->getPosition().x + 9.0f, entity->getPosition().y - 36.f);
@@ -64,7 +64,7 @@ void ChargeComponent::update(float _elapsed) {
       }
 
       isPartiallyCharged = true;
-      animationProgress += 0.05f;
+      animationProgress += 0.2f/_elapsed;
       (animationProgress >= 1.0f) ? animationProgress = 0.0f : animationProgress = animationProgress;
       chargeSprite.setTexture(chargeTexture);
       chargeSprite.setPosition(entity->getPosition().x + 9.0f, entity->getPosition().y - 36.f);

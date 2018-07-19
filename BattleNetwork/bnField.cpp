@@ -70,9 +70,10 @@ void Field::RemoveEntity(Entity* _entity) {
       _entity->GetTile()->RemoveEntity(_entity);
     }
 
-    if ((*it)->ownedByField) {
-      delete *it;
-      *it = nullptr;
+    Entity* ptr = *it;
+    if (ptr->ownedByField) {
+      delete ptr;
+      ptr = 0;
     }
 
     entities.erase(it);
@@ -116,9 +117,14 @@ Tile* Field::GetAt(int _x, int _y) const {
 }
 
 void Field::Update(float _elapsed) {
+  int entityCount = 0;
+
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
       tiles[y][x]->Update(_elapsed);
+      entityCount += tiles[y][x]->entities.size();
     }
   }
+
+  std::cout << "# of entities: " << entityCount << "\n";
 }

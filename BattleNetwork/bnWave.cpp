@@ -13,7 +13,7 @@
 #define WAVE_ANIMATION_WIDTH 41
 #define WAVE_ANIMATION_HEIGHT 46
 
-Wave::Wave(Field* _field, Team _team) {
+Wave::Wave(Field* _field, Team _team) : Spell() {
   SetLayer(0);
   cooldown = 0;
   damageCooldown = 0;

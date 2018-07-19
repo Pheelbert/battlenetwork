@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bnAnimate.cpp" />
+    <ClCompile Include="bnAnimatedCharacter.cpp" />
     <ClCompile Include="bnAnimation.cpp" />
     <ClCompile Include="bnBackground.cpp" />
     <ClCompile Include="bnBasicSword.cpp" />
@@ -162,13 +163,21 @@
     </ClCompile>
     <ClCompile Include="bnArtifact.cpp" />
     <ClCompile Include="bnAudioResourceManager.cpp" />
+    <ClCompile Include="bnCanodumb.cpp" />
+    <ClCompile Include="bnCanodumbAttackState.cpp" />
+    <ClCompile Include="bnCanodumbIdleState.cpp" />
+    <ClCompile Include="bnCharacter.cpp" />
+    <ClCompile Include="bnChipFolder.cpp" />
+    <ClCompile Include="bnChipUseListener.cpp" />
+    <ClCompile Include="bnFolderScene.cpp" />
     <ClCompile Include="bnGraveyardBackground.cpp" />
+    <ClCompile Include="bnInfiniteMap.cpp" />
     <ClCompile Include="bnLanBackground.cpp" />
     <ClCompile Include="bnBattleResults.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="bnCannodumbMob.cpp" />
+    <ClCompile Include="bnCanodumbMob.cpp" />
     <ClCompile Include="bnCannon.cpp" />
     <ClCompile Include="bnChargeComponent.cpp" />
     <ClCompile Include="bnChip.cpp" />
@@ -184,6 +193,8 @@
     <ClCompile Include="bnMettaurIdleState.cpp" />
     <ClCompile Include="bnMettaurMoveState.cpp" />
     <ClCompile Include="bnMobHealthUI.cpp" />
+    <ClCompile Include="bnOverworldLight.cpp" />
+    <ClCompile Include="bnOverworldMap.cpp" />
     <ClCompile Include="bnPA.cpp" />
     <ClCompile Include="bnPlayerHitState.cpp" />
     <ClCompile Include="bnPlayerIdleState.cpp" />
@@ -208,6 +219,7 @@
     <ClCompile Include="bnLongExplosion.cpp" />
     <ClCompile Include="bnPlayerControlledState.cpp" />
     <ClCompile Include="bnCamera.cpp" />
+    <ClCompile Include="bnCanonSmoke.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="bnProgsManMoveState.cpp" />
     <ClCompile Include="bnProgsManPunchState.cpp" />
@@ -215,9 +227,11 @@
     <ClCompile Include="bnVirusBackground.cpp" />
     <ClCompile Include="bnSelectMobScene.cpp" />
     <ClCompile Include="bnAgent.h" />
+    <ClCompile Include="bnCanodumbCursor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAnimate.h" />
+    <ClInclude Include="bnAnimatedCharacter.h" />
     <ClInclude Include="bnAnimation.h" />
     <ClInclude Include="bnBackground.h" />
     <ClInclude Include="bnBasicSword.h" />
@@ -226,16 +240,25 @@
     <ClInclude Include="bnArtifact.h" />
     <ClInclude Include="bnAudioResourceManager.h" />
     <ClInclude Include="bnAudioType.h" />
+    <ClInclude Include="bnCanodumb.h" />
+    <ClInclude Include="bnCanodumbAttackState.h" />
+    <ClInclude Include="bnCanodumbIdleState.h" />
+    <ClInclude Include="bnCharacter.h" />
+    <ClInclude Include="bnChipFolder.h" />
+    <ClInclude Include="bnChipUseListener.h" />
+    <ClInclude Include="bnChipUsePublisher.h" />
+    <ClInclude Include="bnElements.h" />
+    <ClInclude Include="bnFolderScene.h" />
     <ClInclude Include="bnGraveyardBackground.h" />
+    <ClInclude Include="bnInfiniteMap.h" />
     <ClInclude Include="bnLanBackground.h" />
     <ClInclude Include="bnCamera.h" />
-    <ClInclude Include="bnCannodumbMob.h" />
+    <ClInclude Include="bnCanodumbMob.h" />
     <ClInclude Include="bnCannon.h" />
     <ClInclude Include="bnChargeComponent.h" />
     <ClInclude Include="bnChip.h" />
     <ClInclude Include="bnChipLibrary.h" />
     <ClInclude Include="bnChipSelectionCust.h" />
-    <ClInclude Include="bnChipType.h" />
     <ClInclude Include="bnChronoXConfigReader.h" />
     <ClInclude Include="bnInputManager.h" />
     <ClInclude Include="bnInputEvent.h" />
@@ -254,11 +277,15 @@
     <ClInclude Include="bnMobFactory.h" />
     <ClInclude Include="bnMobHealthUI.h" />
     <ClInclude Include="bnMobState.h" />
+    <ClInclude Include="bnNoState.h" />
+    <ClInclude Include="bnOverworldLight.h" />
+    <ClInclude Include="bnOverworldMap.h" />
     <ClInclude Include="bnPA.h" />
     <ClInclude Include="bnPixelInState.h" />
     <ClInclude Include="bnPlayerControlledState.h" />
     <ClInclude Include="bnPlayerHitState.h" />
     <ClInclude Include="bnPlayerIdleState.h" />
+    <ClInclude Include="bnPlayerChipUseListener.h" />
     <ClInclude Include="bnProgBomb.h" />
     <ClInclude Include="bnProgsMan.h" />
     <ClInclude Include="bnAnimationComponent.h" />
@@ -271,6 +298,7 @@
     <ClInclude Include="bnShaderResourceManager.h" />
     <ClInclude Include="bnShaderType.h" />
     <ClInclude Include="bnSmartShader.h" />
+    <ClInclude Include="bnSpawnPolicy.h" />
     <ClInclude Include="bnStringEncoder.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />
@@ -294,7 +322,9 @@
     <ClInclude Include="bnMeta.h" />
     <ClInclude Include="bnTimer.h" />
     <ClInclude Include="bnFileUtil.h" />
+    <ClInclude Include="bnCanonSmoke.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="bnCanodumbCursor.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

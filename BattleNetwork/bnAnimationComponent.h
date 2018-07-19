@@ -12,6 +12,7 @@ using std::to_string;
 
 class Entity;
 
+// TODO: make component
 class AnimationComponent {
 public:
   AnimationComponent(Entity* _entity);
@@ -21,8 +22,8 @@ public:
   void Setup(string _path);
   void Load();
   void SetAnimation(string state, std::function<void()> onFinish = nullptr);
-  void SetAnimation(string state, Animate::Mode playbackMode, std::function<void()> onFinish = nullptr);
-  void AddCallback(int frame, std::function<void()> onFrame, std::function<void()> outFrame);
+  void SetAnimation(string state, Animate::Mode playbackMode, std::function<void()> onFinish = std::function<void()>());
+  void AddCallback(int frame, std::function<void()> onFrame, std::function<void()> outFrame = std::function<void()>(), bool doOnce = false);
 private:
   Entity* entity;
   string entityName;

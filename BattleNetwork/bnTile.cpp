@@ -172,6 +172,11 @@ bool Tile::ContainsEntity(Entity* _entity) const {
 void Tile::AffectEntities(Spell* caller) {
   vector<Entity*> copy = this->entities;
   for (std::vector<Entity*>::iterator it = copy.begin(); it < copy.end(); ++it) {
+    if ((*it) == nullptr) {
+      entities.erase(it);
+      continue;
+    }
+
     if (*it != caller && !(*it)->IsPassthrough()) {
       caller->Attack(*it);
     }
@@ -194,6 +199,9 @@ void Tile::Update(float _elapsed) {
 
   vector<Entity*> copies = entities;
   for (vector<Entity*>::iterator entity = copies.begin(); entity != copies.end(); entity++) {
+    if ((*entity)->IsDeleted())
+      continue;
+
     if (!hasSpell) {
       Spell* isSpell = dynamic_cast<Spell*>(*entity);
 
@@ -206,7 +214,7 @@ void Tile::Update(float _elapsed) {
   this->RefreshTexture();
 
   if (state == TileState::BROKEN) {
-    cooldown -= 0.1f;
+    cooldown -= 0.1f/_elapsed;
   }
 
   if (cooldown <= 0.0f && state == TileState::BROKEN) {

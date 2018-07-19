@@ -110,6 +110,9 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/mobs/progsman/mob_progsman_punch.png");
   paths.push_back("resources/mobs/progsman/mob_progsman_throw.png");
 
+  // canodumbs
+  paths.push_back("resources/mobs/canodumb/canodumb_atlas.png");
+
   // Select screen "Anything Goes"
   paths.push_back("resources/mobs/select/random.png");
 
@@ -138,6 +141,12 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/ui/zenny.png");
   paths.push_back("resources/ui/nodata.png");
 
+  // folder view
+  paths.push_back("resources/ui/folder_chip.png");
+  paths.push_back("resources/ui/folder_dock.png");
+  paths.push_back("resources/ui/folder_rarity.png");
+  paths.push_back("resources/ui/scrollbar.png");
+
   // Background/foreground
   paths.push_back("resources/backgrounds/title/bg_blue.png");
   paths.push_back("resources/backgrounds/title/prog-pulse.png");
@@ -145,16 +154,22 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/backgrounds/select/battle_select.png");
   paths.push_back("resources/backgrounds/main_menu/overlay.png");
   paths.push_back("resources/backgrounds/main_menu/ow.png");
-
+  paths.push_back("resources/backgrounds/main_menu/ow2.png");
+  paths.push_back("resources/backgrounds/main_menu/arrow.png");
+  paths.push_back("resources/backgrounds/folder/bg.png");
   // other icons
   paths.push_back("resources/ui/gamepad_support_icon.png");
   paths.push_back("resources/ui/main_menu_ui.png");
+  paths.push_back("resources/ui/elements.png");
 
-  // other misc
+  // texture maps
   paths.push_back("resources/shaders/textures/distortion.png");
   paths.push_back("resources/shaders/textures/heat.png");
   paths.push_back("resources/shaders/textures/noise.png");
   paths.push_back("resources/shaders/textures/noise_invert.png");
+
+  // editor ui
+  paths.push_back("resources/ui/light.png");
 }
 
 TextureResourceManager::~TextureResourceManager(void) {

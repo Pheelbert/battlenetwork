@@ -1,7 +1,7 @@
 #include "bnCamera.h"
 #include <iostream>
 
-Camera::Camera(sf::View& view) : focus(view)
+Camera::Camera(const sf::View& view) : focus(view)
 {
   progress = 1.f;
   dest = origin = focus.getCenter();
@@ -56,6 +56,26 @@ void Camera::MoveCamera(sf::Vector2f destination, sf::Time duration) {
 
 void Camera::PlaceCamera(sf::Vector2f pos) { 
   focus.setCenter(pos);
+  dest = focus.getCenter();
+}
+
+void Camera::OffsetCamera(sf::Vector2f offset)
+{
+  origin = focus.getCenter();
+  focus.setCenter(origin + offset);
+  dest = focus.getCenter();
+}
+
+bool Camera::IsInView(sf::Sprite& sprite) {
+  float camW = focus.getSize().x;
+  float camH = focus.getSize().y;
+
+  float spriteW = sprite.getLocalBounds().width  * sprite.getScale().x;
+  float spriteH = sprite.getLocalBounds().height * sprite.getScale().y;
+  float spriteX = sprite.getPosition().x;
+  float spriteY = sprite.getPosition().y;
+
+  return (spriteX+spriteW >= 0 && spriteX-spriteW <= camW && spriteY+spriteH >= 0 && spriteY-spriteH <= camH);
 }
 
 void Camera::ShakeCamera(double stress, sf::Time duration)

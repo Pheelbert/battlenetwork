@@ -2,15 +2,20 @@
 #include "bnTextureResourceManager.h"
 #include "bnShaderResourceManager.h"
 
-ChipSelectionCust::ChipSelectionCust(int cap) : 
-  greyscale(*SHADERS.GetShader(ShaderType::GREYSCALE)) 
+#define WILDCARD '='
+#define VOIDED 0
+#define STAGED  1
+#define QUEUED 2
+
+ChipSelectionCust::ChipSelectionCust(ChipFolder* _folder, int cap) : 
+  greyscale(*SHADERS.GetShader(ShaderType::GREYSCALE)), folder(_folder)
 {
   cap = std::min(cap, 8);
   chipCap = cap;
   queue = new Bucket[chipCap];
   selectQueue = new Bucket*[chipCap];
 
-  chipCount = selectCount = cursorPos = 0;
+  chipCount = selectCount = cursorPos = cursorRow = 0;
 
   custSprite = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_SELECT_MENU));
   custSprite.setScale(2.f, 2.f);
@@ -18,6 +23,11 @@ ChipSelectionCust::ChipSelectionCust(int cap) :
 
   icon.setTexture(*TEXTURES.GetTexture(CHIP_ICONS));
   icon.setScale(sf::Vector2f(2.f, 2.f));
+
+  sf::Texture* elementTexture = TEXTURES.GetTexture(TextureType::ELEMENT_ICON);
+  element.setTexture(*elementTexture);
+  element.setScale(2.f, 2.f);
+  element.setPosition(2.f*25.f, 146.f);
 
   cursorSmall = sf::Sprite(*TEXTURES.GetTexture(TextureType::CHIP_CURSOR_SMALL));
   cursorSmall.setScale(sf::Vector2f(2.f, 2.f));
@@ -41,10 +51,13 @@ ChipSelectionCust::ChipSelectionCust(int cap) :
   chipSendData.setScale(2.f, 2.f);
   chipSendData.setPosition(2.f*16.f, 48.f);
 
-  sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
-  label.setFont(*font);
+  labelFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
+  label.setFont(*labelFont);
 
-  ChipLibrary::GetInstance().LoadLibrary();
+  codeFont = TEXTURES.LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
+  smCodeLabel.setFont(*codeFont);
+  smCodeLabel.setCharacterSize(12);
+  smCodeLabel.setFillColor(sf::Color::Yellow);
 }
 
 
@@ -52,8 +65,8 @@ ChipSelectionCust::~ChipSelectionCust() {
   ClearChips();
 
   for (int i = 0; i < chipCount; i++) {
-    selectQueue[i] = nullptr;
-    delete queue[i].data;
+    //selectQueue[i] = nullptr;
+    // delete queue[i].data;
   }
 
   if (chipCount > 0) {
@@ -62,10 +75,39 @@ ChipSelectionCust::~ChipSelectionCust() {
   }
 
   chipCount = 0;
+
+  delete labelFont;
+  delete codeFont;
+}
+
+bool ChipSelectionCust::CursorUp() {
+  if (--cursorRow < 0) {
+    cursorRow = 0;
+    return false;
+  }
+
+  return true;
+}
+
+bool ChipSelectionCust::CursorDown() {
+  if (++cursorRow > 1) {
+    cursorRow = 1;
+
+    return false;
+  }
+
+  if (cursorPos > 2) {
+    cursorPos = 0;
+  }
+
+  return true;
 }
 
 bool ChipSelectionCust::CursorRight() {
-  if (++cursorPos > 5) {
+  if (++cursorPos > 2 && cursorRow == 1) {
+    cursorPos = 0;
+  }
+  else if (cursorPos > 5 && cursorRow == 0) {
     cursorPos = 0;
   }
 
@@ -73,7 +115,10 @@ bool ChipSelectionCust::CursorRight() {
 }
 
 bool ChipSelectionCust::CursorLeft() {
-  if (--cursorPos < 0) {
+  if (--cursorPos < 0 && cursorRow == 1) {
+    cursorPos = 2;
+  }
+  else if (cursorPos < 0 && cursorRow == 0) {
     cursorPos = 5;
   }
 
@@ -81,29 +126,44 @@ bool ChipSelectionCust::CursorLeft() {
 }
 
 bool ChipSelectionCust::CursorAction() {
-  if (cursorPos == 5) {
+  if (selectCount == 5) {
+    return false;
+  }
+
+  if (cursorPos == 5 && cursorRow == 0) {
     // End chip select
     areChipsReady = true;
   } else {
     // Does chip exist 
-    if (cursorPos < chipCount) {
+    if (cursorPos + (5 * cursorRow) < chipCount) {
       // Queue this chip if not selected
-      if (queue[cursorPos].state == 1) {
-        selectQueue[selectCount++] = &queue[cursorPos];
-        queue[cursorPos].state = 2;
+      if (queue[cursorPos + (5 * cursorRow)].state == STAGED) {
+        selectQueue[selectCount++] = &queue[cursorPos + (5 * cursorRow)];
+        queue[cursorPos + (5 * cursorRow)].state = QUEUED;
 
-        // Check chip code. If other chips are not compatible, set their bucket state flag to 0
-        char code = queue[cursorPos].data->GetCode();
+        // We can only upload 5 chips to navi...
+        if (selectCount == 5) {
+          for (int i = 0; i < chipCount; i++) {
+            if (queue[i].state == QUEUED) continue;
 
-        for (int i = 0; i < chipCount; i++) {
-          if (i == cursorPos || (queue[i].state == 0) || queue[i].state == 2) continue;
-          char otherCode = queue[i].data->GetCode();
-          bool isSameChip = (queue[i].data->GetShortName() == queue[cursorPos].data->GetShortName());
-          if (code == '=' || otherCode == '=' || otherCode == code || isSameChip ) { queue[i].state = 1; }
-          else { queue[i].state = 0; }
+            queue[i].state = VOIDED;
+          }
         }
+        else {
+          // Otherwise display the remaining compatible chips...
+          // Check chip code. If other chips are not compatible, set their bucket state flag to 0
+          char code = queue[cursorPos + (5 * cursorRow)].data->GetCode();
 
-        return true;
+          for (int i = 0; i < chipCount; i++) {
+            if (i == cursorPos + (5 * cursorRow) || (queue[i].state == VOIDED) || queue[i].state == QUEUED) continue;
+            char otherCode = queue[i].data->GetCode();
+            bool isSameChip = (queue[i].data->GetShortName() == queue[cursorPos + (5 * cursorRow)].data->GetShortName());
+            if (code == WILDCARD || otherCode == WILDCARD || otherCode == code || isSameChip) { queue[i].state = STAGED; }
+            else { queue[i].state = VOIDED; }
+          }
+
+          return true;
+        }
       }
     }
   }
@@ -117,14 +177,14 @@ bool ChipSelectionCust::CursorCancel() {
     return false;// nothing happened
   }
 
-  selectQueue[selectCount-1]->state = 1;
+  selectQueue[selectCount-1]->state = STAGED;
 
   selectCount--;
 
   if (selectCount == 0) {
     // Everything is selectable again
     for (int i = 0; i < chipCount; i++) {
-      queue[i].state = 1;
+      queue[i].state = STAGED;
     }
 
     return true;
@@ -142,17 +202,17 @@ bool ChipSelectionCust::CursorCancel() {
 
     for (int j = 0; j < chipCount; j++) {
       if (i > 0) {
-        if (queue[j].state == 0 && code != queue[j].data->GetCode() - 1) continue; // already checked and not a PA sequence
+        if (queue[j].state == VOIDED && code != queue[j].data->GetCode() - 1) continue; // already checked and not a PA sequence
       }
 
-      if (queue[j].state == 2) continue; // skip  
+      if (queue[j].state == QUEUED) continue; // skip  
 
       char otherCode = queue[j].data->GetCode();
 
       bool isSameChip = (queue[j].data->GetShortName() == selectQueue[i]->data->GetShortName());
 
-      if (code == '=' || otherCode == '=' || otherCode == code || isSameChip) { queue[j].state = 1; }
-      else { queue[j].state = 0; }
+      if (code == WILDCARD || otherCode == WILDCARD || otherCode == code || isSameChip) { queue[j].state = STAGED; }
+      else { queue[j].state = VOIDED; }
     }
   }
 
@@ -184,12 +244,10 @@ void ChipSelectionCust::Move(sf::Vector2f delta) {
 }
 
 void ChipSelectionCust::GetNextChips() {
-  ClearChips();
-
   int perTurn = 3; // Limit how many new chips we get per turn
   for (int i = chipCount; i < chipCap; i++) {
-    queue[i].data = ChipLibrary::GetInstance().Next();
-    queue[i].state = 1;
+    queue[i].data = folder->Next();
+    queue[i].state = STAGED;
 
     if (!queue[i].data) {
       // nullptr is end of list
@@ -198,7 +256,7 @@ void ChipSelectionCust::GetNextChips() {
     chipCount++;
     perTurn--;
 
-    if (perTurn == 0) return;
+   if (perTurn == 0) return;
   }
 }
 
@@ -206,10 +264,15 @@ void ChipSelectionCust::Draw() {
   ENGINE.Draw(custSprite, false);
 
   if (IsInView()) {
-    cursorSmall.setPosition(2.f*(7.0f + (cursorPos*16.0f)), 2.f*103.f); // TODO: Make this relative to cust instead of screen
+    cursorSmall.setPosition(2.f*(7.0f + (cursorPos*16.0f)), 2.f*(103.f + (cursorRow*24.f))); // TODO: Make this relative to cust instead of screen
 
+    int row = 0;
     for (int i = 0; i < chipCount; i++) {
-      icon.setPosition(2.f*(9.0f + (i*16.0f)), 2.f*105.f);
+      if (i > 4) {
+        row = 1;
+      }
+
+      icon.setPosition(2.f*(9.0f + ((i%5)*16.0f)), 2.f*(105.f + (row*24.0f)) );
       sf::IntRect iconSubFrame = TEXTURES.GetIconRectFromID(queue[i].data->GetIconID());
       icon.setTextureRect(iconSubFrame);
       icon.SetShader(nullptr);
@@ -220,8 +283,18 @@ void ChipSelectionCust::Draw() {
       } else if (queue[i].state == 1) {
         ENGINE.Draw(icon, false);
       }
-    }
 
+      smCodeLabel.setPosition(2.f*(14.0f + ((i % 5)*16.0f)), 2.f*(120.f + (row*24.0f)));
+
+      char code = queue[i].data->GetCode();
+
+      if (code == WILDCARD && code != '*') {
+        code = '*';
+      }
+
+      smCodeLabel.setString(code);
+      ENGINE.Draw(smCodeLabel, false);
+    }
 
     icon.SetShader(nullptr);
 
@@ -233,18 +306,18 @@ void ChipSelectionCust::Draw() {
     }
 
 
-    if (cursorPos < 5) {
+    if (cursorPos < 5 && cursorRow == 0 || cursorPos < 3 && cursorRow == 1) {
       // Draw the selected chip info
       label.setFillColor(sf::Color::White);
 
-      if (cursorPos < chipCount) {
+      if (cursorPos + (5 * cursorRow) < chipCount) {
         // Draw the selected chip card
-        sf::IntRect cardSubFrame = TEXTURES.GetCardRectFromID(queue[cursorPos].data->GetID());
+        sf::IntRect cardSubFrame = TEXTURES.GetCardRectFromID(queue[cursorPos+(5*cursorRow)].data->GetID());
         chipCard.setTextureRect(cardSubFrame);
 
         chipCard.SetShader(nullptr);
 
-        if (!queue[cursorPos].state) {
+        if (!queue[cursorPos + (5 * cursorRow)].state) {
           chipCard.SetShader(&greyscale);
           ENGINE.Draw((LayeredDrawable*)&chipCard);
         } else {
@@ -252,22 +325,26 @@ void ChipSelectionCust::Draw() {
         }
 
         label.setPosition(2.f*16.f, 16.f);
-        label.setString(queue[cursorPos].data->GetShortName());
+        label.setString(queue[cursorPos + (5 * cursorRow)].data->GetShortName());
         ENGINE.Draw(label, false);
 
         // the order here is very important:
-        if (queue[cursorPos].data->GetDamage() > 0) {
-          label.setString(std::to_string(queue[cursorPos].data->GetDamage()));
-          label.setOrigin(label.getLocalBounds().width*2.f, 0);
-          label.setPosition(2.f*(84.f), 143.f);
+        if (queue[cursorPos + (5 * cursorRow)].data->GetDamage() > 0) {
+          label.setString(std::to_string(queue[cursorPos + (5 * cursorRow)].data->GetDamage()));
+          label.setOrigin(label.getLocalBounds().width+label.getLocalBounds().left, 0);
+          label.setPosition(2.f*(70.f), 143.f);
           ENGINE.Draw(label, false);
         }
 
-        label.setPosition(2.f*16.f, 143.f);
         label.setOrigin(0, 0);
-        label.setString(std::string() + queue[cursorPos].data->GetCode());
+        label.setPosition(2.f*16.f, 143.f);
+        label.setString(std::string() + queue[cursorPos + (5 * cursorRow)].data->GetCode());
         label.setFillColor(sf::Color(225, 180, 0));
         ENGINE.Draw(label, false);
+
+        int offset = (int)(queue[cursorPos + (5 * cursorRow)].data->GetElement());
+        element.setTextureRect(sf::IntRect(14 * offset, 0, 14, 14));
+        ENGINE.Draw(element, false);
       }
       else {
         ENGINE.Draw(chipNoData, false);
@@ -296,21 +373,19 @@ Chip** ChipSelectionCust::GetChips() {
 void ChipSelectionCust::ClearChips() {
   if (areChipsReady) {
     for (int i = 0; i < selectCount; i++) {
-      if (*(selectedChips + i) != nullptr) {
-        delete selectedChips[i];
-      }
-
+      selectedChips[i] = nullptr; // point away
+      //delete (*(selectQueue[i])).data;
       (*(selectQueue[i])).data = nullptr;
-      selectedChips[i] = nullptr;
+    }
+
+    if (selectCount > 0) {
+      delete[] selectedChips;
     }
   }
 
-  if (selectCount > 0)
-    delete[] selectedChips;
-
   // Restructure queue
   for (int i = 0; i < chipCount; i++) {
-    queue[i].state = 1;
+    queue[i].state = STAGED;
     int next = i;
     while (!queue[i].data && next + 1 < chipCount) {
       queue[i].data = queue[next + 1].data;
@@ -328,6 +403,8 @@ const int ChipSelectionCust::GetChipCount() {
 }
 
 void ChipSelectionCust::ResetState() {
+  ClearChips();
+
   cursorPos = 0;
   areChipsReady = false;
 }

@@ -1,6 +1,6 @@
 #pragma once
-#include "bnEntity.h"
-#include "bnPixelInState.h"
+#include "bnCharacter.h"
+#include "bnSpawnPolicy.h"
 #include "bnMeta.h"
 #include "bnBattleItem.h"
 #include <vector>
@@ -10,7 +10,7 @@ class Mob
 {
 public:
   struct MobData {
-    Entity* mob;
+    Character* mob;
     int tileX;
     int tileY;
     unsigned index;
@@ -19,8 +19,8 @@ public:
 private:
   std::vector<MobData*> spawn;
   std::vector<MobData*>::iterator iter;
-  std::vector<std::function<void(Entity*)>> defaultStateInvokers;
-  std::vector<std::function<void(Entity*)>> pixelStateInvokers;
+  std::vector<std::function<void(Character*)>> defaultStateInvokers;
+  std::vector<std::function<void(Character*)>> pixelStateInvokers;
   std::multimap<int, BattleItem> rewards;
   bool nextReady;
   Field* field;
@@ -107,7 +107,7 @@ public:
     return isBoss;
   }
 
-  const Entity& GetMobAt(int index) {
+  const Character& GetMobAt(int index) {
     if (index < 0 || index >= spawn.size()) {
       throw new std::exception("Invalid index range for Mob::GetMobAt()");
     }
@@ -132,6 +132,10 @@ public:
     return true;
   }
 
+  void FlagNextReady() {
+    this->nextReady = true;
+  }
+
   void DefaultState() {
     for (int i = 0; i < defaultStateInvokers.size(); i++) {
       defaultStateInvokers[i](spawn[i]->mob);
@@ -148,40 +152,28 @@ public:
     return data;
   }
 
-  template<typename T, typename DefaultState>
+  template<class CustomSpawnPolicy>
   Mob* Spawn(int tileX, int tileY);
 };
 
-template<typename T, typename DefaultState>
+template<class CustomSpawnPolicy>
 Mob* Mob::Spawn(int tileX, int tileY) {
-  // TODO: assert that tileX and tileY exist in field
-
-  _DerivedFrom<T, Entity>();
-  _DerivedFrom<T, AI<T>>();
+  // assert that tileX and tileY exist in field, otherwise abort
+  assert(tileX >= 1 && tileX <= field->GetWidth() && tileY >= 1 && tileY <= field->GetHeight());
 
   MobData* data = new MobData();
-  T* mob = new T();
+  
+  CustomSpawnPolicy* spawner = new CustomSpawnPolicy(*this);
 
-  data->mob = mob;
+  data->mob = spawner->GetSpawned();
   data->tileX = tileX;
   data->tileY = tileY;
   data->index = (unsigned)spawn.size();
 
-  // This retains the current entity type and stores it in a function. We do this to transform the 
-  // unknown type back later and can call the proper state change
-  auto pixelStateInvoker = [this](Entity* mob) {
-    T* cast = dynamic_cast<T*>(mob); 
-    
-    if (cast) {
-      auto onFinish = [this]() { this->nextReady = true; };
-      cast->StateChange<PixelInState<T>, FinishNotifier>(onFinish);
-    }
-  };
+  pixelStateInvokers.push_back(std::move(spawner->GetIntroCallback()));
+  defaultStateInvokers.push_back(std::move(spawner->GetReadyCallback()));
 
-  pixelStateInvokers.push_back(pixelStateInvoker);
-
-  auto defaultStateInvoker = [](Entity* mob) { T* cast = dynamic_cast<T*>(mob); if (cast) { cast->StateChange<DefaultState>(); } };
-  defaultStateInvokers.push_back(defaultStateInvoker);
+  delete spawner;
 
   spawn.push_back(data);
 

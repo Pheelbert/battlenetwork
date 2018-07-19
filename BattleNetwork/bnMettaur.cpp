@@ -31,8 +31,8 @@
 vector<int> Mettaur::metIDs = vector<int>();
 int Mettaur::currMetIndex = 0;
 
-Mettaur::Mettaur(void)
-  : animationComponent(this), AI<Mettaur>(this) {
+Mettaur::Mettaur(Rank _rank)
+  : animationComponent(this), AI<Mettaur>(this), Character(_rank) {
   this->StateChange<MettaurIdleState>();
   name = "Mettaur";
   Entity::team = Team::BLUE;
@@ -123,7 +123,7 @@ void Mettaur::Update(float _elapsed) {
       }
     }
 
-    this->Lock();
+    this->LockState();
   } else {
     this->RefreshTexture();
     animationComponent.Update(_elapsed);
@@ -185,14 +185,14 @@ void Mettaur::SetHealth(int _health) {
   health = _health;
 }
 
-int Mettaur::Hit(int _damage) {
+const bool Mettaur::Hit(int _damage) {
   (health - _damage < 0) ? health = 0 : health -= _damage;
   SetShader(whiteout);
 
   return health;
 }
 
-float Mettaur::GetHitHeight() const {
+const float Mettaur::GetHitHeight() const {
   return hitHeight;
 }
 
