@@ -204,6 +204,7 @@
     <ClCompile Include="bnProgsManIdleState.cpp" />
     <ClCompile Include="bnRandomMettaurMob.cpp" />
     <ClCompile Include="bnShaderResourceManager.cpp" />
+    <ClCompile Include="bnStarman.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
     <ClCompile Include="bnSpell.cpp" />
@@ -299,6 +300,7 @@
     <ClInclude Include="bnShaderType.h" />
     <ClInclude Include="bnSmartShader.h" />
     <ClInclude Include="bnSpawnPolicy.h" />
+    <ClInclude Include="bnStarman.h" />
     <ClInclude Include="bnStringEncoder.h" />
     <ClInclude Include="bnTeam.h" />
     <ClInclude Include="bnTextureType.h" />

@@ -2,6 +2,8 @@
 #include "bnSelectMobScene.h"
 #include "bnTile.h"
 #include "bnField.h"
+#include "bnPlayer.h"
+#include "bnStarman.h"
 #include "bnMob.h"
 #include "bnMemory.h"
 #include "bnCamera.h"
@@ -24,7 +26,7 @@ using sf::Clock;
 using sf::Event;
 using sf::Font;
 
-int SelectMobScene::Run()
+int SelectMobScene::Run(SelectedNavi navi)
 {
   Camera camera(ENGINE.GetDefaultView());
 
@@ -328,8 +330,18 @@ int SelectMobScene::Run()
 
       Mob* mob = factory->Build();
 
-      int win = BattleScene::Run(mob);
+      Player* player = nullptr;
 
+      if (navi == SelectedNavi::MEGAMAN) {
+        player = new Player();
+      }
+      else if (navi == SelectedNavi::STARMAN) {
+        player = new Starman();
+      }
+
+      int win = BattleScene::Run(player, mob);
+
+      delete player;
       delete mob;
       delete factory;
       delete field;

@@ -29,7 +29,7 @@ using sf::Font;
 #include "bnEngine.h"
 #include "bnBattleResults.cpp"
 
-int BattleScene::Run(Mob* mob) {
+int BattleScene::Run(Player* player, Mob* mob) {
   /*
   Program Advance + labels
   */
@@ -70,7 +70,6 @@ int BattleScene::Run(Mob* mob) {
   Set Scene*/
   Field* field = mob->GetField();
 
-  Player* player(new Player());
   player->StateChange<PlayerIdleState>();
   field->OwnEntity(player, 2, 2);
 

@@ -430,6 +430,9 @@
     <ClCompile Include="bnChipUseListener.cpp">
       <Filter>Battle\Chips\ChipUseListener</Filter>
     </ClCompile>
+    <ClCompile Include="bnStarman.cpp">
+      <Filter>Battle\Entity\Character\Player\Starman</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -717,6 +720,9 @@
     </ClInclude>
     <ClInclude Include="bnComponent.h">
       <Filter>Battle\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="bnStarman.h">
+      <Filter>Battle\Entity\Character\Player\Starman</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

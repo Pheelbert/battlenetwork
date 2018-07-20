@@ -19,11 +19,6 @@ using sf::VideoMode;
 using sf::Clock;
 using sf::Event;
 using sf::Font;
-enum class SelectedNavi {
-  STARMAN,
-  MEGAMAN,
-  SIZE // denotes length of list and if we've reached the end
-};
 
 int MainMenuScene::Run()
 {
@@ -137,9 +132,14 @@ int MainMenuScene::Run()
         selectInputCooldown = 0;
       }
 
-      owNavi.setPosition(owNavi.getPosition() + sf::Vector2f(0.5, 0));
+      owNavi.setPosition(owNavi.getPosition() + sf::Vector2f(5.0f/elapsed, 0));
 
-      // camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition()-(ENGINE.GetDefaultView().getSize()/32.0f)));
+      // TODO: fix this broken camera system
+      sf::Vector2f camOffset = camera.GetView().getSize();
+      camOffset.x /= 5;
+      camOffset.y /= 3.5;
+
+      camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition())+camOffset);
 
       
       if (INPUT.has(PRESSED_ACTION1)) {
@@ -211,7 +211,7 @@ int MainMenuScene::Run()
           break; // Breaks the while-loop
         }
       } else if (menuSelectionIndex == 3) {
-        int result = SelectMobScene::Run();
+        int result = SelectMobScene::Run(currentNavi);
 
         // reset internal clock (or everything will teleport)
         elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());

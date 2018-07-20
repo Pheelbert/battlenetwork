@@ -38,7 +38,7 @@ public:
   void SetCharging(bool state);
 
   virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
-private:
+protected:
   int health;
   int moveCount;
   int hitCount;
