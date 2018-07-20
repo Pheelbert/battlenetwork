@@ -37,14 +37,21 @@ public:
   PlayerHealthUI* GetHealthUI() const;
 
   void SetCharging(bool state);
-
+  void SetAlpha(int value); // TODO: Get rid of this
+  void SetCloakTimer(int seconds); // TODO: Get rid
   virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
 
 protected:
+
+  // TODO: get rid of this
+  sf::Clock cloakTimer;
+  int cloakTimeSecs;
+
   int health;
   int moveCount;
   int hitCount;
 
+  int alpha;
   double invincibilityCooldown;
 
   TextureType textureType;

@@ -41,18 +41,8 @@ public:
       AUDIO.Play(AudioType::PANEL_CRACK);
     }
     else if (name == "Invis") {
-
-      // TODO: Move chip use logic out of chip UI. Utilize component.s
-      /*if (invisTimer.getElapsedTime() > sf::seconds(10)) {
-        player->SetPassthrough(false);
-        player->setColor(sf::Color(255, 255, 255, 255));
-      }*/
-
-      // Todo make this a time-based component
       AUDIO.Play(AudioType::INVISIBLE);
-      player->SetPassthrough(true);
-      player->setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 / 2.f)));
-      //invisTimer.restart();
+      player->SetCloakTimer(20); // TODO: make this a time-based component
     }
     else if (name == "XtrmeCnnon") {
       Cannon* xtreme1 = new Cannon(player->GetField(), player->GetTeam(), chip.GetDamage());

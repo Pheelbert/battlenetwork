@@ -51,6 +51,9 @@ Player::Player(void)
   moveCount = 0;
 
   invincibilityCooldown = 0;
+  alpha = 0;
+
+  cloakTimeSecs = 0;
 }
 
 Player::~Player(void) {
@@ -72,18 +75,24 @@ void Player::Update(float _elapsed) {
     return;
   }
 
+  // TODO: Get rid of this. Put this type of behavior in a component
+  if (cloakTimer.getElapsedTime() > sf::seconds(cloakTimeSecs)) {
+    this->SetPassthrough(false);
+    this->SetAlpha(255);
+  }
+
   if (invincibilityCooldown > 0) {
     if ((((int)(invincibilityCooldown * 15))) % 2 == 0) {
       this->setColor(sf::Color(255,255,255,0));
     }
     else {
-          this->setColor(sf::Color(255, 255, 255, 255));
+          this->setColor(sf::Color(255, 255, 255, alpha));
     }
 
     invincibilityCooldown -= _elapsed;
   }
   else {
-    this->setColor(sf::Color(255, 255, 255, 255));
+    this->setColor(sf::Color(255, 255, 255, alpha));
   }
 
   this->StateUpdate(_elapsed);
@@ -215,6 +224,19 @@ PlayerHealthUI* Player::GetHealthUI() const {
 void Player::SetCharging(bool state)
 {
   chargeComponent.SetCharging(state);
+}
+
+void Player::SetAlpha(int value)
+{
+  alpha = value;
+}
+
+void Player::SetCloakTimer(int seconds)
+{
+  SetPassthrough(true);
+  SetAlpha(255 / 2);
+  cloakTimer.restart();
+  cloakTimeSecs = seconds;
 }
 
 void Player::SetAnimation(string _state, std::function<void()> onFinish) {

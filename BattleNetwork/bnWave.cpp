@@ -6,9 +6,6 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 
-#define COOLDOWN .250f
-#define DAMAGE_COOLDOWN .250f
-
 #define WAVE_ANIMATION_SPRITES 5
 #define WAVE_ANIMATION_WIDTH 41
 #define WAVE_ANIMATION_HEIGHT 46
@@ -63,11 +60,7 @@ void Wave::Update(float _elapsed) {
   
   animator(progress, *this, animation);
 
-  damageCooldown += _elapsed;
-  if (damageCooldown >= DAMAGE_COOLDOWN) {
-    tile->AffectEntities(this);
-    damageCooldown = 0;
-  }
+  tile->AffectEntities(this);
 
   Entity::Update(_elapsed);
 }

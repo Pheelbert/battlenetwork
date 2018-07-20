@@ -590,7 +590,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
               advanceSoundPlay = true;
             }
 
-            increment += elapsed * 500.f;
+            increment += elapsed * 50.f;
 
             sf::Text stepLabel = sf::Text(programAdvance.GetAdvanceChip()->GetShortName(), *mobFont);
 
