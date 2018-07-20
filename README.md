@@ -33,12 +33,11 @@ In this demo, you can choose which mob to battle, move Mega around, shoot, charg
 
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
 
-At this time only 5 chip types are implemented: All heath+ chips, Invsible, Cannon, CrckPanel, and Sword.
-`BasicSword` is the default behavior for all the sword chips at the moment. It behaves as wide-sword attacking one panel ahead and one panel below. Each chip plays the appropriate animation.
+At this time only 5 chip types are implemented: All heath+ chips, Invsible, Cannon, CrckPanel, and a few swords.
 
 Rename the file in `resources/database/library.txt - Copy`to `resources/database/library.txt` for a full library while playing the game.
 
-There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1 A` + `Cannon1 B` + `Cannon1 C` in order. It deals a whopping 600 points of damage, shaking the screen, and attacks the first 3 enemies vertically.
+There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon A` + `Cannon B` + `Cannon C` in order. It deals a whopping 600 points of damage, shaking the screen, and attacks the first 3 enemies vertically.
 There other other PAs that can be triggered through system but are not implemented and do not do any damage. 
 You can write your own PA's and add your own chips by editting the `/database` textfiles.
 
@@ -60,14 +59,10 @@ Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki
 
 # Author TheMaverickProgrammer
 
-## Update 7/6/2018
-Chip database (library) can be viewed via the Chip Library menu. Each chip is displayed with proper description and rarity. Scroll through with UP and DOWN.
+## Update 7/19/2018
+Canodumbs are complete.
 
-Canodumbs are near-complete. The system now supports `Character::Rank` attributes that can help determine an enemie's color, name upgrade, and stat boosts. We can now spawn different levels up enemies such as Canodumb, Canodumb1, and Canodumb2.
-
-Wrote better Artifact class for things like the Canodumb smoke. Separated Character class types from Entity which helps further divide the responsibilities between what can be deleted (Characters), what attacks (Spells), and what is purely effect (Artifacts).
-
-Added some missing font characters.
+Fixed buster logic and now behaves more like the original game. Thor is finally gone from the whole project. Backgrounds can now be one instance and are capable of filling the entire screen using the power of VertexArrays and Shaders. They are much smoother.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -131,6 +126,11 @@ New:
 * Counter system
 * Transition effects between screens
 * Randomly generated overworld map
+* Improved background class
+* Entities are split into Character (can be hit), Spell (can attack), and Artifact (visual effects)
+* Improved buster logic
+
+And more...
 
 Changes from original author:
 
@@ -148,4 +148,4 @@ Changes from original author:
 * Done away with Thor:: dependencies and wrote my own animation class and animation editor
 
 # Author Pheelbert
-Wrote the foundation. He wrote the tile-based movement and update system emulating an authentic mmbn player experience compared to others out there.
+Wrote the foundation. He wrote the tile-based movement system emulating an authentic mmbn player experience compared to others out there.
