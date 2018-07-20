@@ -10,8 +10,8 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 
-#define COOLDOWN 40.0f
-#define DAMAGE_COOLDOWN 50.0f
+#define COOLDOWN 40.0f/1000.f
+#define DAMAGE_COOLDOWN 50.0f/1000.f
 
 #define BULLET_ANIMATION_SPRITES 3
 #define BULLET_ANIMATION_WIDTH 30

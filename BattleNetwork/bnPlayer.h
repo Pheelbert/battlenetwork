@@ -17,6 +17,7 @@ class Player : public Character, public AI<Player> {
 public:
   friend class PlayerControlledState;
   friend class PlayerIdleState;
+  friend class PlayerHitState;
 
   Player(void);
   virtual ~Player(void);
@@ -38,10 +39,13 @@ public:
   void SetCharging(bool state);
 
   virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
+
 protected:
   int health;
   int moveCount;
   int hitCount;
+
+  double invincibilityCooldown;
 
   TextureType textureType;
   string state;

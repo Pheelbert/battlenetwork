@@ -49,9 +49,9 @@ void LongExplosion::Update(float _elapsed) {
     y2 = tile->getPosition().y - 50.0f;
   }
 
-  explosionProgress += 0.1f/_elapsed;
+  explosionProgress += 2*_elapsed;
   if (explosionProgress >= 0.3f) {
-    explosionProgress2 += 0.1f/_elapsed;
+    explosionProgress2 += 2*_elapsed;
     explosion2.setScale(2.f, 2.f);
     explosion2.setPosition(x2, y2);
     animator(fmin(explosionProgress2, 1.0f), explosion2, explode);

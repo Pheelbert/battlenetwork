@@ -19,10 +19,10 @@ VirusBackground::~VirusBackground(void) {
 }
 
 void VirusBackground::Update(float _elapsed) {
-  progress += 0.05f/_elapsed;
+  progress += 0.5 * _elapsed;
   if (progress >= 1.f) progress = 0.0f;
 
-  x += 0.01f/_elapsed;
+  x += 1 * _elapsed;
 
   if (x > 1) x = 0;
   if (y > 1) y = 0;

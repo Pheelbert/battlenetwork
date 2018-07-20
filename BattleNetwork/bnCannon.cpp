@@ -10,8 +10,8 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 
-#define COOLDOWN 40.0f
-#define DAMAGE_COOLDOWN 50.0f
+#define COOLDOWN 40.0f/1000.0f
+#define DAMAGE_COOLDOWN 50.0f/1000.0f
 
 #define BULLET_ANIMATION_SPRITES 3
 #define BULLET_ANIMATION_WIDTH 30
@@ -49,7 +49,7 @@ void Cannon::Update(float _elapsed) {
       setTexture(*texture);
       setPosition(tile->getPosition().x + tile->GetWidth() / 2.f + random, tile->getPosition().y + tile->GetHeight() / 2.f - hitHeight);
     }
-    progress += 0.2f;
+    progress += 3 * _elapsed;
     animator(fmin(progress, 1.0f), *this, animation);
     if (progress >= 1.f) {
       deleted = true;
@@ -114,18 +114,18 @@ void Cannon::Attack(Entity* _entity) {
   }
 
   if (_entity && _entity->GetTeam() != this->GetTeam()) {
-    _entity->Hit(damage);
+    hit = _entity->Hit(damage);
     hitHeight = _entity->GetHitHeight();
 
-    if (!_entity->IsPassthrough()) {
-      hit = true;
+    if (_entity->IsPassthrough()) {
+      hit = false;
     }
 
     Character* isCharacter = dynamic_cast<Character*>(_entity);
 
     if (isCharacter && isCharacter->IsCountered()) {
       AUDIO.Play(AudioType::COUNTER, 0);
-      isCharacter->Stun(1000);
+      isCharacter->Stun(1);
 
       if (isCharacter->GetHealth() == 0) {
         // Slide entity back a few pixels

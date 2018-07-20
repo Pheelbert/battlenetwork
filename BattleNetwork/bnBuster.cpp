@@ -10,8 +10,8 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 
-#define COOLDOWN 40.0f
-#define DAMAGE_COOLDOWN 50.0f
+#define COOLDOWN 40.0f/1000.0f
+#define DAMAGE_COOLDOWN 50.0f/1000.0f
 
 #define BULLET_ANIMATION_SPRITES 3
 #define BULLET_ANIMATION_WIDTH 30
@@ -54,7 +54,7 @@ void Buster::Update(float _elapsed) {
       setTexture(*texture);
       setPosition(tile->getPosition().x + tile->GetWidth() / 2.f + random, tile->getPosition().y + tile->GetHeight() / 2.f - hitHeight);
     }
-    progress += 0.2f;
+    progress += 5 * _elapsed;
     animator(fmin(progress, 1.0f), *this, animation);
     if (progress >= 1.f) {
       deleted = true;

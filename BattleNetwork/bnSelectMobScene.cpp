@@ -37,7 +37,7 @@ int SelectMobScene::Run(SelectedNavi navi)
   menuLabel->setPosition(sf::Vector2f(20.f, 5.0f));
 
   // Selection input delays
-  double maxSelectInputCooldown = 1000.0f / 2.f; // half of a second
+  double maxSelectInputCooldown = 0.5; // half of a second
   double selectInputCooldown = maxSelectInputCooldown;
 
   // MOB UI font
@@ -59,7 +59,7 @@ int SelectMobScene::Run(SelectedNavi navi)
   hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
   hpLabel->setPosition(sf::Vector2f(180.f, 33.0f));
 
-  float maxNumberCooldown = 500.f;
+  float maxNumberCooldown = 0.5;
   float numberCooldown = maxNumberCooldown; // half a second
 
   // select menu graphic
@@ -195,10 +195,10 @@ int SelectMobScene::Run(SelectedNavi navi)
 
     if (elapsed > 0) {
       if (gotoNextScene) {
-        transitionProgress += 0.1f / elapsed;
+        transitionProgress += 1 * elapsed;
       }
       else {
-        transitionProgress -= 0.1f / elapsed;
+        transitionProgress -= 1 * elapsed;
       }
     }
 
@@ -369,7 +369,7 @@ int SelectMobScene::Run(SelectedNavi navi)
     // Write contents to screen (always last step)
     ENGINE.Display();
 
-    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+    elapsed = static_cast<float>(clock.getElapsedTime().asSeconds());
   }
   delete font;
   delete mobFont;

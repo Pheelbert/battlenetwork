@@ -3,7 +3,7 @@
 #include "bnMettaurMoveState.h"
 #include <iostream>
 
-MettaurIdleState::MettaurIdleState() : cooldown(500), AIState<Mettaur>() { ; }
+MettaurIdleState::MettaurIdleState() : cooldown(1), AIState<Mettaur>() { ; }
 MettaurIdleState::~MettaurIdleState() { ; }
 
 void MettaurIdleState::OnEnter(Mettaur& met) {

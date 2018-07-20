@@ -14,7 +14,7 @@ void Engine::Initialize() {
   cam = Camera(view);
 
   window = new RenderWindow(VideoMode((unsigned int)view.getSize().x, (unsigned int)view.getSize().y), "Battle Network: Progs Edition");
-  window->setFramerateLimit(120);
+  window->setFramerateLimit(60);
 
   window->setIcon(sfml_icon.width, sfml_icon.height, sfml_icon.pixel_data);
 

@@ -24,8 +24,8 @@ Camera::~Camera()
 }
 
 void Camera::Update(float elapsed) {
-  progress += elapsed;
-  shakeProgress += elapsed;
+  progress += elapsed*1000;
+  shakeProgress += elapsed*1000;
 
   if (sf::Time(sf::milliseconds((sf::Int32)progress)) >= dur) {
     PlaceCamera(dest);

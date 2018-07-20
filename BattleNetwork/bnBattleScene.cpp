@@ -40,7 +40,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
   bool hasPA = false;
   int paStepIndex = 0;
 
-  float listStepCooldown = 500.f;
+  float listStepCooldown = 0.5f;
   float listStepCounter  = listStepCooldown;
 
   sf::Sprite programAdvanceSprite(*TEXTURES.GetTexture(TextureType::PROGRAM_ADVANCE));
@@ -110,7 +110,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
   customBarSprite.setScale(2.f, 2.f);
 
   // Selection input delays
-  double maxChipSelectInputCooldown = 1000.0f/10.f; // tenth a second
+  double maxChipSelectInputCooldown = 1/10.f; // tenth a second
   double chipSelectInputCooldown = maxChipSelectInputCooldown;
   
   // MOB UI
@@ -133,8 +133,8 @@ int BattleScene::Run(Player* player, Mob* mob) {
   bool isMobDeleted = false;
   bool isBattleRoundOver = false;
   bool isMobFinished = false;
-  double customProgress = 0; // in mili seconds 
-  double customDuration = 10 * 1000; // 10 seconds
+  double customProgress = 0; // in seconds 
+  double customDuration = 10; // 10 seconds
   bool initFadeOut = false;
 
   // Special: Load shaders if supported 
@@ -260,7 +260,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
       heatShader.setUniform("h", tile->GetHeight()*1.5f);
 
       iceShader.setUniform("w", tile->GetWidth() - 8.f);
-      iceShader.setUniform("h", tile->GetHeight());
+      iceShader.setUniform("h", tile->GetHeight()*0.9f);
 
       Entity* entity = nullptr;
 
@@ -529,11 +529,11 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
     if (isInChipSelect && customProgress > 0.f) {
       if (!chipCustGUI.IsInView()) {
-        chipCustGUI.Move(sf::Vector2f(60.f / elapsed, 0));
+        chipCustGUI.Move(sf::Vector2f(600.f * elapsed, 0));
       }
     } else {
       if (!chipCustGUI.IsOutOfView()) {
-        chipCustGUI.Move(sf::Vector2f(-60.f / elapsed, 0));
+        chipCustGUI.Move(sf::Vector2f(-600.f * elapsed, 0));
       } else if (isInChipSelect) { // we're leaving a state
         // Start Program Advance checks
         if(isPAComplete && !hasPA) {
@@ -590,7 +590,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
               advanceSoundPlay = true;
             }
 
-            increment += elapsed/500.f;
+            increment += elapsed * 500.f;
 
             sf::Text stepLabel = sf::Text(programAdvance.GetAdvanceChip()->GetShortName(), *mobFont);
 
@@ -641,7 +641,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
         battleResults->Draw();
 
         if (!battleResults->IsInView()) {
-          float amount = 100.f / elapsed;
+          float amount = 600.f * elapsed;
           battleResults->Move(sf::Vector2f(amount, 0));
         }
         else {
@@ -665,7 +665,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
     else if (isBattleRoundOver && isPlayerDeleted) {
       if (!initFadeOut) {
         AUDIO.StopStream();
-        shaderCooldown = 1000;
+        shaderCooldown = 1;
         ENGINE.SetShader(&whiteShader);
         initFadeOut = true;
       }
@@ -678,7 +678,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
       shaderCooldown -= elapsed;
 
-      whiteShader.setUniform("opacity", 1.f - (float)(shaderCooldown / 1000.f)*0.5f);
+      whiteShader.setUniform("opacity", 1.f - (float)(shaderCooldown)*0.5f);
     }
 
     // Write contents to screen (always last step)
@@ -715,7 +715,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
     customBarShader.setUniform("factor", (float)(customProgress / customDuration));
 
-    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+    elapsed = static_cast<float>(clock.getElapsedTime().asSeconds());
   }
 
   delete folder;

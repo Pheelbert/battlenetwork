@@ -25,7 +25,7 @@ int MainMenuScene::Run()
   Camera camera(ENGINE.GetDefaultView());
 
   // Selection input delays
-  double maxSelectInputCooldown = 1000.0f / 2.f; // half of a second
+  double maxSelectInputCooldown = 0.5; // half of a second
   double selectInputCooldown = maxSelectInputCooldown;        
 
   // ui sprite maps
@@ -132,14 +132,14 @@ int MainMenuScene::Run()
         selectInputCooldown = 0;
       }
 
-      owNavi.setPosition(owNavi.getPosition() + sf::Vector2f(5.0f/elapsed, 0));
+      owNavi.setPosition(owNavi.getPosition() + sf::Vector2f(50.0f*elapsed, 0));
 
       // TODO: fix this broken camera system
       sf::Vector2f camOffset = camera.GetView().getSize();
       camOffset.x /= 5;
       camOffset.y /= 3.5;
 
-      camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition())+camOffset);
+      camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition()-sf::Vector2f(0.5, 0.5))+camOffset);
 
       
       if (INPUT.has(PRESSED_ACTION1)) {
@@ -186,10 +186,10 @@ int MainMenuScene::Run()
 
     if (elapsed > 0) {
       if (gotoNextScene) {
-        transitionProgress += 0.1f / elapsed;
+        transitionProgress += 1 * elapsed;
       }
       else {
-        transitionProgress -= 0.1f / elapsed;
+        transitionProgress -= 1 * elapsed;
       }
     }
 
@@ -346,7 +346,7 @@ int MainMenuScene::Run()
     // Write contents to screen (always last step)
     ENGINE.Display();
 
-    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+    elapsed = static_cast<float>(clock.getElapsedTime().asSeconds());
   }
 
   AUDIO.StopStream();

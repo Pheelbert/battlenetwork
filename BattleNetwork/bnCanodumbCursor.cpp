@@ -5,9 +5,9 @@
 
 using sf::IntRect;
 
-#define MAX_COOLDOWN_1 500.0f
-#define MAX_COOLDOWN_2 250.0f
-#define MAX_COOLDOWN_3 175.0f
+#define MAX_COOLDOWN_1 0.5f
+#define MAX_COOLDOWN_2 0.25f
+#define MAX_COOLDOWN_3 0.175f
 
 #define RESOURCE_PATH "resources/mobs/canodumb/canodumb.animation"
 

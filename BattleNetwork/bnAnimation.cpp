@@ -119,7 +119,7 @@ string Animation::ValueOf(string _key, string _line) {
 }
 
 void Animation::Update(float elapsed, sf::Sprite* target) {
-  progress += elapsed / 1000.f; // to ms
+  progress += elapsed;
 
   animator(progress, *target, animations[currAnimation]);
 }

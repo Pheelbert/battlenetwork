@@ -2,13 +2,14 @@
 #include "bnEntity.h"
 #include "bnSpell.h"
 #include "bnPlayer.h"
+#include "bnAudioResourceManager.h"
 #include "bnTextureResourceManager.h"
 #include "bnField.h"
 
 #define START_X 0.0f
 #define START_Y 144.f
-#define COOLDOWN 30.f
-#define FLICKER 4.0f
+#define COOLDOWN 10.f
+#define FLICKER 3.0f
 #define Y_OFFSET 10.0f
 
 Tile::Tile(int _x, int _y) {
@@ -96,9 +97,9 @@ void Tile::RefreshTexture() {
     }
   } else if (state == TileState::BROKEN) {
     if (team == Team::BLUE) {
-      textureType = ((int)(cooldown * 5) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_BLUE_NORMAL : TextureType::TILE_BLUE_BROKEN;
+      textureType = ((int)(cooldown*100) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_BLUE_NORMAL : TextureType::TILE_BLUE_BROKEN;
     } else {
-      textureType = ((int)(cooldown * 5) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_RED_NORMAL : TextureType::TILE_RED_BROKEN;
+      textureType = ((int)(cooldown*100) % 2 == 0 && cooldown <= FLICKER) ? TextureType::TILE_RED_NORMAL : TextureType::TILE_RED_BROKEN;
     }
   }
   else if (state == TileState::EMPTY) {
@@ -160,6 +161,10 @@ void Tile::AddEntity(Entity* _entity) {
 void Tile::RemoveEntity(Entity* _entity) {
   auto it = find(entities.begin(), entities.end(), _entity);
   if (it != entities.end()) {
+    if (IsCracked() && !(*it)->HasFloatShoe()) {
+      state = TileState::BROKEN;
+      AUDIO.Play(AudioType::PANEL_CRACK);
+    }
     entities.erase(it);
   }
 }
@@ -214,7 +219,7 @@ void Tile::Update(float _elapsed) {
   this->RefreshTexture();
 
   if (state == TileState::BROKEN) {
-    cooldown -= 0.1f/_elapsed;
+    cooldown -= 1 * _elapsed;
   }
 
   if (cooldown <= 0.0f && state == TileState::BROKEN) {

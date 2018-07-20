@@ -19,11 +19,11 @@ LanBackground::~LanBackground(void) {
 }
 
 void LanBackground::Update(float _elapsed) {
-  progress += 0.01f;
+  progress += 1 * _elapsed;
   if (progress >= 1.f) progress = 0.0f;
 
-  y -= 0.03f / _elapsed;
-  x -= 0.03f / _elapsed;
+  y -= 0.3 * _elapsed;
+  x -= 0.3 * _elapsed;
 
   if (x < 0) {
     x = 1;

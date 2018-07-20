@@ -49,6 +49,8 @@ Player::Player(void)
   previous = nullptr;
 
   moveCount = 0;
+
+  invincibilityCooldown = 0;
 }
 
 Player::~Player(void) {
@@ -68,6 +70,20 @@ void Player::Update(float _elapsed) {
     this->StateChange<ExplodeState<Player>>();
     this->StateUpdate(_elapsed);
     return;
+  }
+
+  if (invincibilityCooldown > 0) {
+    if ((((int)(invincibilityCooldown * 15))) % 2 == 0) {
+      this->setColor(sf::Color(255,255,255,0));
+    }
+    else {
+          this->setColor(sf::Color(255, 255, 255, 255));
+    }
+
+    invincibilityCooldown -= _elapsed;
+  }
+  else {
+    this->setColor(sf::Color(255, 255, 255, 255));
   }
 
   this->StateUpdate(_elapsed);
@@ -114,9 +130,10 @@ bool Player::Move(Direction _direction) {
       next = field->GetAt(tile->GetX() + 1, tile->GetY());
       if (Teammate(next->GetTeam()) && next->IsWalkable()) {
         ;
-      } else {
-        next = nullptr;
       }
+ else {
+   next = nullptr;
+ }
     }
   }
 
@@ -164,14 +181,15 @@ int Player::GetHealth() const {
 }
 
 const bool Player::Hit(int _damage) {
-  if (this->IsPassthrough()) return false;
+  if (this->IsPassthrough() || invincibilityCooldown > 0) return false;
 
   bool result = false;
 
   if (health - _damage < 0) {
     health = 0;
     result = true;
-  } else {
+  }
+  else {
     health -= _damage;
     hitCount++;
     this->StateChange<PlayerHitState, float>({ 600.0f });

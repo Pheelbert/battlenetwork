@@ -6,8 +6,8 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 
-#define COOLDOWN 250.0f
-#define DAMAGE_COOLDOWN 250.0f
+#define COOLDOWN .250f
+#define DAMAGE_COOLDOWN .250f
 
 #define WAVE_ANIMATION_SPRITES 5
 #define WAVE_ANIMATION_WIDTH 41
@@ -26,6 +26,17 @@ Wave::Wave(Field* _field, Team _team) : Spell() {
   for (int x = 0; x < WAVE_ANIMATION_SPRITES; x++) {
     animation.Add(0.3f, IntRect(WAVE_ANIMATION_WIDTH*x, 0, WAVE_ANIMATION_WIDTH, WAVE_ANIMATION_HEIGHT));
   }
+
+  //Components setup and load
+  auto onFinish = [this]() {
+    Move(direction);
+    AUDIO.Play(AudioType::WAVE, 1);
+    cooldown = 0;
+    progress = 0.0f; 
+  };
+
+  animator << onFinish;
+
   progress = 0.0f;
   hitHeight = 0.0f;
   random = 0;
@@ -48,23 +59,14 @@ void Wave::Update(float _elapsed) {
   setTexture(*texture);
   setScale(2.f, 2.f);
   setPosition(tile->getPosition().x + 5.f, tile->getPosition().y - 50.0f);
-  progress += 0.05f;
-  if (progress < 1.f) {
-    animator(progress, *this, animation);
-  }
+  progress += 3 * _elapsed;
+  
+  animator(progress, *this, animation);
 
   damageCooldown += _elapsed;
   if (damageCooldown >= DAMAGE_COOLDOWN) {
     tile->AffectEntities(this);
     damageCooldown = 0;
-  }
-
-  cooldown += _elapsed;
-  if (cooldown >= COOLDOWN) {
-    Move(direction);
-    AUDIO.Play(AudioType::WAVE, 1);
-    cooldown = 0;
-    progress = 0.0f;
   }
 
   Entity::Update(_elapsed);
@@ -97,16 +99,18 @@ bool Wave::Move(Direction _direction) {
 void Wave::Attack(Entity* _entity) {
   Player* isPlayer = dynamic_cast<Player*>(_entity);
   if (isPlayer) {
-    isPlayer->Hit(10);
+    bool hit = isPlayer->Hit(10);
 
-    if (this->GetTile()->GetX() > 1) {
-      Wave* passthrough = new Wave(field, team);
-      passthrough->SetDirection(this->GetDirection());
-      field->OwnEntity(passthrough, this->GetTile()->GetX()-1, this->GetTile()->GetY());
+    if (hit) {
+      if (this->GetTile()->GetX() > 1) {
+        Wave* passthrough = new Wave(field, team);
+        passthrough->SetDirection(this->GetDirection());
+        field->OwnEntity(passthrough, this->GetTile()->GetX() - 1, this->GetTile()->GetY());
+      }
+
+      deleted = true;
+      return;
     }
-
-    deleted = true;
-    return;
   }
   /*Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
   if (isMob)
