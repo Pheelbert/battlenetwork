@@ -1,5 +1,17 @@
+
+# Author TheMaverickProgrammer
+
+## Update 7/19/2018
+[![starman.png](https://s8.postimg.cc/qjbob7h2d/starman.png)](https://postimg.cc/image/3umhbmzoh/)
+
+You can now switch between 2 Navis. Adding navis is easy. Just extend the `Player` class.
+
+Canodumbs are complete.
+
+Fixed buster logic and now behaves more like the original game. Thor is finally gone from the whole project. Backgrounds can now be one instance and are capable of filling the entire screen using the power of VertexArrays and Shaders. They are much smoother.
+
 # Videos w/ SOUND
-#### Branch: master as of 6/04/2018
+#### Branch: master
 Click the thumbnail to watch on youtube. 
 
 [![Video of engine 6/4/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://youtu.be/fCYp4VubD_s) 
@@ -16,6 +28,9 @@ Click the thumbnail to watch on youtube.
 
 [![menu.png](https://s15.postimg.cc/k819ndp6z/Untitled.png)](https://postimg.cc/image/hdy49xn0n/)
 
+# Wiki
+Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki)? 
+
 # Features
 
 **Keyboard support for MMBN Chrono X Config .ini files**
@@ -29,7 +44,7 @@ There is joystick support but the tricky thing about joysticks are that each ven
 
 --------
 
-In this demo, you can choose which mob to battle, move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
+In this demo, you can choose your Navi, choose which mob to battle, move navi around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
 
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
 
@@ -53,16 +68,6 @@ P      -> Pause/Unpause
 Return -> Bring up chip select GUI / Hide / Continue
 R CTRL -> Use a chip
 ```
-
-# Wiki
-Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki)? 
-
-# Author TheMaverickProgrammer
-
-## Update 7/19/2018
-Canodumbs are complete.
-
-Fixed buster logic and now behaves more like the original game. Thor is finally gone from the whole project. Backgrounds can now be one instance and are capable of filling the entire screen using the power of VertexArrays and Shaders. They are much smoother.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
