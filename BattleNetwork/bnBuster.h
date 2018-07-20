@@ -1,5 +1,6 @@
 #pragma once
 #include "bnSpell.h"
+#include "bnAnimate.h"
 
 class Buster : public Spell {
 public:
@@ -10,8 +11,8 @@ public:
   virtual bool Move(Direction _direction);
   virtual void Attack(Entity* _entity);
   virtual vector<Drawable*> GetMiscComponents();
-  virtual void AddAnimation(int _state, FrameAnimation _animation, float _duration);
-
 private:
   int damage;
+  Animate animator;
+  FrameList animation;
 };

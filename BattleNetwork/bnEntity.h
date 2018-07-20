@@ -8,6 +8,7 @@ using std::string;
 #include "bnMemory.h"
 #include "bnEngine.h"
 #include "bnTextureType.h"
+
 class Tile;
 class Field;
 
@@ -23,7 +24,6 @@ public:
   virtual void Update(float _elapsed);
   virtual bool Move(Direction _direction);
   virtual vector<Drawable*> GetMiscComponents();
-  virtual void SetAnimation(string _state);
   virtual TextureType GetTextureType();
 
   bool Teammate(Team _team);
@@ -40,6 +40,9 @@ public:
   void SetPassthrough(bool state);
   bool IsPassthrough();
 
+  void SetFloatShoe(bool state);
+  bool HasFloatShoe();
+
   void Delete();
   bool IsDeleted() const;
 
@@ -51,5 +54,6 @@ protected:
   Field* field;
   Team team;
   bool passthrough;
+  bool floatShoe;
   bool deleted;
 };

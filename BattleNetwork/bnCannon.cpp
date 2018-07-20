@@ -36,7 +36,7 @@ Cannon::Cannon(Field* _field, Team _team, int _damage) {
  
   setScale(2.f, 2.f);
   for (int x = 0; x < BULLET_ANIMATION_SPRITES; x++) {
-    animation.addFrame(0.3f, IntRect(BULLET_ANIMATION_WIDTH*x, 0, BULLET_ANIMATION_WIDTH, BULLET_ANIMATION_HEIGHT));
+    animation.Add(0.3f, IntRect(BULLET_ANIMATION_WIDTH*x, 0, BULLET_ANIMATION_WIDTH, BULLET_ANIMATION_HEIGHT));
   }
 }
 
@@ -50,7 +50,7 @@ void Cannon::Update(float _elapsed) {
       setPosition(tile->getPosition().x + tile->GetWidth() / 2.f + random, tile->getPosition().y + tile->GetHeight() / 2.f - hitHeight);
     }
     progress += 0.2f;
-    animation(*this, fmin(progress, 1.0f));
+    animator(fmin(progress, 1.0f), *this, animation);
     if (progress >= 1.f) {
       deleted = true;
       Entity::Update(_elapsed);
@@ -137,9 +137,4 @@ void Cannon::Attack(Entity* _entity) {
 
 vector<Drawable*> Cannon::GetMiscComponents() {
   return vector<Drawable*>();
-}
-
-void Cannon::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
-  //animator.addAnimation(static_cast<Buster>(_state), _animation, sf::seconds(_duration));
-  assert(false && "Buster does not have an animator");
 }

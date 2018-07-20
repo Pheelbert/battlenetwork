@@ -85,12 +85,3 @@ vector<Drawable*> CanodumbCursor::GetMiscComponents() {
 CanodumbCursor::~CanodumbCursor()
 {
 }
-
-int CanodumbCursor::GetStateFromString(string _string) {
-  assert(false && "LongExplosion does not have states");
-  return 0;
-}
-
-void CanodumbCursor::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
-  assert(false && "LongExplosion does not have an animator");
-}

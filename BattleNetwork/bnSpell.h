@@ -1,8 +1,8 @@
 #pragma once
 #include "bnEntity.h"
 #include "bnCharacter.h"
-#include <Thor/Animations.hpp>
-using thor::FrameAnimation;
+#include "bnAnimate.h"
+
 using sf::Texture;
 
 class Spell : public Entity {
@@ -16,7 +16,6 @@ public:
   virtual bool Move(Direction _direction) = 0;
   virtual void Attack(Entity* _entity) = 0;
   virtual vector<Drawable*> GetMiscComponents() = 0;
-  virtual void AddAnimation(int _state, FrameAnimation _animation, float _duration) = 0;
 
   void SetDirection(Direction _direction);
   Direction GetDirection() const;
@@ -33,5 +32,6 @@ protected:
   float hitHeight;
   Texture* texture;
   Direction direction;
-  FrameAnimation animation;
+  FrameList animation;
+  Animate animator;
 };

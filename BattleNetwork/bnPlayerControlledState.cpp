@@ -14,10 +14,12 @@
 
 PlayerControlledState::PlayerControlledState() : InputManager(&InputManager::GetInstance()), AIState<Player>()
 {
-  //Cooldowns
-  moveKeyPressCooldown = 0.0f;
-  attackKeyPressCooldown = 0.0f;
+  //Cooldowns. TODO: Take these out. We base actions on animation speed now.
+  moveKeyPressCooldown = MOVE_KEY_PRESS_COOLDOWN;
+  attackKeyPressCooldown = ATTACK_KEY_PRESS_COOLDOWN;
   attackToIdleCooldown = 0.0f;
+
+  isChargeHeld = false;
 }
 
 
@@ -34,21 +36,22 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
 
   // Action controls take priority over movement
   if (InputManager->has(RELEASED_ACTION1)) {
-    player.Attack(player.chargeComponent.GetChargeCounter());
-    player.chargeComponent.SetCharging(false);
-    attackToIdleCooldown = 0.0f;
-
-    auto onFinish = [&player]() {player.SetAnimation(PLAYER_IDLE); };
-    player.SetAnimation(PLAYER_SHOOTING, onFinish);
+    if (attackKeyPressCooldown >= ATTACK_KEY_PRESS_COOLDOWN && isChargeHeld == true) {
+      player.Attack(player.chargeComponent.GetChargeCounter());
+      player.chargeComponent.SetCharging(false);
+      isChargeHeld = false;
+      attackKeyPressCooldown = 0.0f;
+      auto onFinish = [&player, this]() {player.SetAnimation(PLAYER_IDLE); this->attackKeyPressCooldown = ATTACK_KEY_PRESS_COOLDOWN; };
+      player.SetAnimation(PLAYER_SHOOTING, onFinish);
+    }
+    else {
+      isChargeHeld = false;
+    }
   }
 
   // Movement increments are restricted based on anim speed
   if (player.state != PLAYER_IDLE)
     return;
-
-  moveKeyPressCooldown += _elapsed;
-  attackKeyPressCooldown += _elapsed;
-  attackToIdleCooldown += _elapsed;
 
   Direction direction = Direction::NONE;
   if (moveKeyPressCooldown >= MOVE_KEY_PRESS_COOLDOWN) {
@@ -67,18 +70,22 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
   }
  
 
-  if (attackKeyPressCooldown >= ATTACK_KEY_PRESS_COOLDOWN) {
-    if (InputManager->has(PRESSED_ACTION1)) {
-      attackKeyPressCooldown = 0.0f;
-      player.chargeComponent.SetCharging(true);
-    }
-  }
+  if (InputManager->has(PRESSED_ACTION1) && isChargeHeld == false) {
+    player.Attack(player.chargeComponent.GetChargeCounter());
+    isChargeHeld = true;
 
-  /*if (InputManager->empty()) {
-    if (player.state != PLAYER_SHOOTING) {
-      player.SetAnimation(PLAYER_IDLE);
-    }
-  }*/
+    attackKeyPressCooldown = 0.0f;
+    auto onFinish = [&player, this]() { 
+
+      if (isChargeHeld) {
+        player.chargeComponent.SetCharging(true);
+      }
+
+      player.SetAnimation(PLAYER_IDLE); 
+      this->attackKeyPressCooldown = ATTACK_KEY_PRESS_COOLDOWN; 
+    };
+    player.SetAnimation(PLAYER_SHOOTING, onFinish);
+  }
 
   if (InputManager->has(RELEASED_UP)) {
     direction = Direction::NONE;
@@ -95,7 +102,9 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
 
   if (direction != Direction::NONE && player.state != PLAYER_SHOOTING) {
     bool moved = player.Move(direction);
+
     if (moved) {
+      moveKeyPressCooldown = 0.0f;
       auto onFinish = [&player]() {
  
         //Cooldown until player's movement catches up to actual position (avoid walking through spells)
@@ -114,7 +123,7 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
     else {
       player.SetAnimation(PLAYER_IDLE);
     }
-    moveKeyPressCooldown = 0.0f;
+    moveKeyPressCooldown = MOVE_KEY_PRESS_COOLDOWN;
   }
 }
 

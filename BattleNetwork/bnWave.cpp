@@ -24,7 +24,7 @@ Wave::Wave(Field* _field, Team _team) : Spell() {
   hit = false;
   texture = TEXTURES.GetTexture(TextureType::SPELL_WAVE);
   for (int x = 0; x < WAVE_ANIMATION_SPRITES; x++) {
-    animation.addFrame(0.3f, IntRect(WAVE_ANIMATION_WIDTH*x, 0, WAVE_ANIMATION_WIDTH, WAVE_ANIMATION_HEIGHT));
+    animation.Add(0.3f, IntRect(WAVE_ANIMATION_WIDTH*x, 0, WAVE_ANIMATION_WIDTH, WAVE_ANIMATION_HEIGHT));
   }
   progress = 0.0f;
   hitHeight = 0.0f;
@@ -50,7 +50,7 @@ void Wave::Update(float _elapsed) {
   setPosition(tile->getPosition().x + 5.f, tile->getPosition().y - 50.0f);
   progress += 0.05f;
   if (progress < 1.f) {
-    animation(*this, progress);
+    animator(progress, *this, animation);
   }
 
   damageCooldown += _elapsed;
@@ -119,9 +119,4 @@ void Wave::Attack(Entity* _entity) {
 
 vector<Drawable*> Wave::GetMiscComponents() {
   return vector<Drawable*>();
-}
-
-void Wave::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
-  //animator.addAnimation(static_cast<Buster>(_state), _animation, sf::seconds(_duration));
-  assert(false && "Wave does not have an animator");
 }

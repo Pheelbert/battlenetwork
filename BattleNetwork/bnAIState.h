@@ -11,6 +11,7 @@ private:
 
 public:
   AIState() { ; }
+  AIState(const AIState<T>& rhs) = default;
   AIState(AIState<T>&& ref) = default;
 
   template<class U>
@@ -21,6 +22,8 @@ public:
   }
 
   AIState<T>* Update(float _elapsed, T& context) {
+    nextState = nullptr;
+
     OnUpdate(_elapsed, context);
     if (nextState) {
       return nextState;

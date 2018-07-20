@@ -7,53 +7,34 @@
 #define Y_OFFSET 15
 
 #define COMPONENT_FRAME_COUNT 4
-#define COMPONENT_WIDTH 32
-#define COMPONENT_HEIGHT 32
+#define COMPONENT_WIDTH 64
+#define COMPONENT_HEIGHT 64
 
 LanBackground::LanBackground(void)
-  : progress(0.0f), Background() {
-  bgTexture = TEXTURES.LoadTextureFromFile("resources/backgrounds/green/bg_green.png");
-  background.setTexture(*bgTexture);
-  background.setScale(2.f, 2.f);
-
-  cmTexture = TEXTURES.LoadTextureFromFile("resources/backgrounds/green/fg_green.png");
-  component.setTexture(*cmTexture);
-  for (int x = 0; x < COMPONENT_FRAME_COUNT; x++) {
-    float relative = 0.0f;
-    (x == COMPONENT_FRAME_COUNT - 1) ? relative = 2.f : relative = 0.3f;
-    animation.addFrame(relative, IntRect(COMPONENT_WIDTH*x, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT));
-  }
+  : x(0.0f), y(0.0f), progress(0.0f), Background(*TEXTURES.LoadTextureFromFile("resources/backgrounds/lan/bg.png"), 240, 180) {
+  FillScreen(sf::Vector2u(COMPONENT_WIDTH, COMPONENT_HEIGHT));
 }
 
 LanBackground::~LanBackground(void) {
 }
 
-void LanBackground::Draw() {
+void LanBackground::Update(float _elapsed) {
   progress += 0.01f;
   if (progress >= 1.f) progress = 0.0f;
-  static float mx = 0.0f, my = 0.0f;
-  bool ySwitch = false, xSwitch = false;;
-  ENGINE.Draw(background);
-  for (int y = -10; y <= 10; y++) {
-    for (int x = -10; x <= 15; x++) {
-      if (xSwitch && ySwitch) {
-        component.setPosition(x*32.f + x * X_OFFSET + mx, y*32.f + y * Y_OFFSET + my);
-        component.setScale(2.f, 2.f);
-        animation(component, progress);
-        ENGINE.Draw(component);
-      }
-      xSwitch = !xSwitch;
-    }
-    ySwitch = !ySwitch;
+
+  y -= 0.03f / _elapsed;
+  x -= 0.03f / _elapsed;
+
+  if (x < 0) {
+    x = 1;
   }
 
-  my += 0.5f;
-  mx += 0.5f;
+  if (y < 0) {
+    y = 1;
+  }
 
-  if (mx >= 470.0f) {
-    mx = 0;
-  }
-  if (my >= 283.f) {
-    my = 0;
-  }
+  int frame = progress * COMPONENT_FRAME_COUNT;
+
+  Wrap(sf::Vector2f(x, y));
+  TextureOffset(sf::Vector2f(frame*COMPONENT_WIDTH, 0));
 }

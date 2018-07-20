@@ -32,10 +32,6 @@ vector<Drawable*> Entity::GetMiscComponents() {
   return vector<Drawable*>();
 }
 
-void Entity::SetAnimation(string _state) {
-  assert(false && "SetAnimation shouldn't be called directly from Entity");
-}
-
 const float Entity::GetHitHeight() const {
   //assert(false && "GetHitHeight shouldn't be called directly from Entity");
   return 0;
@@ -86,6 +82,16 @@ void Entity::SetPassthrough(bool state)
 bool Entity::IsPassthrough()
 {
   return passthrough;
+}
+
+void Entity::SetFloatShoe(bool state)
+{
+  floatShoe = state;
+}
+
+bool Entity::HasFloatShoe()
+{
+  return floatShoe;
 }
 
 void Entity::Delete()

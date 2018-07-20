@@ -1,12 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "bnAnimate.h"
+
 using sf::CircleShape;
 using sf::Sprite;
 using sf::Drawable;
 using sf::Texture;
-#include <Thor/Animations.hpp>
-using thor::FrameAnimation;
-using thor::Animator;
 using sf::IntRect;
 class Entity;
 
@@ -42,6 +41,7 @@ private:
   float animationProgress;
   Texture chargeTexture;
   Sprite chargeSprite;
-  FrameAnimation blueChargeAnimation;
-  FrameAnimation purpleChargeAnimation;
+  Animate animator;
+  FrameList blueChargeAnimation;
+  FrameList purpleChargeAnimation;
 };

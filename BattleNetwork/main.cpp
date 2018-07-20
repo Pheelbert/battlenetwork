@@ -4,9 +4,9 @@
 #include "bnInputManager.h"
 #include "bnEngine.h"
 #include "bnMainMenuScene.h"
+#include "bnAnimate.h"
 #include "bnChronoXConfigReader.h"
 #include "SFML/System.hpp"
-#include <Thor/Animations.hpp>
 #include <time.h>
 #include <queue>
 #include <atomic>
@@ -145,7 +145,8 @@ int main(int argc, char** argv) {
   // This will be loaded from the resource manager AFTER it's ready
   sf::Texture* bg = nullptr;
   sf::Texture* progs = nullptr;
-  thor::FrameAnimation progAnim;
+  FrameList progAnim;
+  Animate animator;
   float progAnimProgress = 0.f;
   LayeredDrawable bgSprite;
   LayeredDrawable progSprite;
@@ -222,7 +223,7 @@ int main(int argc, char** argv) {
 
             int i = 0;
             for (int x = 0; x < TITLE_ANIM_CHAR_SPRITES; x++) {
-              progAnim.addFrame(1.f/(float)TITLE_ANIM_CHAR_SPRITES, sf::IntRect(TITLE_ANIM_CHAR_WIDTH*i, 0, TITLE_ANIM_CHAR_WIDTH, TITLE_ANIM_CHAR_HEIGHT));
+              progAnim.Add(1.f/(float)TITLE_ANIM_CHAR_SPRITES, sf::IntRect(TITLE_ANIM_CHAR_WIDTH*i, 0, TITLE_ANIM_CHAR_WIDTH, TITLE_ANIM_CHAR_HEIGHT));
               i++;
             }
 
@@ -305,7 +306,7 @@ int main(int argc, char** argv) {
     }
 
     if (progs) {
-      progAnim(progSprite, progAnimProgress);
+      animator(progAnimProgress, progSprite, progAnim);
       ENGINE.Draw(&progSprite);
       ENGINE.Draw(startLabel);
     }

@@ -220,6 +220,8 @@ int BattleScene::Run(Mob* mob) {
 
     camera.Update(elapsed);
 
+    background->Update(elapsed);
+
     // Do not update when paused or in chip select
     if (!(isPaused || isInChipSelect)) {
       field->Update(elapsed);
@@ -228,7 +230,7 @@ int BattleScene::Run(Mob* mob) {
     ENGINE.Clear();
     ENGINE.SetView(camera.GetView());
 
-    background->Draw();
+    ENGINE.Draw(background);
 
     sf::Vector2f cameraAntiOffset = -ENGINE.GetViewOffset();
 
@@ -449,6 +451,8 @@ int BattleScene::Run(Mob* mob) {
       }
       
       if (isInChipSelect == false && !isBattleRoundOver) {
+        player->SetCharging(false);
+
         AUDIO.Play(AudioType::CHIP_SELECT);
         // slide up the screen a hair
         //camera.MoveCamera(sf::Vector2f(240.f, 140.f), sf::seconds(0.5f));

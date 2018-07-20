@@ -1,5 +1,5 @@
-StartTime 1531939952
-Engine initialized: 0.294000 secs
+StartTime 1532046096
+Engine initialized: 0.282000 secs
 Loaded texture: resources/ui/alert.png
 
 Loaded texture: resources/backgrounds/title/tile_en.png
@@ -52,15 +52,9 @@ Loaded audio: resources/sfx/counter.ogg
 
 Loaded audio: resources/sfx/chip_cancel.ogg
 
-Loaded audio: resources/sfx/chip_choose.ogg
-
-Loaded audio: resources/sfx/chip_confirm.ogg
-
-Loaded audio: resources/sfx/chip_desc.ogg
-
 Loaded texture: resources/navis/megaman/navi_megaman_atlas.png
 
-Loaded audio: resources/sfx/chip_desc_close.ogg
+Loaded audio: resources/sfx/chip_choose.ogg
 
 Loaded texture: resources/navis/starman/navi_starman_atlas.png
 
@@ -72,7 +66,7 @@ Loaded texture: resources/mobs/mettaur/mob_mettaur_move.png
 
 Loaded texture: resources/mobs/mettaur/mob_mettaur_hit.png
 
-Loaded audio: resources/sfx/chip_select.ogg
+Loaded audio: resources/sfx/chip_confirm.ogg
 
 Loaded texture: resources/mobs/mettaur/mob_mettaur_attack.png
 
@@ -86,7 +80,7 @@ Loaded texture: resources/mobs/progsman/mob_progsman_hit.png
 
 Loaded texture: resources/mobs/progsman/mob_progsman_punch.png
 
-Loaded audio: resources/sfx/chip_error.ogg
+Loaded audio: resources/sfx/chip_desc.ogg
 
 Loaded texture: resources/mobs/progsman/mob_progsman_throw.png
 
@@ -100,21 +94,19 @@ Loaded texture: resources/spells/spell_buster_charge.png
 
 Loaded texture: resources/spells/spell_wave.png
 
-Loaded audio: resources/sfx/custom_bar_full.ogg
-
 Loaded texture: resources/spells/spell_prog_bomb.png
 
 Loaded texture: resources/ui/chip_select.png
+
+Loaded audio: resources/sfx/chip_desc_close.ogg
 
 Loaded texture: resources/ui/chip_cursor_small.png
 
 Loaded texture: resources/ui/chip_cursor_big.png
 
-Loaded audio: resources/sfx/chip_screen_open.ogg
+Loaded audio: resources/sfx/chip_select.ogg
 
-Loaded audio: resources/sfx/item_get.ogg
-
-Loaded audio: resources/sfx/deleted.ogg
+Loaded audio: resources/sfx/chip_error.ogg
 
 Loaded texture: resources/ui/chip_cards.png
 
@@ -122,9 +114,13 @@ Loaded texture: resources/ui/chip_icons.png
 
 Loaded texture: resources/ui/chip_nodata.png
 
+Loaded audio: resources/sfx/custom_bar_full.ogg
+
 Loaded texture: resources/ui/chip_senddata.png
 
 Loaded texture: resources/ui/program_advance.png
+
+Loaded audio: resources/sfx/chip_screen_open.ogg
 
 Loaded texture: resources/ui/battle_results.png
 
@@ -140,13 +136,13 @@ Loaded texture: resources/ui/folder_rarity.png
 
 Loaded texture: resources/ui/scrollbar.png
 
+Loaded audio: resources/sfx/item_get.ogg
+
 Loaded texture: resources/backgrounds/title/bg_blue.png
 
-Loaded audio: resources/sfx/explode.ogg
+Loaded audio: resources/sfx/deleted.ogg
 
 Loaded texture: resources/backgrounds/title/prog-pulse.png
-
-Loaded audio: resources/sfx/gun.ogg
 
 Loaded texture: resources/backgrounds/game_over/game_over.png
 
@@ -158,15 +154,11 @@ Loaded texture: resources/backgrounds/main_menu/ow.png
 
 Loaded texture: resources/backgrounds/main_menu/ow2.png
 
-Loaded audio: resources/sfx/health_alert.ogg
-
 Loaded texture: resources/backgrounds/main_menu/arrow.png
 
 Loaded texture: resources/backgrounds/folder/bg.png
 
 Loaded texture: resources/ui/gamepad_support_icon.png
-
-Loaded audio: resources/sfx/hurt.ogg
 
 Loaded texture: resources/ui/main_menu_ui.png
 
@@ -174,33 +166,42 @@ Loaded texture: resources/ui/elements.png
 
 Loaded texture: resources/shaders/textures/distortion.png
 
+Loaded audio: resources/sfx/explode.ogg
+
 Loaded texture: resources/shaders/textures/heat.png
 
-Loaded audio: resources/sfx/panel_crack.ogg
-
 Loaded texture: resources/shaders/textures/noise.png
+
+Loaded audio: resources/sfx/gun.ogg
 
 Loaded texture: resources/shaders/textures/noise_invert.png
 
 Loaded texture: resources/ui/light.png
 
-Loaded textures: 0.144000 secs
+Loaded textures: 0.137000 secs
 Loaded shader: resources/shaders/black_fade.frag.txt
 Loaded shader: resources/shaders/custom_bar.frag.txt
+Loaded audio: resources/sfx/health_alert.ogg
+
 Loaded shader: resources/shaders/greyscale.frag.txt
 Loaded shader: resources/shaders/outline.frag.txt
 Loaded shader: resources/shaders/pixel_blur.frag.txt
 Loaded shader: resources/shaders/texel_pixel_blur.frag.txt
-Loaded audio: resources/sfx/panel_return.ogg
-
+Loaded shader: resources/shaders/texel_texture_wrap.frag.txt
 Loaded shader: resources/shaders/white.frag.txt
 Loaded shader: resources/shaders/white_fade.frag.txt
+Loaded audio: resources/sfx/hurt.ogg
+
 Loaded shader: resources/shaders/yellow.frag.txt
 Loaded shader: resources/shaders/distortion.frag.txt
 Loaded shader: resources/shaders/spot_distortion.frag.txt
 Loaded shader: resources/shaders/spot_reflection.frag.txt
 Loaded shader: resources/shaders/transition.frag.txt
-Loaded shaders: 0.003000 secs
+Loaded shaders: 0.004000 secs
+Loaded audio: resources/sfx/panel_crack.ogg
+
+Loaded audio: resources/sfx/panel_return.ogg
+
 Loaded audio: resources/sfx/pause.ogg
 
 Loaded audio: resources/sfx/pre_battle.ogg
@@ -225,12 +226,39 @@ Loaded audio: resources/sfx/new_game.ogg
 
 Loaded audio: resources/sfx/text.ogg
 
-Loaded audio sources: 0.184000 secs
-Loaded texture: resources/backgrounds/green/bg_green.png
-
-Loaded texture: resources/backgrounds/green/fg_green.png
+Loaded audio sources: 0.181000 secs
+Loaded texture: resources/backgrounds/lan/bg.png
 
 Loaded font: resources/fonts/dr_cain_terminal.ttf
+
+Loaded font: resources/fonts/mmbnthick_regular.ttf
+
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
+Error. PA "No Entry": only has 1 required chip for recipe. PA's must have 2 or more chips. Skipping entry.
+Loaded font: resources/fonts/mmbnthick_regular.ttf
+
+Loaded font: resources/fonts/dr_cain_terminal.ttf
+
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
+Loaded texture: resources/ui/img_health.png
+
+Loaded texture: resources/spells/spell_buster_charge.png
+
+Loaded font: resources/fonts/mmbnthick_regular.ttf
+
+Loaded texture: resources/backgrounds/virus/fg.png
+
+Loaded font: resources/fonts/dr_cain_terminal.ttf
+
+Loaded texture: resources/ui/custom.png
+
+Loaded font: resources/fonts/mmbnthick_regular.ttf
 
 Loaded font: resources/fonts/mmbnthick_regular.ttf
 
@@ -251,13 +279,40 @@ Loaded texture: resources/spells/spell_buster_charge.png
 
 Loaded font: resources/fonts/mmbnthick_regular.ttf
 
-Loaded texture: resources/backgrounds/green/bg_green.png
-
-Loaded texture: resources/backgrounds/green/fg_green.png
+Loaded texture: resources/backgrounds/grave/fg.png
 
 Loaded font: resources/fonts/dr_cain_terminal.ttf
 
 Loaded texture: resources/ui/custom.png
+
+Loaded font: resources/fonts/mmbnthick_regular.ttf
+
+Loaded font: resources/fonts/mmbnthick_regular.ttf
+
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
+Error. PA "No Entry": only has 1 required chip for recipe. PA's must have 2 or more chips. Skipping entry.
+Loaded font: resources/fonts/mmbnthick_regular.ttf
+
+Loaded font: resources/fonts/dr_cain_terminal.ttf
+
+Loaded font: resources/fonts/mgm_nbr_pheelbert.ttf
+
+Loaded texture: resources/ui/img_health.png
+
+Loaded texture: resources/spells/spell_buster_charge.png
+
+Loaded font: resources/fonts/mmbnthick_regular.ttf
+
+Loaded texture: resources/backgrounds/virus/fg.png
+
+Loaded font: resources/fonts/dr_cain_terminal.ttf
+
+Loaded texture: resources/ui/custom.png
+
+Loaded font: resources/fonts/mmbnthick_regular.ttf
 
 Loaded font: resources/fonts/mmbnthick_regular.ttf
 

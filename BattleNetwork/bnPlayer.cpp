@@ -194,6 +194,11 @@ PlayerHealthUI* Player::GetHealthUI() const {
   return healthUI;
 }
 
+void Player::SetCharging(bool state)
+{
+  chargeComponent.SetCharging(state);
+}
+
 void Player::SetAnimation(string _state, std::function<void()> onFinish) {
   state = _state;
 

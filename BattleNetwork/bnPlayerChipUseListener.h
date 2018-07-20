@@ -10,13 +10,14 @@
 class PlayerChipUseListener : public ChipUseListener {
 private:
   Player * player;
-  sf::Clock invisTimer;
 
 public:
   PlayerChipUseListener(Player* _player) : ChipUseListener() { player = _player; }
   PlayerChipUseListener(Player& _player) : ChipUseListener() { player = &_player;  }
 
   void OnChipUse(Chip& chip) {
+    player->SetCharging(false);
+
     std::string name = chip.GetShortName();
 
     if (name.substr(0, 5) == "Recov") {
@@ -51,7 +52,7 @@ public:
       AUDIO.Play(AudioType::INVISIBLE);
       player->SetPassthrough(true);
       player->setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 / 2.f)));
-      invisTimer.restart();
+      //invisTimer.restart();
     }
     else if (name == "XtrmeCnnon") {
       Cannon* xtreme1 = new Cannon(player->GetField(), player->GetTeam(), chip.GetDamage());

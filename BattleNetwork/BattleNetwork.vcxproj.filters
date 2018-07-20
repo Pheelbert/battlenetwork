@@ -170,9 +170,6 @@
     <Filter Include="Battle\Entity\Character\Player\Starman\States">
       <UniqueIdentifier>{b7b66854-d776-4a16-ac13-be8464927b6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Resources\TextureResource\Props">
-      <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Overworld">
       <UniqueIdentifier>{380f4ec8-7bec-4707-ac1e-38788c83c4b0}</UniqueIdentifier>
     </Filter>
@@ -206,20 +203,23 @@
     <Filter Include="Utilities">
       <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUseListener">
+    <Filter Include="Battle\Chips\ChipUseListener">
       <UniqueIdentifier>{635d6105-57c6-40d2-be0b-a016ed816e8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUseListener\Player">
+    <Filter Include="Battle\Chips\ChipUseListener\Player">
       <UniqueIdentifier>{1130e585-ede8-4349-b692-28fef5025bb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUseListener\Any">
+    <Filter Include="Battle\Chips\ChipUseListener\Any">
       <UniqueIdentifier>{66d9858f-2c9d-4e25-9578-5c0dd84e32b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUsePublisher">
+    <Filter Include="Battle\Chips\ChipUsePublisher">
       <UniqueIdentifier>{0be851a6-6c86-4ffb-a4f9-0f230a542869}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUsePublisher\UI">
+    <Filter Include="Battle\Chips\ChipUsePublisher\UI">
       <UniqueIdentifier>{2ffdbd56-f900-4230-b51b-8239abe620b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Props">
+      <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -358,9 +358,6 @@
     <ClCompile Include="bnVirusBackground.cpp">
       <Filter>Battle\Backgrounds</Filter>
     </ClCompile>
-    <ClCompile Include="bnBackground.cpp">
-      <Filter>Engine\Resources\TextureResource\Props</Filter>
-    </ClCompile>
     <ClCompile Include="bnProgsManBossFight.cpp">
       <Filter>Battle\Mob\Boss\ProgsMan</Filter>
     </ClCompile>
@@ -428,10 +425,10 @@
       <Filter>Battle\Entity\Character</Filter>
     </ClCompile>
     <ClCompile Include="bnSelectedChipsUI.cpp">
-      <Filter>Battle\Components\ChipUsePublisher\UI</Filter>
+      <Filter>Battle\Chips\ChipUsePublisher\UI</Filter>
     </ClCompile>
     <ClCompile Include="bnChipUseListener.cpp">
-      <Filter>Battle\Components\ChipUseListener</Filter>
+      <Filter>Battle\Chips\ChipUseListener</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -656,7 +653,7 @@
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClInclude>
     <ClInclude Include="bnBackground.h">
-      <Filter>Engine\Resources\TextureResource\Props</Filter>
+      <Filter>Engine\Props</Filter>
     </ClInclude>
     <ClInclude Include="bnOverworldMap.h">
       <Filter>Overworld\Map</Filter>
@@ -707,16 +704,19 @@
       <Filter>Battle\Entity\Character\Any\States</Filter>
     </ClInclude>
     <ClInclude Include="bnChipUseListener.h">
-      <Filter>Battle\Components\ChipUseListener</Filter>
+      <Filter>Battle\Chips\ChipUseListener</Filter>
     </ClInclude>
     <ClInclude Include="bnChipUsePublisher.h">
-      <Filter>Battle\Components\ChipUsePublisher</Filter>
+      <Filter>Battle\Chips\ChipUsePublisher</Filter>
     </ClInclude>
     <ClInclude Include="bnSelectedChipsUI.h">
-      <Filter>Battle\Components\ChipUsePublisher\UI</Filter>
+      <Filter>Battle\Chips\ChipUsePublisher\UI</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerChipUseListener.h">
-      <Filter>Battle\Components\ChipUseListener\Player</Filter>
+      <Filter>Battle\Chips\ChipUseListener\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="bnComponent.h">
+      <Filter>Battle\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

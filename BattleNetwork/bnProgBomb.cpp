@@ -22,7 +22,7 @@ ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, float _duration) {
   hitHeight = 0.0f;
   random = 0;
 
-  animation.addFrame(0.3f, IntRect(0, 0, 19, 41));
+  //animation.addFrame(0.3f, IntRect(0, 0, 19, 41));
 
   arcDuration = _duration;
   arcProgress = 0;
@@ -60,7 +60,7 @@ void ProgBomb::Update(float _elapsed) {
   setRotation(-(arcProgress / arcDuration)*45.0f);
   progress += 0.05f;
   if (progress < 1.f) {
-    animation(*this, progress);
+   // animation(*this, progress);
   }
 
   /* Have a target tile in mind
@@ -99,8 +99,4 @@ void ProgBomb::Attack(Entity* _entity) {
 
 vector<Drawable*> ProgBomb::GetMiscComponents() {
   return vector<Drawable*>();
-}
-
-void ProgBomb::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
-  assert(false && "Wave does not have an animator");
 }

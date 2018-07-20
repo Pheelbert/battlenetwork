@@ -102,8 +102,9 @@ int MainMenuScene::Run()
     ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
+    bg->Update(elapsed);
 
-    bg->Draw();
+    ENGINE.Draw(bg);
     ENGINE.Draw(map);
 
     // Draw navi moving

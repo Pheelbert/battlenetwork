@@ -126,7 +126,8 @@ bool ChipSelectionCust::CursorLeft() {
 }
 
 bool ChipSelectionCust::CursorAction() {
-  if (selectCount == 5) {
+  // Should never happen but just in case
+  if (selectCount > 5) {
     return false;
   }
 

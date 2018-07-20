@@ -26,7 +26,6 @@ Spell::Spell(void) {
   hitHeight = 0.0f;
   direction = Direction::NONE;
   texture = nullptr;
-  animation = FrameAnimation();
   bool markTile = false;
 }
 

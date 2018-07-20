@@ -1,8 +1,4 @@
 #pragma once
-#include <Thor/Animations.hpp>
-using thor::FrameAnimation;
-using thor::Animator;
-using sf::IntRect;
 
 #include "bnCharacter.h"
 #include "bnPlayerState.h"
@@ -14,6 +10,8 @@ using sf::IntRect;
 #include "bnPlayerControlledState.h"
 #include "bnPlayerIdleState.h"
 #include "bnPlayerHitState.h"
+
+using sf::IntRect;
 
 class Player : public Character, public AI<Player> {
 public:
@@ -36,6 +34,8 @@ public:
   int GetHitCount() const;
 
   PlayerHealthUI* GetHealthUI() const;
+
+  void SetCharging(bool state);
 
   virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
 private:

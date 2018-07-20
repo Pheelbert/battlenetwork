@@ -4,8 +4,6 @@ using sf::Texture;
 using sf::Sprite;
 using sf::IntRect;
 using sf::Drawable;
-#include <Thor/Animations.hpp>
-using thor::FrameAnimation;
 #include <vector>
 using std::vector;
 
@@ -16,15 +14,11 @@ public:
   LanBackground(void);
   ~LanBackground(void);
 
-  void Draw();
+  virtual void Update(float _elapsed);
 
 private:
-  Sprite component;
-  Sprite background;
-  Texture* bgTexture;
-  Texture* cmTexture;
-  FrameAnimation animation;
 
   //Animation
+  float x, y;
   float progress;
 };

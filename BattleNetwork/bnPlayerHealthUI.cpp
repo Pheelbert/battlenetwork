@@ -22,6 +22,7 @@ PlayerHealthUI::PlayerHealthUI(Player* _player)
   components.push_back(&sprite);
   components.push_back(&text);
   lastHP = currHP = _player->GetHealth();
+  text = Text(to_string(currHP), *font);
 }
 
 PlayerHealthUI::~PlayerHealthUI(void) {
@@ -50,7 +51,8 @@ void PlayerHealthUI::Update() {
       }
     }
 
-    text = Text(to_string(currHP), *font);
+    text.setFillColor(sf::Color::White);
+    text.setString(to_string(currHP));
     text.setOrigin(text.getLocalBounds().width, 0);
     text.setPosition(80.0f, -1.f);
     text.setScale(0.8f, 0.8f);
