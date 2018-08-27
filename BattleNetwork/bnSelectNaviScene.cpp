@@ -32,21 +32,29 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   // NAVI UI font
   sf::Font *naviFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
   sf::Text *naviLabel = new sf::Text("Mettaur", *naviFont);
-  naviLabel->setPosition(275.f, 15.f);
+  naviLabel->setPosition(30.f, 20.f);
+  naviLabel->setOutlineColor(sf::Color(48, 56, 80));
+  naviLabel->setOutlineThickness(2.f);
+  naviLabel->setScale(0.8f, 0.8f);
 
   sf::Text *attackLabel = new sf::Text("1", *naviFont);
-  attackLabel->setPosition(325.f, 30.f);
+  attackLabel->setPosition(425.f, 15.f);
+  attackLabel->setOutlineColor(sf::Color(48, 56, 80));
+  attackLabel->setOutlineThickness(2.f);
+  attackLabel->setScale(0.8f, 0.8f);
 
   sf::Text *speedLabel = new sf::Text("1", *naviFont);
-  speedLabel->setPosition(325.f, 45.f);
+  speedLabel->setPosition(425.f, 40.f);
+  speedLabel->setOutlineColor(sf::Color(48, 56, 80));
+  speedLabel->setOutlineThickness(2.f);
+  speedLabel->setScale(0.8f, 0.8f);
 
-  sf::Font *hpFont = TEXTURES.LoadFontFromFile("resources/fonts/mgm_nbr_pheelbert.ttf");
-  sf::Text *hpLabel = new sf::Text("20", *hpFont);
+  sf::Text *hpLabel = new sf::Text("20", *naviFont);
   hpLabel->setOutlineColor(sf::Color(48, 56, 80));
   hpLabel->setOutlineThickness(2.f);
   hpLabel->setScale(0.8f, 0.8f);
   hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
-  hpLabel->setPosition(sf::Vector2f(180.f, 33.0f));
+  hpLabel->setPosition(sf::Vector2f(425.f, 90.0f));
 
   float maxNumberCooldown = 0.5;
   float numberCooldown = maxNumberCooldown; // half a second
@@ -59,7 +67,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   // UI Sprites
   sf::Sprite charName(LOAD_TEXTURE(CHAR_NAME));
   charName.setScale(2.f, 2.f);
-  charName.setPosition(10, 0);
+  charName.setPosition(10, 10);
 
   sf::Sprite charElement(LOAD_TEXTURE(CHAR_ELEMENT));
   charElement.setScale(2.f, 2.f);
@@ -67,11 +75,11 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
 
   sf::Sprite charStat(LOAD_TEXTURE(CHAR_STAT));
   charStat.setScale(2.f, 2.f);
-  charStat.setPosition(250, 0);
+  charStat.setPosition(250, 10);
 
   sf::Sprite charInfo(LOAD_TEXTURE(CHAR_INFO_BOX));
   charInfo.setScale(2.f, 2.f);
-  charInfo.setPosition(250, 250);
+  charInfo.setPosition(300, 160);
 
   // Current navi graphic
   sf::Sprite navi(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
@@ -91,6 +99,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   naviAnimator = Animation("resources/navis/megaman/megaman.animation");
   naviAnimator.Load();
   naviAnimator.SetAnimation("PLAYER_IDLE");
+  naviAnimator << Animate::Mode(Animate::Mode::Loop);
 
   naviAnimator.SetFrame(1, &navi);
 
@@ -117,7 +126,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
 
   sf::Sprite glowpad(*TEXTURES.GetTexture(TextureType::GLOWING_PAD_ATLAS));
   glowpad.setScale(2.f, 2.f);
-  glowpad.setPosition(40, 150);
+  glowpad.setPosition(37, 135);
 
   sf::Sprite glowbase(*TEXTURES.GetTexture(TextureType::GLOWING_PAD_BASE));
   glowbase.setScale(2.f, 2.f);
@@ -156,19 +165,34 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     ENGINE.Draw(glowbase);
     ENGINE.Draw(charName);
     ENGINE.Draw(charElement);
+
+    // Draw stat box three times for three diff. properties
+    charStat.setPosition(300, 10);
     ENGINE.Draw(charStat);
+
+    charStat.setPosition(300, 60);
+    ENGINE.Draw(charStat);
+
+    charStat.setPosition(300, 110);
+    ENGINE.Draw(charStat);
+
     ENGINE.Draw(charInfo);
 
     // Draw glow pad behind everything 
     glowpadAnimator.Update(elapsed, &glowpad);
     ENGINE.Draw(glowpad);
 
-    // Draw hp
+    // Draw labels
+    ENGINE.Draw(naviLabel);
     ENGINE.Draw(hpLabel);
+    ENGINE.Draw(speedLabel);
+    ENGINE.Draw(attackLabel);
 
     ENGINE.DrawUnderlay();
     ENGINE.DrawLayers();
     ENGINE.DrawOverlay();
+
+    naviAnimator.Update(elapsed, &navi);
 
     SelectedNavi prevSelect = naviSelectionIndex;
 
@@ -229,34 +253,34 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
 
     if (naviSelectionIndex != prevSelect) {
       factor = 125;
+
+      if (naviSelectionIndex == SelectedNavi::MEGAMAN) {
+        naviAnimator = Animation("resources/navis/megaman/megaman.animation");
+        naviAnimator.Load();
+        naviAnimator.SetAnimation("PLAYER_IDLE");
+        naviAnimator << Animate::Mode(Animate::Mode::Loop);
+      }
+      else if (naviSelectionIndex == SelectedNavi::STARMAN) {
+        naviAnimator = Animation("resources/navis/starman/starman.animation");
+        naviAnimator.Load();
+        naviAnimator.SetAnimation("PLAYER_IDLE");
+        naviAnimator << Animate::Mode(Animate::Mode::Loop);
+      }
     }
 
     if (naviSelectionIndex == SelectedNavi::MEGAMAN) {
-      navi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS), true);
-      naviLabel->setString("Megaman.EXE");
-      speedLabel->setString("2");
-      attackLabel->setString("1");
+      navi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS), false);
+      naviLabel->setString("Megaman");
+      speedLabel->setString("2x");
+      attackLabel->setString("1 - 10");
       hpLabel->setString("300");
-
-      naviAnimator = Animation("resources/navis/megaman/megaman.animation");
-      naviAnimator.Load();
-      naviAnimator.SetAnimation("PLAYER_IDLE");
-
-      naviAnimator.SetFrame(1, &navi);
-
     }
     else if (naviSelectionIndex == SelectedNavi::STARMAN) {
-      navi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS), true);
+      navi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS), false);
       naviLabel->setString("Starman");
-      speedLabel->setString("4");
-      attackLabel->setString("1");
+      speedLabel->setString("4x");
+      attackLabel->setString("1 - 10");
       hpLabel->setString("200");
-
-      naviAnimator = Animation("resources/navis/starman/starman.animation");
-      naviAnimator.Load();
-      naviAnimator.SetAnimation("PLAYER_IDLE");
-
-      naviAnimator.SetFrame(1, &navi);
     }
 
     if (numberCooldown > 0) {
@@ -284,8 +308,8 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
       int randAttack = rand() % 10;
       int randSpeed = rand() % 10;
 
-      attackLabel->setString(std::to_string(randAttack));
-      speedLabel->setString(std::to_string(randSpeed));
+      //attackLabel->setString(std::to_string(randAttack));
+      //speedLabel->setString(std::to_string(randSpeed));
       naviLabel->setString(sf::String(newstr));
     }
 
@@ -311,7 +335,8 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     }
 
     // Refresh mob graphic origin every frame as it may change
-    navi.setOrigin(navi.getTextureRect().width / 2.f, navi.getTextureRect().height / 2.f);
+    float xpos = ((glowbase.getTextureRect().width / 2.0f)*glowbase.getScale().x) + glowbase.getPosition().x;
+    navi.setPosition(xpos, glowbase.getPosition().y+10);
     hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
 
     LayeredDrawable* bake = new LayeredDrawable(sf::Sprite(navi));
@@ -346,7 +371,6 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   }
   delete font;
   delete naviFont;
-  delete hpFont;
   delete naviLabel;
   delete attackLabel;
   delete speedLabel;
