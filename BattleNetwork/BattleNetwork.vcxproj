@@ -203,6 +203,7 @@
     <ClCompile Include="bnProgsManBossFight.cpp" />
     <ClCompile Include="bnProgsManIdleState.cpp" />
     <ClCompile Include="bnRandomMettaurMob.cpp" />
+    <ClCompile Include="bnSelectNaviScene.cpp" />
     <ClCompile Include="bnShaderResourceManager.cpp" />
     <ClCompile Include="bnStarman.cpp" />
     <ClCompile Include="bnTile.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="bnProgsManPunchState.h" />
     <ClInclude Include="bnRandomMettaurMob.h" />
     <ClInclude Include="bnSelectMobScene.h" />
+    <ClInclude Include="bnSelectNaviScene.h" />
     <ClInclude Include="bnShaderResourceManager.h" />
     <ClInclude Include="bnShaderType.h" />
     <ClInclude Include="bnSmartShader.h" />

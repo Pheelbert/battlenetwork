@@ -22,14 +22,14 @@ protected:
   }
 
   void TextureOffset(sf::Vector2f _offset) {
-    textureRect.left = _offset.x;
-    textureRect.top  = _offset.y;
+    textureRect.left = (int)_offset.x;
+    textureRect.top  = (int)_offset.y;
   }
 
   void FillScreen(sf::Vector2u textureSize) {
     // How many times can the texture fit in (width,height)?
-    unsigned occuranceX = std::ceil(((float)width / (float)textureSize.x));
-    unsigned occuranceY = std::ceil(((float)height / (float)textureSize.y));
+    unsigned occuranceX = (unsigned)std::ceil(((float)width / (float)textureSize.x));
+    unsigned occuranceY = (unsigned)std::ceil(((float)height / (float)textureSize.y));
 
     occuranceX = std::max(occuranceX, (unsigned)1);
     occuranceY = std::max(occuranceY, (unsigned)1);
@@ -44,16 +44,16 @@ protected:
         sf::Vertex* quad = &vertices[(i + j * occuranceX) * 4];
 
         // define its 4 corners
-        quad[0].position = sf::Vector2f(i * textureSize.x * 2, j * textureSize.y * 2);
-        quad[1].position = sf::Vector2f((i + 1) * textureSize.x * 2, j * textureSize.y * 2);
-        quad[2].position = sf::Vector2f((i + 1) * textureSize.x * 2, (j + 1) * textureSize.y * 2);
-        quad[3].position = sf::Vector2f(i * textureSize.x * 2, (j + 1) * textureSize.y * 2);
+        quad[0].position = sf::Vector2f((float)(i * textureSize.x * 2), (float)(j * textureSize.y * 2));
+        quad[1].position = sf::Vector2f((float)((i + 1) * textureSize.x * 2), (float)(j * textureSize.y * 2));
+        quad[2].position = sf::Vector2f((float)((i + 1) * textureSize.x * 2), (float)((j + 1) * textureSize.y * 2));
+        quad[3].position = sf::Vector2f((float)(i * textureSize.x * 2), (float)((j + 1) * textureSize.y * 2));
 
         // define its 4 texture coordinates
         quad[0].texCoords = sf::Vector2f(0, 0);
-        quad[1].texCoords = sf::Vector2f(textureSize.x, 0);
-        quad[2].texCoords = sf::Vector2f(textureSize.x, textureSize.y);
-        quad[3].texCoords = sf::Vector2f(0, textureSize.y);
+        quad[1].texCoords = sf::Vector2f((float)textureSize.x, 0);
+        quad[2].texCoords = sf::Vector2f((float)textureSize.x, (float)textureSize.y);
+        quad[3].texCoords = sf::Vector2f(0, (float)textureSize.y);
       }
 
       textureRect = sf::IntRect(0, 0, textureSize.x, textureSize.y);

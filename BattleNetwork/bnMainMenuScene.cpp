@@ -3,6 +3,7 @@
 #include "bnFolderScene.h"
 #include "bnOverworldMap.h"
 #include "bnInfiniteMap.h"
+#include "bnSelectNaviScene.h"
 #include "bnSelectMobScene.h"
 #include "bnMemory.h"
 #include "bnCamera.h"
@@ -108,6 +109,14 @@ int MainMenuScene::Run()
     int lastMenuSelectionIndex = menuSelectionIndex;
 
     // Scene keyboard controls 
+    owNavi.setPosition(owNavi.getPosition() + sf::Vector2f(50.0f*elapsed, 0));
+
+    // TODO: fix this broken camera system
+    sf::Vector2f camOffset = camera.GetView().getSize();
+    camOffset.x /= 5;
+    camOffset.y /= 3.5;
+
+    camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition() - sf::Vector2f(0.5, 0.5)) + camOffset);
     
     if (!gotoNextScene && transitionProgress == 0.f) {
       if (INPUT.has(PRESSED_UP)) {
@@ -131,16 +140,6 @@ int MainMenuScene::Run()
       else {
         selectInputCooldown = 0;
       }
-
-      owNavi.setPosition(owNavi.getPosition() + sf::Vector2f(50.0f*elapsed, 0));
-
-      // TODO: fix this broken camera system
-      sf::Vector2f camOffset = camera.GetView().getSize();
-      camOffset.x /= 5;
-      camOffset.y /= 3.5;
-
-      camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition()-sf::Vector2f(0.5, 0.5))+camOffset);
-
       
       if (INPUT.has(PRESSED_ACTION1)) {
 
@@ -152,28 +151,8 @@ int MainMenuScene::Run()
 
         // Navi select
         if (menuSelectionIndex == 2) {
-          int nextNavi = (int)currentNavi + 1;
-          currentNavi = (SelectedNavi)nextNavi;
-
-          if (currentNavi == SelectedNavi::SIZE) {
-            currentNavi = SelectedNavi::STARMAN;
-          }
-
-          if (currentNavi == SelectedNavi::MEGAMAN) {
-  
-            owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
-            naviAnimator = Animation("resources/navis/megaman/megaman.animation");
-            naviAnimator.Load();
-            naviAnimator.SetAnimation("PLAYER_OW_RD");
-            naviAnimator << Animate::Mode(Animate::Mode::Loop);
-          }
-          else if (currentNavi == SelectedNavi::STARMAN) {
-            owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS));
-            naviAnimator = Animation("resources/navis/starman/starman.animation");
-            naviAnimator.Load();
-            naviAnimator.SetAnimation("PLAYER_OW_RD");
-            naviAnimator << Animate::Mode(Animate::Mode::Loop);
-          }
+          gotoNextScene = true;
+          AUDIO.Play(AudioType::CHIP_DESC);
         }
 
         // Mob select
@@ -210,6 +189,29 @@ int MainMenuScene::Run()
         if (result == 0) {
           break; // Breaks the while-loop
         }
+      } else if (menuSelectionIndex == 2) {
+        currentNavi = SelectNaviScene::Run(currentNavi);
+
+        if (currentNavi == SelectedNavi::MEGAMAN) {
+          owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
+          naviAnimator = Animation("resources/navis/megaman/megaman.animation");
+          naviAnimator.Load();
+          naviAnimator.SetAnimation("PLAYER_OW_RD");
+          naviAnimator << Animate::Mode(Animate::Mode::Loop);
+        }
+        else if (currentNavi == SelectedNavi::STARMAN) {
+          owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS));
+          naviAnimator = Animation("resources/navis/starman/starman.animation");
+          naviAnimator.Load();
+          naviAnimator.SetAnimation("PLAYER_OW_RD");
+          naviAnimator << Animate::Mode(Animate::Mode::Loop);
+        }
+
+        // reset internal clock (or everything will teleport)
+        elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+        std::cout << "time slept: " << elapsed << "\n";
+        clock.restart();
+        elapsed = 0;
       } else if (menuSelectionIndex == 3) {
         int result = SelectMobScene::Run(currentNavi);
 

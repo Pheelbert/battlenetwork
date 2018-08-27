@@ -221,6 +221,9 @@
     <Filter Include="Engine\Props">
       <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes\Select Navi">
+      <UniqueIdentifier>{9d3a1388-2568-497b-8e9d-9c02c4cc066e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -432,6 +435,9 @@
     </ClCompile>
     <ClCompile Include="bnStarman.cpp">
       <Filter>Battle\Entity\Character\Player\Starman</Filter>
+    </ClCompile>
+    <ClCompile Include="bnSelectNaviScene.cpp">
+      <Filter>Scenes\Select Navi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -723,6 +729,9 @@
     </ClInclude>
     <ClInclude Include="bnStarman.h">
       <Filter>Battle\Entity\Character\Player\Starman</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSelectNaviScene.h">
+      <Filter>Scenes\Select Navi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

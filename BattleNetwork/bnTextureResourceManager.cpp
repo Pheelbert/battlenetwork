@@ -147,6 +147,16 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/ui/folder_rarity.png");
   paths.push_back("resources/ui/scrollbar.png");
 
+  // Navi Select View
+  paths.push_back("resources/backgrounds/select/glow_sheet.png");
+  paths.push_back("resources/backgrounds/select/pad_base.png");
+  paths.push_back("resources/backgrounds/select/pad_bottom.png");
+  paths.push_back("resources/backgrounds/select/char_name.png");
+  paths.push_back("resources/backgrounds/select/stat.png");
+  paths.push_back("resources/backgrounds/select/element.png");
+  paths.push_back("resources/backgrounds/select/info_box.png");
+  paths.push_back("resources/backgrounds/select/symbol_slots.png");
+
   // Background/foreground
   paths.push_back("resources/backgrounds/title/bg_blue.png");
   paths.push_back("resources/backgrounds/title/prog-pulse.png");
@@ -157,6 +167,8 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/backgrounds/main_menu/ow2.png");
   paths.push_back("resources/backgrounds/main_menu/arrow.png");
   paths.push_back("resources/backgrounds/folder/bg.png");
+  paths.push_back("resources/backgrounds/select/bg.png");
+
   // other icons
   paths.push_back("resources/ui/gamepad_support_icon.png");
   paths.push_back("resources/ui/main_menu_ui.png");

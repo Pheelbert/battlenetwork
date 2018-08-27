@@ -75,12 +75,6 @@ int SelectMobScene::Run(SelectedNavi navi)
   // Animator for mobs
   Animation mobAnimator;
 
-  // Distortion effect
-  sf::Texture& distortionMap = *TEXTURES.GetTexture(TextureType::DISTORTION_TEXTURE);
-
-  // It is important to set repeated to true to enable scrolling upwards
-  distortionMap.setRepeated(true);
-
   // Transition
   sf::Shader& transition = *SHADERS.GetShader(ShaderType::TRANSITION);
   transition.setUniform("texture", sf::Shader::CurrentTexture);
@@ -91,10 +85,8 @@ int SelectMobScene::Run(SelectedNavi navi)
 
   bool gotoNextScene = false;
 
-  sf::Shader& shader = *SHADERS.GetShader(ShaderType::DISTORTION);
-
-  shader.setUniform("currentTexture", sf::Shader::CurrentTexture);
-  shader.setUniform("distortionMapTexture", distortionMap);
+  SmartShader shader = *SHADERS.GetShader(ShaderType::TEXEL_PIXEL_BLUR);
+  int factor = 125;
 
   // Current selection index
   int mobSelectionIndex = 0;
@@ -157,6 +149,9 @@ int SelectMobScene::Run(SelectedNavi navi)
     ENGINE.DrawLayers();
     ENGINE.DrawOverlay();
 
+
+    int prevSelect = mobSelectionIndex;
+
     // Scene keyboard controls
     if (!gotoNextScene && transitionProgress == 0.f) {
       if (INPUT.has(PRESSED_LEFT)) {
@@ -206,13 +201,27 @@ int SelectMobScene::Run(SelectedNavi navi)
     transitionProgress = std::min(1.f, transitionProgress);
 
     if (transitionProgress >= 1.f) {
-      return 2;
 
-      gotoNextScene = false;
+      delete font;
+      delete mobFont;
+      delete hpFont;
+      delete mobLabel;
+      delete attackLabel;
+      delete speedLabel;
+      delete menuLabel;
+      delete hpLabel;
+
+      ENGINE.RevokeShader();
+
+      return 2;
     }
 
     mobSelectionIndex = std::max(0, mobSelectionIndex);
     mobSelectionIndex = std::min(3, mobSelectionIndex);
+
+    if (mobSelectionIndex != prevSelect) {
+      factor = 125;
+    }
 
     if (mobSelectionIndex == 0) {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE),true);
@@ -288,17 +297,29 @@ int SelectMobScene::Run(SelectedNavi navi)
 
     mob.setColor(sf::Color(255, 255, 255, (sf::Uint32)(255.0*progress)));
 
-    shader.setUniform("time", 1.f-progress);
-    shader.setUniform("distortionFactor", 2.f*(1.f-progress));
-    shader.setUniform("riseFactor", 0.2f);
+    float range = (125.f - factor) / 125.f;
+    mob.setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 * range)));
 
+    sf::IntRect t = mob.getTextureRect();
+    sf::Vector2u size = mob.getTexture()->getSize();
+    shader.SetUniform("x", (float)t.left / (float)size.x);
+    shader.SetUniform("y", (float)t.top / (float)size.y);
+    shader.SetUniform("w", (float)t.width / (float)size.x);
+    shader.SetUniform("h", (float)t.height / (float)size.y);
+    shader.SetUniform("pixel_threshold", (float)(factor / 400.f));
+
+    factor -= elapsed * 180.f;
+
+    if (factor <= 0.f) {
+      factor = 0.f;
+    }
 
     // Refresh mob graphic origin every frame as it may change
     mob.setOrigin(mob.getTextureRect().width / 2.f, mob.getTextureRect().height / 2.f);
     hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
 
     LayeredDrawable* bake = new LayeredDrawable(sf::Sprite(mob));
-    bake->SetShader(&shader);
+    bake->SetShader(shader);
 
     ENGINE.Draw(bake);
     delete bake;
