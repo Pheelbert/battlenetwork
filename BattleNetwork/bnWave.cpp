@@ -27,7 +27,7 @@ Wave::Wave(Field* _field, Team _team) : Spell() {
   //Components setup and load
   auto onFinish = [this]() {
     Move(direction);
-    AUDIO.Play(AudioType::WAVE, 1);
+    AUDIO.Play(AudioType::WAVE);
     cooldown = 0;
     progress = 0.0f; 
   };

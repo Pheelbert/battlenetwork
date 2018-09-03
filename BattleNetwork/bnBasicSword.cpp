@@ -59,7 +59,7 @@ void BasicSword::Attack(Entity* _entity) {
     Character* isCharacter = dynamic_cast<Character*>(_entity);
 
     if (isCharacter && isCharacter->IsCountered()) {
-      AUDIO.Play(AudioType::COUNTER, 0);
+      AUDIO.Play(AudioType::COUNTER, AudioPriority::LOWEST);
       isCharacter->Stun(1000);
 
       if (isCharacter->GetHealth() == 0) {

@@ -30,7 +30,7 @@ ChipLibrary::Iter ChipLibrary::End()
 
 const unsigned ChipLibrary::GetSize() const
 {
-  return library.size();
+  return (unsigned)library.size();
 }
 
 const Element ChipLibrary::GetElementFromStr(std::string type)

@@ -96,7 +96,7 @@ void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {
   }
 }
 
-int AudioResourceManager::Play(AudioType type, int priority) {
+int AudioResourceManager::Play(AudioType type, AudioPriority priority) {
   if (!isEnabled) { return -1; }
 
   if (type == AudioType::AUDIO_TYPE_SIZE) {
@@ -111,7 +111,7 @@ int AudioResourceManager::Play(AudioType type, int priority) {
   // Find a free channel 
   
   // For low priority sounds, scan and see if this sound is already playing...
-  if (priority == 0) {
+  if (priority == AudioPriority::LOWEST) {
     for (int i = 0; i < NUM_OF_CHANNELS; i++) {
       if (channels[i].getStatus() == sf::SoundSource::Status::Playing) {
         if ((sf::SoundBuffer*)channels[i].getBuffer() == &sources[type]) {

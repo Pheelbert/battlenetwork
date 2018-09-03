@@ -216,7 +216,7 @@ int FolderScene::Run()
           // Go to previous mob 
           selectInputCooldown = maxSelectInputCooldown;
           currChipIndex--;
-          AUDIO.Play(AudioType::CHIP_SELECT, 1);
+          AUDIO.Play(AudioType::CHIP_SELECT);
         }
       }
       else if (INPUT.has(PRESSED_DOWN)) {
@@ -226,7 +226,7 @@ int FolderScene::Run()
           // Go to next mob 
           selectInputCooldown = maxSelectInputCooldown;
           currChipIndex++;
-          AUDIO.Play(AudioType::CHIP_SELECT, 1);
+          AUDIO.Play(AudioType::CHIP_SELECT);
         }
       }
       else {
@@ -236,7 +236,7 @@ int FolderScene::Run()
       currChipIndex = std::max(0, currChipIndex);
       currChipIndex = std::min(numOfChips-1, currChipIndex);
 
-      if (INPUT.has(PRESSED_ACTION2)) {
+      if (INPUT.has(PRESSED_B)) {
         gotoNextScene = true;
         AUDIO.Play(AudioType::CHIP_DESC_CLOSE);
       }

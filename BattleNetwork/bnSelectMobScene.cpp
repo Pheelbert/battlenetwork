@@ -63,11 +63,11 @@ int SelectMobScene::Run(SelectedNavi navi)
   float numberCooldown = maxNumberCooldown; // half a second
 
   // select menu graphic
-  sf::Sprite bg(*TEXTURES.GetTexture(TextureType::BATTLE_SELECT_BG));
+  sf::Sprite bg(LOAD_TEXTURE(BATTLE_SELECT_BG));
   bg.setScale(2.f, 2.f);
 
   // Current mob graphic
-  sf::Sprite mob(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE));
+  sf::Sprite mob(LOAD_TEXTURE(MOB_METTAUR_IDLE));
   mob.setScale(2.f, 2.f);
   mob.setOrigin(mob.getLocalBounds().width / 2.f, mob.getLocalBounds().height / 2.f);
   mob.setPosition(110.f, 130.f);
@@ -76,17 +76,17 @@ int SelectMobScene::Run(SelectedNavi navi)
   Animation mobAnimator;
 
   // Transition
-  sf::Shader& transition = *SHADERS.GetShader(ShaderType::TRANSITION);
+  sf::Shader& transition = LOAD_SHADER(TRANSITION);
   transition.setUniform("texture", sf::Shader::CurrentTexture);
-  transition.setUniform("map", *TEXTURES.GetTexture(TextureType::NOISE_TEXTURE));
+  transition.setUniform("map", LOAD_TEXTURE(NOISE_TEXTURE));
   transition.setUniform("progress", 0.f);
   float transitionProgress = 0.9f;
   ENGINE.RevokeShader();
 
   bool gotoNextScene = false;
 
-  SmartShader shader = *SHADERS.GetShader(ShaderType::TEXEL_PIXEL_BLUR);
-  int factor = 125;
+  SmartShader shader = LOAD_SHADER(TEXEL_PIXEL_BLUR);
+  float factor = 125;
 
   // Current selection index
   int mobSelectionIndex = 0;
@@ -182,7 +182,7 @@ int SelectMobScene::Run(SelectedNavi navi)
         selectInputCooldown = 0;
       }
 
-      if (INPUT.has(PRESSED_ACTION2)) {
+      if (INPUT.has(PRESSED_B)) {
         gotoNextScene = true;
         AUDIO.Play(AudioType::CHIP_DESC_CLOSE);
       }
@@ -275,7 +275,7 @@ int SelectMobScene::Run(SelectedNavi navi)
         } else {
           if (mobLabel->getString()[i] != ' ') {
             newstr += (char)(((rand() % (90 - 65)) + 65) + 1);
-            AUDIO.Play(AudioType::TEXT, 0);
+            AUDIO.Play(AudioType::TEXT, AudioPriority::LOWEST);
           }
           else {
             newstr += ' ';
@@ -325,8 +325,8 @@ int SelectMobScene::Run(SelectedNavi navi)
     delete bake;
 
     // Make a selection
-    if (INPUT.has(PRESSED_ACTION1)) {
-      AUDIO.Play(AudioType::CHIP_CONFIRM, 0);
+    if (INPUT.has(PRESSED_A)) {
+      AUDIO.Play(AudioType::CHIP_CONFIRM, AudioPriority::LOWEST);
 
       // Stop music and go to battle screen 
       AUDIO.StopStream();

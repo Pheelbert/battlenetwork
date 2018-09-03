@@ -76,7 +76,7 @@ void Player::Update(float _elapsed) {
   }
 
   // TODO: Get rid of this. Put this type of behavior in a component
-  if (cloakTimer.getElapsedTime() > sf::seconds(cloakTimeSecs)) {
+  if (cloakTimer.getElapsedTime() > sf::seconds((float)cloakTimeSecs)) {
     this->SetPassthrough(false);
     this->SetAlpha(255);
   }

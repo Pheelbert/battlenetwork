@@ -122,7 +122,7 @@ void Field::Update(float _elapsed) {
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
       tiles[y][x]->Update(_elapsed);
-      entityCount += tiles[y][x]->entities.size();
+      entityCount += (int)tiles[y][x]->entities.size();
     }
   }
 

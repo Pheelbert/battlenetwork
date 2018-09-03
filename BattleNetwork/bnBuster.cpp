@@ -121,7 +121,7 @@ void Buster::Attack(Entity* _entity) {
   }
 
   if (hit) {
-    AUDIO.Play(AudioType::HURT, 1);
+    AUDIO.Play(AudioType::HURT);
   }
 }
 

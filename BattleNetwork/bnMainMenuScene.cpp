@@ -141,7 +141,7 @@ int MainMenuScene::Run()
         selectInputCooldown = 0;
       }
       
-      if (INPUT.has(PRESSED_ACTION1)) {
+      if (INPUT.has(PRESSED_A)) {
 
         // Folder Select
         if (menuSelectionIndex == 1) {
@@ -234,7 +234,7 @@ int MainMenuScene::Run()
 
     
     if (menuSelectionIndex != lastMenuSelectionIndex) {
-      AUDIO.Play(AudioType::CHIP_SELECT, 1);
+      AUDIO.Play(AudioType::CHIP_SELECT);
     }
 
     ENGINE.Draw(overlay);

@@ -273,7 +273,7 @@ int main(int argc, char** argv) {
         whiteShader->setUniform("opacity", (float)(shaderCooldown / 1000.f)*0.5f);
       }
 
-      if (INPUT.has(PRESSED_ACTION3)) {
+      if (INPUT.has(PRESSED_START)) {
         inLoadState = false;
       }
     }

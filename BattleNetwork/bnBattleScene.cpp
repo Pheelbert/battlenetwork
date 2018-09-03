@@ -434,9 +434,9 @@ int BattleScene::Run(Player* player, Mob* mob) {
       else {
         AUDIO.Play(AudioType::PAUSE);
       }
-    } else if (INPUT.has(RELEASED_ACTION2) && !isInChipSelect && !isBattleRoundOver) {
+    } else if (INPUT.has(RELEASED_B) && !isInChipSelect && !isBattleRoundOver) {
       chipUI.UseNextChip();
-    } else if ((!isMobFinished && mob->IsSpawningDone()) || (INPUT.has(PRESSED_ACTION3) && customProgress >= customDuration && !isInChipSelect && !isBattleRoundOver)) {
+    } else if ((!isMobFinished && mob->IsSpawningDone()) || (INPUT.has(PRESSED_START) && customProgress >= customDuration && !isInChipSelect && !isBattleRoundOver)) {
        // enemy intro finished
       if (!isMobFinished) { 
         // toggle the flag
@@ -508,22 +508,22 @@ int BattleScene::Run(Player* player, Mob* mob) {
         chipSelectInputCooldown = 0;
       }
       
-      if (INPUT.has(PRESSED_ACTION1)) {
+      if (INPUT.has(PRESSED_A)) {
         bool performed = chipCustGUI.CursorAction();
 
         if (chipCustGUI.AreChipsReady()) {
-          AUDIO.Play(AudioType::CHIP_CONFIRM, 0);
+          AUDIO.Play(AudioType::CHIP_CONFIRM, AudioPriority::LOWEST);
           customProgress = 0; // NOTE: Hack. Need one more state boolean
           //camera.MoveCamera(sf::Vector2f(240.f, 160.f), sf::seconds(0.5f)); 
         } else if(performed){
-          AUDIO.Play(AudioType::CHIP_CHOOSE, 0);
+          AUDIO.Play(AudioType::CHIP_CHOOSE, AudioPriority::LOWEST);
         }
         else {
-          AUDIO.Play(AudioType::CHIP_ERROR, 0);
+          AUDIO.Play(AudioType::CHIP_ERROR, AudioPriority::LOWEST);
         }
-      } else if (INPUT.has(PRESSED_ACTION2)) {
+      } else if (INPUT.has(PRESSED_B)) {
         
-        chipCustGUI.CursorCancel() ? AUDIO.Play(AudioType::CHIP_CANCEL, 0) : 1;
+        chipCustGUI.CursorCancel() ? AUDIO.Play(AudioType::CHIP_CANCEL, AudioPriority::LOWEST) : 1;
       }
     }
 
@@ -645,7 +645,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
           battleResults->Move(sf::Vector2f(amount, 0));
         }
         else {
-          if (INPUT.has(PRESSED_ACTION1)) {
+          if (INPUT.has(PRESSED_A)) {
             // Have to hit twice
             if (battleResults->IsFinished()) {
               // TODO: sent the battle item off to the player's gaming session for storage
