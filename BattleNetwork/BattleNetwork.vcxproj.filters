@@ -224,6 +224,12 @@
     <Filter Include="Scenes\Select Navi">
       <UniqueIdentifier>{9d3a1388-2568-497b-8e9d-9c02c4cc066e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Addons">
+      <UniqueIdentifier>{1f5b033a-23dc-49c3-851a-b980cd582e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Addons\NaviRegistration">
+      <UniqueIdentifier>{7083bfe5-ae7f-40a6-9cec-6611633e79df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -438,6 +444,9 @@
     </ClCompile>
     <ClCompile Include="bnSelectNaviScene.cpp">
       <Filter>Scenes\Select Navi</Filter>
+    </ClCompile>
+    <ClCompile Include="bnNaviRegistration.cpp">
+      <Filter>Engine\Addons\NaviRegistration</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -732,6 +741,9 @@
     </ClInclude>
     <ClInclude Include="bnSelectNaviScene.h">
       <Filter>Scenes\Select Navi</Filter>
+    </ClInclude>
+    <ClInclude Include="bnNaviRegistration.h">
+      <Filter>Engine\Addons\NaviRegistration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

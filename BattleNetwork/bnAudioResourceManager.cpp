@@ -91,7 +91,7 @@ void AudioResourceManager::LoadSource(AudioType type, const std::string& path) {
   } else {
 
     Logger::GetMutex()->lock();
-    Logger::Logf("Loaded audio: %s\n", path.c_str());
+    Logger::Logf("Loaded audio: %s", path.c_str());
     Logger::GetMutex()->unlock();
   }
 }

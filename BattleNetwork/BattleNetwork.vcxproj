@@ -229,6 +229,7 @@
     <ClCompile Include="bnSelectMobScene.cpp" />
     <ClCompile Include="bnAgent.h" />
     <ClCompile Include="bnCanodumbCursor.cpp" />
+    <ClCompile Include="bnNaviRegistration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAnimate.h" />
@@ -327,6 +328,7 @@
     <ClInclude Include="bnTimer.h" />
     <ClInclude Include="bnFileUtil.h" />
     <ClInclude Include="bnCanonSmoke.h" />
+    <ClInclude Include="bnNaviRegistration.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="bnCanodumbCursor.h" />
   </ItemGroup>

@@ -30,13 +30,13 @@ Texture* TextureResourceManager::LoadTextureFromFile(string _path) {
   if (!texture->loadFromFile(_path)) {
 
     Logger::GetMutex()->lock();
-    Logger::Logf("Failed loading texture: %s\n", _path.c_str());
+    Logger::Logf("Failed loading texture: %s", _path.c_str());
     Logger::GetMutex()->unlock();
 
   } else {
 
     Logger::GetMutex()->lock();
-    Logger::Logf("Loaded texture: %s\n", _path.c_str());
+    Logger::Logf("Loaded texture: %s", _path.c_str());
     Logger::GetMutex()->unlock();
 
   }
@@ -61,9 +61,9 @@ sf::IntRect TextureResourceManager::GetIconRectFromID(unsigned ID) {
 Font* TextureResourceManager::LoadFontFromFile(string _path) {
   Font* font = new Font();
   if (!font->loadFromFile(_path)) {
-    Logger::Logf("Failed loading font: %s\n", _path.c_str());
+    Logger::Logf("Failed loading font: %s", _path.c_str());
   } else {
-    Logger::Logf("Loaded font: %s\n", _path.c_str());
+    Logger::Logf("Loaded font: %s", _path.c_str());
   }
   return font;
 }

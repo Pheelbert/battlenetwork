@@ -23,7 +23,6 @@ Starman::Starman(void) : Player()
   SetLayer(0);
   team = Team::RED;
 
-
   animationComponent.Setup(RESOURCE_PATH);
   animationComponent.Load();
 
