@@ -1,10 +1,12 @@
 
 # Author TheMaverickProgrammer
 
-## Update 7/19/2018
+## Update 9/4/2018
 [![starman.png](https://s8.postimg.cc/qjbob7h2d/starman.png)](https://postimg.cc/image/3umhbmzoh/)
 
 You can now switch between 2 Navis. Adding navis is easy. Just extend the `Player` class.
+
+See ["Adding Custom Navis"](https://github.com/TheMaverickProgrammer/battlenetwork/wiki/Creating-New-Navis) in the wiki for more!
 
 Canodumbs are complete.
 
@@ -134,6 +136,8 @@ New:
 * Improved background class
 * Entities are split into Character (can be hit), Spell (can attack), and Artifact (visual effects)
 * Improved buster logic
+* Easy custom navi registration hooks and features
+* Custom Navi select menu
 
 And more...
 
