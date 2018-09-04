@@ -12,6 +12,8 @@
 
 class Player; // forward decl
 
+typedef int SelectedNavi;
+
 class NaviRegistration {
 public:
   class NaviInfo {
@@ -20,6 +22,11 @@ public:
     Player* navi;
     sf::Sprite symbol;
     std::string special;
+    std::string overworldAnimationPath;
+    std::string battleAnimationPath;
+    std::string name;
+    sf::Texture* overworldTexture;
+    sf::Texture* battleTexture;
     int atk;
     int chargedAtk;
     double speed;
@@ -32,13 +39,28 @@ public:
     ~NaviInfo();
 
     template<class T> NaviInfo& SetNaviClass();
-    NaviInfo& SetSymbol(sf::Texture& symbol);
-    NaviInfo& SetSpecial(const std::string&& special);
+    NaviInfo& SetSymbolTexture(sf::Texture& symbol);
+    NaviInfo& SetSpecialDescription(const std::string&& special);
     NaviInfo& SetAttack(const int atk);
     NaviInfo& SetChargedAttack(const int atk);
     NaviInfo& SetSpeed(const double speed);
     NaviInfo& SetHP(const int HP);
     NaviInfo& SetIsSword(const bool enabled);
+    NaviInfo& SetOverworldAnimationPath(const std::string&& path);
+    NaviInfo& SetOverworldTexture(const sf::Texture* texture);
+    NaviInfo& SetBattleAnimationPath(const std::string&& path);
+    NaviInfo& SetBattleTexture(const sf::Texture* texture);
+    const sf::Texture& GetOverworldTexture() const;
+    const std::string& GetOverworldAnimationPath() const;
+    const sf::Texture& GetBattleTexture() const;
+    const std::string& GetBattleAnimationPath() const;
+    const std::string& GetName() const;
+    const std::string GetHPString() const;
+    const std::string GetSpeedString() const;
+    const std::string GetAttackString() const;
+    const std::string& GetSpecialDescriptionString() const;
+
+    Player* GetNavi() const;
   };
 
 private:
@@ -62,6 +84,12 @@ public:
 template<class T>
 inline NaviRegistration::NaviInfo & NaviRegistration::NaviInfo::SetNaviClass()
 {
-  loadNaviClass = [this]() { navi = new T(); };
+  loadNaviClass = [this]() { 
+    navi = new T(); 
+    this->battleTexture = const_cast<sf::Texture*>(navi->getTexture());
+    this->overworldTexture = const_cast<sf::Texture*>(navi->getTexture());
+  };
+
+
   return *this;
 }

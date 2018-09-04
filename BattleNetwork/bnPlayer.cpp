@@ -56,6 +56,43 @@ Player::Player(void)
   cloakTimeSecs = 0;
 }
 
+Player::Player(const Player & cpy) : health(cpy.GetHealth()),
+  state(PLAYER_IDLE),
+  chargeComponent(this),
+  animationComponent(this),
+  AI<Player>(this),
+  Character(cpy.GetRank())
+{
+  name = cpy.GetName();
+  SetLayer(0);
+  team = Team::RED;
+
+  moveCount = hitCount = 0;
+
+  //Animation
+  animationProgress = 0.0f;
+  setScale(2.0f, 2.0f);
+
+  healthUI = new PlayerHealthUI(this);
+
+  this->setTexture(*cpy.getTexture());
+
+  //Components setup and load
+  chargeComponent.load();
+
+  animationComponent.Setup(RESOURCE_PATH);
+  animationComponent.Load();
+
+  previous = nullptr;
+
+  moveCount = 0;
+
+  invincibilityCooldown = 0;
+  alpha = 0;
+
+  cloakTimeSecs = 0;
+}
+
 Player::~Player(void) {
   delete healthUI;
 }

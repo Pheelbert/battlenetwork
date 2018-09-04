@@ -351,18 +351,12 @@ int SelectMobScene::Run(SelectedNavi navi)
 
       Mob* mob = factory->Build();
 
-      Player* player = nullptr;
-
-      if (navi == SelectedNavi::MEGAMAN) {
-        player = new Player();
-      }
-      else if (navi == SelectedNavi::STARMAN) {
-        player = new Starman();
-      }
+      Player* player = NAVIS.At(navi).GetNavi();
 
       int win = BattleScene::Run(player, mob);
 
       delete player;
+
       delete mob;
       delete factory;
       delete field;

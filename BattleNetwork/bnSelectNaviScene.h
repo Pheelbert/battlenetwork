@@ -1,7 +1,6 @@
 #pragma once
 #include "bnSelectMobScene.h"
-
-enum class SelectedNavi; // fordward decl
+#include "bnNaviRegistration.h"
 
 class SelectNaviScene
 {

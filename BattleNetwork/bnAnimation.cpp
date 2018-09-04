@@ -133,6 +133,13 @@ void Animation::SetAnimation(string state) {
    animator.Clear();
    progress = 0.0f;
    currAnimation = state;
+
+   try {
+     animations[currAnimation]; 
+   }
+   catch (std::exception& e) {
+     throw new std::runtime_error(std::string("No animation found in file for " + currAnimation));
+   }
 }
 
 Animation & Animation::operator<<(Animate::On & rhs)

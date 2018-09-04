@@ -20,6 +20,7 @@ public:
   friend class PlayerHitState;
 
   Player(void);
+  Player(const Player& cpy);
   virtual ~Player(void);
 
   virtual void Update(float _elapsed);

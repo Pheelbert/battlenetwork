@@ -745,6 +745,9 @@
     <ClInclude Include="bnNaviRegistration.h">
       <Filter>Engine\Addons\NaviRegistration</Filter>
     </ClInclude>
+    <ClInclude Include="QueueNaviRegistration.h">
+      <Filter>Engine\Addons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

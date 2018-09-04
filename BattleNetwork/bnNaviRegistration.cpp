@@ -4,7 +4,7 @@
 #include <exception>
 #include <atomic>
 
-NaviRegistration::NaviInfo::NaviInfo() : symbol()
+NaviRegistration::NaviInfo::NaviInfo() : symbol(), overworldTexture(), battleTexture()
 {
   navi = nullptr;
   special = "None";
@@ -22,7 +22,7 @@ NaviRegistration::NaviInfo::~NaviInfo()
   }
 }
 
-NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetSymbol(sf::Texture& symbol)
+NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetSymbolTexture(sf::Texture& symbol)
 {
   this->symbol = sf::Sprite(symbol);
 
@@ -32,7 +32,7 @@ NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetSymbol(sf::Texture& s
   return *this;
 }
 
-NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetSpecial(const std::string && special)
+NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetSpecialDescription(const std::string && special)
 {
   this->special = special;
   return *this;
@@ -68,6 +68,81 @@ NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetIsSword(const bool en
   return *this;
 }
 
+NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetOverworldAnimationPath(const std::string && path)
+{
+  overworldAnimationPath = path;
+  return *this;
+}
+
+NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetOverworldTexture(const sf::Texture * texture)
+{
+  overworldTexture = const_cast<sf::Texture*>(texture);
+  return *this;
+}
+
+NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetBattleAnimationPath(const std::string && path)
+{
+  battleAnimationPath = path;
+  return *this;
+}
+
+NaviRegistration::NaviInfo& NaviRegistration::NaviInfo::SetBattleTexture(const sf::Texture * texture)
+{
+  battleTexture = const_cast<sf::Texture*>(texture);
+  return *this;
+}
+
+const sf::Texture & NaviRegistration::NaviInfo::GetOverworldTexture() const
+{
+  return *overworldTexture;
+}
+
+const std::string & NaviRegistration::NaviInfo::GetOverworldAnimationPath() const 
+{
+  return overworldAnimationPath;
+}
+
+const sf::Texture & NaviRegistration::NaviInfo::GetBattleTexture() const
+{
+  return *battleTexture;
+}
+
+const std::string & NaviRegistration::NaviInfo::GetBattleAnimationPath() const
+{
+  return battleAnimationPath;
+}
+
+const std::string & NaviRegistration::NaviInfo::GetName() const
+{
+  return navi->GetName();
+}
+
+const std::string NaviRegistration::NaviInfo::GetHPString() const
+{
+  return std::to_string(hp);
+}
+
+const std::string NaviRegistration::NaviInfo::GetSpeedString() const
+{
+  return std::to_string(speed) + "x";
+}
+
+const std::string NaviRegistration::NaviInfo::GetAttackString() const
+{
+  return std::to_string(atk) + " - " + std::to_string(chargedAtk) + " charged";
+}
+
+const std::string & NaviRegistration::NaviInfo::GetSpecialDescriptionString() const
+{
+  return special;
+}
+
+Player * NaviRegistration::NaviInfo::GetNavi() const
+{
+  Player* copy = new Player(*navi);
+  return copy;
+}
+
 NaviRegistration & NaviRegistration::GetInstance()
 {
  static NaviRegistration singleton; return singleton; 
@@ -94,10 +169,10 @@ void NaviRegistration::Register(const NaviInfo * info)
 
 const NaviRegistration::NaviInfo & NaviRegistration::At(int index)
 {
-  if (index < 0 || index > Size())
+  if (index < 0 || index >= Size())
     throw std::runtime_error("Roster index out of bounds");
 
-  return *roster.at(index);
+  return *(roster.at(index));
 }
 
 const unsigned NaviRegistration::Size()

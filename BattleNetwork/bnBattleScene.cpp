@@ -43,7 +43,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
   float listStepCooldown = 0.5f;
   float listStepCounter  = listStepCooldown;
 
-  sf::Sprite programAdvanceSprite(*TEXTURES.GetTexture(TextureType::PROGRAM_ADVANCE));
+  sf::Sprite programAdvanceSprite(LOAD_TEXTURE(PROGRAM_ADVANCE));
   programAdvanceSprite.setScale(2.f, 2.f);
   programAdvanceSprite.setOrigin(0, 0);
   programAdvanceSprite.setPosition(40.0f, 50.f);
@@ -522,7 +522,6 @@ int BattleScene::Run(Player* player, Mob* mob) {
           AUDIO.Play(AudioType::CHIP_ERROR, AudioPriority::LOWEST);
         }
       } else if (INPUT.has(PRESSED_B)) {
-        
         chipCustGUI.CursorCancel() ? AUDIO.Play(AudioType::CHIP_CANCEL, AudioPriority::LOWEST) : 1;
       }
     }

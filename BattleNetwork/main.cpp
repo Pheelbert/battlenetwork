@@ -12,9 +12,8 @@
 #include <queue>
 #include <atomic>
 
-// Register these navis
-#include "bnPlayer.h"
-#include "bnStarman.h"
+// Engine addons
+#include "QueueNaviRegistration.h"
 
 // Timer
 using sf::Clock;
@@ -24,26 +23,6 @@ using sf::Clock;
 #define TITLE_ANIM_CHAR_WIDTH 128
 #define TITLE_ANIM_CHAR_HEIGHT 221
 #define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
-
-/***********************************************************************
-************    Register your custom navis here    *********************
-************************************************************************/
-
-void QueuNaviRegistration() {
-  /*********************************************************************
-  **********            Register megaman            ********************
-  **********************************************************************/
-  auto megamanInfo = NAVIS.AddSpot();  // Create navi info object
-  megamanInfo->SetNaviClass<Player>(); // Deffer loading of class type
-  megamanInfo->SetSpecial("Star of the series. Well rounded stats."); // Set property
-  NAVIS.Register(megamanInfo);       // Add to roster
-
-  // Register Starman
-  auto starmanInfo = NAVIS.AddSpot();
-  starmanInfo->SetNaviClass<Starman>();
-  starmanInfo->SetSpecial("Projectile chips turn into arrows w/ rapid fire");
-  NAVIS.Register(starmanInfo);
-}
 
 void RunNaviInit(std::atomic<int>* progress) {
   clock_t begin_time = clock();

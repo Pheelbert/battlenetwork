@@ -11,6 +11,7 @@
 #include "bnAudioResourceManager.h"
 #include "bnShaderResourceManager.h"
 #include "bnTextureResourceManager.h"
+#include "bnNaviRegistration.h"
 #include "bnEngine.h"
 #include "bnAnimation.h"
 #include "bnLanBackground.h"
@@ -30,7 +31,7 @@ int MainMenuScene::Run()
   double selectInputCooldown = maxSelectInputCooldown;        
 
   // ui sprite maps
-  sf::Sprite ui(*TEXTURES.GetTexture(TextureType::MAIN_MENU_UI));
+  sf::Sprite ui(LOAD_TEXTURE(MAIN_MENU_UI));
   ui.setScale(2.f, 2.f);
   Animation uiAnimator("resources/ui/main_menu_ui.animation");
   uiAnimator.Load();
@@ -39,9 +40,9 @@ int MainMenuScene::Run()
   AUDIO.Stream("resources/loops/loop_navi_customizer.ogg", true);
 
   // Transition
-  sf::Shader& transition = *SHADERS.GetShader(ShaderType::TRANSITION);
+  sf::Shader& transition = LOAD_SHADER(TRANSITION);
   transition.setUniform("texture", sf::Shader::CurrentTexture);
-  transition.setUniform("map", *TEXTURES.GetTexture(TextureType::NOISE_TEXTURE));
+  transition.setUniform("map", LOAD_TEXTURE(NOISE_TEXTURE));
   transition.setUniform("progress", 0.f);
   float transitionProgress = 0.9f;
   ENGINE.RevokeShader();
@@ -51,10 +52,10 @@ int MainMenuScene::Run()
   float totalTime = 0.f;
   int menuSelectionIndex = 0;
 
-  sf::Sprite overlay(*TEXTURES.GetTexture(TextureType::MAIN_MENU));
+  sf::Sprite overlay(LOAD_TEXTURE(MAIN_MENU));
   overlay.setScale(2.f, 2.f);
 
-  sf::Sprite ow(*TEXTURES.GetTexture(TextureType::MAIN_MENU_OW));
+  sf::Sprite ow(LOAD_TEXTURE(MAIN_MENU_OW));
   ow.setScale(2.f, 2.f);
 
   Background* bg = new LanBackground();
@@ -63,9 +64,9 @@ int MainMenuScene::Run()
   map->SetCamera(&camera);
 
   // Keep track of selected navi
+  SelectedNavi currentNavi = 0;
 
-  SelectedNavi currentNavi = SelectedNavi::MEGAMAN;
-  sf::Sprite owNavi(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
+  sf::Sprite owNavi(LOAD_TEXTURE(NAVI_MEGAMAN_ATLAS));
   owNavi.setScale(2.f, 2.f);
   owNavi.setPosition(0, -26.f);
   Animation naviAnimator("resources/navis/megaman/megaman.animation");
@@ -192,20 +193,11 @@ int MainMenuScene::Run()
       } else if (menuSelectionIndex == 2) {
         currentNavi = SelectNaviScene::Run(currentNavi);
 
-        if (currentNavi == SelectedNavi::MEGAMAN) {
-          owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS));
-          naviAnimator = Animation("resources/navis/megaman/megaman.animation");
-          naviAnimator.Load();
-          naviAnimator.SetAnimation("PLAYER_OW_RD");
-          naviAnimator << Animate::Mode(Animate::Mode::Loop);
-        }
-        else if (currentNavi == SelectedNavi::STARMAN) {
-          owNavi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS));
-          naviAnimator = Animation("resources/navis/starman/starman.animation");
-          naviAnimator.Load();
-          naviAnimator.SetAnimation("PLAYER_OW_RD");
-          naviAnimator << Animate::Mode(Animate::Mode::Loop);
-        }
+        owNavi.setTexture(NAVIS.At(currentNavi).GetOverworldTexture());
+        naviAnimator = Animation(NAVIS.At(currentNavi).GetOverworldAnimationPath());
+        naviAnimator.Load();
+        naviAnimator.SetAnimation("PLAYER_OW_RD");
+        naviAnimator << Animate::Mode(Animate::Mode::Loop);
 
         // reset internal clock (or everything will teleport)
         elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());

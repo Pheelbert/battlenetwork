@@ -287,39 +287,22 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     }
 
     naviSelectionIndex = (SelectedNavi)std::max(0, (int)naviSelectionIndex);
-    naviSelectionIndex = (SelectedNavi)std::min(1, (int)naviSelectionIndex);
+    naviSelectionIndex = (SelectedNavi)std::min((int)NAVIS.Size()-1, (int)naviSelectionIndex);
 
     if (naviSelectionIndex != prevSelect) {
       factor = 125;
 
-      if (naviSelectionIndex == SelectedNavi::MEGAMAN) {
-        naviAnimator = Animation("resources/navis/megaman/megaman.animation");
-        naviAnimator.Load();
-        naviAnimator.SetAnimation("PLAYER_IDLE");
-        naviAnimator << Animate::Mode(Animate::Mode::Loop);
-      }
-      else if (naviSelectionIndex == SelectedNavi::STARMAN) {
-        naviAnimator = Animation("resources/navis/starman/starman.animation");
-        naviAnimator.Load();
-        naviAnimator.SetAnimation("PLAYER_IDLE");
-        naviAnimator << Animate::Mode(Animate::Mode::Loop);
-      }
+      naviAnimator = Animation(NAVIS.At(naviSelectionIndex).GetBattleAnimationPath());
+      naviAnimator.Load();
+      naviAnimator.SetAnimation("PLAYER_IDLE");
+      naviAnimator << Animate::Mode(Animate::Mode::Loop);
     }
 
-    if (naviSelectionIndex == SelectedNavi::MEGAMAN) {
-      navi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_MEGAMAN_ATLAS), false);
-      naviLabel->setString("Megaman");
-      speedLabel->setString("2x");
-      attackLabel->setString("1 - 10");
-      hpLabel->setString("300");
-    }
-    else if (naviSelectionIndex == SelectedNavi::STARMAN) {
-      navi.setTexture(*TEXTURES.GetTexture(TextureType::NAVI_STARMAN_ATLAS), false);
-      naviLabel->setString("Starman");
-      speedLabel->setString("4x");
-      attackLabel->setString("1 - 10");
-      hpLabel->setString("200");
-    }
+    navi.setTexture(NAVIS.At(naviSelectionIndex).GetBattleTexture(), false);
+    //naviLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetName()));
+    //speedLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetSpeedString()));
+    //attackLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetAttackString()));
+    //hpLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetHPString()));
 
     if (numberCooldown > 0) {
       numberCooldown -= elapsed;
