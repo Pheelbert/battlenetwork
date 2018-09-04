@@ -159,7 +159,10 @@ NaviRegistration::~NaviRegistration()
 
 NaviRegistration::NaviInfo * NaviRegistration::AddSpot()
 {
-  return new NaviRegistration::NaviInfo();
+  NaviRegistration::NaviInfo* info = new NaviRegistration::NaviInfo();
+  this->Register(info);
+
+  return info;
 }
 
 void NaviRegistration::Register(const NaviInfo * info)

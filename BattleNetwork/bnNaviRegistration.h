@@ -88,6 +88,7 @@ inline NaviRegistration::NaviInfo & NaviRegistration::NaviInfo::SetNaviClass()
     navi = new T(); 
     this->battleTexture = const_cast<sf::Texture*>(navi->getTexture());
     this->overworldTexture = const_cast<sf::Texture*>(navi->getTexture());
+    std::cout << "navi name: " << navi->GetName() << std::endl;
   };
 
 

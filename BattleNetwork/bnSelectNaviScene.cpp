@@ -299,10 +299,10 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     }
 
     navi.setTexture(NAVIS.At(naviSelectionIndex).GetBattleTexture(), false);
-    //naviLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetName()));
-    //speedLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetSpeedString()));
-    //attackLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetAttackString()));
-    //hpLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetHPString()));
+    naviLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetName().c_str()));
+    speedLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetSpeedString().c_str()));
+    attackLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetAttackString().c_str()));
+    hpLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetHPString().c_str()));
 
     if (numberCooldown > 0) {
       numberCooldown -= elapsed;

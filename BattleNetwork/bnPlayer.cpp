@@ -64,6 +64,9 @@ Player::Player(const Player & cpy) : health(cpy.GetHealth()),
   Character(cpy.GetRank())
 {
   name = cpy.GetName();
+  std::cout << "cpy.GetName() " << cpy.GetName() << "\n";
+  std::cout << "name " << name << "\n";
+
   SetLayer(0);
   team = Team::RED;
 
