@@ -66,8 +66,8 @@ void Animation::Load() {
 
       int currentStartx = 0;
       int currentStarty = 0;
-      int originX = 0;
-      int originY = 0;
+      double originX = 0;
+      double originY = 0;
 
       if (legacySupport) {
         string startx = ValueOf("startx", line);
@@ -98,7 +98,7 @@ void Animation::Load() {
         frameLists.at(frameAnimationIndex).Add(currentFrameDuration, IntRect(currentStartx, currentStarty, currentWidth, currentHeight));
       }
       else {
-        frameLists.at(frameAnimationIndex).Add(currentFrameDuration, IntRect(currentStartx, currentStarty, currentWidth, currentHeight), sf::Vector2i(originX, originY));
+        frameLists.at(frameAnimationIndex).Add(currentFrameDuration, IntRect(currentStartx, currentStarty, currentWidth, currentHeight), sf::Vector2f(originX, originY));
       }
     }
 

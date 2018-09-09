@@ -306,6 +306,7 @@
     <ClInclude Include="bnStarman.h" />
     <ClInclude Include="bnStringEncoder.h" />
     <ClInclude Include="bnTeam.h" />
+    <ClInclude Include="bnTextBox.h" />
     <ClInclude Include="bnTextureType.h" />
     <ClInclude Include="bnTile.h" />
     <ClInclude Include="bnDirection.h" />
@@ -329,7 +330,7 @@
     <ClInclude Include="bnFileUtil.h" />
     <ClInclude Include="bnCanonSmoke.h" />
     <ClInclude Include="bnNaviRegistration.h" />
-    <ClInclude Include="QueueNaviRegistration.h" />
+    <ClInclude Include="bnQueueNaviRegistration.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="bnCanodumbCursor.h" />
   </ItemGroup>

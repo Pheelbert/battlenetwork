@@ -149,6 +149,8 @@ bool ChipSelectionCust::CursorAction() {
 
             queue[i].state = VOIDED;
           }
+
+          return true;
         }
         else {
           // Otherwise display the remaining compatible chips...

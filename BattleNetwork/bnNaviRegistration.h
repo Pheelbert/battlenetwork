@@ -54,11 +54,11 @@ public:
     const std::string& GetOverworldAnimationPath() const;
     const sf::Texture& GetBattleTexture() const;
     const std::string& GetBattleAnimationPath() const;
-    const std::string& GetName() const;
+    const std::string GetName() const;
     const std::string GetHPString() const;
     const std::string GetSpeedString() const;
     const std::string GetAttackString() const;
-    const std::string& GetSpecialDescriptionString() const;
+    const std::string GetSpecialDescriptionString() const;
 
     Player* GetNavi() const;
   };
@@ -85,10 +85,10 @@ template<class T>
 inline NaviRegistration::NaviInfo & NaviRegistration::NaviInfo::SetNaviClass()
 {
   loadNaviClass = [this]() { 
-    navi = new T(); 
-    this->battleTexture = const_cast<sf::Texture*>(navi->getTexture());
-    this->overworldTexture = const_cast<sf::Texture*>(navi->getTexture());
-    std::cout << "navi name: " << navi->GetName() << std::endl;
+    this->navi = new T(); 
+    this->battleTexture = const_cast<sf::Texture*>(this->navi->getTexture());
+    this->overworldTexture = const_cast<sf::Texture*>(this->navi->getTexture());
+    this->hp = this->navi->GetHealth();
   };
 
 

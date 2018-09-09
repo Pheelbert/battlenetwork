@@ -9,7 +9,7 @@ struct Frame {
   float duration;
   sf::IntRect subregion;
   bool applyOrigin;
-  sf::Vector2i origin;
+  sf::Vector2f origin;
 };
 
 class FrameList {
@@ -23,11 +23,11 @@ public:
   FrameList(const FrameList& rhs) { frames = rhs.frames; totalDuration = rhs.totalDuration; }
 
   void Add(float dur, sf::IntRect sub) {
-    frames.push_back({ dur, sub, false, sf::Vector2i(0,0) });
+    frames.push_back({ dur, sub, false, sf::Vector2f(0,0) });
     totalDuration += dur;
   }
 
-  void Add(float dur, sf::IntRect sub, sf::Vector2i origin) {
+  void Add(float dur, sf::IntRect sub, sf::Vector2f origin) {
     frames.push_back({ dur, sub, true, origin });
     totalDuration += dur;
   }

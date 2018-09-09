@@ -218,9 +218,6 @@
     <Filter Include="Battle\Chips\ChipUsePublisher\UI">
       <UniqueIdentifier>{2ffdbd56-f900-4230-b51b-8239abe620b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Props">
-      <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scenes\Select Navi">
       <UniqueIdentifier>{9d3a1388-2568-497b-8e9d-9c02c4cc066e}</UniqueIdentifier>
     </Filter>
@@ -229,6 +226,18 @@
     </Filter>
     <Filter Include="Engine\Addons\NaviRegistration">
       <UniqueIdentifier>{7083bfe5-ae7f-40a6-9cec-6611633e79df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs">
+      <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs\TextBox">
+      <UniqueIdentifier>{812c75d2-cb23-4b7b-a1cd-cdaf638d726b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs\TextBox\Framed">
+      <UniqueIdentifier>{75449fa7-9b60-4729-b0c3-eadd77a1448b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs\Background">
+      <UniqueIdentifier>{f518437e-3c00-47c0-88d0-0c62e29c64ed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -670,9 +679,6 @@
     <ClInclude Include="bnPlayerHealthUI.h">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClInclude>
-    <ClInclude Include="bnBackground.h">
-      <Filter>Engine\Props</Filter>
-    </ClInclude>
     <ClInclude Include="bnOverworldMap.h">
       <Filter>Overworld\Map</Filter>
     </ClInclude>
@@ -745,8 +751,14 @@
     <ClInclude Include="bnNaviRegistration.h">
       <Filter>Engine\Addons\NaviRegistration</Filter>
     </ClInclude>
-    <ClInclude Include="QueueNaviRegistration.h">
+    <ClInclude Include="bnQueueNaviRegistration.h">
       <Filter>Engine\Addons</Filter>
+    </ClInclude>
+    <ClInclude Include="bnTextBox.h">
+      <Filter>Prefabs\TextBox</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBackground.h">
+      <Filter>Prefabs\Background</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

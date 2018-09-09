@@ -109,16 +109,16 @@ bool Cannon::Move(Direction _direction) {
 }
 
 void Cannon::Attack(Entity* _entity) {
-  if (hit) {
+  if (hit || deleted) {
     return;
   }
 
   if (_entity && _entity->GetTeam() != this->GetTeam()) {
-    hit = _entity->Hit(damage);
+    _entity->Hit(damage);
     hitHeight = _entity->GetHitHeight();
 
-    if (_entity->IsPassthrough()) {
-      hit = false;
+    if (!_entity->IsPassthrough()) {
+      hit = true;
     }
 
     Character* isCharacter = dynamic_cast<Character*>(_entity);

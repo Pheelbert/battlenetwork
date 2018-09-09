@@ -182,7 +182,7 @@ void Tile::AffectEntities(Spell* caller) {
       continue;
     }
 
-    if (*it != caller && !(*it)->IsPassthrough()) {
+    if (*it != caller && !(*it)->IsPassthrough() && dynamic_cast<Spell*>(*it) == 0) {
       caller->Attack(*it);
     }
   }

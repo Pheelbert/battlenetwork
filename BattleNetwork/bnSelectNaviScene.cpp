@@ -8,6 +8,7 @@
 #include "bnShaderResourceManager.h"
 #include "bnTextureResourceManager.h"
 #include "bnEngine.h"
+#include "bnTextBox.h"
 
 #include <SFML/Graphics.hpp>
 using sf::RenderWindow;
@@ -47,28 +48,27 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   naviLabel->setScale(0.8f, 0.8f);
 
   sf::Text *attackLabel = new sf::Text("1", *naviFont);
-  attackLabel->setPosition(410.f, 15.f);
+  attackLabel->setPosition(335.f, 15.f);
   attackLabel->setOutlineColor(sf::Color(48, 56, 80));
   attackLabel->setOutlineThickness(2.f);
   attackLabel->setScale(0.8f, 0.8f);
 
   sf::Text *speedLabel = new sf::Text("1", *naviFont);
-  speedLabel->setPosition(410.f, 60.f);
+  speedLabel->setPosition(335.f, 70.f);
   speedLabel->setOutlineColor(sf::Color(48, 56, 80));
   speedLabel->setOutlineThickness(2.f);
   speedLabel->setScale(0.8f, 0.8f);
 
   sf::Text *hpLabel = new sf::Text("20", *naviFont);
   hpLabel->setOutlineColor(sf::Color(48, 56, 80));
+  hpLabel->setPosition(sf::Vector2f(335.f, 125.0f));
   hpLabel->setOutlineThickness(2.f);
   hpLabel->setScale(0.8f, 0.8f);
-  //hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
-  hpLabel->setPosition(sf::Vector2f(480.f, 120.0f));
 
   float maxNumberCooldown = 0.5;
   float numberCooldown = maxNumberCooldown; // half a second
-  SelectedNavi naviSelectionIndex = (SelectedNavi)currentNavi;
-
+  SelectedNavi naviSelectionIndex = currentNavi;
+  SelectedNavi prevChosen = currentNavi;
   // select menu graphic
   sf::Sprite bg(LOAD_TEXTURE(NAVI_SELECT_BG));
   bg.setScale(2.f, 2.f);
@@ -95,6 +95,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   charInfo.setPosition(UI_RIGHT_POS, 170);
 
   // Current navi graphic
+  bool loadNavi = false;
   sf::Sprite navi(LOAD_TEXTURE(NAVI_MEGAMAN_ATLAS));
   navi.setScale(2.f, 2.f);
   navi.setOrigin(navi.getLocalBounds().width / 2.f, navi.getLocalBounds().height / 2.f);
@@ -103,16 +104,11 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   // Animator for navi
   Animation naviAnimator;
 
-  navi.setTexture(LOAD_TEXTURE(NAVI_MEGAMAN_ATLAS), true);
-  naviLabel->setString("Megaman.EXE");
-  speedLabel->setString("2");
-  attackLabel->setString("1");
-  hpLabel->setString("300");
-
-  naviAnimator = Animation("resources/navis/megaman/megaman.animation");
-  naviAnimator.Load();
-  naviAnimator.SetAnimation("PLAYER_IDLE");
-  naviAnimator << Animate::Mode(Animate::Mode::Loop);
+  navi.setTexture(NAVIS.At(naviSelectionIndex).GetBattleTexture());
+  naviLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetName().c_str()));
+  speedLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetSpeedString().c_str()));
+  attackLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetAttackString().c_str()));
+  hpLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetHPString().c_str()));
 
   naviAnimator.SetFrame(1, &navi);
 
@@ -149,9 +145,16 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   glowbottom.setScale(2.f, 2.f);
   glowbottom.setPosition(40, 200);
 
+  // Text box 
+  TextBox textbox(185+15, 100, 7);
+  textbox.setPosition(UI_RIGHT_POS_MAX + 10, 205);
+  textbox.Stop();
+
+  // Timers and clocks
   Clock clock;
   float elapsed = 0.0f;
   float totalTime = 0.f;
+
   while (ENGINE.Running()) {
 
     float elapsedSeconds = clock.restart().asSeconds();
@@ -172,6 +175,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     //ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
+    textbox.Update(elapsed);
 
     ENGINE.Draw(bg);
     ENGINE.Draw(glowbottom);
@@ -217,12 +221,6 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     // Draw glow pad behind everything 
     glowpadAnimator.Update(elapsed, &glowpad);
     ENGINE.Draw(glowpad);
-
-    // Draw labels
-    ENGINE.Draw(naviLabel);
-    ENGINE.Draw(hpLabel);
-    ENGINE.Draw(speedLabel);
-    ENGINE.Draw(attackLabel);
 
     ENGINE.DrawUnderlay();
     ENGINE.DrawLayers();
@@ -287,22 +285,26 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     }
 
     naviSelectionIndex = (SelectedNavi)std::max(0, (int)naviSelectionIndex);
-    naviSelectionIndex = (SelectedNavi)std::min((int)NAVIS.Size()-1, (int)naviSelectionIndex);
+    naviSelectionIndex = (SelectedNavi)std::min((int)NAVIS.Size() - 1, (int)naviSelectionIndex);
 
-    if (naviSelectionIndex != prevSelect) {
+    if (naviSelectionIndex != prevSelect || !loadNavi) {
       factor = 125;
 
       naviAnimator = Animation(NAVIS.At(naviSelectionIndex).GetBattleAnimationPath());
       naviAnimator.Load();
       naviAnimator.SetAnimation("PLAYER_IDLE");
       naviAnimator << Animate::Mode(Animate::Mode::Loop);
+
+      navi.setTexture(NAVIS.At(naviSelectionIndex).GetBattleTexture(), true);
+      textbox.SetMessage(NAVIS.At(naviSelectionIndex).GetSpecialDescriptionString());
+      loadNavi = true;
     }
 
-    navi.setTexture(NAVIS.At(naviSelectionIndex).GetBattleTexture(), false);
-    naviLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetName().c_str()));
-    speedLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetSpeedString().c_str()));
-    attackLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetAttackString().c_str()));
-    hpLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetHPString().c_str()));
+    // This goes here because the jumbling effect may finish and we need to see proper values
+    naviLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetName()));
+    speedLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetSpeedString()));
+    attackLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetAttackString()));
+    hpLabel->setString(sf::String(NAVIS.At(naviSelectionIndex).GetHPString()));
 
     if (numberCooldown > 0) {
       numberCooldown -= elapsed;
@@ -318,7 +320,6 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
         else {
           if (naviLabel->getString()[i] != ' ') {
             newstr += (char)(((rand() % (90 - 65)) + 65) + 1);
-            AUDIO.Play(AudioType::TEXT, AudioPriority::LOWEST);
           }
           else {
             newstr += ' ';
@@ -347,8 +348,18 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
         UI_RIGHT_POS = UI_RIGHT_POS_MAX;
         UI_TOP_POS -= elapsed * 500;
 
-        if(UI_TOP_POS < UI_TOP_POS_MAX) 
+        if (UI_TOP_POS < UI_TOP_POS_MAX) {
           UI_TOP_POS = UI_TOP_POS_MAX;
+
+          // Draw labels
+          ENGINE.Draw(naviLabel);
+          ENGINE.Draw(hpLabel);
+          ENGINE.Draw(speedLabel);
+          ENGINE.Draw(attackLabel);
+          ENGINE.Draw(textbox);
+
+          textbox.Play();
+        }
       }
 
       if (UI_LEFT_POS < UI_LEFT_POS_MAX) {
@@ -371,13 +382,22 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
       else {
         UI_RIGHT_POS += elapsed * 500;
 
-        if(UI_RIGHT_POS > UI_RIGHT_POS_START/2) // Be quicker at leave than startup
+        if (UI_RIGHT_POS > UI_RIGHT_POS_START / 2) // Be quicker at leave than startup
           UI_LEFT_POS -= elapsed * 500;
       }
     }
 
-    float range = (125.f - factor) / 125.f;
-    navi.setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 * range)));
+    if (prevChosen != naviSelectionIndex) {
+      navi.setColor(sf::Color(200, 200, 200, 128));
+    }
+    else {
+      navi.setColor(sf::Color(255, 255, 255, 255));
+    }
+
+    if (factor != 0.f) {
+      float range = (125.f - (float)factor) / 125.f;
+      navi.setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 * range)));
+    }
 
     sf::IntRect t = navi.getTextureRect();
     sf::Vector2u size = navi.getTexture()->getSize();
@@ -396,7 +416,6 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     // Refresh mob graphic origin every frame as it may change
     float xpos = ((glowbase.getTextureRect().width / 2.0f)*glowbase.getScale().x) + glowbase.getPosition().x;
     navi.setPosition(xpos, glowbase.getPosition().y+10);
-    hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
 
     LayeredDrawable* bake = new LayeredDrawable(sf::Sprite(navi));
     bake->SetShader(pixelated);
@@ -405,8 +424,9 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     delete bake;
 
     // Make a selection
-    if (INPUT.has(PRESSED_A)) {
+    if (INPUT.has(PRESSED_A) && prevChosen != naviSelectionIndex) {
       AUDIO.Play(AudioType::CHIP_CONFIRM, AudioPriority::LOW);
+      prevChosen = prevSelect;
 
       // TODO: Highlight the chosen navi symbol
     } 
@@ -438,5 +458,5 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
 
   ENGINE.RevokeShader();
 
-  return naviSelectionIndex;
+  return prevChosen;
 }

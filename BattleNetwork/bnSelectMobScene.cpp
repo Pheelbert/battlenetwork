@@ -355,8 +355,6 @@ int SelectMobScene::Run(SelectedNavi navi)
 
       int win = BattleScene::Run(player, mob);
 
-      delete player;
-
       delete mob;
       delete factory;
       delete field;

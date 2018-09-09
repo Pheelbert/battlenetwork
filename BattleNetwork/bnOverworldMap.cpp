@@ -185,6 +185,7 @@ namespace Overworld {
       sf::Sprite tileSprite(*sprites[i]->getTexture());
       tileSprite.setTextureRect(sprites[i]->getTextureRect());
       tileSprite.setPosition(sprites[i]->getPosition());
+      tileSprite.setOrigin(sprites[i]->getOrigin());
 
       if (enableLighting) {
         tileSprite.setColor(sf::Color::Black); // no lighting

@@ -77,7 +77,7 @@ public:
     else if (name == "Swrd") {
       auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
 
-      player->SetAnimation(PLAYER_SLASHING, onFinish);
+      player->SetAnimation(PLAYER_SWORD, onFinish);
 
       BasicSword* sword = new BasicSword(player->GetField(), player->GetTeam(), chip.GetDamage());
 
@@ -88,7 +88,7 @@ public:
     else if (name == "LongSwrd") {
       auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
 
-      player->SetAnimation(PLAYER_SLASHING, onFinish);
+      player->SetAnimation(PLAYER_SWORD, onFinish);
 
       BasicSword* sword = new BasicSword(player->GetField(), player->GetTeam(), chip.GetDamage());
       BasicSword* sword2 = new BasicSword(player->GetField(), player->GetTeam(), chip.GetDamage());
@@ -106,7 +106,7 @@ public:
     else if (name == "WideSwrd") {
       auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
 
-      player->SetAnimation(PLAYER_SLASHING, onFinish);
+      player->SetAnimation(PLAYER_SWORD, onFinish);
 
       BasicSword* sword = new BasicSword(player->GetField(), player->GetTeam(), chip.GetDamage());
       BasicSword* sword2 = new BasicSword(player->GetField(), player->GetTeam(), chip.GetDamage());

@@ -107,12 +107,12 @@ const sf::Texture & NaviRegistration::NaviInfo::GetBattleTexture() const
   return *battleTexture;
 }
 
-const std::string & NaviRegistration::NaviInfo::GetBattleAnimationPath() const
+const std::string& NaviRegistration::NaviInfo::GetBattleAnimationPath() const
 {
   return battleAnimationPath;
 }
 
-const std::string & NaviRegistration::NaviInfo::GetName() const
+const std::string NaviRegistration::NaviInfo::GetName() const
 {
   return navi->GetName();
 }
@@ -124,7 +124,10 @@ const std::string NaviRegistration::NaviInfo::GetHPString() const
 
 const std::string NaviRegistration::NaviInfo::GetSpeedString() const
 {
-  return std::to_string(speed) + "x";
+  std::string speedStr = std::to_string(speed);
+  std::size_t afterDecimal = speedStr.find(".");
+  speedStr = speedStr.substr(0, afterDecimal);
+  return speedStr + "x";
 }
 
 const std::string NaviRegistration::NaviInfo::GetAttackString() const
@@ -132,15 +135,16 @@ const std::string NaviRegistration::NaviInfo::GetAttackString() const
   return std::to_string(atk) + " - " + std::to_string(chargedAtk) + " charged";
 }
 
-const std::string & NaviRegistration::NaviInfo::GetSpecialDescriptionString() const
+const std::string NaviRegistration::NaviInfo::GetSpecialDescriptionString() const
 {
   return special;
 }
 
 Player * NaviRegistration::NaviInfo::GetNavi() const
 {
-  Player* copy = new Player(*navi);
-  return copy;
+  delete navi;
+  loadNaviClass(); // Reload navi and restore HP 
+  return navi;
 }
 
 NaviRegistration & NaviRegistration::GetInstance()

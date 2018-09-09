@@ -68,7 +68,7 @@ int MainMenuScene::Run()
 
   sf::Sprite owNavi(LOAD_TEXTURE(NAVI_MEGAMAN_ATLAS));
   owNavi.setScale(2.f, 2.f);
-  owNavi.setPosition(0, -26.f);
+  owNavi.setPosition(0, 0.f);
   Animation naviAnimator("resources/navis/megaman/megaman.animation");
   naviAnimator.Load();
   naviAnimator.SetAnimation("PLAYER_OW_RD");
@@ -109,7 +109,7 @@ int MainMenuScene::Run()
 
     int lastMenuSelectionIndex = menuSelectionIndex;
 
-    // Scene keyboard controls 
+    // Move the navi down
     owNavi.setPosition(owNavi.getPosition() + sf::Vector2f(50.0f*elapsed, 0));
 
     // TODO: fix this broken camera system
@@ -117,6 +117,7 @@ int MainMenuScene::Run()
     camOffset.x /= 5;
     camOffset.y /= 3.5;
 
+    // Follow the navi
     camera.PlaceCamera(map->ScreenToWorld(owNavi.getPosition() - sf::Vector2f(0.5, 0.5)) + camOffset);
     
     if (!gotoNextScene && transitionProgress == 0.f) {

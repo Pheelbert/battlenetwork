@@ -13,7 +13,7 @@
 #include <atomic>
 
 // Engine addons
-#include "QueueNaviRegistration.h"
+#include "bnQueueNaviRegistration.h"
 
 // Timer
 using sf::Clock;

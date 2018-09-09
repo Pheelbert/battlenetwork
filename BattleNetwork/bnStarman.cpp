@@ -28,4 +28,6 @@ Starman::Starman(void) : Player()
 
   textureType = TextureType::NAVI_STARMAN_ATLAS;
   setTexture(*TEXTURES.GetTexture(textureType));
+
+  SetFloatShoe(true);
 }
