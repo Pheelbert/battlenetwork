@@ -66,7 +66,7 @@ int* Canodumb::GetAnimOffset() {
 void Canodumb::Update(float _elapsed) {
 
   setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 1.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 10.0f);
-  hitHeight = getLocalBounds().height;
+  hitHeight = (int)getLocalBounds().height;
 
   this->SetShader(nullptr);
 
@@ -119,5 +119,5 @@ const bool Canodumb::Hit(int _damage) {
 }
 
 const float Canodumb::GetHitHeight() const {
-  return hitHeight;
+  return (float)hitHeight;
 }

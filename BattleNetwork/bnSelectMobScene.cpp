@@ -1,5 +1,6 @@
 #include <time.h>
 #include "bnSelectMobScene.h"
+#include "bnTextBox.h"
 #include "bnTile.h"
 #include "bnField.h"
 #include "bnPlayer.h"
@@ -91,6 +92,13 @@ int SelectMobScene::Run(SelectedNavi navi)
   // Current selection index
   int mobSelectionIndex = 0;
 
+  // Text box navigator
+  TextBox textbox(280, 100);
+  textbox.Stop();
+  textbox.setPosition(100, 200);
+  textbox.SetTextColor(sf::Color::Black);
+
+  // Clocks and timers
   Clock clock;
   float elapsed = 0.0f;
   float totalTime = 0.f;
@@ -114,6 +122,7 @@ int SelectMobScene::Run(SelectedNavi navi)
     //ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
+    textbox.Update(elapsed);
 
     ENGINE.Draw(bg);
     ENGINE.Draw(menuLabel);
@@ -154,6 +163,8 @@ int SelectMobScene::Run(SelectedNavi navi)
 
     // Scene keyboard controls
     if (!gotoNextScene && transitionProgress == 0.f) {
+      textbox.Play();
+ 
       if (INPUT.has(PRESSED_LEFT)) {
         selectInputCooldown -= elapsed;
 
@@ -230,6 +241,7 @@ int SelectMobScene::Run(SelectedNavi navi)
       speedLabel->setString("2");
       attackLabel->setString("1");
       hpLabel->setString("20");
+      textbox.SetMessage("Tutorial ranked Mettaurs. You got this!");
     }
     else if (mobSelectionIndex == 1) {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_PROGSMAN_IDLE),true);
@@ -238,6 +250,7 @@ int SelectMobScene::Run(SelectedNavi navi)
       speedLabel->setString("4");
       attackLabel->setString("3");
       hpLabel->setString("300");
+      textbox.SetMessage("A rogue Mr. Prog that became too strong to control.");
     }
     else if (mobSelectionIndex == 2) {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
@@ -252,6 +265,9 @@ int SelectMobScene::Run(SelectedNavi navi)
       speedLabel->setString("1");
       attackLabel->setString("4");
       hpLabel->setString("60");
+
+      textbox.SetMessage("A family of cannon based virii. Watch out!");
+
     }
     else {
       mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_ANYTHING_GOES),true);
@@ -260,6 +276,8 @@ int SelectMobScene::Run(SelectedNavi navi)
       speedLabel->setString("*");
       attackLabel->setString("*");
       hpLabel->setString("");
+
+      textbox.SetMessage("A randomly generated mob and field. Anything goes.");
     }
 
     if (numberCooldown > 0) {
@@ -366,6 +384,8 @@ int SelectMobScene::Run(SelectedNavi navi)
       // Re-play music
       AUDIO.Stream("resources/loops/loop_navi_customizer.ogg", true);
     }
+
+    ENGINE.Draw(textbox);
 
     sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
     sf::Sprite transitionPost;

@@ -16,6 +16,8 @@ private:
   bool play;
   bool mute;
   int charSize;
+  sf::Color fillColor;
+  sf::Color outlineColor;
 public:
   TextBox(int width, int height, int characterSize = 15, std::string fontPath = "resources/fonts/dr_cain_terminal.ttf") {
     font = TEXTURES.LoadFontFromFile(fontPath);
@@ -29,10 +31,25 @@ public:
     mute = false;
     progress = 0;
     charSize = characterSize;
+    fillColor = sf::Color::White;
+    outlineColor = sf::Color::White;
   }
 
   ~TextBox() {
     delete font;
+  }
+
+  void SetTextFillColor(sf::Color color) {
+    fillColor = color;
+  }
+
+  void SetTextOutlineColor(sf::Color color) {
+    outlineColor = color;
+  }
+
+  void SetTextColor(sf::Color color) {
+    SetTextFillColor(color);
+    SetTextOutlineColor(color);
   }
 
   void Mute(bool enabled = true) {
@@ -55,6 +72,7 @@ public:
     int index = 0;
     int line = 0;
     int wordIndex = -1; // If we are breaking on a word
+
     while (index < message.size()) {
       if (message[index] != ' ' && wordIndex == -1) {
         wordIndex = index;
@@ -63,39 +81,37 @@ public:
         wordIndex = -1;
       }
 
-      if(index > 0)
-        prevText.setString(message.substr(0, index - 1));
+      if(wordIndex > 0)
+        prevText.setString(message.substr(0, wordIndex - 1));
 
-      text.setString(message.substr(0, index));
+      text.setString(message.substr(0, wordIndex));
 
-      double prevWidth = (index > 0) ? prevText.getGlobalBounds().width : 0;
-      double prevHeight = (index > 0) ? prevText.getGlobalBounds().height : 0;
+      double prevWidth = (wordIndex > 0) ? prevText.getGlobalBounds().width : 0;
+      double prevHeight = (wordIndex > 0) ? prevText.getGlobalBounds().height : 0;
       double width = text.getGlobalBounds().left + prevWidth;
       double height = text.getGlobalBounds().top + prevHeight;
 
-      if (width > areaWidth) {
+      if (width > areaWidth && index > wordIndex) {
         if (wordIndex > -1) {
           // Line break at the last word
-          while (message[index] == ' ' && index < message.size()) { index++; }
+          while ((message[index] == ' ' || message[index] == '\n') && index < message.size()) { index++; }
           message.insert(wordIndex, "\n");
-          index = wordIndex; // Start counting from here
-          while (message[index] == ' ' && index < message.size()) { index++; }
+          wordIndex = -1;
+          while ((message[index] == ' ' || message[index] == '\n') && index < message.size()) { index++; }
         }
         else {
           // Line break at the next word
-          while (message[index] == ' ' && index < message.size()) { index++; }
+          while ((message[index] == ' ' || message[index] == '\n') && index < message.size()) { index++; }
           message.insert(index, "\n");
-          while (message[index] == ' ' && index < message.size()) { index++; }
+          while ((message[index] == ' ' || message[index] == '\n') && index < message.size()) { index++; }
         }
         line++;
-        wordIndex = -1;
       }
-
       index++;
     }
 
-    // update final text 
-    text.setString(message);
+    // make final text blank to start
+    text.setString("");
   }
 
   void SetSpeed(const double speed) {
@@ -152,6 +168,8 @@ public:
     text.setPosition(this->getPosition());
     text.setScale(this->getScale());
     text.setRotation(this->getRotation());
+    text.setFillColor(fillColor);
+    text.setOutlineColor(fillColor);
 
     target.draw(text);
   }

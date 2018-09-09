@@ -457,6 +457,9 @@
     <ClCompile Include="bnNaviRegistration.cpp">
       <Filter>Engine\Addons\NaviRegistration</Filter>
     </ClCompile>
+    <ClCompile Include="bnGridBackground.cpp">
+      <Filter>Battle\Backgrounds</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -759,6 +762,12 @@
     </ClInclude>
     <ClInclude Include="bnBackground.h">
       <Filter>Prefabs\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="bnFramedTextBox.h">
+      <Filter>Prefabs\TextBox\Framed</Filter>
+    </ClInclude>
+    <ClInclude Include="bnGridBackground.h">
+      <Filter>Battle\Backgrounds</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

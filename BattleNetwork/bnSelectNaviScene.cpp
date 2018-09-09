@@ -1,5 +1,6 @@
 #include <time.h>
 #include "bnSelectNaviScene.h"
+#include "bnGridBackground.h"
 #include "bnMemory.h"
 #include "bnCamera.h"
 #include "bnAnimation.h"
@@ -25,6 +26,8 @@ using sf::Font;
 #define UI_LEFT_POS_START -300
 #define UI_RIGHT_POS_START 640
 #define UI_TOP_POS_START 250
+
+#define MAX_PIXEL_FACTOR 125
 
 SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   Camera camera(ENGINE.GetDefaultView());
@@ -70,8 +73,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   SelectedNavi naviSelectionIndex = currentNavi;
   SelectedNavi prevChosen = currentNavi;
   // select menu graphic
-  sf::Sprite bg(LOAD_TEXTURE(NAVI_SELECT_BG));
-  bg.setScale(2.f, 2.f);
+  Background* bg = new GridBackground();
 
   // UI Sprites
   double UI_RIGHT_POS = UI_RIGHT_POS_START;
@@ -113,7 +115,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   naviAnimator.SetFrame(1, &navi);
 
   // Distortion effect
-  double factor = 125;
+  double factor = MAX_PIXEL_FACTOR;
 
   // Transition
   sf::Shader& transition = LOAD_SHADER(TRANSITION);
@@ -146,8 +148,8 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   glowbottom.setPosition(40, 200);
 
   // Text box 
-  TextBox textbox(185+15, 100, 7);
-  textbox.setPosition(UI_RIGHT_POS_MAX + 10, 205);
+  TextBox textbox(185+15, 100);
+  textbox.setPosition(UI_RIGHT_POS_MAX + 10, 295);
   textbox.Stop();
 
   // Timers and clocks
@@ -227,6 +229,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     ENGINE.DrawOverlay();
 
     naviAnimator.Update(elapsed, &navi);
+    bg->Update(elapsed);
 
     SelectedNavi prevSelect = naviSelectionIndex;
 
@@ -341,6 +344,12 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
 
     // Update UI slide in
     if (!gotoNextScene) {
+      factor -= elapsed * 180.f;
+
+      if (factor <= 0.f) {
+        factor = 0.f;
+      }
+
       if (UI_RIGHT_POS > UI_RIGHT_POS_MAX) {
         UI_RIGHT_POS -= elapsed * 500;
       }
@@ -376,6 +385,12 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
       }
     }
     else {
+      factor += elapsed * 180.f;
+
+      if (factor >= MAX_PIXEL_FACTOR) {
+        factor = MAX_PIXEL_FACTOR;
+      }
+
       if (UI_TOP_POS < UI_TOP_POS_START) {
         UI_TOP_POS += elapsed * 500;
       }
@@ -406,12 +421,6 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     pixelated.SetUniform("w", (float)t.width / (float)size.x);
     pixelated.SetUniform("h", (float)t.height / (float)size.y);
     pixelated.SetUniform("pixel_threshold", (float)(factor / 400.f));
-
-    factor -= elapsed * 180.f;
-
-    if (factor <= 0.f) {
-      factor = 0.f;
-    }
 
     // Refresh mob graphic origin every frame as it may change
     float xpos = ((glowbase.getTextureRect().width / 2.0f)*glowbase.getScale().x) + glowbase.getPosition().x;
@@ -455,6 +464,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   delete speedLabel;
   delete menuLabel;
   delete hpLabel;
+  delete bg;
 
   ENGINE.RevokeShader();
 

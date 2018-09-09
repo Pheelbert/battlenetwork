@@ -22,8 +22,8 @@ void LanBackground::Update(float _elapsed) {
   progress += 1 * _elapsed;
   if (progress >= 1.f) progress = 0.0f;
 
-  y -= 0.3 * _elapsed;
-  x -= 0.3 * _elapsed;
+  y -= 0.3f * _elapsed;
+  x -= 0.3f * _elapsed;
 
   if (x < 0) {
     x = 1;
@@ -33,8 +33,8 @@ void LanBackground::Update(float _elapsed) {
     y = 1;
   }
 
-  int frame = progress * COMPONENT_FRAME_COUNT;
+  int frame = (int)(progress * COMPONENT_FRAME_COUNT);
 
   Wrap(sf::Vector2f(x, y));
-  TextureOffset(sf::Vector2f(frame*COMPONENT_WIDTH, 0));
+  TextureOffset(sf::Vector2f((float)(frame*COMPONENT_WIDTH), 0));
 }

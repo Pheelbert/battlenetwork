@@ -170,6 +170,7 @@
     <ClCompile Include="bnChipUseListener.cpp" />
     <ClCompile Include="bnFolderScene.cpp" />
     <ClCompile Include="bnGraveyardBackground.cpp" />
+    <ClCompile Include="bnGridBackground.cpp" />
     <ClCompile Include="bnInfiniteMap.cpp" />
     <ClCompile Include="bnLanBackground.cpp" />
     <ClCompile Include="bnBattleResults.cpp">
@@ -253,6 +254,7 @@
     <ClInclude Include="bnElements.h" />
     <ClInclude Include="bnFolderScene.h" />
     <ClInclude Include="bnGraveyardBackground.h" />
+    <ClInclude Include="bnGridBackground.h" />
     <ClInclude Include="bnInfiniteMap.h" />
     <ClInclude Include="bnLanBackground.h" />
     <ClInclude Include="bnCamera.h" />
@@ -331,6 +333,7 @@
     <ClInclude Include="bnCanonSmoke.h" />
     <ClInclude Include="bnNaviRegistration.h" />
     <ClInclude Include="bnQueueNaviRegistration.h" />
+    <ClInclude Include="bnFramedTextBox.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="bnCanodumbCursor.h" />
   </ItemGroup>
