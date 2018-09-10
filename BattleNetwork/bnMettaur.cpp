@@ -36,9 +36,17 @@ Mettaur::Mettaur(Rank _rank)
   this->StateChange<MettaurIdleState>();
   name = "Mettaur";
   Entity::team = Team::BLUE;
+
   health = 40;
-  hitHeight = 0;
   textureType = TextureType::MOB_METTAUR_IDLE;
+
+  if (rank == Rank::SP) {
+    health = 1000;
+    textureType = TextureType::MOB_METTAUR_IDLE_BLUE;
+  }
+
+  hitHeight = 0;
+
   healthUI = new MobHealthUI(this);
 
   setTexture(*TEXTURES.GetTexture(textureType));
@@ -67,13 +75,13 @@ int* Mettaur::GetAnimOffset() {
   int* res = new int[2];
   res[0] = 35;  res[1] = 35;
 
-  if (mob->GetTextureType() == TextureType::MOB_METTAUR_IDLE) {
+  if (state == MOB_IDLE) {
     res[0] = 35;
     res[1] = 35;
-  } else if (mob->GetTextureType() == TextureType::MOB_METTAUR_ATTACK) {
+  } else if (state == MOB_ATTACKING) {
     res[0] = 65;
     res[1] = 95;
-  } else if (mob->GetTextureType() == TextureType::MOB_MOVE) {
+  } else if (state == MOB_MOVING) {
     res[0] = 45;
     res[1] = 55;
   } 
@@ -135,20 +143,30 @@ void Mettaur::Update(float _elapsed) {
 
 void Mettaur::RefreshTexture() {
   if (state == MOB_IDLE) {
-    textureType = TextureType::MOB_METTAUR_IDLE;
+    if (rank == Rank::SP) {
+      textureType = TextureType::MOB_METTAUR_IDLE_BLUE;
+    }
+    else {
+      textureType = TextureType::MOB_METTAUR_IDLE;
+    }
   } else if (state == MOB_MOVING) {
-    textureType = TextureType::MOB_MOVE;
+      textureType = TextureType::MOB_MOVE;
   } else if (state == MOB_ATTACKING) {
-    textureType = TextureType::MOB_METTAUR_ATTACK;
+    if (rank == Rank::SP) {
+      textureType = TextureType::MOB_METTAUR_ATTACK_BLUE;
+    }
+    else {
+      textureType = TextureType::MOB_METTAUR_ATTACK;
+    }
   }
   setTexture(*TEXTURES.GetTexture(textureType));
 
-  if (textureType == TextureType::MOB_METTAUR_IDLE) {
+  if (state == MOB_IDLE) {
     setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 25.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 45.0f);
     hitHeight = getLocalBounds().height;
-  } else if (textureType == TextureType::MOB_MOVE) {
+  } else if (state == MOB_MOVING) {
     setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 35.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 60.0f);
-  } else if (textureType == TextureType::MOB_METTAUR_ATTACK) {
+  } else if (state == MOB_ATTACKING) {
     setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 55.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 105.0f);
     hitHeight = getLocalBounds().height;
   }

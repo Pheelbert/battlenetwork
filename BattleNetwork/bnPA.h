@@ -41,7 +41,7 @@ public:
 
   void LoadPA();
   std::string valueOf(std::string _key, std::string _line);
-  bool FindPA(Chip** input, unsigned size);
+  const int FindPA(Chip** input, unsigned size);
   const PASteps GetMatchingSteps();
   Chip* GetAdvanceChip();
 };

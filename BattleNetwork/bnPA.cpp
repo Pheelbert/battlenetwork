@@ -122,12 +122,14 @@ Chip * PA::GetAdvanceChip()
    return advanceChipRef;
 }
 
-bool PA::FindPA(Chip ** input, unsigned size)
+const int PA::FindPA(Chip ** input, unsigned size)
 {
+  int startIndex = -1;
+
   std::cout << "size: " << size << "\n";
 
   if (size == 0) {
-    return false;
+    return startIndex;
   }
 
   for (iter = advances.begin(); iter != advances.end(); iter++) {
@@ -162,6 +164,10 @@ bool PA::FindPA(Chip ** input, unsigned size)
         match = true;
         // We do not break here. If it is a match all across the steps, then the for loop ends 
         // and match stays == true
+        
+        if (startIndex == -1) {
+          startIndex = i;
+        }
       }
     }
 
@@ -171,12 +177,13 @@ bool PA::FindPA(Chip ** input, unsigned size)
 
        advanceChipRef = new Chip(0, iter->icon, 0, iter->damage, iter->type, iter->name, "Program Advance", 0);
 
-      return true;
+      return startIndex;
     }
 
     // else keep looking
+    startIndex = -1;
   }
 
-  return false;
+  return startIndex;
 }
 

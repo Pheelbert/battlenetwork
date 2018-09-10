@@ -33,7 +33,7 @@ Mob* RandomMettaurMob::Build() {
           //  mob->Spawn<ProgsMan, ProgsManIdleState>(i + 1, j + 1);
           //}
           //else {
-            mob->Spawn<Rank1<Mettaur, MettaurIdleState>>(i + 1, j + 1);
+            mob->Spawn<RankSP<Mettaur, MettaurIdleState>>(i + 1, j + 1);
           //}
         }
       }

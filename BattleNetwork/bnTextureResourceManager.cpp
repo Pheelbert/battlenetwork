@@ -102,6 +102,10 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/mobs/mettaur/mob_mettaur_hit.png");
   paths.push_back("resources/mobs/mettaur/mob_mettaur_attack.png");
 
+  paths.push_back("resources/mobs/mettaur/mob_mettaur_move_blue.png");
+  paths.push_back("resources/mobs/mettaur/mob_mettaur_hit_blue.png");
+  paths.push_back("resources/mobs/mettaur/mob_mettaur_attack_blue.png");
+
   // ProgsMan
   paths.push_back("resources/mobs/progsman/mob_progsman_idle.png");
   paths.push_back("resources/mobs/progsman/mob_progsman_move.png");

@@ -37,7 +37,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
   PASteps paSteps;
   programAdvance.LoadPA();
   bool isPAComplete = false;
-  bool hasPA = false;
+  int hasPA = -1;
   int paStepIndex = 0;
 
   float listStepCooldown = 0.5f;
@@ -327,63 +327,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
       ENGINE.SetShader(&pauseShader);
     }
 
-    //ENGINE.DrawUnderlay();
-    //ENGINE.DrawLayers();
     ENGINE.DrawOverlay();
-
-    /*
-      Post processing shaders
-
-      TODO: Make this step happen in layers only so that the heat is not visible on top of
-      entities in the front of the screen
-    */
-
-    /*   heatShader.setUniform("time", totalTime);
-       heatShader.setUniform("distortionFactor", 0.01f);
-       heatShader.setUniform("riseFactor", 0.02f);
-
-       heatShader.setUniform("w", tile->GetWidth()-8.f);
-       heatShader.setUniform("h", tile->GetHeight()*1.5f);
-
-       iceShader.setUniform("w", tile->GetWidth() - 8.f);
-       iceShader.setUniform("h", tile->GetHeight());
-
-       while (field->GetNextTile(tile)) {
-         if (tile->GetState() == TileState::LAVA) {
-           heatShader.setUniform("x", tile->getPosition().x+4.f);
-
-           float repos = (float)(tile->getPosition().y - 4.f) - (tile->GetHeight()/1.5f);
-           heatShader.setUniform("y", repos);
-
-           sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
-
-           sf::Sprite distortionPost;
-           distortionPost.setTexture(postprocessing);
-
-           LayeredDrawable* bake = new LayeredDrawable(distortionPost);
-           bake->SetShader(&heatShader);
-
-           ENGINE.Draw(bake);
-           delete bake;
-         }
-         else if (tile->GetState() == TileState::ICE) {
-           iceShader.setUniform("x", tile->getPosition().x + 4.f);
-
-           float repos = (float)(tile->getPosition().y - 4.f);
-           iceShader.setUniform("y", repos);
-
-           sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
-
-           sf::Sprite reflectionPost;
-           reflectionPost.setTexture(postprocessing);
-
-           LayeredDrawable* bake = new LayeredDrawable(reflectionPost);
-           bake->SetShader(&iceShader);
-
-           ENGINE.Draw(bake);
-           delete bake;
-         }
-       } */
 
     float nextLabelHeight = 0;
     if (!mob->IsSpawningDone() || isInChipSelect) {
@@ -462,7 +406,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
         // Reset PA system
         isPAComplete = false;
-        hasPA = false;
+        hasPA = -1;
         paStepIndex = 0;
         listStepCounter = listStepCooldown;
 
@@ -535,7 +479,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
         chipCustGUI.Move(sf::Vector2f(-600.f * elapsed, 0));
       } else if (isInChipSelect) { // we're leaving a state
         // Start Program Advance checks
-        if(isPAComplete && !hasPA) {
+        if(isPAComplete && hasPA == -1) {
           // Return to game
           isInChipSelect = false;
           chipUI.LoadChips(chips, chipCount);
@@ -547,19 +491,47 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
           hasPA = programAdvance.FindPA(chips, chipCount);
 
-          if(hasPA) {
+          if(hasPA > -1) {
             paSteps = programAdvance.GetMatchingSteps();
             Chip* paChip = programAdvance.GetAdvanceChip();
 
-            // For now do not use all other chips. 
-            // TODO: Only remove the chips involved in the program advance. Replace them with the new PA chip.
-            chips = &paChip;
-            chipCount = 1;
+            // Only remove the chips involved in the program advance. Replace them with the new PA chip.
+            // PA chip is dealloc by the class that created it so it must be removed before the library tries to dealloc
+            int newChipCount = chipCount - (int)paSteps.size() + 1; // Add the new one
+            int newChipStart = hasPA;
+
+            // Create a temp chip list
+            Chip** newChipList = new Chip*[newChipCount];
+
+            int j = 0;
+            for (int i = 0; i < chipCount; ) {
+              if (i == hasPA) {
+                newChipList[j] = paChip;
+                i += paSteps.size();
+                j++;
+                continue;
+              }
+
+              newChipList[j] = chips[i];
+              i++;
+              j++;
+            }
+
+            // Set the new chips
+            for (int i = 0; i < newChipCount; i++) {
+              chips[i] = *(newChipList + i);
+            }
+
+            // Delete the temp list space 
+            // NOTE: We are _not_ deleting the pointers in them
+            delete[] newChipList;
+
+            chipCount = newChipCount;
           }
 
           isPAComplete = true;
         }
-        else if (hasPA) {
+        else if (hasPA > -1) {
           static bool advanceSoundPlay = false;
           static float increment = 0;
 
@@ -569,7 +541,11 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
           if (paStepIndex <= paSteps.size()) {
             for (int i = 0; i < paStepIndex; i++) {
-              sf::Text stepLabel = sf::Text(paSteps[i].first, *mobFont);
+              std::string formatted = paSteps[i].first;
+              formatted.resize(9, ' ');
+              formatted[8] = paSteps[i].second;
+
+              sf::Text stepLabel = sf::Text(formatted, *mobFont);
 
               stepLabel.setOrigin(0, 0);
               stepLabel.setPosition(40.0f, 80.f + (nextLabelHeight*2.f));
@@ -589,7 +565,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
               advanceSoundPlay = true;
             }
 
-            increment += elapsed * 50.f;
+            increment += elapsed * 10.f;
 
             sf::Text stepLabel = sf::Text(programAdvance.GetAdvanceChip()->GetShortName(), *mobFont);
 
@@ -607,7 +583,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
           else {
 
             if (paStepIndex > paSteps.size()) {
-              hasPA = false; // state over 
+              hasPA = -1; // state over 
               advanceSoundPlay = false;
               isPAComplete = true;
             }
