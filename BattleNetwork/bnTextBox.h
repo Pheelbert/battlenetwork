@@ -72,40 +72,33 @@ public:
     int index = 0;
     int line = 0;
     int wordIndex = -1; // If we are breaking on a word
+    int lastRow = 0;
 
     while (index < message.size()) {
-      if (message[index] != ' ' && wordIndex == -1) {
+      if ((message[index] != ' ' || message[index] != '\n') && wordIndex == -1) {
         wordIndex = index;
       }
-      else if (message[index] == ' ' && wordIndex > -1) {
+      else if (message[index] == ' ' || message[index] == '\n') {
         wordIndex = -1;
       }
 
-      if(wordIndex > 0)
-        prevText.setString(message.substr(0, wordIndex - 1));
+      if(index > 0)
+        prevText.setString(message.substr(lastRow, index - 1));
 
-      text.setString(message.substr(0, wordIndex));
+      text.setString(message.substr(lastRow, index));
 
-      double prevWidth = (wordIndex > 0) ? prevText.getGlobalBounds().width : 0;
-      double prevHeight = (wordIndex > 0) ? prevText.getGlobalBounds().height : 0;
-      double width = text.getGlobalBounds().left + prevWidth;
+      double prevWidth  = (index > 0) ? prevText.getGlobalBounds().width : 0;
+      double prevHeight = (index > 0) ? prevText.getGlobalBounds().height : 0;
+      double width  = text.getGlobalBounds().left + prevWidth;
       double height = text.getGlobalBounds().top + prevHeight;
 
-      if (width > areaWidth && index > wordIndex) {
-        if (wordIndex > -1) {
-          // Line break at the last word
-          while ((message[index] == ' ' || message[index] == '\n') && index < message.size()) { index++; }
-          message.insert(wordIndex, "\n");
-          wordIndex = -1;
-          while ((message[index] == ' ' || message[index] == '\n') && index < message.size()) { index++; }
-        }
-        else {
-          // Line break at the next word
-          while ((message[index] == ' ' || message[index] == '\n') && index < message.size()) { index++; }
-          message.insert(index, "\n");
-          while ((message[index] == ' ' || message[index] == '\n') && index < message.size()) { index++; }
-        }
+      if (width > areaWidth && wordIndex != -1) {
+        // Line break at the next word
+        message.insert(wordIndex, "\n");
+        lastRow = index;
         line++;
+        index++;
+        wordIndex = -1;
       }
       index++;
     }
@@ -169,7 +162,7 @@ public:
     text.setScale(this->getScale());
     text.setRotation(this->getRotation());
     text.setFillColor(fillColor);
-    text.setOutlineColor(fillColor);
+    text.setOutlineColor(outlineColor);
 
     target.draw(text);
   }

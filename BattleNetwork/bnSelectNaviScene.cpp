@@ -18,16 +18,16 @@ using sf::Clock;
 using sf::Event;
 using sf::Font;
 
-#define UI_LEFT_POS_MAX 10
-#define UI_RIGHT_POS_MAX 300
-#define UI_TOP_POS_MAX 0
-#define UI_SPACING 55
+#define UI_LEFT_POS_MAX 10.f
+#define UI_RIGHT_POS_MAX 300.f
+#define UI_TOP_POS_MAX 0.f
+#define UI_SPACING 55.f
 
-#define UI_LEFT_POS_START -300
-#define UI_RIGHT_POS_START 640
-#define UI_TOP_POS_START 250
+#define UI_LEFT_POS_START -300.f
+#define UI_RIGHT_POS_START 640.f
+#define UI_TOP_POS_START 250.f
 
-#define MAX_PIXEL_FACTOR 125
+#define MAX_PIXEL_FACTOR 125.f
 
 SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   Camera camera(ENGINE.GetDefaultView());
@@ -149,7 +149,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
 
   // Text box 
   TextBox textbox(185+15, 100);
-  textbox.setPosition(UI_RIGHT_POS_MAX + 10, 295);
+  textbox.setPosition(UI_RIGHT_POS_MAX + 10, 205);
   textbox.Stop();
 
   // Timers and clocks
@@ -266,6 +266,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
       if (INPUT.has(PRESSED_B)) {
         gotoNextScene = true;
         AUDIO.Play(AudioType::CHIP_DESC_CLOSE);
+        textbox.Mute();
       }
     }
 

@@ -95,8 +95,10 @@ int SelectMobScene::Run(SelectedNavi navi)
   // Text box navigator
   TextBox textbox(280, 100);
   textbox.Stop();
-  textbox.setPosition(100, 200);
+  textbox.Mute();
+  textbox.setPosition(100, 210);
   textbox.SetTextColor(sf::Color::Black);
+  textbox.SetSpeed(20);
 
   // Clocks and timers
   Clock clock;
@@ -230,54 +232,29 @@ int SelectMobScene::Run(SelectedNavi navi)
     mobSelectionIndex = std::max(0, mobSelectionIndex);
     mobSelectionIndex = std::min(3, mobSelectionIndex);
 
-    if (mobSelectionIndex != prevSelect) {
-      factor = 125;
-    }
-
     if (mobSelectionIndex == 0) {
-      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE),true);
-      mob.setPosition(110.f, 130.f);
       mobLabel->setString("Mettaur");
       speedLabel->setString("2");
       attackLabel->setString("1");
       hpLabel->setString("20");
-      textbox.SetMessage("Tutorial ranked Mettaurs. You got this!");
     }
     else if (mobSelectionIndex == 1) {
-      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_PROGSMAN_IDLE),true);
-      mob.setPosition(100.f, 110.f);
       mobLabel->setString("ProgsMan");
       speedLabel->setString("4");
       attackLabel->setString("3");
       hpLabel->setString("300");
-      textbox.SetMessage("A rogue Mr. Prog that became too strong to control.");
     }
     else if (mobSelectionIndex == 2) {
-      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
-      mob.setPosition(90.f, 130.f);
-
-      mobAnimator = Animation("resources/mobs/canodumb/canodumb.animation");
-      mobAnimator.Load();
-      mobAnimator.SetAnimation(MOB_CANODUMB_IDLE_1);
-      mobAnimator.SetFrame(1, &mob);
-
       mobLabel->setString("Canodumb");
       speedLabel->setString("1");
       attackLabel->setString("4");
       hpLabel->setString("60");
-
-      textbox.SetMessage("A family of cannon based virii. Watch out!");
-
     }
     else {
-      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_ANYTHING_GOES),true);
-      mob.setPosition(110.f, 110.f);
       mobLabel->setString("Random Mob");
       speedLabel->setString("*");
       attackLabel->setString("*");
       hpLabel->setString("");
-
-      textbox.SetMessage("A randomly generated mob and field. Anything goes.");
     }
 
     if (numberCooldown > 0) {
@@ -308,7 +285,42 @@ int SelectMobScene::Run(SelectedNavi navi)
       speedLabel->setString(std::to_string(randSpeed));
       mobLabel->setString(sf::String(newstr));
     }
-             
+    
+    static bool doOnce = true;
+    if (mobSelectionIndex != prevSelect || doOnce) {
+      doOnce = false;
+      factor = 125;
+
+      if (mobSelectionIndex == 0) {
+        mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE), true);
+        mob.setPosition(110.f, 130.f);
+
+        textbox.SetMessage("Tutorial ranked Mettaurs. You got this!");
+      }
+      else if (mobSelectionIndex == 1) {
+        mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_PROGSMAN_IDLE), true);
+        mob.setPosition(100.f, 110.f);
+
+        textbox.SetMessage("A rogue Mr. Prog that became too strong to control.");
+      }
+      else if (mobSelectionIndex == 2) {
+        mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
+        mob.setPosition(90.f, 130.f);
+
+        mobAnimator = Animation("resources/mobs/canodumb/canodumb.animation");
+        mobAnimator.Load();
+        mobAnimator.SetAnimation(MOB_CANODUMB_IDLE_1);
+        mobAnimator.SetFrame(1, &mob);
+
+        textbox.SetMessage("A family of cannon based virii. Watch out!");
+      }
+      else {
+        mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_ANYTHING_GOES), true);
+        mob.setPosition(110.f, 110.f);
+        textbox.SetMessage("A randomly generated mob and field. Anything goes.");
+      }
+    }
+
     float progress = (maxNumberCooldown - numberCooldown) / maxNumberCooldown;
 
     if (progress > 1.f) progress = 1.f;
