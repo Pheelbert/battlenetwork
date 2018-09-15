@@ -10,6 +10,7 @@ using std::to_string;
 MobHealthUI::MobHealthUI(void)
   : mob(nullptr),
   font(nullptr) {
+  healthCounter = 0;
 }
 
 MobHealthUI::MobHealthUI(Character* _mob)
@@ -19,6 +20,7 @@ MobHealthUI::MobHealthUI(Character* _mob)
   setOutlineColor(sf::Color(48,56,80));
   setOutlineThickness(2.f);
   setScale(0.8f, 0.8f);
+  healthCounter = mob->GetHealth();
 }
 
 MobHealthUI::~MobHealthUI(void) {
@@ -28,7 +30,15 @@ MobHealthUI::~MobHealthUI(void) {
 void MobHealthUI::Update() {
   if (mob) {
     setOrigin(getLocalBounds().width, 0);
-    setString(to_string(mob->GetHealth()));
+
+    if (healthCounter > mob->GetHealth()) {
+      healthCounter--;
+    }
+    else if (healthCounter < mob->GetHealth()) {
+      healthCounter++;
+    }
+
+    setString(to_string(healthCounter));
 
     int* res = mob->GetAnimOffset();
 

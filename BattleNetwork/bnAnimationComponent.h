@@ -21,6 +21,7 @@ public:
   void Update(float _elapsed);
   void Setup(string _path);
   void Load();
+  void SetPlaybackSpeed(const double playbackSpeed);
   void SetAnimation(string state, std::function<void()> onFinish = nullptr);
   void SetAnimation(string state, Animate::Mode playbackMode, std::function<void()> onFinish = std::function<void()>());
   void AddCallback(int frame, std::function<void()> onFrame, std::function<void()> outFrame = std::function<void()>(), bool doOnce = false);
@@ -29,4 +30,5 @@ private:
   string entityName;
   string path;
   Animation animation;
+  double speed;
 };

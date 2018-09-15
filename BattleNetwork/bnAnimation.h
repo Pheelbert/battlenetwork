@@ -19,7 +19,7 @@ public:
   ~Animation();
 
   void Load();
-  void Update(float _elapsed, sf::Sprite* target);
+  void Update(float _elapsed, sf::Sprite* target, double playbackSpeed = 1.0);
   void SetFrame(int frame, sf::Sprite* target);
   void SetAnimation(string state);
 

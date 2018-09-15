@@ -154,7 +154,7 @@ NaviRegistration & NaviRegistration::GetInstance()
 
 NaviRegistration::~NaviRegistration()
 {
-  for (int i = 0; i < Size(); i++) {
+  for (int i = 0; i < (int)Size(); i++) {
     delete roster[i];
   }
 
@@ -176,7 +176,7 @@ void NaviRegistration::Register(const NaviInfo * info)
 
 const NaviRegistration::NaviInfo & NaviRegistration::At(int index)
 {
-  if (index < 0 || index >= Size())
+  if (index < 0 || index >= (int)Size())
     throw std::runtime_error("Roster index out of bounds");
 
   return *(roster.at(index));
@@ -184,12 +184,12 @@ const NaviRegistration::NaviInfo & NaviRegistration::At(int index)
 
 const unsigned NaviRegistration::Size()
 {
-  return roster.size();
+  return (unsigned)roster.size();
 }
 
 void NaviRegistration::LoadAllNavis(std::atomic<int>& progress)
 {
-  for (int i = 0; i < Size(); i++) {
+  for (int i = 0; i < (int)Size(); i++) {
     roster[i]->loadNaviClass();
 
     Logger::GetMutex()->lock();

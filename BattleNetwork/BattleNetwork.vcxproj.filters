@@ -265,9 +265,6 @@
     <ClCompile Include="bnEntity.cpp">
       <Filter>Battle\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="bnMobHealthUI.cpp">
-      <Filter>Battle\Entity\Character\Mettaur</Filter>
-    </ClCompile>
     <ClCompile Include="bnEngine.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -400,9 +397,6 @@
     <ClCompile Include="bnPlayer.cpp">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClCompile>
-    <ClCompile Include="bnPlayerHealthUI.cpp">
-      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
-    </ClCompile>
     <ClCompile Include="bnOverworldMap.cpp">
       <Filter>Overworld\Map</Filter>
     </ClCompile>
@@ -460,6 +454,12 @@
     <ClCompile Include="bnGridBackground.cpp">
       <Filter>Battle\Backgrounds</Filter>
     </ClCompile>
+    <ClCompile Include="bnMobHealthUI.cpp">
+      <Filter>Battle\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="bnPlayerHealthUI.cpp">
+      <Filter>Battle\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -509,9 +509,6 @@
     </ClInclude>
     <ClInclude Include="bnDirection.h">
       <Filter>Battle\Enumerations</Filter>
-    </ClInclude>
-    <ClInclude Include="bnMobHealthUI.h">
-      <Filter>Battle\Entity\Character\Mettaur</Filter>
     </ClInclude>
     <ClInclude Include="bnEngine.h">
       <Filter>Engine</Filter>
@@ -679,9 +676,6 @@
     <ClInclude Include="bnPlayer.h">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClInclude>
-    <ClInclude Include="bnPlayerHealthUI.h">
-      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
-    </ClInclude>
     <ClInclude Include="bnOverworldMap.h">
       <Filter>Overworld\Map</Filter>
     </ClInclude>
@@ -768,6 +762,12 @@
     </ClInclude>
     <ClInclude Include="bnGridBackground.h">
       <Filter>Battle\Backgrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMobHealthUI.h">
+      <Filter>Battle\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerHealthUI.h">
+      <Filter>Battle\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

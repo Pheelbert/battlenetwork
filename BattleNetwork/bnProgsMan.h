@@ -29,7 +29,7 @@ public:
   void SetHealth(int _health);
   virtual const bool Hit(int _damage);
   virtual const float GetHitHeight() const;
-  int* GetAnimOffset();
+  virtual int* GetAnimOffset();
 
 private:
   sf::Clock clock;

@@ -16,6 +16,8 @@ private:
 
   bool isChargeHeld;
 
+  Direction previousDirection;
+
 public:
   PlayerControlledState();
   ~PlayerControlledState();

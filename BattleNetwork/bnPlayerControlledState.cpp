@@ -18,7 +18,7 @@ PlayerControlledState::PlayerControlledState() : InputManager(&InputManager::Get
   moveKeyPressCooldown = MOVE_KEY_PRESS_COOLDOWN;
   attackKeyPressCooldown = ATTACK_KEY_PRESS_COOLDOWN;
   attackToIdleCooldown = 0.0f;
-
+  previousDirection = Direction::NONE;
   isChargeHeld = false;
 }
 
@@ -53,7 +53,7 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
   if (player.state != PLAYER_IDLE)
     return;
 
-  Direction direction = Direction::NONE;
+  static Direction direction = Direction::NONE;
   if (moveKeyPressCooldown >= MOVE_KEY_PRESS_COOLDOWN) {
     if (InputManager->has(PRESSED_UP)) {
       direction = Direction::UP;
@@ -100,8 +100,31 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
     direction = Direction::NONE;
   }
 
+  if (!player.HasFloatShoe()) {
+    if (player.GetTile()->GetState() == TileState::ICE) {
+      if (previousDirection != Direction::NONE) {
+        bool moved = player.Move(previousDirection);
+
+        if (moved) {
+          player.AdoptNextTile();
+        }
+        else {
+          previousDirection = Direction::NONE;
+        }
+      }
+    }
+    else if (player.GetTile()->GetState() == TileState::LAVA) {
+      // player.SetHealth(player.GetHealth() - 1);
+    }
+    else {
+      previousDirection = Direction::NONE;
+    }
+  }
+
   if (direction != Direction::NONE && player.state != PLAYER_SHOOTING) {
     bool moved = player.Move(direction);
+
+    previousDirection = direction;
 
     if (moved) {
       moveKeyPressCooldown = 0.0f;
@@ -111,6 +134,7 @@ void PlayerControlledState::OnUpdate(float _elapsed, Player& player) {
           player.AdoptNextTile();
         }
         player.SetAnimation(PLAYER_IDLE);
+        direction = Direction::NONE;
       }; // end lambda
       player.SetAnimation(PLAYER_MOVING, onFinish);
     }

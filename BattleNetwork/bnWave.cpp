@@ -10,7 +10,7 @@
 #define WAVE_ANIMATION_WIDTH 41
 #define WAVE_ANIMATION_HEIGHT 46
 
-Wave::Wave(Field* _field, Team _team) : Spell() {
+Wave::Wave(Field* _field, Team _team, double speed) : Spell() {
   SetLayer(0);
   cooldown = 0;
   damageCooldown = 0;
@@ -20,6 +20,7 @@ Wave::Wave(Field* _field, Team _team) : Spell() {
   deleted = false;
   hit = false;
   texture = TEXTURES.GetTexture(TextureType::SPELL_WAVE);
+  this->speed = speed;
   for (int x = 0; x < WAVE_ANIMATION_SPRITES; x++) {
     animation.Add(0.3f, IntRect(WAVE_ANIMATION_WIDTH*x, 0, WAVE_ANIMATION_WIDTH, WAVE_ANIMATION_HEIGHT));
   }
@@ -58,7 +59,7 @@ void Wave::Update(float _elapsed) {
   setPosition(tile->getPosition().x + 5.f, tile->getPosition().y - 50.0f);
   progress += 3 * _elapsed;
   
-  animator(progress, *this, animation);
+  animator(progress*speed, *this, animation);
 
   tile->AffectEntities(this);
 

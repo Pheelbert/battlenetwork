@@ -41,8 +41,9 @@ Mettaur::Mettaur(Rank _rank)
   textureType = TextureType::MOB_METTAUR_IDLE;
 
   if (rank == Rank::SP) {
-    health = 1000;
+    health = 100;
     textureType = TextureType::MOB_METTAUR_IDLE_BLUE;
+    animationComponent.SetPlaybackSpeed(1.2);
   }
 
   hitHeight = 0;
@@ -73,7 +74,7 @@ int* Mettaur::GetAnimOffset() {
   Mettaur* mob = this;
 
   int* res = new int[2];
-  res[0] = 35;  res[1] = 35;
+  res[0] = 45;  res[1] = 55;
 
   if (state == MOB_IDLE) {
     res[0] = 35;
@@ -81,7 +82,7 @@ int* Mettaur::GetAnimOffset() {
   } else if (state == MOB_ATTACKING) {
     res[0] = 65;
     res[1] = 95;
-  } else if (state == MOB_MOVING) {
+  } else {
     res[0] = 45;
     res[1] = 55;
   } 
@@ -91,6 +92,7 @@ int* Mettaur::GetAnimOffset() {
 
 void Mettaur::Update(float _elapsed) {
   this->SetShader(nullptr);
+  this->RefreshTexture();
 
   if (stunCooldown > 0) {
     stunCooldown -= _elapsed;
@@ -133,7 +135,6 @@ void Mettaur::Update(float _elapsed) {
 
     this->LockState();
   } else {
-    this->RefreshTexture();
     animationComponent.Update(_elapsed);
   }
 

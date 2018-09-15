@@ -66,8 +66,8 @@ void Animation::Load() {
 
       int currentStartx = 0;
       int currentStarty = 0;
-      double originX = 0;
-      double originY = 0;
+      float originX = 0;
+      float originY = 0;
 
       if (legacySupport) {
         string startx = ValueOf("startx", line);
@@ -88,8 +88,8 @@ void Animation::Load() {
         currentStarty = atoi(y.c_str());
         currentWidth = atoi(w.c_str());
         currentHeight = atoi(h.c_str());
-        originX = atoi(ox.c_str());
-        originY = atoi(oy.c_str());
+        originX = (float)atoi(ox.c_str());
+        originY = (float)atoi(oy.c_str());
       }
 
       currentAnimationDuration += currentFrameDuration;
@@ -118,8 +118,8 @@ string Animation::ValueOf(string _key, string _line) {
   return s.substr(0, s.find("\""));
 }
 
-void Animation::Update(float elapsed, sf::Sprite* target) {
-  progress += elapsed;
+void Animation::Update(float elapsed, sf::Sprite* target, double playbackSpeed) {
+  progress += elapsed * (float)std::fabs(playbackSpeed);
 
   animator(progress, *target, animations[currAnimation]);
 }

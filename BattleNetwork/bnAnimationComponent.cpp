@@ -9,6 +9,7 @@ using sf::IntRect;
 
 AnimationComponent::AnimationComponent(Entity* _entity) {
   entity = _entity;
+  speed = 1.0;
 }
 
 AnimationComponent::~AnimationComponent() {
@@ -16,7 +17,7 @@ AnimationComponent::~AnimationComponent() {
 
 void AnimationComponent::Update(float _elapsed)
 {
-  animation.Update(_elapsed, entity);
+  animation.Update(_elapsed, entity, speed);
 }
 
 void AnimationComponent::Setup(string _path)
@@ -27,6 +28,11 @@ void AnimationComponent::Setup(string _path)
 void AnimationComponent::Load() {
   animation = Animation(path);
   animation.Load();
+}
+
+void AnimationComponent::SetPlaybackSpeed(const double playbackSpeed)
+{
+  speed = playbackSpeed;
 }
 
 void AnimationComponent::SetAnimation(string state, std::function<void()> onFinish)

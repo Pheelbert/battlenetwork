@@ -76,9 +76,9 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   Background* bg = new GridBackground();
 
   // UI Sprites
-  double UI_RIGHT_POS = UI_RIGHT_POS_START;
-  double UI_LEFT_POS = UI_LEFT_POS_START;
-  double UI_TOP_POS = UI_TOP_POS_START;
+  float UI_RIGHT_POS = UI_RIGHT_POS_START;
+  float UI_LEFT_POS = UI_LEFT_POS_START;
+  float UI_TOP_POS = UI_TOP_POS_START;
 
   sf::Sprite charName(LOAD_TEXTURE(CHAR_NAME));
   charName.setScale(2.f, 2.f);
@@ -190,7 +190,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     ENGINE.Draw(charElement);
 
     // Draw stat box three times for three diff. properties
-    double charStat1Max = 10;
+    float charStat1Max = 10;
 
     if (UI_TOP_POS < charStat1Max)
       charStat.setPosition(UI_RIGHT_POS, charStat1Max);
@@ -199,7 +199,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     ENGINE.Draw(charStat);
 
     // 2nd stat box
-    double charStat2Max = 10 + UI_SPACING;
+    float charStat2Max = 10 + UI_SPACING;
 
     if (UI_TOP_POS < charStat2Max)
       charStat.setPosition(UI_RIGHT_POS, charStat2Max);
@@ -208,7 +208,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
     ENGINE.Draw(charStat);
 
     // 3rd stat box
-    double charStat3Max = 10 + (UI_SPACING * 2);
+    float charStat3Max = 10 + (UI_SPACING * 2);
 
     if (UI_TOP_POS < charStat3Max)
       charStat.setPosition(UI_RIGHT_POS, charStat3Max);

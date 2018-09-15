@@ -170,6 +170,8 @@ int BattleScene::Run(Player* player, Mob* mob) {
   iceShader.setUniform("sceneTexture", sf::Shader::CurrentTexture);
   iceShader.setUniform("shine", 0.3f);
 
+  std::vector<std::vector<Drawable*>> miscComponents;
+
   bool inBattleState = true;
   float totalTime = 0;
   while (ENGINE.Running() && inBattleState) {
@@ -248,6 +250,8 @@ int BattleScene::Run(Player* player, Mob* mob) {
       }
     }
 
+    miscComponents.clear();
+
     // Second tile pass: draw the entities and shaders per row
     tile = nullptr;
     while (field->GetNextTile(tile)) {
@@ -267,10 +271,9 @@ int BattleScene::Run(Player* player, Mob* mob) {
       while (tile->GetNextEntity(entity)) {
         if (!entity->IsDeleted()) {
           ENGINE.Draw(entity);
-          ENGINE.Draw(entity->GetMiscComponents());
+          miscComponents.push_back(entity->GetMiscComponents());
         }
       }
-
 
       if (tile->GetState() == TileState::LAVA) {
         heatShader.setUniform("x", tile->getPosition().x + 4.f);
@@ -307,6 +310,12 @@ int BattleScene::Run(Player* player, Mob* mob) {
         delete bake;
       }
     }
+
+    /*Draw misc sprites*/
+    for (auto list : miscComponents) {
+      ENGINE.Draw(list);
+    }
+
 
     /*for (int d = 1; d <= field->GetHeight(); d++) {
       Entity* entity = nullptr;
@@ -348,6 +357,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
         nextLabelHeight += mobLabel.getLocalBounds().height;
       }
     }
+
 
     if (!isPlayerDeleted) {
       chipUI.Update(); // DRAW 
@@ -493,40 +503,6 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
           if(hasPA > -1) {
             paSteps = programAdvance.GetMatchingSteps();
-            Chip* paChip = programAdvance.GetAdvanceChip();
-
-            // Only remove the chips involved in the program advance. Replace them with the new PA chip.
-            // PA chip is dealloc by the class that created it so it must be removed before the library tries to dealloc
-            int newChipCount = chipCount - (int)paSteps.size() + 1; // Add the new one
-            int newChipStart = hasPA;
-
-            // Create a temp chip list
-            Chip** newChipList = new Chip*[newChipCount];
-
-            int j = 0;
-            for (int i = 0; i < chipCount; ) {
-              if (i == hasPA) {
-                newChipList[j] = paChip;
-                i += paSteps.size();
-                j++;
-                continue;
-              }
-
-              newChipList[j] = chips[i];
-              i++;
-              j++;
-            }
-
-            // Set the new chips
-            for (int i = 0; i < newChipCount; i++) {
-              chips[i] = *(newChipList + i);
-            }
-
-            // Delete the temp list space 
-            // NOTE: We are _not_ deleting the pointers in them
-            delete[] newChipList;
-
-            chipCount = newChipCount;
           }
 
           isPAComplete = true;
@@ -539,18 +515,32 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
           ENGINE.Draw(programAdvanceSprite, false);
 
-          if (paStepIndex <= paSteps.size()) {
-            for (int i = 0; i < paStepIndex; i++) {
-              std::string formatted = paSteps[i].first;
+          if (paStepIndex <= chipCount+1) {
+            for (int i = 0; i < paStepIndex && i < chipCount; i++) {
+              std::string formatted = chips[i]->GetShortName();
               formatted.resize(9, ' ');
-              formatted[8] = paSteps[i].second;
+              formatted[8] = chips[i]->GetCode();
 
               sf::Text stepLabel = sf::Text(formatted, *mobFont);
 
               stepLabel.setOrigin(0, 0);
               stepLabel.setPosition(40.0f, 80.f + (nextLabelHeight*2.f));
               stepLabel.setScale(1.0f, 1.0f);
-              stepLabel.setOutlineColor(sf::Color(48, 56, 80));
+
+              if (i >= hasPA && i <= hasPA + paSteps.size()-1) {
+                if (i < paStepIndex-1) {
+                  stepLabel.setOutlineColor(sf::Color(0, 0, 0));
+                  stepLabel.setFillColor(sf::Color(128, 248, 80));
+                }
+                else {
+                  stepLabel.setOutlineColor(sf::Color(0, 0, 0));
+                  stepLabel.setFillColor(sf::Color(247, 188, 27));
+                }
+              }
+              else {
+                stepLabel.setOutlineColor(sf::Color(48, 56, 80));
+              }
+
               stepLabel.setOutlineThickness(2.f);
               ENGINE.Draw(stepLabel, false);
 
@@ -565,9 +555,11 @@ int BattleScene::Run(Player* player, Mob* mob) {
               advanceSoundPlay = true;
             }
 
-            increment += elapsed * 10.f;
+            increment += elapsed * 5.f;
 
-            sf::Text stepLabel = sf::Text(programAdvance.GetAdvanceChip()->GetShortName(), *mobFont);
+            Chip* paChip = programAdvance.GetAdvanceChip();
+
+            sf::Text stepLabel = sf::Text(paChip->GetShortName(), *mobFont);
 
             stepLabel.setOrigin(0, 0);
             stepLabel.setPosition(40.0f, 80.f);
@@ -581,19 +573,55 @@ int BattleScene::Run(Player* player, Mob* mob) {
             listStepCounter -= elapsed;
           }
           else {
-
-            if (paStepIndex > paSteps.size()) {
-              hasPA = -1; // state over 
+            if (paStepIndex == chipCount+2) {
               advanceSoundPlay = false;
-              isPAComplete = true;
+
+              Chip* paChip = programAdvance.GetAdvanceChip();
+
+              // Only remove the chips involved in the program advance. Replace them with the new PA chip.
+              // PA chip is dealloc by the class that created it so it must be removed before the library tries to dealloc
+              int newChipCount = chipCount - (int)paSteps.size() + 1; // Add the new one
+              int newChipStart = hasPA;
+
+              // Create a temp chip list
+              Chip** newChipList = new Chip*[newChipCount];
+
+              int j = 0;
+              for (int i = 0; i < chipCount; ) {
+                if (i == hasPA) {
+                  newChipList[j] = paChip;
+                  i += (int)paSteps.size();
+                  j++;
+                  continue;
+                }
+
+                newChipList[j] = chips[i];
+                i++;
+                j++;
+              }
+
+              // Set the new chips
+              for (int i = 0; i < newChipCount; i++) {
+                chips[i] = *(newChipList + i);
+              }
+
+              // Delete the temp list space 
+              // NOTE: We are _not_ deleting the pointers in them
+              delete[] newChipList;
+
+              chipCount = newChipCount;
+
+              hasPA = -1; // state over 
             }
             else {
-              paStepIndex++;
-              listStepCounter = listStepCooldown;
+              listStepCounter = listStepCooldown * 0.7f; // Quicker about non-PA chips
 
-              if (paStepIndex <= paSteps.size()) {
+              if (paStepIndex >= hasPA && paStepIndex <= hasPA + paSteps.size() - 1) {
+                listStepCounter = listStepCooldown;
                 AUDIO.Play(AudioType::POINT);
               }
+
+              paStepIndex++;
             }
           }
         }
