@@ -142,6 +142,11 @@ void Animation::SetAnimation(string state) {
    }
 }
 
+FrameList & Animation::GetFrameList(std::string animation)
+{
+  return animations[animation];
+}
+
 Animation & Animation::operator<<(Animate::On & rhs)
 {
   animator << rhs;

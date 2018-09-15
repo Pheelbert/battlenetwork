@@ -31,11 +31,22 @@ void MobHealthUI::Update() {
   if (mob) {
     setOrigin(getLocalBounds().width, 0);
 
+    // Only delay damage display if 80 or more HP in the red
+    if (healthCounter > mob->GetHealth() &&  healthCounter - mob->GetHealth() < 80) {
+      healthCounter = mob->GetHealth();
+    }
+
     if (healthCounter > mob->GetHealth()) {
       healthCounter--;
+      setFillColor(sf::Color(255, 165, 0));
+
     }
     else if (healthCounter < mob->GetHealth()) {
       healthCounter++;
+      setFillColor(sf::Color(0, 255, 80));
+    }
+    else {
+      setFillColor(sf::Color::White);
     }
 
     setString(to_string(healthCounter));

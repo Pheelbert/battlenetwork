@@ -82,22 +82,17 @@ public:
         wordIndex = -1;
       }
 
-      if(index > 0)
-        prevText.setString(message.substr(lastRow, index - 1));
-
       text.setString(message.substr(lastRow, index));
 
-      double prevWidth  = (index > 0) ? prevText.getGlobalBounds().width : 0;
-      double prevHeight = (index > 0) ? prevText.getGlobalBounds().height : 0;
-      double width  = text.getGlobalBounds().left + prevWidth;
-      double height = text.getGlobalBounds().top + prevHeight;
+      double width  = text.getGlobalBounds().width;
+      double height = text.getGlobalBounds().height;
 
       if (width > areaWidth && wordIndex != -1) {
         // Line break at the next word
         message.insert(wordIndex, "\n");
-        lastRow = index;
+        lastRow = wordIndex+1;
         line++;
-        index++;
+        index = lastRow;
         wordIndex = -1;
       }
       index++;

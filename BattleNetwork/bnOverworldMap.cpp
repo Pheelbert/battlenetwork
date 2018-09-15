@@ -67,7 +67,14 @@ namespace Overworld {
     sprites.push_back(_sprite);
   }
 
-  void Map::Update()
+  void Map::RemoveSprite(sf::Sprite * _sprite) {
+    auto pos = std::find(sprites.begin(), sprites.end(), _sprite);
+
+    if(pos != sprites.end())
+      sprites.erase(pos);
+  }
+
+  void Map::Update(double elapsed)
   {
     for (int i = 0; i < map.size(); i++) {
       if (map[i]->ShouldRemove()) {
@@ -76,6 +83,9 @@ namespace Overworld {
         i--;
       }
     }
+
+    std::sort(sprites.begin(), sprites.end(), [](const sf::Sprite* sprite, const sf::Sprite* other) { return sprite->getPosition().y < other->getPosition().y; });
+
   }
 
   void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {

@@ -173,6 +173,9 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/backgrounds/folder/bg.png");
   paths.push_back("resources/backgrounds/select/bg.png");
 
+  // Overworld
+  paths.push_back("resources/backgrounds/main_menu/mr_prog_ow.png");
+
   // other icons
   paths.push_back("resources/ui/gamepad_support_icon.png");
   paths.push_back("resources/ui/main_menu_ui.png");

@@ -23,6 +23,8 @@ public:
   void SetFrame(int frame, sf::Sprite* target);
   void SetAnimation(string state);
 
+  FrameList& GetFrameList(std::string animation);
+
   Animation& operator<<(Animate::On& rhs);
   Animation& operator<<(Animate::Mode& rhs);
   void operator<<(std::function<void()> onFinish);

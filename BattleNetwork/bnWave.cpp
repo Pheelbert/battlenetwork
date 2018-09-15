@@ -59,7 +59,7 @@ void Wave::Update(float _elapsed) {
   setPosition(tile->getPosition().x + 5.f, tile->getPosition().y - 50.0f);
   progress += 3 * _elapsed;
   
-  animator(progress*speed, *this, animation);
+  animator(progress*(float)speed, *this, animation);
 
   tile->AffectEntities(this);
 

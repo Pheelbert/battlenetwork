@@ -60,7 +60,7 @@ int MainMenuScene::Run()
 
   Background* bg = new LanBackground();
 
-  Overworld::Map* map = new Overworld::InfiniteMap(10, 40, 47, 24);
+  Overworld::Map* map = new Overworld::InfiniteMap(10, 20, 47, 24);
   map->SetCamera(&camera);
 
   // Keep track of selected navi
@@ -93,7 +93,7 @@ int MainMenuScene::Run()
     }
 
     INPUT.update();
-    map->Update();
+    map->Update(elapsed);
 
     ENGINE.Clear();
     ENGINE.SetView(camera.GetView());
