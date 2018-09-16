@@ -1,20 +1,20 @@
 
 # Author TheMaverickProgrammer
 
-## Update 9/4/2018
+## Update 9/16/2018
 [![starman.png](https://s8.postimg.cc/qjbob7h2d/starman.png)](https://postimg.cc/image/3umhbmzoh/)
 
-You can now switch between 2 Navis. Adding navis is easy. Just extend the `Player` class.
+Added ice sliding logic however needs to be tweaked and add some way to slide sprites between tiles instead of "teleporting" them.
+Added textbox. Algorithm needs work as it will skip letters in an undesirable way.
+Added navi select screen that reads info from the NaviRegistration hook as detailed below:
 
 See ["Adding Custom Navis"](https://github.com/TheMaverickProgrammer/battlenetwork/wiki/Creating-New-Navis) in the wiki for more!
-
-Canodumbs are complete.
-
-Fixed buster logic and now behaves more like the original game. Thor is finally gone from the whole project. Backgrounds can now be one instance and are capable of filling the entire screen using the power of VertexArrays and Shaders. They are much smoother.
 
 # Videos w/ SOUND
 #### Branch: master
 Click the thumbnail to watch on youtube. 
+
+[![Video of engine 9/16/2018](https://img.youtube.com/vi/cdfgE8LqgmE/1.jpg)](https://youtu.be/cdfgE8LqgmE) 
 
 [![Video of engine 6/4/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://youtu.be/fCYp4VubD_s) 
 
