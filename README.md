@@ -16,8 +16,6 @@ Click the thumbnail to watch on youtube.
 
 [![Video of engine 9/16/2018](https://img.youtube.com/vi/cdfgE8LqgmE/0.jpg)](https://youtu.be/cdfgE8LqgmE) 
 
-[![Video of engine 6/4/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://youtu.be/fCYp4VubD_s) 
-
 [![Video of engine 6/4/2018](https://img.youtube.com/vi/fCYp4VubD_s/0.jpg)](https://youtu.be/fCYp4VubD_s) 
 
 [![image.png](https://s8.postimg.cc/ah09sio45/canodumbs.png)](https://s8.postimg.cc/ah09sio45/canodumbs.png)
