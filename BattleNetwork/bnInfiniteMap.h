@@ -10,7 +10,9 @@ namespace Overworld {
     MR_PROG_DOWN,
     MR_PROG_LEFT,
     MR_PROG_RIGHT,
-    MR_PROG_FIRE
+    MR_PROG_FIRE,
+    NUMBERMAN_DOWN,
+    NUMBERMAN_DANCE
   };
 
   struct NPC {
@@ -26,6 +28,7 @@ namespace Overworld {
     
     Animate animator;
     Animation progAnimations;
+    Animation numbermanAnimations;
 
     std::vector<NPC*> npcs;
 
@@ -34,7 +37,7 @@ namespace Overworld {
     ~InfiniteMap();
 
     // Overwrite
-    //virtual void DrawTiles(sf::RenderTarget& target, sf::RenderStates states) const;
+    virtual void DrawTiles(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void Update(double elapsed);
   };
 }

@@ -175,6 +175,7 @@ TextureResourceManager::TextureResourceManager(void) {
 
   // Overworld
   paths.push_back("resources/backgrounds/main_menu/mr_prog_ow.png");
+  paths.push_back("resources/backgrounds/main_menu/numberman_ow.png");
 
   // other icons
   paths.push_back("resources/ui/gamepad_support_icon.png");

@@ -25,6 +25,7 @@ using sf::Font;
 int MainMenuScene::Run()
 {
   Camera camera(ENGINE.GetDefaultView());
+  bool showHUD = true;
 
   // Selection input delays
   double maxSelectInputCooldown = 0.5; // half of a second
@@ -165,6 +166,13 @@ int MainMenuScene::Run()
       }
     } 
 
+    if (INPUT.has(PRESSED_PAUSE)) {
+      static bool toggle = false;
+      toggle = !toggle;
+      showHUD = false;
+      map->ToggleLighting(toggle);
+    }
+
     if (elapsed > 0) {
       if (gotoNextScene) {
         transitionProgress += 1 * elapsed;
@@ -232,99 +240,101 @@ int MainMenuScene::Run()
 
     ENGINE.Draw(overlay);
 
-    uiAnimator.SetAnimation("CHIP_FOLDER");
+    if (showHUD) {
+      uiAnimator.SetAnimation("CHIP_FOLDER");
 
-    if (menuSelectionIndex == 0) {
-      uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(50.f, 50.f);
-      ENGINE.Draw(ui);
+      if (menuSelectionIndex == 0) {
+        uiAnimator.SetFrame(2, &ui);
+        ui.setPosition(50.f, 50.f);
+        ENGINE.Draw(ui);
 
-      uiAnimator.SetAnimation("CHIP_FOLDER_LABEL");
-      uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(100.f, 50.f);
+        uiAnimator.SetAnimation("CHIP_FOLDER_LABEL");
+        uiAnimator.SetFrame(2, &ui);
+        ui.setPosition(100.f, 50.f);
+        ENGINE.Draw(ui);
+      }
+      else {
+        uiAnimator.SetFrame(1, &ui);
+        ui.setPosition(20.f, 50.f);
+        ENGINE.Draw(ui);
+
+        uiAnimator.SetAnimation("CHIP_FOLDER_LABEL");
+        uiAnimator.SetFrame(1, &ui);
+        ui.setPosition(100.f, 50.f);
+        ENGINE.Draw(ui);
+      }
+
+      uiAnimator.SetAnimation("LIBRARY");
+
+      if (menuSelectionIndex == 1) {
+        uiAnimator.SetFrame(2, &ui);
+        ui.setPosition(50.f, 120.f);
+        ENGINE.Draw(ui);
+
+        uiAnimator.SetAnimation("LIBRARY_LABEL");
+        uiAnimator.SetFrame(2, &ui);
+        ui.setPosition(100.f, 120.f);
+        ENGINE.Draw(ui);
+      }
+      else {
+        uiAnimator.SetFrame(1, &ui);
+        ui.setPosition(20.f, 120.f);
+        ENGINE.Draw(ui);
+
+        uiAnimator.SetAnimation("LIBRARY_LABEL");
+        uiAnimator.SetFrame(1, &ui);
+        ui.setPosition(100.f, 120.f);
+        ENGINE.Draw(ui);
+      }
+
+      uiAnimator.SetAnimation("NAVI");
+
+      if (menuSelectionIndex == 2) {
+        uiAnimator.SetFrame(2, &ui);
+        ui.setPosition(50.f, 190.f);
+        ENGINE.Draw(ui);
+
+        uiAnimator.SetAnimation("NAVI_LABEL");
+        uiAnimator.SetFrame(2, &ui);
+        ui.setPosition(100.f, 190.f);
+        ENGINE.Draw(ui);
+      }
+      else {
+        uiAnimator.SetFrame(1, &ui);
+        ui.setPosition(20.f, 190.f);
+        ENGINE.Draw(ui);
+
+        uiAnimator.SetAnimation("NAVI_LABEL");
+        uiAnimator.SetFrame(1, &ui);
+        ui.setPosition(100.f, 190.f);
+        ENGINE.Draw(ui);
+      }
+
+      uiAnimator.SetAnimation("MOB_SELECT");
+
+      if (menuSelectionIndex == 3) {
+        uiAnimator.SetFrame(2, &ui);
+        ui.setPosition(50.f, 260.f);
+        ENGINE.Draw(ui);
+
+        uiAnimator.SetAnimation("MOB_SELECT_LABEL");
+        uiAnimator.SetFrame(2, &ui);
+        ui.setPosition(100.f, 260.f);
+        ENGINE.Draw(ui);
+      }
+      else {
+        uiAnimator.SetFrame(1, &ui);
+        ui.setPosition(20.f, 260.f);
+        ENGINE.Draw(ui);
+
+        uiAnimator.SetAnimation("MOB_SELECT_LABEL");
+        uiAnimator.SetFrame(1, &ui);
+        ui.setPosition(100.f, 260.f);
+        ENGINE.Draw(ui);
+      }
+
       ENGINE.Draw(ui);
     }
-    else {
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(20.f, 50.f);
-      ENGINE.Draw(ui);
-
-      uiAnimator.SetAnimation("CHIP_FOLDER_LABEL");
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(100.f, 50.f);
-      ENGINE.Draw(ui);
-    }
-
-    uiAnimator.SetAnimation("LIBRARY");
-
-    if (menuSelectionIndex == 1) {
-      uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(50.f, 120.f);
-      ENGINE.Draw(ui);
-
-      uiAnimator.SetAnimation("LIBRARY_LABEL");
-      uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(100.f, 120.f);
-      ENGINE.Draw(ui);
-    }
-    else {
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(20.f, 120.f);
-      ENGINE.Draw(ui);
-
-      uiAnimator.SetAnimation("LIBRARY_LABEL");
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(100.f, 120.f);
-      ENGINE.Draw(ui);
-    }
-
-    uiAnimator.SetAnimation("NAVI");
-
-    if (menuSelectionIndex == 2) {
-      uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(50.f, 190.f);
-      ENGINE.Draw(ui);
-
-      uiAnimator.SetAnimation("NAVI_LABEL");
-      uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(100.f, 190.f);
-      ENGINE.Draw(ui);
-    }
-    else {
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(20.f, 190.f);
-      ENGINE.Draw(ui);
-
-      uiAnimator.SetAnimation("NAVI_LABEL");
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(100.f, 190.f);
-      ENGINE.Draw(ui);
-    }
-
-    uiAnimator.SetAnimation("MOB_SELECT");
-
-    if (menuSelectionIndex == 3) {
-      uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(50.f, 260.f);
-      ENGINE.Draw(ui);
-
-      uiAnimator.SetAnimation("MOB_SELECT_LABEL");
-      uiAnimator.SetFrame(2, &ui);
-      ui.setPosition(100.f, 260.f);
-      ENGINE.Draw(ui);
-    }
-    else {
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(20.f, 260.f);
-      ENGINE.Draw(ui);
-
-      uiAnimator.SetAnimation("MOB_SELECT_LABEL");
-      uiAnimator.SetFrame(1, &ui);
-      ui.setPosition(100.f, 260.f);
-      ENGINE.Draw(ui);
-    }
-
-    ENGINE.Draw(ui); 
 
     sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
     sf::Sprite transitionPost;

@@ -7,7 +7,7 @@ namespace Overworld {
   {
     this->branchDepth = branchDepth;
 
-    ToggleLighting(true);
+    ToggleLighting(false);
 
     DeleteTiles();
 
@@ -29,6 +29,9 @@ namespace Overworld {
 
     progAnimations = Animation("resources/backgrounds/main_menu/prog.animation");
     progAnimations.Load();
+
+    numbermanAnimations = Animation("resources/backgrounds/main_menu/numberman.animation");
+    numbermanAnimations.Load();
   }
 
   InfiniteMap::~InfiniteMap()
@@ -36,7 +39,7 @@ namespace Overworld {
   }
 
 
-  /*void InfiniteMap::DrawTiles(sf::RenderTarget& target, sf::RenderStates states) const {
+  void InfiniteMap::DrawTiles(sf::RenderTarget& target, sf::RenderStates states) const {
     //std::cout << "map size: " << map.size() << "\n";
     for (int i = 0; i < map.size(); i++) {
       sf::Sprite tileSprite(map[i]->GetTexture());
@@ -64,6 +67,11 @@ namespace Overworld {
           }
         }
       }
+    }
+    
+    Map::DrawTiles(target, states);
+
+    /*
 
       pos = map[i]->GetPos();
 
@@ -83,8 +91,8 @@ namespace Overworld {
           target.draw(tileSprite, states);
         }
       }
-    }
-  }*/
+    } */
+  }
   
   void InfiniteMap::Update(double elapsed)
   {
@@ -111,6 +119,9 @@ namespace Overworld {
       {
         animator(total, npc->sprite, progAnimations.GetFrameList("PROG_DR"));
 
+        // sf::Vector2f newPos = npc->sprite.getPosition();
+        // newPos.x += 10 * elapsed;
+        // npc->sprite.setPosition(newPos);
       }
       break;
       case NPCType::MR_PROG_UP:
@@ -122,6 +133,16 @@ namespace Overworld {
       case NPCType::MR_PROG_FIRE:
       {
         animator(total, npc->sprite, progAnimations.GetFrameList("PROG_DR_FIRE"));
+      }
+      break;
+      case NPCType::NUMBERMAN_DANCE:
+      {
+        animator(total, npc->sprite, numbermanAnimations.GetFrameList("NUMBERMAN_DANCE"));
+      }
+      break;
+      case NPCType::NUMBERMAN_DOWN:
+      {
+        animator(total, npc->sprite, numbermanAnimations.GetFrameList("NUMBERMAN_IDLE_DR"));
       }
       break;
       }
@@ -143,8 +164,8 @@ namespace Overworld {
       int randBranch = rand() % 100;
 
       int depth = 0;
-      if (randBranch < 100) {
 
+      if (randBranch < 100) {
         Overworld::Tile* offroad = head;
 
         int lastDirection = -1;
@@ -152,7 +173,7 @@ namespace Overworld {
 
         while (depth < branchDepth) {
           int randDirection = rand() % 3;
-          int randSpawnNPC = rand() % 5;
+          int randSpawnNPC = rand() % 10;
 
           if (randDirection == 0 && lastDirection == 1)
             continue;
@@ -165,13 +186,24 @@ namespace Overworld {
             map.push_back(offroad);
 
             if (randSpawnNPC == 0 && distFromPath != 0) {
-              npcs.push_back(new NPC { sf::Sprite(LOAD_TEXTURE(OW_MR_PROG)), NPCType::MR_PROG_FIRE });
+              if (rand() % 10 > 5) {
+                npcs.push_back(new NPC{ sf::Sprite(LOAD_TEXTURE(OW_MR_PROG)), NPCType::MR_PROG_FIRE });
 
-              sf::Vector2f pos = offroad->GetPos();
-              pos += sf::Vector2f(45, 0);
+                sf::Vector2f pos = offroad->GetPos();
+                pos += sf::Vector2f(45, 0);
 
-              npcs.back()->sprite.setPosition(pos);
-              this->AddSprite(&npcs.back()->sprite);
+                npcs.back()->sprite.setPosition(pos);
+                this->AddSprite(&npcs.back()->sprite);
+                this->AddLight(new Overworld::Light(pos, sf::Color(255, 255, 150), 70));
+              }
+              else if(rand() % 10 > 2) {
+                npcs.push_back(new NPC{ sf::Sprite(LOAD_TEXTURE(OW_NUMBERMAN)), NPCType::NUMBERMAN_DOWN });
+                sf::Vector2f pos = offroad->GetPos();
+                pos += sf::Vector2f(45, 0);
+
+                npcs.back()->sprite.setPosition(pos);
+                this->AddSprite(&npcs.back()->sprite);
+              }
             }
 
             depth++;
@@ -181,7 +213,15 @@ namespace Overworld {
             map.push_back(offroad);
 
             if (randSpawnNPC == 0 && distFromPath != 0) {
-              npcs.push_back(new NPC { sf::Sprite(LOAD_TEXTURE(OW_MR_PROG)), NPCType::MR_PROG_UP });
+
+              if (rand() % 10 > 3) {
+                npcs.push_back(new NPC{ sf::Sprite(LOAD_TEXTURE(OW_MR_PROG)), NPCType::MR_PROG_UP });
+              }
+              else {
+                npcs.push_back(new NPC{ sf::Sprite(LOAD_TEXTURE(OW_NUMBERMAN)), NPCType::NUMBERMAN_DANCE });
+                sf::Vector2f pos = offroad->GetPos();
+                pos += sf::Vector2f(45, 0);
+              }
 
               sf::Vector2f pos = offroad->GetPos();
               pos += sf::Vector2f(45, 0);
@@ -209,8 +249,30 @@ namespace Overworld {
             depth++;
           }
 
-          if (randDirection != 2)
-            distFromPath += randDirection ? randDirection : -1;
+
+          int randLight = rand() % 100;
+
+          sf::Vector2f pos = offroad->GetPos();
+          pos += sf::Vector2f(45, 0);
+
+          if (randLight < 10) {
+            sf::Uint8 lighten = 180;
+            sf::Uint8 r = rand() % (256 - lighten);
+            sf::Uint8 g = rand() % (256 - lighten);
+            sf::Uint8 b = rand() % (256 - lighten);
+            double radius = (double)(rand() % 120);
+
+            if(randLight < 3)
+              this->AddLight(new Light(pos, sf::Color(r + lighten, 0, r + lighten, 255), radius));
+            else if (randLight < 6)
+              this->AddLight(new Light(pos, sf::Color(0, g + lighten, b + lighten, 255), radius));
+            else
+              this->AddLight(new Light(pos, sf::Color(0, 0, b + lighten, 255), radius));
+          }
+
+          if (randDirection != 2) {
+            distFromPath = distFromPath + (randDirection ? -randDirection : 1);
+          }
 
           lastDirection = randDirection;
 

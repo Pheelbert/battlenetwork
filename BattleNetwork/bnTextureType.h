@@ -88,6 +88,7 @@ enum TextureType {
 
   // OVERWORLD
   OW_MR_PROG,
+  OW_NUMBERMAN,
 
   // ICONS
   GAMEPAD_SUPPORT_ICON,

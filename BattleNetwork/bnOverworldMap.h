@@ -91,6 +91,8 @@ namespace Overworld {
     ~Map();
 
     void SetCamera(Camera* _camera);
+
+    void AddLight(Overworld::Light* _light);
     void AddSprite(sf::Sprite* _sprite);
     void RemoveSprite(sf::Sprite * _sprite);
 
