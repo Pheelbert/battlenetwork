@@ -14,7 +14,7 @@ See ["Adding Custom Navis"](https://github.com/TheMaverickProgrammer/battlenetwo
 #### Branch: master
 Click the thumbnail to watch on youtube. 
 
-[![Video of engine 9/16/2018](https://img.youtube.com/vi/cdfgE8LqgmE/1.jpg)](https://youtu.be/cdfgE8LqgmE) 
+[![Video of engine 9/16/2018](https://img.youtube.com/vi/cdfgE8LqgmE/0.jpg)](https://youtu.be/cdfgE8LqgmE) 
 
 [![Video of engine 6/4/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://youtu.be/fCYp4VubD_s) 
 
