@@ -47,10 +47,6 @@ protected:
   sf::Clock cloakTimer;
   int cloakTimeSecs;
 
-  double slideX;
-  double slideY;
-  double slideSpeed;
-
   int health;
   int moveCount;
   int hitCount;

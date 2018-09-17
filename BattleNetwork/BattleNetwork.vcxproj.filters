@@ -769,6 +769,9 @@
     <ClInclude Include="bnPlayerHealthUI.h">
       <Filter>Battle\Components</Filter>
     </ClInclude>
+    <ClInclude Include="bnTileBehavior.h">
+      <Filter>Battle\AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

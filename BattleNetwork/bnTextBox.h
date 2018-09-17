@@ -75,24 +75,28 @@ public:
     int lastRow = 0;
 
     while (index < message.size()) {
-      if ((message[index] != ' ' || message[index] != '\n') && wordIndex == -1) {
+      if (message[index] != ' ' && message[index] != '\n' && wordIndex == -1) {
         wordIndex = index;
       }
       else if (message[index] == ' ' || message[index] == '\n') {
         wordIndex = -1;
       }
 
-      text.setString(message.substr(lastRow, index));
+      text.setString(message.substr(lastRow, index - lastRow));
 
       double width  = text.getGlobalBounds().width;
       double height = text.getGlobalBounds().height;
 
-      if (width > areaWidth && wordIndex != -1) {
+      std::cout << "message.substr(lastRow, index): " << message.substr(lastRow, index - lastRow) << std::endl;
+      std::cout << "areaWidth: " << areaWidth << "width: " << width << std::endl;
+      std::cout << "index: " << index << " wordIndex:" << wordIndex << " lastRow: " << lastRow << std::endl;
+
+      if (width > areaWidth && wordIndex != -1 && wordIndex > 0 && index > 0) {
         // Line break at the next word
         message.insert(wordIndex, "\n");
         lastRow = wordIndex+1;
         line++;
-        index = lastRow;
+        index=lastRow;
         wordIndex = -1;
       }
       index++;
