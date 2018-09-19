@@ -171,6 +171,7 @@ int FolderScene::Run()
 
     int offset = (int)(iter->GetElement());
     element.setTextureRect(sf::IntRect(14 * offset, 0, 14, 14));
+    element.setPosition(2.f*25.f, 143.f);
     ENGINE.Draw(element, false);
 
     // Now that we are at the viewing range, draw each chip in the list
@@ -189,18 +190,18 @@ int FolderScene::Run()
 
         int offset = (int)(iter->GetElement());
         element.setTextureRect(sf::IntRect(14 * offset, 0, 14, 14));
-        element.setPosition(2.f*178.f, 65.0f + (32.f*i));
+        element.setPosition(2.f*173.f, 65.0f + (32.f*i));
         ENGINE.Draw(element, false);
 
         chipLabel->setOrigin(0, 0);
-        chipLabel->setPosition(2.f*195.f, 60.0f + (32.f*i));
+        chipLabel->setPosition(2.f*190.f, 60.0f + (32.f*i));
         chipLabel->setString(std::string() + iter->GetCode());
         ENGINE.Draw(chipLabel, false);
 
         //Draw rating
         unsigned rarity = iter->GetRarity()-1;
         stars.setTextureRect(sf::IntRect(0, 15*rarity, 22, 14));
-        stars.setPosition(2.f*204.f, 74.0f + (32.f*i));
+        stars.setPosition(2.f*199.f, 74.0f + (32.f*i));
         ENGINE.Draw(stars, false);
 
         iter++;

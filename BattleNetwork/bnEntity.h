@@ -8,6 +8,7 @@ using std::string;
 #include "bnMemory.h"
 #include "bnEngine.h"
 #include "bnTextureType.h"
+#include "bnElements.h"
 
 class Tile;
 class Field;
@@ -46,6 +47,9 @@ public:
   void Delete();
   bool IsDeleted() const;
 
+  void SetElement(Element _elem);
+  const Element GetElement() const;
+
 protected:
   bool ownedByField;
   Tile* next;
@@ -53,6 +57,7 @@ protected:
   Tile* previous;
   Field* field;
   Team team;
+  Element element;
   bool passthrough;
   bool floatShoe;
   bool deleted;

@@ -12,8 +12,7 @@ void QueuNaviRegistration() {
   /*********************************************************************
   **********            Register megaman            ********************
   **********************************************************************/
-  auto megamanInfo = NAVIS.AddSpot();  // Create and register navi info object
-  megamanInfo->SetNaviClass<Player>(); // Deffer loading of class type
+  auto megamanInfo = NAVIS.AddClass<Player>();  // Create and register navi info object
   megamanInfo->SetSpecialDescription("Star of the series. Well rounded stats."); // Set property
   megamanInfo->SetBattleAnimationPath("resources/navis/megaman/megaman.animation");
   megamanInfo->SetOverworldAnimationPath("resources/navis/megaman/megaman.animation");
@@ -22,8 +21,7 @@ void QueuNaviRegistration() {
   megamanInfo->SetChargedAttack(10);
 
   // Register Starman
-  auto starmanInfo = NAVIS.AddSpot();
-  starmanInfo->SetNaviClass<Starman>();
+  auto starmanInfo = NAVIS.AddClass<Starman>();
   starmanInfo->SetSpecialDescription("Projectile chips turn into arrows w/ rapid fire");
   starmanInfo->SetBattleAnimationPath("resources/navis/starman/starman.animation");
   starmanInfo->SetOverworldAnimationPath("resources/navis/starman/starman.animation");

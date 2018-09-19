@@ -130,6 +130,11 @@ const std::string NaviRegistration::NaviInfo::GetSpeedString() const
   return speedStr + "x";
 }
 
+const Element NaviRegistration::NaviInfo::GetElement() const
+{
+  return navi->GetElement();
+}
+
 const std::string NaviRegistration::NaviInfo::GetAttackString() const
 {
   return std::to_string(atk) + " - " + std::to_string(chargedAtk) + " charged";
@@ -159,14 +164,6 @@ NaviRegistration::~NaviRegistration()
   }
 
   roster.clear();
-}
-
-NaviRegistration::NaviInfo * NaviRegistration::AddSpot()
-{
-  NaviRegistration::NaviInfo* info = new NaviRegistration::NaviInfo();
-  this->Register(info);
-
-  return info;
 }
 
 void NaviRegistration::Register(const NaviInfo * info)

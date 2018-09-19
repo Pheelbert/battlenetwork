@@ -22,6 +22,7 @@ Starman::Starman(void) : Player()
   name = "Starman";
   SetLayer(0);
   team = Team::RED;
+  this->SetElement(Element::CURSOR);
 
   animationComponent.Setup(RESOURCE_PATH);
   animationComponent.Load();

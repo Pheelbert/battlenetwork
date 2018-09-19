@@ -5,6 +5,7 @@
 #include <functional>
 #include <atomic>
 #include <SFML/Graphics.hpp>
+#include "bnElements.h"
 
 /*
   Use this singleton to register custom navis and have them automatically appear on the select, overworld, and battle scenes
@@ -59,6 +60,7 @@ public:
     const std::string GetSpeedString() const;
     const std::string GetAttackString() const;
     const std::string GetSpecialDescriptionString() const;
+    const Element NaviRegistration::NaviInfo::GetElement() const;
 
     Player* GetNavi() const;
   };
@@ -70,7 +72,15 @@ public:
   static NaviRegistration &GetInstance();
   ~NaviRegistration();
 
-  NaviInfo* AddSpot();
+  template<class T>
+  NaviInfo* AddClass() {
+    NaviRegistration::NaviInfo* info = new NaviRegistration::NaviInfo();
+    info->SetNaviClass<T>();
+    this->Register(info);
+
+    return info;
+  }
+
   void Register(const NaviInfo* info);
   const NaviInfo& At(int index);
   const unsigned Size();

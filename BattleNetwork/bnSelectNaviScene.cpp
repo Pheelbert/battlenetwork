@@ -96,6 +96,10 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   charInfo.setScale(2.f, 2.f);
   charInfo.setPosition(UI_RIGHT_POS, 170);
 
+  sf::Sprite element(*TEXTURES.GetTexture(TextureType::ELEMENT_ICON));
+  element.setScale(2.f, 2.f);
+  element.setPosition(UI_LEFT_POS_MAX + 15.f, 90);
+
   // Current navi graphic
   bool loadNavi = false;
   sf::Sprite navi(LOAD_TEXTURE(NAVI_MEGAMAN_ATLAS));
@@ -308,6 +312,9 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
       naviAnimator.SetAnimation("PLAYER_IDLE");
       naviAnimator << Animate::Mode(Animate::Mode::Loop);
 
+      int offset = (int)(NAVIS.At(naviSelectionIndex).GetElement());
+      element.setTextureRect(sf::IntRect(14 * offset, 0, 14, 14));
+
       navi.setTexture(NAVIS.At(naviSelectionIndex).GetBattleTexture(), true);
       textbox.SetMessage(NAVIS.At(naviSelectionIndex).GetSpecialDescriptionString());
       loadNavi = true;
@@ -376,6 +383,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
           ENGINE.Draw(speedLabel);
           ENGINE.Draw(attackLabel);
           ENGINE.Draw(textbox);
+          ENGINE.Draw(element);
 
           textbox.Play();
         }
@@ -421,7 +429,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
 
     if (factor != 0.f) {
       float range = (125.f - (float)factor) / 125.f;
-      navi.setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 * range)));
+      navi.setColor(sf::Color(255, 255, 255, (sf::Uint8)(navi.getColor().a * range)));
     }
 
     sf::IntRect t = navi.getTextureRect();

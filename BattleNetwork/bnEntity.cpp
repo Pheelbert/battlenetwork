@@ -10,7 +10,8 @@ Entity::Entity()
   team(Team::UNKNOWN),
   deleted(false),
   passthrough(false),
-  ownedByField(false) {
+  ownedByField(false),
+  element(Element::NONE) {
 }
 
 Entity::~Entity() {
@@ -101,4 +102,14 @@ void Entity::Delete()
 
 bool Entity::IsDeleted() const {
   return deleted;
+}
+
+void Entity::SetElement(Element _elem)
+{
+  this->element = _elem;
+}
+
+const Element Entity::GetElement() const
+{
+  return element;
 }

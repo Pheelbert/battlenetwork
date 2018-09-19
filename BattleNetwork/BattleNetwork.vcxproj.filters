@@ -239,6 +239,9 @@
     <Filter Include="Prefabs\Background">
       <UniqueIdentifier>{f518437e-3c00-47c0-88d0-0c62e29c64ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Character\Player\Protoman">
+      <UniqueIdentifier>{6a4a149c-363c-4995-beeb-0fe217611da6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
