@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
   sf::Text* navisLoadedLabel = new sf::Text("Loading Navi Data...", *startFont);
   navisLoadedLabel->setCharacterSize(24);
   navisLoadedLabel->setOrigin(0.f, startLabel->getLocalBounds().height);
-  navisLoadedLabel->setPosition(sf::Vector2f(180.0f, 240.f));
+  navisLoadedLabel->setPosition(sf::Vector2f(230.f, 230.f));
 
   /* 
   Give a message to the player before loading 
@@ -338,7 +338,10 @@ int main(int argc, char** argv) {
       ENGINE.Draw(&progSprite);
 
       if (navisLoaded < (int)NAVIS.Size()) {
-        navisLoadedLabel->setString(std::string("Loading Navi Data... ") + std::to_string(navisLoaded) + " / " + std::to_string(NAVIS.Size()));
+        navisLoadedLabel->setString(std::string("Loading Navi Data ") + std::to_string(navisLoaded) + " / " + std::to_string(NAVIS.Size()));
+        sf::FloatRect bounds = navisLoadedLabel->getLocalBounds();
+        sf::Vector2f origin = {bounds.width / 2.0f, bounds.height / 2.0f};
+        navisLoadedLabel->setOrigin(origin);
         ENGINE.Draw(navisLoadedLabel);
       }
       else {
