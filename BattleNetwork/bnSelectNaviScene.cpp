@@ -148,7 +148,8 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   glowbottom.setPosition(40, 200);
 
   // Text box 
-  TextBox textbox(140, 100);
+  TextBox textbox(135, 50);
+  textbox.SetSpeed(15);
   textbox.setPosition(UI_RIGHT_POS_MAX + 10, 205);
   textbox.Stop();
 
@@ -267,6 +268,14 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
         gotoNextScene = true;
         AUDIO.Play(AudioType::CHIP_DESC_CLOSE);
         textbox.Mute();
+      }
+
+      if (INPUT.has(PRESSED_UP)) {
+        textbox.ShowPreviousLine();
+      }
+
+      if (INPUT.has(PRESSED_DOWN)) {
+        textbox.ShowNextLine();
       }
     }
 

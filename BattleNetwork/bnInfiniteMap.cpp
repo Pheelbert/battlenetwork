@@ -106,7 +106,7 @@ namespace Overworld {
         animator(total, npc->sprite, progAnimations.GetFrameList("PROG_DR"));
 
         sf::Vector2f newPos = npc->sprite.getPosition();
-        newPos.x += 1 * elapsed;
+        newPos.x += 1 * (float)elapsed;
         npc->sprite.setPosition(newPos);
       }
       break;

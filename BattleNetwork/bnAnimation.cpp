@@ -138,7 +138,7 @@ void Animation::SetAnimation(string state) {
      animations[currAnimation]; 
    }
    catch (std::exception& e) {
-     throw new std::runtime_error(std::string("No animation found in file for " + currAnimation));
+     throw std::runtime_error(std::string("No animation found in file for " + currAnimation));
    }
 }
 

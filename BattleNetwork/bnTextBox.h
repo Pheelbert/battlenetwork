@@ -12,6 +12,9 @@ private:
   double progress;
   int areaWidth, areaHeight;
   std::string message;
+  std::vector<int> lines;
+  int lineIndex;
+  int numberOfFittingLines;
   int charIndex;
   bool play;
   bool mute;
@@ -33,6 +36,8 @@ public:
     charSize = characterSize;
     fillColor = sf::Color::White;
     outlineColor = sf::Color::White;
+    lineIndex = 0;
+    numberOfFittingLines = 1;
   }
 
   ~TextBox() {
@@ -63,6 +68,8 @@ public:
   void FormatToFit() {
     if (message.empty())
       return;
+
+    lines.push_back(0); // All text begins at pos 0
  
     text = sf::Text(message, *font);
     text.setCharacterSize(charSize);
@@ -70,9 +77,9 @@ public:
     sf::Text prevText = text;
 
     int index = 0;
-    int line = 0;
     int wordIndex = -1; // If we are breaking on a word
     int lastRow = 0;
+    int line = 1;
 
     while (index < message.size()) {
       if (message[index] != ' ' && message[index] != '\n' && wordIndex == -1) {
@@ -87,23 +94,49 @@ public:
       double width  = text.getGlobalBounds().width;
       double height = text.getGlobalBounds().height;
 
-      std::cout << "message.substr(lastRow, index): " << message.substr(lastRow, index - lastRow) << std::endl;
-      std::cout << "areaWidth: " << areaWidth << "width: " << width << std::endl;
-      std::cout << "index: " << index << " wordIndex:" << wordIndex << " lastRow: " << lastRow << std::endl;
-
       if (width > areaWidth && wordIndex != -1 && wordIndex > 0 && index > 0) {
         // Line break at the next word
         message.insert(wordIndex, "\n");
         lastRow = wordIndex+1;
-        line++;
+        lines.push_back(lastRow);
         index=lastRow;
         wordIndex = -1;
+
+        if(height < areaHeight)
+          line++;
       }
       index++;
     }
 
     // make final text blank to start
     text.setString("");
+
+    numberOfFittingLines = line;
+
+    // std::cout << "num of fitting lines: " << numberOfFittingLines << std::endl;
+    // std::cout << "lines found: " << lines.size() << std::endl;
+  }
+
+  bool HasMore() {
+    return lineIndex < lines.size();
+  }
+
+  bool HasLess() {
+    return lineIndex > 0;
+  }
+
+  void ShowNextLine() {
+    lineIndex++;
+
+    if (lineIndex >= lines.size())
+      lineIndex = (int)lines.size()-1;
+  }
+
+  void ShowPreviousLine() {
+    lineIndex--;
+
+    if (lineIndex < 0)
+      lineIndex = 0;
   }
 
   void SetSpeed(const double speed) {
@@ -114,6 +147,9 @@ public:
     this->message = message;
     charIndex = 0;
     progress = 0;
+    lines.clear();
+    lineIndex = 0;
+    numberOfFittingLines = 1;
     FormatToFit();
   }
 
@@ -137,7 +173,6 @@ public:
 
       if (charIndexIter++ > charIndex && charIndex < message.size()) {
         charIndex++;
-        text.setString(message.substr(0, charIndex));
 
         while (message[charIndex] == ' ' && charIndex < message.size())
           charIndex++;
@@ -146,6 +181,25 @@ public:
           AUDIO.Play(AudioType::TEXT);
         }
       }
+      
+      int begin = lines[lineIndex];
+      int len = begin;
+
+      if (charIndex >= lines[lineIndex]) {
+        if (lineIndex + (numberOfFittingLines) < lines.size()) {
+          len = std::min(charIndex - begin, lines[lineIndex + (numberOfFittingLines)] - begin);
+        }
+        else {
+          len = charIndex - begin;
+        }
+      }
+      else
+        len = 0;
+
+      if (len <= 0)
+        text.setString("");
+      else 
+        text.setString(message.substr(begin, len));
     }
   }
 

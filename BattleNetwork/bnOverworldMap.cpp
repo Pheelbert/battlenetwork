@@ -116,7 +116,7 @@ namespace Overworld {
         if (lights.size() > 0) {
           sf::View view = cam->GetView();
           sf::Vector2i posi = sf::Mouse::getPosition(*ENGINE.GetWindow());
-          sf::Vector2f pos = sf::Vector2f(posi.x, posi.y);
+          sf::Vector2f pos = sf::Vector2f((float)posi.x, (float)posi.y);
           lights[0]->SetPosition(IsoToOrthogonal(pos + (view.getCenter() - (view.getSize() / 8.0f))));
         }
 
