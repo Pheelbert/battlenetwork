@@ -81,6 +81,8 @@ public:
     int lastRow = 0;
     int line = 1;
 
+    double fitHeight = 0;
+
     while (index < message.size()) {
       if (message[index] != ' ' && message[index] != '\n' && wordIndex == -1) {
         wordIndex = index;
@@ -102,8 +104,10 @@ public:
         index=lastRow;
         wordIndex = -1;
 
-        if(height < areaHeight)
+        if (fitHeight < areaHeight) {
           line++;
+          fitHeight += height;
+        }
       }
       index++;
     }
@@ -118,7 +122,11 @@ public:
   }
 
   bool HasMore() {
-    return lineIndex < lines.size();
+    if (lineIndex + numberOfFittingLines < lines.size())
+      if (charIndex > lines[lineIndex + numberOfFittingLines])
+        return true;
+
+    return false;
   }
 
   bool HasLess() {

@@ -148,7 +148,7 @@ SelectedNavi SelectNaviScene::Run(SelectedNavi currentNavi) {
   glowbottom.setPosition(40, 200);
 
   // Text box 
-  TextBox textbox(135, 50);
+  TextBox textbox(135, 15);
   textbox.SetSpeed(15);
   textbox.setPosition(UI_RIGHT_POS_MAX + 10, 205);
   textbox.Stop();

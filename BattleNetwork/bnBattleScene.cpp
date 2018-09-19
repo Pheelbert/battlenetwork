@@ -27,7 +27,7 @@ using sf::Font;
 #include "bnShaderResourceManager.h"
 #include "bnPA.h"
 #include "bnEngine.h"
-#include "bnBattleResults.h"
+#include "bnBattleResults.cpp"
 
 int BattleScene::Run(Player* player, Mob* mob) {
   /*
