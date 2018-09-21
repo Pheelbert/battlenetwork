@@ -7,7 +7,7 @@
 
 #define GRAVITY 9.81f
 
-ProgBomb::ProgBomb(Field* _field, Team _team, Tile* _target, float _duration) {
+ProgBomb::ProgBomb(Field* _field, Team _team, Battle::Tile* _target, float _duration) {
   SetLayer(0);
   cooldown = 0;
   damageCooldown = 0;

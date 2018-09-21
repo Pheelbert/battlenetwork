@@ -23,10 +23,10 @@ void ProgsManPunchState::OnUpdate(float _elapsed, ProgsMan& progs) {
 }
 
 void ProgsManPunchState::Attack(ProgsMan& progs) {
-  Tile* tile = progs.GetTile();
+  Battle::Tile* tile = progs.GetTile();
   if (tile->GetX() - 1 >= 1) {
 
-    Tile* next = 0;
+    Battle::Tile* next = 0;
     next = progs.GetField()->GetAt(tile->GetX() - 1, tile->GetY());
 
     Entity* entity = 0;

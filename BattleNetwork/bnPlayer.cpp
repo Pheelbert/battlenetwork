@@ -107,7 +107,7 @@ void Player::Update(float _elapsed) {
 
 bool Player::Move(Direction _direction) {
   bool moved = false;
-  Tile* temp = tile;
+  Battle::Tile* temp = tile;
   if (_direction == Direction::UP) {
     if (tile->GetY() - 1 > 0) {
       next = field->GetAt(tile->GetX(), tile->GetY() - 1);

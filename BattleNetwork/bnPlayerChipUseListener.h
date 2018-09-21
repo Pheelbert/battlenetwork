@@ -30,9 +30,9 @@ public:
 
     }
     else if (name == "CrckPanel") {
-      Tile* top = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 1);
-      Tile* mid = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 2);
-      Tile* low = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 3);
+      Battle::Tile* top = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 1);
+      Battle::Tile* mid = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 2);
+      Battle::Tile* low = player->GetField()->GetAt(player->GetTile()->GetX() + 1, 3);
 
       if (top) { top->SetState(TileState::CRACKED); }
       if (mid) { mid->SetState(TileState::CRACKED); }

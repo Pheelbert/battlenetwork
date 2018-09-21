@@ -10,7 +10,10 @@ using std::string;
 #include "bnTextureType.h"
 #include "bnElements.h"
 
-class Tile;
+namespace Battle {
+  class Tile;
+}
+
 class Field;
 
 class Entity : public LayeredDrawable {
@@ -29,8 +32,8 @@ public:
 
   bool Teammate(Team _team);
 
-  void SetTile(Tile* _tile);
-  Tile* GetTile() const;
+  void SetTile(Battle::Tile* _tile);
+  Battle::Tile* GetTile() const;
 
   void SetField(Field* _field);
   Field* GetField() const;
@@ -52,9 +55,9 @@ public:
 
 protected:
   bool ownedByField;
-  Tile* next;
-  Tile* tile;
-  Tile* previous;
+  Battle::Tile* next;
+  Battle::Tile* tile;
+  Battle::Tile* previous;
   Field* field;
   Team team;
   Element element;

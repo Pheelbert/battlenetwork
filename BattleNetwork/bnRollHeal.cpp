@@ -10,7 +10,7 @@
 
 #define RESOURCE_PATH "resources/spells/spell_roll.animation"
 
-RollHeal::RollHeal(Field* _field, Tile* _tile, Team _team, int _heal) : Spell()
+RollHeal::RollHeal(Field* _field, Battle::Tile* _tile, Team _team, int _heal) : Spell()
 {
   SetPassthrough(true);
   EnableTileHighlight(false); // Do not highlight where we move
@@ -36,19 +36,24 @@ RollHeal::RollHeal(Field* _field, Tile* _tile, Team _team, int _heal) : Spell()
   animationComponent.Setup(RESOURCE_PATH);
   animationComponent.Load();
   animationComponent.SetAnimation("ROLL_IDLE", [this] { 
+    AUDIO.Play(AudioType::APPEAR);
+
     this->animationComponent.SetAnimation("ROLL_MOVE", [this] {
 
       bool found = false;
 
-      Tile* next = nullptr;
+      Battle::Tile* next = nullptr;
+      Battle::Tile* attack = nullptr;
       while(field->GetNextTile(next)) {
         if (!found) {
           if (next->ContainsEntityType<Character>() && next->GetTeam() != this->GetTeam()) {
             this->GetTile()->RemoveEntity(this);
 
-            next = field->GetAt(next->GetX() - 1, next->GetY());
-            this->SetTile(next);
-            next->AddEntity(this);
+            Battle::Tile* prev = field->GetAt(next->GetX() - 1, next->GetY());
+            this->SetTile(prev);
+            prev->AddEntity(this);
+
+            attack = next;
 
             found = true;
           }
@@ -61,6 +66,12 @@ RollHeal::RollHeal(Field* _field, Tile* _tile, Team _team, int _heal) : Spell()
             this->GetTile()->RemoveEntity(this);
           });
         });
+
+        if (attack) {
+          this->animationComponent.AddCallback(4, [this, attack]() { attack->AffectEntities(this); });
+          this->animationComponent.AddCallback(12, [this, attack]() { attack->AffectEntities(this); });
+          this->animationComponent.AddCallback(20, [this, attack]() { attack->AffectEntities(this); });
+        }
       }
       else {
         this->animationComponent.SetAnimation("ROLL_MOVE", [this] {
@@ -97,9 +108,10 @@ void RollHeal::Attack(Entity* _entity) {
 
   if (_entity && _entity->GetTeam() != this->GetTeam()) {
     if (!_entity->IsPassthrough()) {
-      hit = true;
-      _entity->Hit(30);
+      _entity->Hit(10);
+      _entity->Update(1);
       hitHeight = _entity->GetHitHeight();
+      AUDIO.Play(AudioType::HURT);
     }
   }
 }

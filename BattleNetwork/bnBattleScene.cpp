@@ -256,7 +256,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
     sf::Vector2f cameraAntiOffset = -ENGINE.GetViewOffset();
 
     // First tile pass: draw the tiles
-    Tile* tile = nullptr;
+    Battle::Tile* tile = nullptr;
     while (field->GetNextTile(tile)) {
       tile->move(ENGINE.GetViewOffset());
 

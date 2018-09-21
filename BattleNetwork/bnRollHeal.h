@@ -4,7 +4,7 @@
 
 class RollHeal : public Spell {
 public:
-  RollHeal(Field* _field, Tile* _tile, Team _team, int heal);
+  RollHeal(Field* _field, Battle::Tile* _tile, Team _team, int heal);
   virtual ~RollHeal(void);
 
   virtual void Update(float _elapsed);

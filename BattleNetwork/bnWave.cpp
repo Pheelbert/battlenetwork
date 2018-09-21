@@ -68,7 +68,7 @@ void Wave::Update(float _elapsed) {
 
 bool Wave::Move(Direction _direction) {
   tile->RemoveEntity(this);
-  Tile* next = nullptr;
+  Battle::Tile* next = nullptr;
   if (_direction == Direction::LEFT) {
     if (tile->GetX() - 1 > 0) {
       next = field->GetAt(tile->GetX() - 1, tile->GetY());

@@ -9,9 +9,9 @@ private:
   sf::Vector2f displacement;
   double slideSpeed;
 
-  Tile* next;
-  Tile* tile;
-  Tile* previous;
+  Battle::Tile* next;
+  Battle::Tile* tile;
+  Battle::Tile* previous;
   Entity* owner;
   Field* field;
   int moveCount;
@@ -41,7 +41,7 @@ public:
 
   bool Move(Direction _direction) {
     bool moved = false;
-    Tile* temp = tile;
+    Battle::Tile* temp = tile;
     if (_direction == Direction::UP) {
       if (tile->GetY() - 1 > 0) {
         next = field->GetAt(tile->GetX(), tile->GetY() - 1);
@@ -103,6 +103,6 @@ public:
     moveCount++;
   }
 
-  const Tile* GetTile() const { return tile; }
+  const Battle::Tile* GetTile() const { return tile; }
   const int GetMoveCount() const { return moveCount; }
 };

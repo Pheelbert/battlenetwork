@@ -71,7 +71,7 @@ void Cannon::Update(float _elapsed) {
 
 bool Cannon::Move(Direction _direction) {
   tile->RemoveEntity(this);
-  Tile* next = nullptr;
+  Battle::Tile* next = nullptr;
   if (_direction == Direction::UP) {
     if (tile->GetY() - 1 > 0) {
       next = field->GetAt(tile->GetX(), tile->GetY() - 1);

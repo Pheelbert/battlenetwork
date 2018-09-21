@@ -18,8 +18,8 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
   if (isMoving) return; // We're already moving (animations take time)
 
 
-  Tile* temp = progs.tile;
-  Tile* next = nullptr;
+  Battle::Tile* temp = progs.tile;
+  Battle::Tile* next = nullptr;
 
   int random = rand() % 50;
 
@@ -89,7 +89,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
   else if (nextDirection == Direction::DOWN) {
     if (progs.tile->GetY() + 1 <= (int)progs.field->GetHeight()) {
       next = progs.field->GetAt(progs.tile->GetX(), progs.tile->GetY() + 1);
-      if (progs.Teammate(next->GetTeam()) && next->IsWalkable())
+      if (progs.Teammate(next->GetTeam()) && next->IsWalkable()) {
         if (!next->ContainsEntityType<ProgsMan>() && !next->ContainsEntityType<Mettaur>()) {
           progs.SetTile(next);
         }
@@ -97,6 +97,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
           next = nullptr;
           nextDirection = Direction::UP;
         }
+      }
       else
         next = nullptr;
     }
@@ -107,7 +108,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
   else if (nextDirection == Direction::RIGHT) {
     if (progs.tile->GetX() + 1 <= (int)progs.field->GetWidth()) {
       next = progs.field->GetAt(progs.tile->GetX() + 1, progs.tile->GetY());
-      if (progs.Teammate(next->GetTeam()) && next->IsWalkable())
+      if (progs.Teammate(next->GetTeam()) && next->IsWalkable()) {
         if (!next->ContainsEntityType<ProgsMan>() && !next->ContainsEntityType<Mettaur>()) {
           progs.SetTile(next);
         }
@@ -115,6 +116,7 @@ void ProgsManMoveState::OnUpdate(float _elapsed, ProgsMan& progs) {
           next = nullptr;
           nextDirection = Direction::LEFT;
         }
+      }
       else
         next = nullptr;
     }

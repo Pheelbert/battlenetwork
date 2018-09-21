@@ -3,7 +3,7 @@
 
 class ProgBomb : public Spell {
 private:
-  Tile * target;
+  Battle::Tile * target;
   float posX;
   float posY;
   float velX;
@@ -11,7 +11,7 @@ private:
   float arcDuration;
   float arcProgress;
 public:
-  ProgBomb(Field* _field, Team _team, Tile* _target, float _duration);
+  ProgBomb(Field* _field, Team _team, Battle::Tile* _target, float _duration);
   virtual ~ProgBomb(void);
 
   virtual void Update(float _elapsed);

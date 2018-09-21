@@ -52,11 +52,11 @@ bool Entity::Teammate(Team _team) {
   return team == _team;
 }
 
-void Entity::SetTile(Tile* _tile) {
+void Entity::SetTile(Battle::Tile* _tile) {
   tile = _tile;
 }
 
-Tile* Entity::GetTile() const {
+Battle::Tile* Entity::GetTile() const {
   return tile;
 }
 

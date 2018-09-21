@@ -58,7 +58,7 @@ void ExplodeState<Any>::OnEnter(Any& e) {
   e.SetPassthrough(true); // Shoot through dying enemies
 
   /* Spawn an explosion */
-  Tile* tile = e.GetTile();
+  Battle::Tile* tile = e.GetTile();
   Field* field = e.GetField();
   explosion = new LongExplosion(field, e.GetTeam());
   field->OwnEntity(explosion, tile->GetX(), tile->GetY());

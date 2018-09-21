@@ -62,7 +62,7 @@ void CanodumbCursor::Update(float _elapsed) {
       movecooldown = maxcooldown;
 
       Field* f = this->GetField();
-      Tile* t = f->GetAt(this->GetTile()->GetX() - 1, this->GetTile()->GetY());
+      Battle::Tile* t = f->GetAt(this->GetTile()->GetX() - 1, this->GetTile()->GetY());
 
       if (t != nullptr) {
         this->GetTile()->RemoveEntity(this);

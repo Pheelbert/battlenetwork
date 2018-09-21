@@ -22,7 +22,7 @@ Mob* RandomMettaurMob::Build() {
 
   for (int i = 0; i < field->GetWidth(); i++) {
     for (int j = 0; j < field->GetHeight(); j++) {
-      Tile* tile = field->GetAt(i + 1, j + 1);
+      Battle::Tile* tile = field->GetAt(i + 1, j + 1);
 
       tile->SetState((TileState)(rand() % (int)TileState::EMPTY)); // Make it random excluding an empty tile
       //tile->SetState(TileState::LAVA); 
@@ -45,7 +45,7 @@ Mob* RandomMettaurMob::Build() {
     int y = (field->GetHeight() / 2) + 1;
     mob->Spawn<Rank1<Mettaur, MettaurIdleState>>(x, y);
 
-    Tile* tile = field->GetAt(x, y);
+    Battle::Tile* tile = field->GetAt(x, y);
     if (!tile->IsWalkable()) { tile->SetState(TileState::NORMAL); }
   }
 
