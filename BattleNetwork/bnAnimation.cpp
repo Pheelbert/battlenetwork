@@ -134,11 +134,11 @@ void Animation::SetAnimation(string state) {
    progress = 0.0f;
    currAnimation = state;
 
-   try {
-     animations[currAnimation]; 
-   }
-   catch (std::exception& e) {
-     throw std::runtime_error(std::string("No animation found in file for " + currAnimation));
+   auto pos = animations.find(currAnimation);
+
+   if (pos == animations.end()) {
+     //throw std::runtime_error(std::string("No animation found in file for " + currAnimation));
+     std::cout << "No animation found in file for " + currAnimation << std::endl;
    }
 }
 

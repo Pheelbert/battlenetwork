@@ -1,5 +1,6 @@
 #pragma once
 #include "bnSpell.h"
+#include "bnAnimate.h"
 
 class Cannon : public Spell {
 public:
@@ -13,4 +14,6 @@ public:
 
 private:
   int damage;
+  FrameList animation;
+  Animate animator;
 };

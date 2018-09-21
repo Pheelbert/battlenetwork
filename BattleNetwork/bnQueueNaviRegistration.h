@@ -3,6 +3,7 @@
 // Register these navis
 #include "bnPlayer.h"
 #include "bnStarman.h"
+#include "bnRoll.h"
 
 /***********************************************************************
 ************    Register your custom navis here    *********************
@@ -28,4 +29,13 @@ void QueuNaviRegistration() {
   starmanInfo->SetSpeed(3);
   starmanInfo->SetAttack(1);
   starmanInfo->SetChargedAttack(10);
+
+  // Register Roll
+  auto rollInfo = NAVIS.AddClass<Roll>();
+  rollInfo->SetSpecialDescription("High HP aand takes no recoil. FloatShoe enabled.");
+  rollInfo->SetBattleAnimationPath("resources/navis/roll/roll.animation");
+  rollInfo->SetOverworldAnimationPath("resources/navis/roll/roll.animation");
+  rollInfo->SetSpeed(3);
+  rollInfo->SetAttack(1);
+  rollInfo->SetChargedAttack(10);
 }

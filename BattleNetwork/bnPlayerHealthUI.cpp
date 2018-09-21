@@ -23,6 +23,7 @@ PlayerHealthUI::PlayerHealthUI(Player* _player)
   components.push_back(&text);
   lastHP = currHP = _player->GetHealth();
   text = Text(to_string(currHP), *font);
+  loaded = false;
 }
 
 PlayerHealthUI::~PlayerHealthUI(void) {
@@ -41,6 +42,11 @@ bool PlayerHealthUI::GetNextComponent(Drawable*& out) {
 
 void PlayerHealthUI::Update() {
   if (player) {
+    if (!loaded) {
+      lastHP = currHP = player->GetHealth();
+      loaded = true;
+    }
+
     if (lastHP != player->GetHealth()) {
       if (currHP > player->GetHealth()) {
         currHP -= 1;

@@ -1,7 +1,7 @@
 #pragma once
 #include "bnEntity.h"
 #include "bnCharacter.h"
-#include "bnAnimate.h"
+#include "bnAnimationComponent.h"
 
 using sf::Texture;
 
@@ -32,6 +32,5 @@ protected:
   float hitHeight;
   Texture* texture;
   Direction direction;
-  FrameList animation;
-  Animate animator;
+  AnimationComponent animationComponent;
 };

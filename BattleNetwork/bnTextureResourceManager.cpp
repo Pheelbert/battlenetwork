@@ -94,6 +94,9 @@ TextureResourceManager::TextureResourceManager(void) {
   //Starman
   paths.push_back("resources/navis/starman/navi_starman_atlas.png");
 
+  //Roll
+  paths.push_back("resources/navis/roll/navi_roll_atlas.png");
+
   //-Mobs-
   paths.push_back("resources/mobs/mob_move.png");
   paths.push_back("resources/mobs/mob_explosion.png");

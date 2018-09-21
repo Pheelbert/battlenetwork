@@ -12,6 +12,7 @@ using sf::Font;
 #include "bnPlayer.h"
 #include "bnSelectedChipsUI.h"
 #include "bnPlayerChipUseListener.h"
+#include "bnChipSummonHandler.h"
 #include "bnMemory.h"
 #include "bnMettaur.h"
 #include "bnProgsMan.h"
@@ -41,7 +42,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
   int paStepIndex = 0;
 
   float listStepCooldown = 0.5f;
-  float listStepCounter  = listStepCooldown;
+  float listStepCounter = listStepCooldown;
 
   sf::Sprite programAdvanceSprite(LOAD_TEXTURE(PROGRAM_ADVANCE));
   programAdvanceSprite.setScale(2.f, 2.f);
@@ -62,6 +63,10 @@ int BattleScene::Run(Player* player, Mob* mob) {
   int chipCount = 0;
 
   /*
+  Chip Summons*/
+  ChipSummonHandler summons(player);
+
+  /*
   Battle results pointer */
   BattleResults* battleResults = nullptr;
   Timer battleTimer;
@@ -77,13 +82,14 @@ int BattleScene::Run(Player* player, Mob* mob) {
   SelectedChipsUI chipUI(player);
   PlayerChipUseListener chipListener(player);
   chipListener.Subscribe(chipUI);
+  summons.Subscribe(chipUI); // Let the scene's chip listener know about summon chips
 
   /*
   Background for scene*/
   Background* background = nullptr;
-  
+
   int randBG = rand() % 3;
-  
+
   if (randBG == 0) {
     background = new LanBackground();
   }
@@ -100,7 +106,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
   pauseLabel->setOrigin(pauseLabel->getLocalBounds().width / 2, pauseLabel->getLocalBounds().height * 2);
   pauseLabel->setPosition(sf::Vector2f(240.f, 160.f));
 
-  // CHIP CUST
+  // CHIP CUST GRAPHICS
   sf::Texture* customBarTexture = TEXTURES.LoadTextureFromFile("resources/ui/custom.png");
   LayeredDrawable customBarSprite;
   customBarSprite.setTexture(*customBarTexture);
@@ -110,9 +116,9 @@ int BattleScene::Run(Player* player, Mob* mob) {
   customBarSprite.setScale(2.f, 2.f);
 
   // Selection input delays
-  double maxChipSelectInputCooldown = 1/10.f; // tenth a second
+  double maxChipSelectInputCooldown = 1 / 10.f; // tenth a second
   double chipSelectInputCooldown = maxChipSelectInputCooldown;
-  
+
   // MOB UI
   sf::Font *mobFont = TEXTURES.LoadFontFromFile("resources/fonts/mmbnthick_regular.ttf");
 
@@ -133,6 +139,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
   bool isMobDeleted = false;
   bool isBattleRoundOver = false;
   bool isMobFinished = false;
+  bool prevSummonState = false;
   double customProgress = 0; // in seconds 
   double customDuration = 10; // 10 seconds
   bool initFadeOut = false;
@@ -223,8 +230,21 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
     background->Update(elapsed);
 
+    summons.Update(elapsed);
+
+    // compare the summon state after we used a chip...
+    if (summons.IsSummonsActive() && prevSummonState == false) {
+      // We are switching over to a new state this frame
+      summons.OnEnter();
+    }
+    else if (summons.IsSummonOver() && prevSummonState == true) {
+      // We are leaving the summons state this frame
+      summons.OnLeave();
+
+    }
+
     // Do not update when paused or in chip select
-    if (!(isPaused || isInChipSelect)) {
+    if (!(isPaused || isInChipSelect ) && summons.IsSummonOver()) {
       field->Update(elapsed);
     }
 
@@ -239,14 +259,23 @@ int BattleScene::Run(Player* player, Mob* mob) {
     Tile* tile = nullptr;
     while (field->GetNextTile(tile)) {
       tile->move(ENGINE.GetViewOffset());
-      if (tile->IsHighlighted()) {
+
+      if (summons.IsSummonsActive()) {
         LayeredDrawable* coloredTile = new LayeredDrawable(*(sf::Sprite*)tile);
-        coloredTile->SetShader(&yellowShader);
+        coloredTile->SetShader(&pauseShader);
         ENGINE.Draw(coloredTile);
         delete coloredTile;
       }
       else {
-        ENGINE.Draw(tile);
+        if (tile->IsHighlighted()) {
+          LayeredDrawable* coloredTile = new LayeredDrawable(*(sf::Sprite*)tile);
+          coloredTile->SetShader(&yellowShader);
+          ENGINE.Draw(coloredTile);
+          delete coloredTile;
+        }
+        else {
+          ENGINE.Draw(tile);
+        }
       }
     }
 
@@ -334,9 +363,21 @@ int BattleScene::Run(Player* player, Mob* mob) {
     if (isPaused || isInChipSelect) {
       // apply shader on draw calls below
       ENGINE.SetShader(&pauseShader);
-    }
+    } 
 
     ENGINE.DrawOverlay();
+
+    if (summons.IsSummonsActive()) {
+      sf::Text summonsLabel = sf::Text(summons.GetSummonLabel(), *mobFont);
+
+      summonsLabel.setOrigin(0, 0);
+      summonsLabel.setPosition(40.0f, 80.f);
+      summonsLabel.setScale(1.0f, 1.0f);
+      summonsLabel.setOutlineColor(sf::Color::Black);
+      summonsLabel.setFillColor(sf::Color::White);
+      summonsLabel.setOutlineThickness(2.f);
+      ENGINE.Draw(summonsLabel, false);
+    }
 
     float nextLabelHeight = 0;
     if (!mob->IsSpawningDone() || isInChipSelect) {
@@ -373,10 +414,11 @@ int BattleScene::Run(Player* player, Mob* mob) {
       ENGINE.Draw(pauseLabel, false);
     }
 
+    // Track is a summon chip was used before key events below
+    prevSummonState = summons.IsSummonsActive();
 
     // Draw cust GUI on top of scene. No shaders affecting.
     chipCustGUI.Draw();
-
 
     // Scene keyboard controls
     if (INPUT.has(PRESSED_PAUSE) && !isInChipSelect && !isBattleRoundOver) {
@@ -388,9 +430,9 @@ int BattleScene::Run(Player* player, Mob* mob) {
       else {
         AUDIO.Play(AudioType::PAUSE);
       }
-    } else if (INPUT.has(RELEASED_B) && !isInChipSelect && !isBattleRoundOver) {
+    } else if (INPUT.has(RELEASED_B) && !isInChipSelect && !isBattleRoundOver && summons.IsSummonOver()) {
       chipUI.UseNextChip();
-    } else if ((!isMobFinished && mob->IsSpawningDone()) || (INPUT.has(PRESSED_START) && customProgress >= customDuration && !isInChipSelect && !isBattleRoundOver)) {
+    } else if ((!isMobFinished && mob->IsSpawningDone()) || (INPUT.has(PRESSED_START) && customProgress >= customDuration && !isInChipSelect && !isBattleRoundOver && summons.IsSummonOver())) {
        // enemy intro finished
       if (!isMobFinished) { 
         // toggle the flag
@@ -628,7 +670,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
       }
     }
 
-    if (isBattleRoundOver && !isPlayerDeleted) {
+    if (isBattleRoundOver && !isPlayerDeleted && player->GetHealth() > 0) {
       if (!battleResults) {
         sf::Time totalBattleTime = sf::milliseconds((sf::Int32)battleTimer.GetElapsed());
 
@@ -695,7 +737,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
     }
 
     // update the cust if not paused nor in chip select nor in mob intro nor battle results
-    if (!(isBattleRoundOver || isPaused || isInChipSelect || !mob->IsSpawningDone())) {
+    if (!(isBattleRoundOver || isPaused || isInChipSelect || !mob->IsSpawningDone() || summons.IsSummonsActive())) {
       customProgress += elapsed;
 
       if (battleTimer.IsPaused()) {

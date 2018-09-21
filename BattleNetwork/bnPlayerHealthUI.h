@@ -31,4 +31,5 @@ private:
   Sprite sprite;
   Texture* texture;
   vector<Drawable*> components;
+  bool loaded;
 };

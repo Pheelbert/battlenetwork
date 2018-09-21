@@ -22,6 +22,8 @@ enum TextureType {
   //Navis
   NAVI_MEGAMAN_ATLAS,
   NAVI_STARMAN_ATLAS,
+  NAVI_ROLL_ATLAS,
+
   //Mobs
   MOB_MOVE,
   MOB_EXPLOSION,

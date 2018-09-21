@@ -16,4 +16,5 @@ private:
   Character * mob;
   Font* font;
   int healthCounter;
+  bool loaded;
 };

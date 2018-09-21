@@ -51,7 +51,7 @@ Player::Player(void)
   moveCount = 0;
 
   invincibilityCooldown = 0;
-  alpha = 0;
+  alpha = 255;
 
   cloakTimeSecs = 0;
 }
@@ -76,9 +76,10 @@ void Player::Update(float _elapsed) {
   }
 
   // TODO: Get rid of this. Put this type of behavior in a component
-  if (cloakTimer.getElapsedTime() > sf::seconds((float)cloakTimeSecs)) {
+  if (cloakTimer.getElapsedTime() > sf::seconds((float)cloakTimeSecs) && cloakTimeSecs != 0) {
     this->SetPassthrough(false);
     this->SetAlpha(255);
+    cloakTimeSecs = 0;
   }
 
   if (invincibilityCooldown > 0) {
@@ -192,11 +193,10 @@ int Player::GetHealth() const {
 const bool Player::Hit(int _damage) {
   if (this->IsPassthrough() || invincibilityCooldown > 0) return false;
 
-  bool result = false;
+  bool result = true;
 
   if (health - _damage < 0) {
     health = 0;
-    result = true;
   }
   else {
     health -= _damage;
@@ -229,6 +229,7 @@ void Player::SetCharging(bool state)
 void Player::SetAlpha(int value)
 {
   alpha = value;
+  this->setColor(sf::Color(255, 255, 255, alpha));
 }
 
 void Player::SetCloakTimer(int seconds)

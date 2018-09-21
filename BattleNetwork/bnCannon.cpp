@@ -26,7 +26,7 @@ Cannon::Cannon(Field* _field, Team _team, int _damage) {
   deleted = false;
   hit = false;
   progress = 0.0f;
-  hitHeight = 0.0f;
+  hitHeight = 10.0f;
   srand((unsigned int)time(nullptr));
   random = rand() % 20 - 20;
 

@@ -21,6 +21,7 @@ MobHealthUI::MobHealthUI(Character* _mob)
   setOutlineThickness(2.f);
   setScale(0.8f, 0.8f);
   healthCounter = mob->GetHealth();
+  loaded = false;
 }
 
 MobHealthUI::~MobHealthUI(void) {
@@ -29,6 +30,11 @@ MobHealthUI::~MobHealthUI(void) {
 
 void MobHealthUI::Update() {
   if (mob) {
+    if (!loaded) {
+      healthCounter = mob->GetHealth();
+      loaded = true;
+    }
+
     setOrigin(getLocalBounds().width, 0);
 
     // Only delay damage display if 80 or more HP in the red

@@ -242,6 +242,18 @@
     <Filter Include="Battle\Entity\Character\Player\Protoman">
       <UniqueIdentifier>{6a4a149c-363c-4995-beeb-0fe217611da6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Battle\Entity\Character\Player\Roll">
+      <UniqueIdentifier>{34dd93df-6037-4d84-ba75-91be8baca2fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Player\Roll\States">
+      <UniqueIdentifier>{a85c89af-631a-4657-9c6c-3f47c2e18ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Spell\Summons">
+      <UniqueIdentifier>{fbaa3fbf-d796-4026-82d6-ddf7c391ef31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Spell\Summons\Roll">
+      <UniqueIdentifier>{541f9cd8-4857-4700-bb63-5aa7ce04599b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bnField.cpp">
@@ -462,6 +474,12 @@
     </ClCompile>
     <ClCompile Include="bnPlayerHealthUI.cpp">
       <Filter>Battle\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="bnRoll.cpp">
+      <Filter>Battle\Entity\Character\Player\Roll</Filter>
+    </ClCompile>
+    <ClCompile Include="bnRollHeal.cpp">
+      <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -774,6 +792,15 @@
     </ClInclude>
     <ClInclude Include="bnTileBehavior.h">
       <Filter>Battle\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="bnRoll.h">
+      <Filter>Battle\Entity\Character\Player\Roll</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipSummonHandler.h">
+      <Filter>Battle\Chips\ChipUseListener\Any</Filter>
+    </ClInclude>
+    <ClInclude Include="bnRollHeal.h">
+      <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

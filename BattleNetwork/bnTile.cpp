@@ -210,7 +210,8 @@ void Tile::Update(float _elapsed) {
     if (!hasSpell) {
       Spell* isSpell = dynamic_cast<Spell*>(*entity);
 
-      hasSpell = !(isSpell == nullptr) && isSpell->IsTileHighlightEnabled();
+      if(isSpell)
+        hasSpell = isSpell->IsTileHighlightEnabled();
     }
 
     (*entity)->Update(_elapsed);

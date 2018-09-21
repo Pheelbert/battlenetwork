@@ -170,7 +170,7 @@ public:
   }
 
   void Update(const double elapsed) {
-    if (!play) return;
+    if (!play || message.empty()) return;
 
     double charIndexIter = 0;
     progress += elapsed;

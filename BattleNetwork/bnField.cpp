@@ -125,6 +125,4 @@ void Field::Update(float _elapsed) {
       entityCount += (int)tiles[y][x]->entities.size();
     }
   }
-
-  std::cout << "# of entities: " << entityCount << "\n";
 }
