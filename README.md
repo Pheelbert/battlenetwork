@@ -4,6 +4,7 @@
 ## Update 9/21/2018
 [![Summon Roll](https://media.giphy.com/media/kG1P8Wlb8O7LGghFHE/giphy.gif)](https://streamable.com/vwdos) 
 
+(Click the gif to see a video)
 
 Added Chip Summons into the Battle Scene routine. It extends the `ChipUseListener` class and requires a timer so that any buggy summons will gaurantee to end. This routine is new and will undergo a lot of refactoring before it's finished. Great to see it working so well for the first design.
 
