@@ -58,7 +58,7 @@ public:
       return;
 
     player->Update(0);
-    player->GetAnimationComponent().Update(_elapsed);
+    player->GetAnimationComponent().Update((float)_elapsed);
 
     timeInSecs += _elapsed;
 

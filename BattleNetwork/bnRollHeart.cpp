@@ -42,6 +42,8 @@ RollHeart::RollHeart(ChipSummonHandler* _summons, Player* _player, int _heal) : 
   animationComponent.Load();
   animationComponent.SetAnimation("HEART");
   this->Update(0);
+
+  doOnce = true;
 }
 
 RollHeart::~RollHeart(void) {
@@ -55,12 +57,19 @@ void RollHeart::Update(float _elapsed) {
   }
 
   height -= _elapsed * 150.f;
-    
-  if (height <= 0) {
+  
+  if (height <= 0) height = 0;
+
+  if (height == 0 && doOnce) {
     player->SetHealth(player->GetHealth() + heal);
-    player->SetAnimation("PLAYER_HEAL", [this]() {player->SetAnimation("PLAYER_IDLE"); });
+    player->SetAnimation("PLAYER_HEAL", [this]() {
+      player->SetAnimation("PLAYER_IDLE", [this]() {
+        summons->RemoveEntity(this);
+      });
+    });
     AUDIO.Play(AudioType::RECOVER);
-    summons->RemoveEntity(this);
+    doOnce = false;
+    this->setColor(sf::Color(255, 255, 255, 0)); // hidden
   }
 }
 

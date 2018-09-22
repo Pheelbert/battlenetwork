@@ -4,9 +4,9 @@ VERSION="2.0"
 imagePath="C:\Users\Bountyhunter\Code\mmbn\BattleNetwork\resources\spells\spell_roll.png"
 
 animation state="ROLL_MOVE"
-frame duration="0.1" x="183" y="178" w="39" h="78" originx="20" originy="70"
-frame duration="0.1" x="146" y="171" w="39" h="88" originx="17" originy="77"
-frame duration="0.1" x="102" y="166" w="39" h="90" originx="20" originy="82"
+frame duration="0.05" x="183" y="178" w="39" h="78" originx="20" originy="70"
+frame duration="0.05" x="146" y="171" w="39" h="88" originx="17" originy="77"
+frame duration="0.05" x="102" y="166" w="39" h="90" originx="20" originy="82"
 
 animation state="ROLL_IDLE"
 frame duration="0.1" x="303" y="170" w="39" h="80" originx="17" originy="77"

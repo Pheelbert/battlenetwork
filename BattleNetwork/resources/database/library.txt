@@ -1,12 +1,12 @@
 # Lines beginning with pound '#' are comments and are ignored
 # Types are Normal (or None), Fire, Aqua, Wood, Elec, Wind, Sword, Break, Cursor, Plus, and Summon
 
-# Chip name="Cannon"  cardIndex="0" iconIndex="0" damage="20" type="Normal" codes="A,A,B,B,C,C,C" desc="REEEEEEE" rarity="5"
+Chip name="Cannon"  cardIndex="0" iconIndex="0" damage="20" type="Normal" codes="A,B,C,C" desc="LET THE BASS CANNON KICK IT" rarity="5"
 
 Chip name="Roll" cardIndex="132" iconIndex="232" damage="30" type="Normal" codes="R" desc="Atk enemy 3x and restore HP" rarity="1"
 
-# Chip name="Swrd"     cardIndex="15" iconIndex="30" damage="20" type="Sword" codes="A," desc="pointy stabby" rarity="5"
-# Chip name="WideSwrd" cardIndex="16" iconIndex="31" damage="30" type="Sword" codes="A,J" desc="Wide pointy stabby" rarity="5"
-# Chip name="LongSwrd" cardIndex="17" iconIndex="32" damage="40" type="Sword" codes="A" desc="Long pointy stabby" rarity="5"
+Chip name="Swrd"     cardIndex="15" iconIndex="30" damage="20" type="Sword" codes="A," desc="pointy stabby" rarity="5"
+Chip name="WideSwrd" cardIndex="16" iconIndex="31" damage="30" type="Sword" codes="A,J" desc="Wide pointy stabby" rarity="5"
+Chip name="LongSwrd" cardIndex="17" iconIndex="32" damage="40" type="Sword" codes="A" desc="Long pointy stabby" rarity="5"
 
 # Chip name="Recov1" cardIndex="74" iconIndex="146" damage="10" type="Normal" codes="A,*" desc="bitch help" rarity="5"

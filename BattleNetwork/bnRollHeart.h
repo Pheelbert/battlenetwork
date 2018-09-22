@@ -20,4 +20,5 @@ private:
   float height = 200;
   Player* player;
   ChipSummonHandler* summons;
+  bool doOnce;
 }; 
