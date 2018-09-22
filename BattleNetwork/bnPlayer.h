@@ -35,6 +35,7 @@ public:
   int GetHitCount() const;
 
   PlayerHealthUI* GetHealthUI() const;
+  AnimationComponent& GetAnimationComponent();
 
   void SetCharging(bool state);
   void SetAlpha(int value); // TODO: Get rid of this

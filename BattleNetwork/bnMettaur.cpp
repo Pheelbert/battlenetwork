@@ -113,6 +113,10 @@ void Mettaur::Update(float _elapsed) {
     }
   }
 
+  healthUI->Update();
+
+  if (_elapsed <= 0) return;
+
   this->StateUpdate(_elapsed);
 
   // Explode if health depleted
@@ -138,7 +142,6 @@ void Mettaur::Update(float _elapsed) {
     animationComponent.Update(_elapsed);
   }
 
-  healthUI->Update();
   Entity::Update(_elapsed);
 }
 

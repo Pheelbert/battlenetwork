@@ -371,7 +371,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
       sf::Text summonsLabel = sf::Text(summons.GetSummonLabel(), *mobFont);
 
       summonsLabel.setOrigin(0, 0);
-      summonsLabel.setPosition(40.0f, 80.f);
+      summonsLabel.setPosition(40.0f, 40.f);
       summonsLabel.setScale(1.0f, 1.0f);
       summonsLabel.setOutlineColor(sf::Color::Black);
       summonsLabel.setFillColor(sf::Color::White);

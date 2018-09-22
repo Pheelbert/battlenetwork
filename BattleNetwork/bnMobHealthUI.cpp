@@ -37,6 +37,11 @@ void MobHealthUI::Update() {
 
     setOrigin(getLocalBounds().width, 0);
 
+    if (mob->GetHealth() <= 0) {
+      setString("");
+      return;
+    }
+
     // Only delay damage display if 80 or more HP in the red
     if (healthCounter > mob->GetHealth() &&  healthCounter - mob->GetHealth() < 80) {
       healthCounter = mob->GetHealth();

@@ -234,7 +234,7 @@ namespace Battle {
     }
 
     for (auto it = entities.begin(); it != entities.end(); ++it) {
-      if (*it != caller && !(*it)->IsPassthrough() && dynamic_cast<Spell*>(*it) == 0) {
+      if (*it != nullptr && *it != caller && !(*it)->IsPassthrough() && dynamic_cast<Spell*>(*it) == 0) {
         caller->Attack(*it);
       }
     }
@@ -256,6 +256,7 @@ namespace Battle {
 
     vector<Entity*> copies = entities;
     for (vector<Entity*>::iterator entity = copies.begin(); entity != copies.end(); entity++) {
+
       if ((*entity)->IsDeleted())
         continue;
 

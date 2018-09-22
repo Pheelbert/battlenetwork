@@ -481,6 +481,9 @@
     <ClCompile Include="bnRollHeal.cpp">
       <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
     </ClCompile>
+    <ClCompile Include="bnRollHeart.cpp">
+      <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnField.h">
@@ -800,6 +803,9 @@
       <Filter>Battle\Chips\ChipUseListener\Any</Filter>
     </ClInclude>
     <ClInclude Include="bnRollHeal.h">
+      <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
+    </ClInclude>
+    <ClInclude Include="bnRollHeart.h">
       <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
     </ClInclude>
   </ItemGroup>

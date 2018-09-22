@@ -64,6 +64,11 @@ void Player::Update(float _elapsed) {
   //Update UI of player's health (top left corner)
   healthUI->Update();
 
+  animationComponent.Update(_elapsed);
+
+  if (_elapsed <= 0)
+    return;
+
   if (tile != nullptr) {
     setPosition(tile->getPosition().x + (tile->GetWidth() / 2.0f), tile->getPosition().y + (tile->GetHeight() / 2.0f));
   }
@@ -100,7 +105,6 @@ void Player::Update(float _elapsed) {
 
   //Components updates
   chargeComponent.update(_elapsed);
-  animationComponent.Update(_elapsed);
 
   Entity::Update(_elapsed);
 }
@@ -184,6 +188,7 @@ vector<Drawable*> Player::GetMiscComponents() {
 
 void Player::SetHealth(int _health) {
   health = _health;
+  healthUI->Update();
 }
 
 int Player::GetHealth() const {
@@ -219,6 +224,10 @@ int Player::GetHitCount() const
 
 PlayerHealthUI* Player::GetHealthUI() const {
   return healthUI;
+}
+
+AnimationComponent& Player::GetAnimationComponent() {
+  return animationComponent;
 }
 
 void Player::SetCharging(bool state)

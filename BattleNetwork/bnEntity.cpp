@@ -18,6 +18,9 @@ Entity::~Entity() {
 }
 
 void Entity::Update(float _elapsed) {
+  if (_elapsed <= 0)
+    return;
+
   if (IsDeleted()) {
     field->RemoveEntity(this);
   }

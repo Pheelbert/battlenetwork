@@ -31,9 +31,34 @@ public:
 
   const std::string GetSummonLabel() { return summon; }
 
+  Player* GetPlayer() {
+    return player;
+  }
+
+  void SummonEntity(Entity* _new) {
+    summonedItems.push_back(_new);
+  }
+
+  void RemoveEntity(Entity* _entity) {
+    for (auto items = summonedItems.begin(); items != summonedItems.end(); items++) {
+      if (*items == _entity) {
+        if ((*items)->GetTile()) {
+          (*items)->GetTile()->RemoveEntity(*items);
+        }
+
+        delete *items;
+        summonedItems.erase(items);
+        return;
+      }
+    }
+  }
+
   void Update(double _elapsed) {
     if (summon.empty())
       return;
+
+    player->Update(0);
+    player->GetAnimationComponent().Update(_elapsed);
 
     timeInSecs += _elapsed;
 
@@ -46,18 +71,13 @@ public:
     if (summon == "Roll") {
       player->SetAlpha(0);
 
-      Entity* roll = new RollHeal(player->GetField(), player->GetTile(), player->GetTeam(), 30);
-      summonedItems.push_back(roll);
+      Entity* roll = new RollHeal(this, 10);
+      SummonEntity(roll);
     }
   }
 
   void OnLeave() { 
     player->SetAlpha(255);  
-
-    if (summon == "Roll") {
-      player->SetHealth(player->GetHealth() + 30);
-      AUDIO.Play(AudioType::RECOVER);
-    }
 
     for (auto items : summonedItems) {
       delete items;
@@ -73,10 +93,10 @@ public:
 
     std::string name = chip.GetShortName();
 
-    if (name == "Roll v1") {
+    if (name == "Roll") {
       summon = "Roll";
       timeInSecs = 0;
-      duration = sf::seconds(2);
+      duration = sf::seconds(4);
     }
   }
 };
