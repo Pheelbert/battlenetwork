@@ -1,12 +1,10 @@
 
 # Author TheMaverickProgrammer
 
-## Update 9/16/2018
-[![starman.png](https://s8.postimg.cc/qjbob7h2d/starman.png)](https://postimg.cc/image/3umhbmzoh/)
+## Update 9/21/2018
+[Summon Roll <<<< WATCH HERE](https://streamable.com/l9w6f)
 
-Added ice sliding logic however needs to be tweaked and add some way to slide sprites between tiles instead of "teleporting" them.
-Added textbox. Algorithm needs work as it will skip letters in an undesirable way.
-Added navi select screen that reads info from the NaviRegistration hook as detailed below:
+Added Chip Summons into the Battle Scene routine. It extends the `ChipUseListener` class and requires a timer so that any buggy summons will gaurantee to end. This routine is new and will undergo a lot of refactoring before it's finished. Great to see it working so well for the first design.
 
 See ["Adding Custom Navis"](https://github.com/TheMaverickProgrammer/battlenetwork/wiki/Creating-New-Navis) in the wiki for more!
 
@@ -19,6 +17,8 @@ Click the thumbnail to watch on youtube.
 [![Video of engine 6/4/2018](https://img.youtube.com/vi/fCYp4VubD_s/0.jpg)](https://youtu.be/fCYp4VubD_s) 
 
 # Screenshots
+
+[![starman.png](https://s8.postimg.cc/qjbob7h2d/starman.png)](https://postimg.cc/image/3umhbmzoh/)
 
 [![image.png](https://s8.postimg.cc/ah09sio45/canodumbs.png)](https://s8.postimg.cc/ah09sio45/canodumbs.png)
 
