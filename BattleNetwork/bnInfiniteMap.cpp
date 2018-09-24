@@ -185,27 +185,6 @@ namespace Overworld {
             offroad = new Tile(sf::Vector2f(offroad->GetPos().x, offroad->GetPos().y + this->GetTileSize().y));
             map.push_back(offroad);
 
-            if (randSpawnNPC == 0 && distFromPath != 0) {
-              if (rand() % 10 > 5) {
-                npcs.push_back(new NPC{ sf::Sprite(LOAD_TEXTURE(OW_MR_PROG)), NPCType::MR_PROG_FIRE });
-
-                sf::Vector2f pos = offroad->GetPos();
-                pos += sf::Vector2f(45, 0);
-
-                npcs.back()->sprite.setPosition(pos);
-                this->AddSprite(&npcs.back()->sprite);
-                this->AddLight(new Overworld::Light(pos, sf::Color(255, 255, 150), 70));
-              }
-              else if(rand() % 10 > 2) {
-                npcs.push_back(new NPC{ sf::Sprite(LOAD_TEXTURE(OW_NUMBERMAN)), NPCType::NUMBERMAN_DOWN });
-                sf::Vector2f pos = offroad->GetPos();
-                pos += sf::Vector2f(45, 0);
-
-                npcs.back()->sprite.setPosition(pos);
-                this->AddSprite(&npcs.back()->sprite);
-              }
-            }
-
             depth++;
           }
           else if (randDirection == 1) {
@@ -216,11 +195,6 @@ namespace Overworld {
 
               if (rand() % 10 > 3) {
                 npcs.push_back(new NPC{ sf::Sprite(LOAD_TEXTURE(OW_MR_PROG)), NPCType::MR_PROG_UP });
-              }
-              else {
-                npcs.push_back(new NPC{ sf::Sprite(LOAD_TEXTURE(OW_NUMBERMAN)), NPCType::NUMBERMAN_DANCE });
-                sf::Vector2f pos = offroad->GetPos();
-                pos += sf::Vector2f(45, 0);
               }
 
               sf::Vector2f pos = offroad->GetPos();

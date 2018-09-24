@@ -6,6 +6,7 @@ using sf::Event;
 using sf::Font;
 
 #include <time.h>
+#include <typeinfo>
 #include "bnBattleScene.h"
 #include "bnMob.h"
 #include "bnField.h"
@@ -31,6 +32,11 @@ using sf::Font;
 #include "bnBattleResults.cpp"
 
 int BattleScene::Run(Player* player, Mob* mob) {
+  if (mob->GetMobCount() == 0) {
+    Logger::Log(std::string("Warning: Mob was empty when battle started. Mob Type: ") + typeid(mob).name());
+    return 1; // signal win 
+  }
+
   /*
   Program Advance + labels
   */
@@ -76,7 +82,9 @@ int BattleScene::Run(Player* player, Mob* mob) {
   Field* field = mob->GetField();
 
   player->StateChange<PlayerIdleState>();
-  field->OwnEntity(player, 2, 2);
+  field->AddEntity(player, 2, 2);
+
+  PlayerHealthUI* playerHealthUI = player->GetHealthUI();
 
   // Chip UI for player
   SelectedChipsUI chipUI(player);
@@ -232,6 +240,19 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
     summons.Update(elapsed);
 
+    // TODO: Refactor. Health UI should be a fetchable component (not a dedicated function)
+    // Positions and offsets would make more sense if these components were also of type SceneNode
+    // So they would always gaurantee to have translation functions
+    // e.g.
+    /*
+      // Somewhere in the scene's INIT routine...
+      Battle::Component* healthUI = player->GetComponent<PlayerHealthUI>();
+      if(healthUI) {
+        chipCustGUI.AddSceneNode(healthUI); // healthUI will now offset in chipcustGUI local space
+      }
+    */
+    player->GetHealthUI()->OffsetPosition(chipCustGUI.GetOffset());
+
     // compare the summon state after we used a chip...
     if (summons.IsSummonsActive() && prevSummonState == false) {
       // We are switching over to a new state this frame
@@ -345,6 +366,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
       ENGINE.Draw(list);
     }
 
+    ENGINE.Draw(playerHealthUI, false);
 
     /*for (int d = 1; d <= field->GetHeight(); d++) {
       Entity* entity = nullptr;

@@ -213,6 +213,7 @@ int MainMenuScene::Run()
         std::cout << "time slept: " << elapsed << "\n";
         clock.restart();
         elapsed = 0;
+
       } else if (menuSelectionIndex == 3) {
         int result = SelectMobScene::Run(currentNavi);
 
