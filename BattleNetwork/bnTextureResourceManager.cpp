@@ -142,6 +142,7 @@ TextureResourceManager::TextureResourceManager(void) {
 
   // In battle signs
   paths.push_back("resources/ui/program_advance.png");
+  paths.push_back("resources/ui/battle_start.png");
 
   // Battle Results Frame
   paths.push_back("resources/ui/battle_results.png");

@@ -61,6 +61,17 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
   Camera camera(ENGINE.GetDefaultView());
 
+  /* 
+  Other battle labels
+  */
+
+  sf::Sprite battleStart(LOAD_TEXTURE(BATTLE_START));
+  battleStart.setOrigin(battleStart.getLocalBounds().width / 2, battleStart.getLocalBounds().height / 2);
+  sf::Vector2f battleStartPos = sf::Vector2f(240.f, 140.f);
+  battleStart.setPosition(battleStartPos);
+  battleStart.setScale(2.f, 2.f);
+  Timer battleStartTimer;
+
   /*
   Chips + Chip select setup*/
   ChipFolder* folder = new ChipFolder(); // TODO: this would be read in from a file
@@ -151,6 +162,9 @@ int BattleScene::Run(Player* player, Mob* mob) {
   double customProgress = 0; // in seconds 
   double customDuration = 10; // 10 seconds
   bool initFadeOut = false;
+
+  bool isPreBattle = false;
+  double preBattleLength = 2; // in seconds
 
   // Special: Load shaders if supported 
   double shaderCooldown = 0;
@@ -264,8 +278,8 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
     }
 
-    // Do not update when paused or in chip select
-    if (!(isPaused || isInChipSelect ) && summons.IsSummonOver()) {
+    // Do not update when: paused or in chip select, during a summon sequence, showing Battle Start sign
+    if (!(isPaused || isInChipSelect ) && summons.IsSummonOver() && !isPreBattle) {
       field->Update(elapsed);
     }
 
@@ -431,6 +445,34 @@ int BattleScene::Run(Player* player, Mob* mob) {
       }
     }
 
+    if (isPreBattle) {
+      if (preBattleLength <= 0) {
+        isPreBattle = false;
+      }
+      else {
+        double normal = 2.0 / preBattleLength;
+
+        // Convert seconds elapsed to x values of 0 -> 2
+        double x = (battleStartTimer.GetElapsed() / 1000.0)*normal;
+
+        // When x = 2, the parabola drops into the negatives
+        // prevent that and end the state
+        if (x >= 2) {
+          isPreBattle = false;
+          x = 2;
+        }
+
+        // y = 1 - (x ^ 2 - 2x + 1) ^ 3
+        double poly = (x*x) - (2 * x) + 1;
+        double squared = poly * poly * poly;
+        double scale = 1 - squared;
+
+        battleStart.setScale(2.f, (float)scale*2.f);
+
+        ENGINE.Draw(battleStart);
+     }
+    }
+
     if (isPaused) {
       // render on top 
       ENGINE.Draw(pauseLabel, false);
@@ -443,7 +485,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
     chipCustGUI.Draw();
 
     // Scene keyboard controls
-    if (INPUT.has(PRESSED_PAUSE) && !isInChipSelect && !isBattleRoundOver) {
+    if (INPUT.has(PRESSED_PAUSE) && !isInChipSelect && !isBattleRoundOver && !isPreBattle) {
       isPaused = !isPaused;
 
       if (!isPaused) {
@@ -452,9 +494,9 @@ int BattleScene::Run(Player* player, Mob* mob) {
       else {
         AUDIO.Play(AudioType::PAUSE);
       }
-    } else if (INPUT.has(RELEASED_B) && !isInChipSelect && !isBattleRoundOver && summons.IsSummonOver()) {
+    } else if (INPUT.has(RELEASED_B) && !isInChipSelect && !isBattleRoundOver && summons.IsSummonOver() && !isPreBattle) {
       chipUI.UseNextChip();
-    } else if ((!isMobFinished && mob->IsSpawningDone()) || (INPUT.has(PRESSED_START) && customProgress >= customDuration && !isInChipSelect && !isBattleRoundOver && summons.IsSummonOver())) {
+    } else if ((!isMobFinished && mob->IsSpawningDone()) || (INPUT.has(PRESSED_START) && customProgress >= customDuration && !isInChipSelect && !isBattleRoundOver && summons.IsSummonOver() && !isPreBattle)) {
        // enemy intro finished
       if (!isMobFinished) { 
         // toggle the flag
@@ -558,6 +600,10 @@ int BattleScene::Run(Player* player, Mob* mob) {
           isInChipSelect = false;
           chipUI.LoadChips(chips, chipCount);
           ENGINE.RevokeShader();
+
+          // Show BattleStart 
+          isPreBattle = true;
+          battleStartTimer.Reset();
         }
         else if (!isPAComplete) {
           chips = chipCustGUI.GetChips();
@@ -688,7 +734,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
               paStepIndex++;
             }
           }
-        }
+        } 
       }
     }
 
