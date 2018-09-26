@@ -50,7 +50,7 @@ public:
       Cannon* xtreme3 = new Cannon(player->GetField(), player->GetTeam(), chip.GetDamage());
 
 
-      ENGINE.GetCamera().ShakeCamera(25, sf::seconds(1));
+      ENGINE.GetCamera()->ShakeCamera(25, sf::seconds(1));
 
       auto onFinish = [this]() { this->player->SetAnimation(PLAYER_IDLE);  };
       player->SetAnimation(PLAYER_CANNON, onFinish);

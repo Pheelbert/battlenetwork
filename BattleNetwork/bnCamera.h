@@ -9,8 +9,10 @@ sf::Time dur;
 sf::Time shakeDur;
 double stress;
 sf::View focus;
+sf::View init;
 float progress;
 float shakeProgress;
+bool isShaking;
 
 public:
   Camera(const sf::View& view);

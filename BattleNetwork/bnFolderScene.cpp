@@ -21,6 +21,8 @@ int FolderScene::Run()
 {
   Camera camera(ENGINE.GetDefaultView());
 
+  ENGINE.SetCamera(camera);
+
   // Menu name font
   sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
   sf::Text* menuLabel = new sf::Text("Library", *font);
@@ -117,7 +119,6 @@ int FolderScene::Run()
     INPUT.update();
 
     ENGINE.Clear();
-    ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
 

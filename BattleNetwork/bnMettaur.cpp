@@ -104,7 +104,7 @@ void Mettaur::Update(float _elapsed) {
       animationComponent.Update(_elapsed);
     }
 
-    if ((int)stunCooldown % 5 == 0) {
+    if ((((int)(stunCooldown * 15))) % 2 == 0) {
       this->SetShader(stun);
     }
 

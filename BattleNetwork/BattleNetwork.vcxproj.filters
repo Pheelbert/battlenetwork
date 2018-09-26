@@ -248,10 +248,10 @@
     <Filter Include="Battle\Entity\Character\Player\Roll\States">
       <UniqueIdentifier>{a85c89af-631a-4657-9c6c-3f47c2e18ea7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Entity\Spell\Summons">
+    <Filter Include="Battle\Entity\Summons">
       <UniqueIdentifier>{fbaa3fbf-d796-4026-82d6-ddf7c391ef31}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Entity\Spell\Summons\Roll">
+    <Filter Include="Battle\Entity\Summons\Roll">
       <UniqueIdentifier>{541f9cd8-4857-4700-bb63-5aa7ce04599b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -479,10 +479,10 @@
       <Filter>Battle\Entity\Character\Player\Roll</Filter>
     </ClCompile>
     <ClCompile Include="bnRollHeal.cpp">
-      <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
+      <Filter>Battle\Entity\Summons\Roll</Filter>
     </ClCompile>
     <ClCompile Include="bnRollHeart.cpp">
-      <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
+      <Filter>Battle\Entity\Summons\Roll</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -803,10 +803,13 @@
       <Filter>Battle\Chips\ChipUseListener\Any</Filter>
     </ClInclude>
     <ClInclude Include="bnRollHeal.h">
-      <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
+      <Filter>Battle\Entity\Summons\Roll</Filter>
     </ClInclude>
     <ClInclude Include="bnRollHeart.h">
-      <Filter>Battle\Entity\Spell\Summons\Roll</Filter>
+      <Filter>Battle\Entity\Summons\Roll</Filter>
+    </ClInclude>
+    <ClInclude Include="bnEaseFunctions.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

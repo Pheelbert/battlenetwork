@@ -305,7 +305,7 @@ int SelectMobScene::Run(SelectedNavi navi)
       }
       else if (mobSelectionIndex == 2) {
         mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
-        mob.setPosition(90.f, 130.f);
+        mob.setPosition(100.f, 130.f);
 
         mobAnimator = Animation("resources/mobs/canodumb/canodumb.animation");
         mobAnimator.Load();
@@ -316,7 +316,7 @@ int SelectMobScene::Run(SelectedNavi navi)
       }
       else {
         mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_ANYTHING_GOES), true);
-        mob.setPosition(110.f, 110.f);
+        mob.setPosition(110.f, 130.f);
         textbox.SetMessage("A randomly generated mob and field. Anything goes.");
       }
     }
@@ -384,6 +384,9 @@ int SelectMobScene::Run(SelectedNavi navi)
       Player* player = NAVIS.At(navi).GetNavi();
 
       int win = BattleScene::Run(player, mob);
+
+      // Fix camera if offset from battle
+      ENGINE.SetCamera(camera);
 
       delete mob;
       delete factory;

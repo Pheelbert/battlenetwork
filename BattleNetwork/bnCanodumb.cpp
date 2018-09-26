@@ -65,10 +65,14 @@ int* Canodumb::GetAnimOffset() {
 
 void Canodumb::Update(float _elapsed) {
 
+  healthUI->Update();
+  this->SetShader(nullptr);
+
+  if (_elapsed <= 0) return;
+
   setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 1.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 10.0f);
   hitHeight = (int)getLocalBounds().height;
 
-  this->SetShader(nullptr);
 
   if (stunCooldown > 0) {
     stunCooldown -= _elapsed;
@@ -80,7 +84,7 @@ void Canodumb::Update(float _elapsed) {
       animationComponent.Update(_elapsed);
     }
 
-    if ((int)stunCooldown % 5 == 0) {
+    if ((((int)(stunCooldown * 15))) % 2 == 0) {
       this->SetShader(stun);
     }
 
@@ -100,7 +104,6 @@ void Canodumb::Update(float _elapsed) {
     animationComponent.Update(_elapsed);
   }
 
-  healthUI->Update();
   Entity::Update(_elapsed);
 }
 

@@ -1,5 +1,7 @@
 #include "bnRandomMettaurMob.h"
 #include "bnProgsMan.h"
+#include "bnCanodumb.h"
+#include "bnCanodumbIdleState.h"
 #include "bnBattleItem.h"
 #include "bnStringEncoder.h"
 #include "bnChip.h"
@@ -29,12 +31,23 @@ Mob* RandomMettaurMob::Build() {
 
       if (tile->IsWalkable() && tile->GetTeam() == Team::BLUE) {
         if (rand() % 50 > 30) {
-          //if (rand() % 10 > 8) {
-          //  mob->Spawn<ProgsMan, ProgsManIdleState>(i + 1, j + 1);
-          //}
-          //else {
+          if (rand() % 10 > 8) {
+            mob->Spawn<Rank1<Mettaur, MettaurIdleState>>(i + 1, j + 1);
+          }
+          else if(rand() % 10 > 5) {
             mob->Spawn<RankSP<Mettaur, MettaurIdleState>>(i + 1, j + 1);
-          //}
+          }
+          else if (rand() % 10 > 3) {
+            if (rand() % 10 > 8) {
+              mob->Spawn<Rank1<Canodumb, CanodumbIdleState>>(i + 1, j + 1);
+            }
+            else if (rand() % 10 > 5) {
+              mob->Spawn<Rank2<Canodumb, CanodumbIdleState>>(i + 1, j + 1);
+            }
+            else {
+              mob->Spawn<Rank3<Canodumb, CanodumbIdleState>>(i + 1, j + 1);
+            }
+          }
         }
       }
     }

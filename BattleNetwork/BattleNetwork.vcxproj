@@ -254,6 +254,7 @@
     <ClInclude Include="bnChipUseListener.h" />
     <ClInclude Include="bnChipUsePublisher.h" />
     <ClInclude Include="bnComponent.h" />
+    <ClInclude Include="bnEaseFunctions.h" />
     <ClInclude Include="bnRoll.h" />
     <ClInclude Include="bnRollHeart.h" />
     <ClInclude Include="bnTileBehavior.h" />

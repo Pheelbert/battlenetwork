@@ -100,6 +100,9 @@ namespace Overworld {
     total += (float)elapsed;
 
     for (auto npc : npcs) {
+      if (!npc)
+        break;
+
       switch (npc->type) {
       case NPCType::MR_PROG_DOWN:
       {
@@ -223,8 +226,7 @@ namespace Overworld {
             depth++;
           }
 
-
-          int randLight = rand() % 100;
+          /*int randLight = rand() % 100;
 
           sf::Vector2f pos = offroad->GetPos();
           pos += sf::Vector2f(45, 0);
@@ -246,7 +248,7 @@ namespace Overworld {
 
           if (randDirection != 2) {
             distFromPath = distFromPath + (randDirection ? -randDirection : 1);
-          }
+          }*/
 
           lastDirection = randDirection;
 

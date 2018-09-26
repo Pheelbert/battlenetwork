@@ -14,7 +14,7 @@ private:
   double timeInSecs;
   sf::Time duration;
   std::string summon;
-
+  Chip copy;
   std::vector<Entity*> summonedItems; // We must handle our own summoned entites
 
 public:
@@ -29,7 +29,7 @@ public:
     return !IsSummonOver();
   }
 
-  const std::string GetSummonLabel() { return summon; }
+  const std::string GetSummonLabel() { return copy.GetShortName(); }
 
   Player* GetPlayer() {
     return player;
@@ -71,7 +71,7 @@ public:
     if (summon == "Roll") {
       player->SetAlpha(0);
 
-      Entity* roll = new RollHeal(this, 10);
+      Entity* roll = new RollHeal(this, copy.GetDamage());
       SummonEntity(roll);
     }
   }
@@ -92,8 +92,9 @@ public:
     player->SetCharging(false);
 
     std::string name = chip.GetShortName();
+    copy = chip;
 
-    if (name == "Roll") {
+    if (name.substr(0,4) == "Roll") {
       summon = "Roll";
       timeInSecs = 0;
       duration = sf::seconds(4);

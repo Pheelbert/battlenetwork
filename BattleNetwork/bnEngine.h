@@ -35,9 +35,11 @@ public:
   void SetShader(sf::Shader* _shader);
   void RevokeShader();
 
-  void SetView(sf::View camera);
+  //void SetView(sf::View camera);
+  void SetCamera(Camera& camera);
+
   const sf::View GetDefaultView();
-  Camera& GetCamera();
+  Camera* GetCamera();
 
   sf::RenderTexture& GetPostProcessingBuffer() {
     return postprocessing;
@@ -57,7 +59,7 @@ private:
   Overlay overlay;
   sf::RenderStates state;
   sf::RenderTexture postprocessing;
-  Camera cam;
+  Camera* cam;
 
 };
 

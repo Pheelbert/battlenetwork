@@ -31,8 +31,6 @@ RollHeart::RollHeart(ChipSummonHandler* _summons, Player* _player, int _heal) : 
   srand((unsigned int)time(nullptr));
   random = rand() % 20 - 20;
 
-  heal = 10;
-
   Battle::Tile* _tile = player->GetTile();
 
   this->field->AddEntity(this, _tile->GetX(), _tile->GetY());

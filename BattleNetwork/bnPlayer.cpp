@@ -18,7 +18,7 @@
 #define SHOOT_ANIMATION_HEIGHT 58
 
 Player::Player(void)
-  : health(200),
+  : health(100),
   state(PLAYER_IDLE),
   chargeComponent(this),
   animationComponent(this),

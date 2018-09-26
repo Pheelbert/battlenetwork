@@ -38,12 +38,12 @@ RollHeal::RollHeal(ChipSummonHandler* _summons, int _heal) : Spell()
 
   this->field->AddEntity(this, _tile->GetX(), _tile->GetY());
 
+  AUDIO.Play(AudioType::APPEAR);
+
   setTexture(*TEXTURES.LoadTextureFromFile("resources/spells/spell_roll.png"), true);
   animationComponent.Setup(RESOURCE_PATH);
   animationComponent.Load();
   animationComponent.SetAnimation("ROLL_IDLE", [this] { 
-    AUDIO.Play(AudioType::APPEAR);
-
     this->animationComponent.SetAnimation("ROLL_MOVE", [this] {
 
       bool found = false;
@@ -115,7 +115,7 @@ void RollHeal::Attack(Entity* _entity) {
 
   if (_entity && _entity->GetTeam() != this->GetTeam()) {
     if (!_entity->IsPassthrough()) {
-      _entity->Hit(10);
+      _entity->Hit(heal);
       _entity->Update(0);
 
       int i = 1;

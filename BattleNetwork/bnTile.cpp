@@ -227,14 +227,17 @@ namespace Battle {
 
   void Tile::AffectEntities(Spell* caller) {
     for (auto it = entities.begin(); it != entities.end(); ++it) {
-      if ((*it) == nullptr) {
+      if (*it == nullptr) {
         it = entities.erase(it);
         continue;
       }
     }
 
     for (auto it = entities.begin(); it != entities.end(); ++it) {
-      if (*it != nullptr && *it != caller && !(*it)->IsPassthrough() && dynamic_cast<Spell*>(*it) == 0) {
+      if (*it == nullptr || *it == caller)
+        continue;
+
+      if (!(*it)->IsPassthrough() && dynamic_cast<Spell*>(*it) == 0) {
         caller->Attack(*it);
       }
     }

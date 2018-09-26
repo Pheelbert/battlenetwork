@@ -143,11 +143,11 @@ const int PA::FindPA(Chip ** input, unsigned size)
 
 
     int index = 0;
-    while (index < (int)iter->steps.size() && index < (int)size) {
+    while (index <= (int)size - (int)iter->steps.size()) {
       char code = input[index]->GetCode();
 
       if (iter->steps[0].code == code && iter->steps[0].chipShortName == input[0]->GetShortName()) {
-        for (unsigned i = 0; i < iter->steps.size() && (i + index + iter->steps.size() - 1 < size); i++) {
+        for (unsigned i = 0; i < iter->steps.size(); i++) {
           char code = input[i + index]->GetCode();
 
           if (code == '=') { code = '*'; } // Transform back from compatible font char

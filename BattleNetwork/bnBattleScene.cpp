@@ -30,6 +30,7 @@ using sf::Font;
 #include "bnPA.h"
 #include "bnEngine.h"
 #include "bnBattleResults.cpp"
+#include "bnEaseFunctions.h"
 
 int BattleScene::Run(Player* player, Mob* mob) {
   if (mob->GetMobCount() == 0) {
@@ -60,6 +61,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
   std::vector<std::string> mobNames;
 
   Camera camera(ENGINE.GetDefaultView());
+  ENGINE.SetCamera(camera);
 
   /* 
   Other battle labels
@@ -166,6 +168,10 @@ int BattleScene::Run(Player* player, Mob* mob) {
   bool isPreBattle = false;
   double preBattleLength = 2; // in seconds
 
+  Timer summonTimer;
+  bool showSummonText = false;
+  double summonTextLength = 1; // in seconds
+
   // Special: Load shaders if supported 
   double shaderCooldown = 0;
 
@@ -252,7 +258,9 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
     background->Update(elapsed);
 
-    summons.Update(elapsed);
+    if (!showSummonText) {
+      summons.Update(elapsed);
+    }
 
     // TODO: Refactor. Health UI should be a fetchable component (not a dedicated function)
     // Positions and offsets would make more sense if these components were also of type SceneNode
@@ -270,7 +278,8 @@ int BattleScene::Run(Player* player, Mob* mob) {
     // compare the summon state after we used a chip...
     if (summons.IsSummonsActive() && prevSummonState == false) {
       // We are switching over to a new state this frame
-      summons.OnEnter();
+      summonTimer.Reset();
+      showSummonText = true;
     }
     else if (summons.IsSummonOver() && prevSummonState == true) {
       // We are leaving the summons state this frame
@@ -284,7 +293,6 @@ int BattleScene::Run(Player* player, Mob* mob) {
     }
 
     ENGINE.Clear();
-    ENGINE.SetView(camera.GetView());
 
     ENGINE.Draw(background);
 
@@ -403,16 +411,24 @@ int BattleScene::Run(Player* player, Mob* mob) {
 
     ENGINE.DrawOverlay();
 
-    if (summons.IsSummonsActive()) {
+    if (summons.IsSummonsActive() && showSummonText) {
       sf::Text summonsLabel = sf::Text(summons.GetSummonLabel(), *mobFont);
 
-      summonsLabel.setOrigin(0, 0);
+      double summonSecs = summonTimer.GetElapsed() / 1000.0;
+      double scale = Ease::WideParabola(summonSecs, summonTextLength);
+
       summonsLabel.setPosition(40.0f, 40.f);
-      summonsLabel.setScale(1.0f, 1.0f);
+      summonsLabel.setScale(1.0f, (float)scale);
       summonsLabel.setOutlineColor(sf::Color::Black);
       summonsLabel.setFillColor(sf::Color::White);
       summonsLabel.setOutlineThickness(2.f);
+      summonsLabel.setOrigin(summonsLabel.getGlobalBounds().width / 2.0f, summonsLabel.getGlobalBounds().height / 2.0f);
       ENGINE.Draw(summonsLabel, false);
+
+      if (summonSecs >= summonTextLength) {
+        summons.OnEnter();
+        showSummonText = false;
+      }
     }
 
     float nextLabelHeight = 0;
@@ -450,24 +466,12 @@ int BattleScene::Run(Player* player, Mob* mob) {
         isPreBattle = false;
       }
       else {
-        double normal = 2.0 / preBattleLength;
-
-        // Convert seconds elapsed to x values of 0 -> 2
-        double x = (battleStartTimer.GetElapsed() / 1000.0)*normal;
-
-        // When x = 2, the parabola drops into the negatives
-        // prevent that and end the state
-        if (x >= 2) {
-          isPreBattle = false;
-          x = 2;
-        }
-
-        // y = 1 - (x ^ 2 - 2x + 1) ^ 3
-        double poly = (x*x) - (2 * x) + 1;
-        double squared = poly * poly * poly;
-        double scale = 1 - squared;
-
+        double battleStartSecs = battleStartTimer.GetElapsed() / 1000.0;
+        double scale = Ease::WideParabola(battleStartSecs, preBattleLength);
         battleStart.setScale(2.f, (float)scale*2.f);
+
+        if (battleStartSecs >= preBattleLength)
+          isPreBattle = false;
 
         ENGINE.Draw(battleStart);
      }
@@ -805,7 +809,7 @@ int BattleScene::Run(Player* player, Mob* mob) {
     }
 
     // update the cust if not paused nor in chip select nor in mob intro nor battle results
-    if (!(isBattleRoundOver || isPaused || isInChipSelect || !mob->IsSpawningDone() || summons.IsSummonsActive())) {
+    if (!(isBattleRoundOver || isPaused || isInChipSelect || !mob->IsSpawningDone() || summons.IsSummonsActive() || isPreBattle)) {
       customProgress += elapsed;
 
       if (battleTimer.IsPaused()) {

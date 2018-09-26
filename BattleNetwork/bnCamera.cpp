@@ -8,6 +8,8 @@ Camera::Camera(const sf::View& view) : focus(view)
   dur = sf::milliseconds((sf::Int32)progress);
   shakeProgress = 1.f;
   shakeDur = dur;
+  init = view;
+  isShaking = false;
 }
 
 void Camera::operator=(const Camera& rhs) {
@@ -17,6 +19,8 @@ void Camera::operator=(const Camera& rhs) {
   focus = rhs.focus;
   shakeProgress = rhs.shakeProgress;
   shakeDur = rhs.shakeDur;
+  init = rhs.init;
+  isShaking = rhs.isShaking;
 }
 
 Camera::~Camera()
@@ -35,15 +39,22 @@ void Camera::Update(float elapsed) {
     PlaceCamera(delta);
   }
 
-  if (sf::Time(sf::milliseconds((sf::Int32)shakeProgress)) < shakeDur) {
-    // Drop off to zero by end of shake
-    double currStress = stress * (1 - (shakeProgress / shakeDur.asMilliseconds()));
+  if (isShaking) {
+    if (sf::Time(sf::milliseconds((sf::Int32)shakeProgress)) < shakeDur) {
+      // Drop off to zero by end of shake
+      double currStress = stress * (1 - (shakeProgress / shakeDur.asMilliseconds()));
 
-    double factor = (-currStress) + (double)((double)(currStress - (-currStress)) * (rand() / (RAND_MAX + 1.0)));
-    double factor2 = (-currStress) + (double)((double)(currStress - (-currStress)) * (rand() / (RAND_MAX + 1.0)));
-    sf::Vector2f offset = sf::Vector2f((float)factor, (float)factor2);
+      double factor = (-currStress) + (double)((double)(currStress - (-currStress)) * (rand() / (RAND_MAX + 1.0)));
+      double factor2 = (-currStress) + (double)((double)(currStress - (-currStress)) * (rand() / (RAND_MAX + 1.0)));
+      sf::Vector2f offset = sf::Vector2f((float)factor, (float)factor2);
 
-    PlaceCamera(focus.getCenter() + offset);
+      focus.setCenter(init.getCenter() + offset);
+    }
+    else {
+      focus = init;
+      dest = focus.getCenter();
+      isShaking = false;
+    }
   }
 }
 
@@ -80,9 +91,11 @@ bool Camera::IsInView(sf::Sprite& sprite) {
 
 void Camera::ShakeCamera(double stress, sf::Time duration)
 {
+  init = focus;
   this->stress = stress;
   shakeDur = duration;
   shakeProgress = 0;
+  isShaking = true;
 }
 
 const sf::View Camera::GetView() const

@@ -25,6 +25,8 @@ using sf::Font;
 int MainMenuScene::Run()
 {
   Camera camera(ENGINE.GetDefaultView());
+  ENGINE.SetCamera(camera);
+
   bool showHUD = true;
 
   // Selection input delays
@@ -97,7 +99,6 @@ int MainMenuScene::Run()
     map->Update(elapsed);
 
     ENGINE.Clear();
-    ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
     bg->Update(elapsed);
@@ -166,12 +167,12 @@ int MainMenuScene::Run()
       }
     } 
 
-    if (INPUT.has(PRESSED_PAUSE)) {
+    /*if (INPUT.has(PRESSED_PAUSE)) {
       static bool toggle = false;
       toggle = !toggle;
       showHUD = false;
       map->ToggleLighting(toggle);
-    }
+    }*/
 
     if (elapsed > 0) {
       if (gotoNextScene) {
