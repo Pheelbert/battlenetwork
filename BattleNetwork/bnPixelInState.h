@@ -65,7 +65,7 @@ void PixelInState<Any>::OnUpdate(float _elapsed, Any& e) {
   e.SetShader(pixelated);
 
   /* If progress is 1, pop state and move onto original state*/
-  factor -= _elapsed/5.f;
+  factor -= _elapsed * 180.f;
 
   if (factor <= 0.f) {
     factor = 0.f;

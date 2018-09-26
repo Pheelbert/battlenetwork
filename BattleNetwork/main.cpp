@@ -1,22 +1,38 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 #include "bnShaderResourceManager.h"
+#include "bnNaviRegistration.h"
 #include "bnInputManager.h"
 #include "bnEngine.h"
 #include "bnMainMenuScene.h"
+#include "bnAnimate.h"
 #include "bnChronoXConfigReader.h"
 #include "SFML/System.hpp"
-#include <Thor/Animations.hpp>
 #include <time.h>
 #include <queue>
 #include <atomic>
 
+// Engine addons
+#include "bnQueueNaviRegistration.h"
+
+// Timer
 using sf::Clock;
 
+// Title card character
 #define TITLE_ANIM_CHAR_SPRITES 14
 #define TITLE_ANIM_CHAR_WIDTH 128
 #define TITLE_ANIM_CHAR_HEIGHT 221
 #define SHADER_FRAG_WHITE_PATH "resources/shaders/white_fade.frag.txt"
+
+void RunNaviInit(std::atomic<int>* progress) {
+  clock_t begin_time = clock();
+
+  NAVIS.LoadAllNavis(*progress);
+
+  Logger::GetMutex()->lock();
+  Logger::Logf("Loaded registered navis: %f secs", float(clock() - begin_time) / CLOCKS_PER_SEC);
+  Logger::GetMutex()->unlock();
+}
 
 void RunGraphicsInit(std::atomic<int> * progress) {
   clock_t begin_time = clock();
@@ -55,6 +71,7 @@ int main(int argc, char** argv) {
   TEXTURES;
   SHADERS;
   AUDIO;
+  QueuNaviRegistration(); // Queues navis to be loaded later
 
   // State flags
   bool inConfigMessageState = true;
@@ -97,6 +114,11 @@ int main(int argc, char** argv) {
   startLabel->setCharacterSize(24);
   startLabel->setOrigin(0.f, startLabel->getLocalBounds().height);
   startLabel->setPosition(sf::Vector2f(180.0f, 240.f));
+
+  sf::Text* navisLoadedLabel = new sf::Text("Loading Navi Data...", *startFont);
+  navisLoadedLabel->setCharacterSize(24);
+  navisLoadedLabel->setOrigin(0.f, startLabel->getLocalBounds().height);
+  navisLoadedLabel->setPosition(sf::Vector2f(230.f, 230.f));
 
   /* 
   Give a message to the player before loading 
@@ -145,16 +167,21 @@ int main(int argc, char** argv) {
   // This will be loaded from the resource manager AFTER it's ready
   sf::Texture* bg = nullptr;
   sf::Texture* progs = nullptr;
-  thor::FrameAnimation progAnim;
+  FrameList progAnim;
+  Animate animator;
   float progAnimProgress = 0.f;
   LayeredDrawable bgSprite;
   LayeredDrawable progSprite;
 
   int totalObjects = (unsigned)TextureType::TEXTURE_TYPE_SIZE + (unsigned)AudioType::AUDIO_TYPE_SIZE + (unsigned)ShaderType::SHADER_TYPE_SIZE;
   std::atomic<int> progress = 0;
+  std::atomic<int> navisLoaded = 0;
 
   sf::Thread graphicsLoad(&RunGraphicsInit, &progress);
   sf::Thread audioLoad(&RunAudioInit, &progress);
+
+  // We must deffer the thread until graphics and audio are finished
+  sf::Thread navisLoad(&RunNaviInit, &navisLoaded);
 
   graphicsLoad.launch();
   audioLoad.launch();
@@ -197,6 +224,8 @@ int main(int argc, char** argv) {
     if (progress == totalObjects) {
       if (!ready) {
         ready = true;
+
+        navisLoad.launch();
       }
       else { // Else we are ready next frame
         if (!bg) {
@@ -222,7 +251,7 @@ int main(int argc, char** argv) {
 
             int i = 0;
             for (int x = 0; x < TITLE_ANIM_CHAR_SPRITES; x++) {
-              progAnim.addFrame(1.f/(float)TITLE_ANIM_CHAR_SPRITES, sf::IntRect(TITLE_ANIM_CHAR_WIDTH*i, 0, TITLE_ANIM_CHAR_WIDTH, TITLE_ANIM_CHAR_HEIGHT));
+              progAnim.Add(1.f/(float)TITLE_ANIM_CHAR_SPRITES, sf::IntRect(TITLE_ANIM_CHAR_WIDTH*i, 0, TITLE_ANIM_CHAR_WIDTH, TITLE_ANIM_CHAR_HEIGHT));
               i++;
             }
 
@@ -272,7 +301,7 @@ int main(int argc, char** argv) {
         whiteShader->setUniform("opacity", (float)(shaderCooldown / 1000.f)*0.5f);
       }
 
-      if (INPUT.has(PRESSED_ACTION3)) {
+      if (INPUT.has(PRESSED_START) && navisLoaded == NAVIS.Size()) {
         inLoadState = false;
       }
     }
@@ -299,15 +328,25 @@ int main(int argc, char** argv) {
       // newest at bottom full opacity 
       // oldest at the top (at most 30 on screen) at full transparency
       logLabel->setString(logs[i]);
-      logLabel->setPosition(0.f, 320 - (i * 10.f) - 5.f);
+      logLabel->setPosition(0.f, 320 - (i * 10.f) - 15.f);
       logLabel->setFillColor(sf::Color(255, 255, 255, (sf::Uint8)((logFadeOutSpeed/2000.f)*fmax(0, 255 - (255 / 30)*i))));
       ENGINE.Draw(logLabel);
     }
 
     if (progs) {
-      progAnim(progSprite, progAnimProgress);
+      animator(progAnimProgress, progSprite, progAnim);
       ENGINE.Draw(&progSprite);
-      ENGINE.Draw(startLabel);
+
+      if (navisLoaded < (int)NAVIS.Size()) {
+        navisLoadedLabel->setString(std::string("Loading Navi Data ") + std::to_string(navisLoaded) + " / " + std::to_string(NAVIS.Size()));
+        sf::FloatRect bounds = navisLoadedLabel->getLocalBounds();
+        sf::Vector2f origin = {bounds.width / 2.0f, bounds.height / 2.0f};
+        navisLoadedLabel->setOrigin(origin);
+        ENGINE.Draw(navisLoadedLabel);
+      }
+      else {
+        ENGINE.Draw(startLabel);
+      }
     }
 
     ENGINE.Draw(&logoSprite);

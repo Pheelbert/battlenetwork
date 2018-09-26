@@ -35,3 +35,4 @@ private:
 };
 
 #define TEXTURES TextureResourceManager::GetInstance()
+#define LOAD_TEXTURE(x) *TEXTURES.GetTexture(TextureType::x)

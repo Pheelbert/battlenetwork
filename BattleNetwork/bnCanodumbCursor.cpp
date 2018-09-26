@@ -5,13 +5,15 @@
 
 using sf::IntRect;
 
-#define MAX_COOLDOWN_1 500.0f
-#define MAX_COOLDOWN_2 250.0f
-#define MAX_COOLDOWN_3 175.0f
+#define MAX_COOLDOWN_1 0.5f
+#define MAX_COOLDOWN_2 0.25f
+#define MAX_COOLDOWN_3 0.175f
 
 #define RESOURCE_PATH "resources/mobs/canodumb/canodumb.animation"
 
 CanodumbCursor::CanodumbCursor(Field* _field, Team _team, Canodumb* _parent) : animationComponent(this), Artifact(_field, _team) {
+  SetFloatShoe(true);
+  
   parent = _parent;
   target = parent->GetTarget();
 
@@ -62,7 +64,7 @@ void CanodumbCursor::Update(float _elapsed) {
       movecooldown = maxcooldown;
 
       Field* f = this->GetField();
-      Tile* t = f->GetAt(this->GetTile()->GetX() - 1, this->GetTile()->GetY());
+      Battle::Tile* t = f->GetAt(this->GetTile()->GetX() - 1, this->GetTile()->GetY());
 
       if (t != nullptr) {
         this->GetTile()->RemoveEntity(this);
@@ -84,13 +86,4 @@ vector<Drawable*> CanodumbCursor::GetMiscComponents() {
 
 CanodumbCursor::~CanodumbCursor()
 {
-}
-
-int CanodumbCursor::GetStateFromString(string _string) {
-  assert(false && "LongExplosion does not have states");
-  return 0;
-}
-
-void CanodumbCursor::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
-  assert(false && "LongExplosion does not have an animator");
 }

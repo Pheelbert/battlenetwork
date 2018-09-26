@@ -6,14 +6,11 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 
-#define COOLDOWN 250.0f
-#define DAMAGE_COOLDOWN 250.0f
-
 #define WAVE_ANIMATION_SPRITES 5
 #define WAVE_ANIMATION_WIDTH 41
 #define WAVE_ANIMATION_HEIGHT 46
 
-Wave::Wave(Field* _field, Team _team) : Spell() {
+Wave::Wave(Field* _field, Team _team, double speed) : Spell() {
   SetLayer(0);
   cooldown = 0;
   damageCooldown = 0;
@@ -23,9 +20,21 @@ Wave::Wave(Field* _field, Team _team) : Spell() {
   deleted = false;
   hit = false;
   texture = TEXTURES.GetTexture(TextureType::SPELL_WAVE);
+  this->speed = speed;
   for (int x = 0; x < WAVE_ANIMATION_SPRITES; x++) {
-    animation.addFrame(0.3f, IntRect(WAVE_ANIMATION_WIDTH*x, 0, WAVE_ANIMATION_WIDTH, WAVE_ANIMATION_HEIGHT));
+    animation.Add(0.3f, IntRect(WAVE_ANIMATION_WIDTH*x, 0, WAVE_ANIMATION_WIDTH, WAVE_ANIMATION_HEIGHT));
   }
+
+  //Components setup and load
+  auto onFinish = [this]() {
+    Move(direction);
+    AUDIO.Play(AudioType::WAVE);
+    cooldown = 0;
+    progress = 0.0f; 
+  };
+
+  animator << onFinish;
+
   progress = 0.0f;
   hitHeight = 0.0f;
   random = 0;
@@ -48,31 +57,18 @@ void Wave::Update(float _elapsed) {
   setTexture(*texture);
   setScale(2.f, 2.f);
   setPosition(tile->getPosition().x + 5.f, tile->getPosition().y - 50.0f);
-  progress += 0.05f;
-  if (progress < 1.f) {
-    animation(*this, progress);
-  }
+  progress += 3 * _elapsed;
+  
+  animator(progress*(float)speed, *this, animation);
 
-  damageCooldown += _elapsed;
-  if (damageCooldown >= DAMAGE_COOLDOWN) {
-    tile->AffectEntities(this);
-    damageCooldown = 0;
-  }
-
-  cooldown += _elapsed;
-  if (cooldown >= COOLDOWN) {
-    Move(direction);
-    AUDIO.Play(AudioType::WAVE, 1);
-    cooldown = 0;
-    progress = 0.0f;
-  }
+  tile->AffectEntities(this);
 
   Entity::Update(_elapsed);
 }
 
 bool Wave::Move(Direction _direction) {
   tile->RemoveEntity(this);
-  Tile* next = nullptr;
+  Battle::Tile* next = nullptr;
   if (_direction == Direction::LEFT) {
     if (tile->GetX() - 1 > 0) {
       next = field->GetAt(tile->GetX() - 1, tile->GetY());
@@ -97,16 +93,18 @@ bool Wave::Move(Direction _direction) {
 void Wave::Attack(Entity* _entity) {
   Player* isPlayer = dynamic_cast<Player*>(_entity);
   if (isPlayer) {
-    isPlayer->Hit(10);
+    bool hit = isPlayer->Hit(10);
 
-    if (this->GetTile()->GetX() > 1) {
-      Wave* passthrough = new Wave(field, team);
-      passthrough->SetDirection(this->GetDirection());
-      field->OwnEntity(passthrough, this->GetTile()->GetX()-1, this->GetTile()->GetY());
+    if (hit) {
+      if (this->GetTile()->GetX() > 1) {
+        Wave* passthrough = new Wave(field, team);
+        passthrough->SetDirection(this->GetDirection());
+        field->OwnEntity(passthrough, this->GetTile()->GetX() - 1, this->GetTile()->GetY());
+      }
+
+      deleted = true;
+      return;
     }
-
-    deleted = true;
-    return;
   }
   /*Mettaur* isMob = dynamic_cast<Mettaur*>(_entity);
   if (isMob)
@@ -119,9 +117,4 @@ void Wave::Attack(Entity* _entity) {
 
 vector<Drawable*> Wave::GetMiscComponents() {
   return vector<Drawable*>();
-}
-
-void Wave::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
-  //animator.addAnimation(static_cast<Buster>(_state), _animation, sf::seconds(_duration));
-  assert(false && "Wave does not have an animator");
 }

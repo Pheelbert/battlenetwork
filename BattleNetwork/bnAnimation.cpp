@@ -66,8 +66,8 @@ void Animation::Load() {
 
       int currentStartx = 0;
       int currentStarty = 0;
-      int originX = 0;
-      int originY = 0;
+      float originX = 0;
+      float originY = 0;
 
       if (legacySupport) {
         string startx = ValueOf("startx", line);
@@ -88,8 +88,8 @@ void Animation::Load() {
         currentStarty = atoi(y.c_str());
         currentWidth = atoi(w.c_str());
         currentHeight = atoi(h.c_str());
-        originX = atoi(ox.c_str());
-        originY = atoi(oy.c_str());
+        originX = (float)atoi(ox.c_str());
+        originY = (float)atoi(oy.c_str());
       }
 
       currentAnimationDuration += currentFrameDuration;
@@ -98,7 +98,7 @@ void Animation::Load() {
         frameLists.at(frameAnimationIndex).Add(currentFrameDuration, IntRect(currentStartx, currentStarty, currentWidth, currentHeight));
       }
       else {
-        frameLists.at(frameAnimationIndex).Add(currentFrameDuration, IntRect(currentStartx, currentStarty, currentWidth, currentHeight), sf::Vector2i(originX, originY));
+        frameLists.at(frameAnimationIndex).Add(currentFrameDuration, IntRect(currentStartx, currentStarty, currentWidth, currentHeight), sf::Vector2f(originX, originY));
       }
     }
 
@@ -118,8 +118,8 @@ string Animation::ValueOf(string _key, string _line) {
   return s.substr(0, s.find("\""));
 }
 
-void Animation::Update(float elapsed, sf::Sprite* target) {
-  progress += elapsed / 1000.f; // to ms
+void Animation::Update(float elapsed, sf::Sprite* target, double playbackSpeed) {
+  progress += elapsed * (float)std::fabs(playbackSpeed);
 
   animator(progress, *target, animations[currAnimation]);
 }
@@ -133,6 +133,18 @@ void Animation::SetAnimation(string state) {
    animator.Clear();
    progress = 0.0f;
    currAnimation = state;
+
+   auto pos = animations.find(currAnimation);
+
+   if (pos == animations.end()) {
+     //throw std::runtime_error(std::string("No animation found in file for " + currAnimation));
+     std::cout << "No animation found in file for " + currAnimation << std::endl;
+   }
+}
+
+FrameList & Animation::GetFrameList(std::string animation)
+{
+  return animations[animation];
 }
 
 Animation & Animation::operator<<(Animate::On & rhs)

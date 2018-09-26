@@ -8,7 +8,12 @@ using std::string;
 #include "bnMemory.h"
 #include "bnEngine.h"
 #include "bnTextureType.h"
-class Tile;
+#include "bnElements.h"
+
+namespace Battle {
+  class Tile;
+}
+
 class Field;
 
 class Entity : public LayeredDrawable {
@@ -23,13 +28,12 @@ public:
   virtual void Update(float _elapsed);
   virtual bool Move(Direction _direction);
   virtual vector<Drawable*> GetMiscComponents();
-  virtual void SetAnimation(string _state);
   virtual TextureType GetTextureType();
 
   bool Teammate(Team _team);
 
-  void SetTile(Tile* _tile);
-  Tile* GetTile() const;
+  void SetTile(Battle::Tile* _tile);
+  Battle::Tile* GetTile() const;
 
   void SetField(Field* _field);
   Field* GetField() const;
@@ -40,16 +44,24 @@ public:
   void SetPassthrough(bool state);
   bool IsPassthrough();
 
+  void SetFloatShoe(bool state);
+  bool HasFloatShoe();
+
   void Delete();
   bool IsDeleted() const;
 
+  void SetElement(Element _elem);
+  const Element GetElement() const;
+
 protected:
   bool ownedByField;
-  Tile* next;
-  Tile* tile;
-  Tile* previous;
+  Battle::Tile* next;
+  Battle::Tile* tile;
+  Battle::Tile* previous;
   Field* field;
   Team team;
+  Element element;
   bool passthrough;
+  bool floatShoe;
   bool deleted;
 };

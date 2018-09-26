@@ -70,7 +70,7 @@ void InputManager::update() {
               events.push_back(PRESSED_PAUSE);
             }
             else if (action == "Start") {
-              events.push_back(PRESSED_ACTION3);
+              events.push_back(PRESSED_START);
             }
             else if (action == "Left") {
               events.push_back(PRESSED_LEFT);
@@ -85,10 +85,10 @@ void InputManager::update() {
               events.push_back(PRESSED_DOWN);
             }
             else if (action == "A") {
-              events.push_back(PRESSED_ACTION1);
+              events.push_back(PRESSED_A);
             }
             else if (action == "B") {
-              events.push_back(PRESSED_ACTION2);
+              events.push_back(PRESSED_B);
             }
           }
         } else {
@@ -105,7 +105,7 @@ void InputManager::update() {
               events.push_back(RELEASED_PAUSE);
             }
             else if (action == "Start") {
-              events.push_back(RELEASED_ACTION3);
+              events.push_back(RELEASED_START);
             }
             else if (action == "Left") {
               events.push_back(RELEASED_LEFT);
@@ -120,10 +120,10 @@ void InputManager::update() {
               events.push_back(RELEASED_DOWN);
             }
             else if (action == "A") {
-              events.push_back(RELEASED_ACTION1);
+              events.push_back(RELEASED_A);
             }
             else if (action == "B") {
-              events.push_back(RELEASED_ACTION2);
+              events.push_back(RELEASED_B);
             }
           }
         }
@@ -137,7 +137,7 @@ void InputManager::update() {
         if (action == "Select") {
           events.push_back(PRESSED_PAUSE);
         } else if (action == "Start") {
-          events.push_back(PRESSED_ACTION3);
+          events.push_back(PRESSED_START);
         } else if (action == "Left") {
           events.push_back(PRESSED_LEFT);
         }else if (action == "Right") {
@@ -147,9 +147,9 @@ void InputManager::update() {
         } else if (action == "Down") {
           events.push_back(PRESSED_DOWN);
         } else if (action == "A") {
-          events.push_back(PRESSED_ACTION1);
+          events.push_back(PRESSED_A);
         } else if (action == "B") {
-          events.push_back(PRESSED_ACTION2);
+          events.push_back(PRESSED_B);
         } 
       } else {
         if (Keyboard::Up == event.key.code) {
@@ -165,13 +165,13 @@ void InputManager::update() {
           events.push_back(PRESSED_RIGHT);
         }
         else if (Keyboard::Space == event.key.code) {
-          events.push_back(PRESSED_ACTION1); // shoot 
+          events.push_back(PRESSED_A); // shoot 
         }
         else if (Keyboard::RControl == event.key.code) {
-          events.push_back(PRESSED_ACTION2); // use chip 
+          events.push_back(PRESSED_B); // use chip 
         }
         else if (Keyboard::Return == event.key.code) {
-          events.push_back(PRESSED_ACTION3); // chip select
+          events.push_back(PRESSED_START); // chip select
         }
         else if (Keyboard::P == event.key.code) {
           events.push_back(PRESSED_PAUSE);
@@ -186,7 +186,7 @@ void InputManager::update() {
           events.push_back(RELEASED_PAUSE);
         }
         else if (action == "Start") {
-          events.push_back(RELEASED_ACTION3);
+          events.push_back(RELEASED_START);
         }
         else if (action == "Left") {
           events.push_back(RELEASED_LEFT);
@@ -201,10 +201,10 @@ void InputManager::update() {
           events.push_back(RELEASED_DOWN);
         }
         else if (action == "A") {
-          events.push_back(RELEASED_ACTION1);
+          events.push_back(RELEASED_A);
         }
         else if (action == "B") {
-          events.push_back(RELEASED_ACTION2);
+          events.push_back(RELEASED_B);
         }
       }
       else {
@@ -221,13 +221,13 @@ void InputManager::update() {
           events.push_back(RELEASED_RIGHT);
         }
         else if (Keyboard::Space == event.key.code) {
-          events.push_back(RELEASED_ACTION1);
+          events.push_back(RELEASED_A);
         }
         else if (Keyboard::RControl == event.key.code) {
-          events.push_back(RELEASED_ACTION2);
+          events.push_back(RELEASED_B);
         }
         else if (Keyboard::Return == event.key.code) {
-          events.push_back(RELEASED_ACTION3);
+          events.push_back(RELEASED_START);
         }
         else if (Keyboard::P == event.key.code) {
           events.push_back(RELEASED_PAUSE);

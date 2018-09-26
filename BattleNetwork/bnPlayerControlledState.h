@@ -14,6 +14,10 @@ private:
   float attackKeyPressCooldown;
   float attackToIdleCooldown;
 
+  bool isChargeHeld;
+
+  Direction previousDirection;
+
 public:
   PlayerControlledState();
   ~PlayerControlledState();

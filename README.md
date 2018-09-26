@@ -1,10 +1,24 @@
-# Videos w/ SOUND
-#### Branch: master as of 6/04/2018
+
+# Author TheMaverickProgrammer
+
+## Update 9/21/2018
+[![Summon Roll](https://media.giphy.com/media/kG1P8Wlb8O7LGghFHE/giphy.gif)](https://streamable.com/vwdos) 
+
+(Click the gif to see a video)
+
+Added Chip Summons into the Battle Scene routine. It extends the `ChipUseListener` class and requires a timer so that any buggy summons will gaurantee to end. This routine is new and will undergo a lot of refactoring before it's finished. Great to see it working so well for the first design.
+
+See ["Adding Custom Navis"](https://github.com/TheMaverickProgrammer/battlenetwork/wiki/Creating-New-Navis) in the wiki for more!
+
+# Videos
+#### Branch: master
 Click the thumbnail to watch on youtube. 
 
-[![Video of engine 6/4/2018](https://img.youtube.com/vi/D6uHYNMeqxM/1.jpg)](https://youtu.be/fCYp4VubD_s) 
-
 [![Video of engine 6/4/2018](https://img.youtube.com/vi/fCYp4VubD_s/0.jpg)](https://youtu.be/fCYp4VubD_s) 
+
+# Screenshots
+
+[![starman.png](https://s8.postimg.cc/qjbob7h2d/starman.png)](https://postimg.cc/image/3umhbmzoh/)
 
 [![image.png](https://s8.postimg.cc/ah09sio45/canodumbs.png)](https://s8.postimg.cc/ah09sio45/canodumbs.png)
 
@@ -15,6 +29,9 @@ Click the thumbnail to watch on youtube.
 [![preview.png](https://s15.postimg.cc/6cpgwlocr/preview.png)](https://postimg.cc/image/phsq6d30n/)
 
 [![menu.png](https://s15.postimg.cc/k819ndp6z/Untitled.png)](https://postimg.cc/image/hdy49xn0n/)
+
+# Wiki
+Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki)? 
 
 # Features
 
@@ -29,16 +46,15 @@ There is joystick support but the tricky thing about joysticks are that each ven
 
 --------
 
-In this demo, you can choose which mob to battle, move Mega around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
+In this demo, you can choose your Navi, choose which mob to battle, move navi around, shoot, charge, and delete enemies on the grid. When the chip cust is full, you can bring up the chip select menu. 
 
 The player can select chips and deselect them in the order they were added.  Return to battle and you can use the chips by pressing Right-Control. 
 
-At this time only 5 chip types are implemented: All heath+ chips, Invsible, Cannon, CrckPanel, and Sword.
-`BasicSword` is the default behavior for all the sword chips at the moment. It behaves as wide-sword attacking one panel ahead and one panel below. Each chip plays the appropriate animation.
+At this time only 5 chip types are implemented: All heath+ chips, Invsible, Cannon, CrckPanel, and a few swords.
 
 Rename the file in `resources/database/library.txt - Copy`to `resources/database/library.txt` for a full library while playing the game.
 
-There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon1 A` + `Cannon1 B` + `Cannon1 C` in order. It deals a whopping 600 points of damage, shaking the screen, and attacks the first 3 enemies vertically.
+There is 1 Program Advance: XtremeCannon. Can be activated by selecting `Cannon A` + `Cannon B` + `Cannon C` in order. It deals a whopping 600 points of damage, shaking the screen, and attacks the first 3 enemies vertically.
 There other other PAs that can be triggered through system but are not implemented and do not do any damage. 
 You can write your own PA's and add your own chips by editting the `/database` textfiles.
 
@@ -54,20 +70,6 @@ P      -> Pause/Unpause
 Return -> Bring up chip select GUI / Hide / Continue
 R CTRL -> Use a chip
 ```
-
-# Wiki
-Care to [contribute](https://github.com/TheMaverickProgrammer/battlenetwork/wiki)? 
-
-# Author TheMaverickProgrammer
-
-## Update 7/6/2018
-Chip database (library) can be viewed via the Chip Library menu. Each chip is displayed with proper description and rarity. Scroll through with UP and DOWN.
-
-Canodumbs are near-complete. The system now supports `Character::Rank` attributes that can help determine an enemie's color, name upgrade, and stat boosts. We can now spawn different levels up enemies such as Canodumb, Canodumb1, and Canodumb2.
-
-Wrote better Artifact class for things like the Canodumb smoke. Separated Character class types from Entity which helps further divide the responsibilities between what can be deleted (Characters), what attacks (Spells), and what is purely effect (Artifacts).
-
-Added some missing font characters.
 
 ## Contributions to the project
 Pheelbert wrote the base tile movement code, sprite resource loading, and the rendering pipeline. I've since then added many new features off the foundation. It's becoming something entirely new. 
@@ -131,6 +133,13 @@ New:
 * Counter system
 * Transition effects between screens
 * Randomly generated overworld map
+* Improved background class
+* Entities are split into Character (can be hit), Spell (can attack), and Artifact (visual effects)
+* Improved buster logic
+* Easy custom navi registration hooks and features
+* Custom Navi select menu
+
+And more...
 
 Changes from original author:
 
@@ -148,4 +157,4 @@ Changes from original author:
 * Done away with Thor:: dependencies and wrote my own animation class and animation editor
 
 # Author Pheelbert
-Wrote the foundation. He wrote the tile-based movement and update system emulating an authentic mmbn player experience compared to others out there.
+Wrote the foundation. He wrote the tile-based movement system emulating an authentic mmbn player experience compared to others out there.

@@ -1,8 +1,4 @@
 #pragma once
-#include <Thor/Animations.hpp>
-using thor::FrameAnimation;
-using thor::Animator;
-using sf::IntRect;
 
 #include "bnCharacter.h"
 #include "bnPlayerState.h"
@@ -15,10 +11,13 @@ using sf::IntRect;
 #include "bnPlayerIdleState.h"
 #include "bnPlayerHitState.h"
 
+using sf::IntRect;
+
 class Player : public Character, public AI<Player> {
 public:
   friend class PlayerControlledState;
   friend class PlayerIdleState;
+  friend class PlayerHitState;
 
   Player(void);
   virtual ~Player(void);
@@ -36,12 +35,25 @@ public:
   int GetHitCount() const;
 
   PlayerHealthUI* GetHealthUI() const;
+  AnimationComponent& GetAnimationComponent();
 
+  void SetCharging(bool state);
+  void SetAlpha(int value); // TODO: Get rid of this
+  void SetCloakTimer(int seconds); // TODO: Get rid
   virtual void SetAnimation(string _state, std::function<void()> onFinish = nullptr);
-private:
+
+protected:
+
+  // TODO: get rid of this
+  sf::Clock cloakTimer;
+  int cloakTimeSecs;
+
   int health;
   int moveCount;
   int hitCount;
+
+  int alpha;
+  double invincibilityCooldown;
 
   TextureType textureType;
   string state;

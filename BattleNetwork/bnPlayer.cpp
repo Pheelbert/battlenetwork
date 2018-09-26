@@ -18,7 +18,7 @@
 #define SHOOT_ANIMATION_HEIGHT 58
 
 Player::Player(void)
-  : health(200),
+  : health(100),
   state(PLAYER_IDLE),
   chargeComponent(this),
   animationComponent(this),
@@ -49,6 +49,11 @@ Player::Player(void)
   previous = nullptr;
 
   moveCount = 0;
+
+  invincibilityCooldown = 0;
+  alpha = 255;
+
+  cloakTimeSecs = 0;
 }
 
 Player::~Player(void) {
@@ -58,6 +63,11 @@ Player::~Player(void) {
 void Player::Update(float _elapsed) {
   //Update UI of player's health (top left corner)
   healthUI->Update();
+
+  animationComponent.Update(_elapsed);
+
+  if (_elapsed <= 0)
+    return;
 
   if (tile != nullptr) {
     setPosition(tile->getPosition().x + (tile->GetWidth() / 2.0f), tile->getPosition().y + (tile->GetHeight() / 2.0f));
@@ -70,18 +80,38 @@ void Player::Update(float _elapsed) {
     return;
   }
 
+  // TODO: Get rid of this. Put this type of behavior in a component
+  if (cloakTimer.getElapsedTime() > sf::seconds((float)cloakTimeSecs) && cloakTimeSecs != 0) {
+    this->SetPassthrough(false);
+    this->SetAlpha(255);
+    cloakTimeSecs = 0;
+  }
+
+  if (invincibilityCooldown > 0) {
+    if ((((int)(invincibilityCooldown * 15))) % 2 == 0) {
+      this->setColor(sf::Color(255,255,255,0));
+    }
+    else {
+          this->setColor(sf::Color(255, 255, 255, alpha));
+    }
+
+    invincibilityCooldown -= _elapsed;
+  }
+  else {
+    this->setColor(sf::Color(255, 255, 255, alpha));
+  }
+
   this->StateUpdate(_elapsed);
 
   //Components updates
   chargeComponent.update(_elapsed);
-  animationComponent.Update(_elapsed);
 
   Entity::Update(_elapsed);
 }
 
 bool Player::Move(Direction _direction) {
   bool moved = false;
-  Tile* temp = tile;
+  Battle::Tile* temp = tile;
   if (_direction == Direction::UP) {
     if (tile->GetY() - 1 > 0) {
       next = field->GetAt(tile->GetX(), tile->GetY() - 1);
@@ -114,9 +144,10 @@ bool Player::Move(Direction _direction) {
       next = field->GetAt(tile->GetX() + 1, tile->GetY());
       if (Teammate(next->GetTeam()) && next->IsWalkable()) {
         ;
-      } else {
-        next = nullptr;
       }
+ else {
+   next = nullptr;
+ }
     }
   }
 
@@ -157,6 +188,7 @@ vector<Drawable*> Player::GetMiscComponents() {
 
 void Player::SetHealth(int _health) {
   health = _health;
+  healthUI->Update();
 }
 
 int Player::GetHealth() const {
@@ -164,14 +196,14 @@ int Player::GetHealth() const {
 }
 
 const bool Player::Hit(int _damage) {
-  if (this->IsPassthrough()) return false;
+  if (this->IsPassthrough() || invincibilityCooldown > 0) return false;
 
-  bool result = false;
+  bool result = true;
 
   if (health - _damage < 0) {
     health = 0;
-    result = true;
-  } else {
+  }
+  else {
     health -= _damage;
     hitCount++;
     this->StateChange<PlayerHitState, float>({ 600.0f });
@@ -192,6 +224,29 @@ int Player::GetHitCount() const
 
 PlayerHealthUI* Player::GetHealthUI() const {
   return healthUI;
+}
+
+AnimationComponent& Player::GetAnimationComponent() {
+  return animationComponent;
+}
+
+void Player::SetCharging(bool state)
+{
+  chargeComponent.SetCharging(state);
+}
+
+void Player::SetAlpha(int value)
+{
+  alpha = value;
+  this->setColor(sf::Color(255, 255, 255, alpha));
+}
+
+void Player::SetCloakTimer(int seconds)
+{
+  SetPassthrough(true);
+  SetAlpha(255 / 2);
+  cloakTimer.restart();
+  cloakTimeSecs = seconds;
 }
 
 void Player::SetAnimation(string _state, std::function<void()> onFinish) {

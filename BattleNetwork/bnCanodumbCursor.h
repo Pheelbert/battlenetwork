@@ -22,8 +22,6 @@ public:
   ~CanodumbCursor();
 
   virtual void Update(float _elapsed);
-  virtual int GetStateFromString(string _string);
-  virtual void AddAnimation(int _state, FrameAnimation _animation, float _duration);
   virtual bool Move(Direction _direction) { return false; }
   vector<Drawable*> GetMiscComponents();
 };

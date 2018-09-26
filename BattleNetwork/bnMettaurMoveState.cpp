@@ -17,8 +17,8 @@ void MettaurMoveState::OnEnter(Mettaur& met) {
 void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
   if (isMoving) return; // We're already moving (animations take time)
 
-  Tile* temp = met.tile;
-  Tile* next = nullptr;
+  Battle::Tile* temp = met.tile;
+  Battle::Tile* next = nullptr;
 
   Entity* target = met.GetTarget();
 
@@ -31,7 +31,7 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
     }
     else {
       // Try attacking if facing an available tile
-      Tile* forward = met.GetField()->GetAt(temp->GetX() - 1, temp->GetY());
+      Battle::Tile* forward = met.GetField()->GetAt(temp->GetX() - 1, temp->GetY());
 
       if (forward && forward->IsWalkable()) {
         return met.StateChange<MettaurAttackState>();
@@ -49,7 +49,7 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
     if (met.tile->GetY() - 1 > 0) {
       next = met.field->GetAt(met.tile->GetX(), met.tile->GetY() - 1);
       if (met.Teammate(next->GetTeam()) && next->IsWalkable())
-        if (!next->ContainsEntityType<ProgsMan>() && !next->ContainsEntityType<Mettaur>()) {
+        if (!next->ContainsEntityType<Character>()) {
           met.SetTile(next);
         }
         else {
@@ -76,7 +76,7 @@ void MettaurMoveState::OnUpdate(float _elapsed, Mettaur& met) {
     if (met.tile->GetY() + 1 <= (int)met.field->GetHeight()) {
       next = met.field->GetAt(met.tile->GetX(), met.tile->GetY() + 1);
       if (met.Teammate(next->GetTeam()) && next->IsWalkable())
-        if (!next->ContainsEntityType<ProgsMan>() && !next->ContainsEntityType<Mettaur>()) {
+        if (!next->ContainsEntityType<Character>()) {
           met.SetTile(next);
         }
         else {

@@ -30,13 +30,13 @@ Texture* TextureResourceManager::LoadTextureFromFile(string _path) {
   if (!texture->loadFromFile(_path)) {
 
     Logger::GetMutex()->lock();
-    Logger::Logf("Failed loading texture: %s\n", _path.c_str());
+    Logger::Logf("Failed loading texture: %s", _path.c_str());
     Logger::GetMutex()->unlock();
 
   } else {
 
     Logger::GetMutex()->lock();
-    Logger::Logf("Loaded texture: %s\n", _path.c_str());
+    Logger::Logf("Loaded texture: %s", _path.c_str());
     Logger::GetMutex()->unlock();
 
   }
@@ -61,9 +61,9 @@ sf::IntRect TextureResourceManager::GetIconRectFromID(unsigned ID) {
 Font* TextureResourceManager::LoadFontFromFile(string _path) {
   Font* font = new Font();
   if (!font->loadFromFile(_path)) {
-    Logger::Logf("Failed loading font: %s\n", _path.c_str());
+    Logger::Logf("Failed loading font: %s", _path.c_str());
   } else {
-    Logger::Logf("Loaded font: %s\n", _path.c_str());
+    Logger::Logf("Loaded font: %s", _path.c_str());
   }
   return font;
 }
@@ -94,6 +94,9 @@ TextureResourceManager::TextureResourceManager(void) {
   //Starman
   paths.push_back("resources/navis/starman/navi_starman_atlas.png");
 
+  //Roll
+  paths.push_back("resources/navis/roll/navi_roll_atlas.png");
+
   //-Mobs-
   paths.push_back("resources/mobs/mob_move.png");
   paths.push_back("resources/mobs/mob_explosion.png");
@@ -101,6 +104,10 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/mobs/mettaur/mob_mettaur_move.png");
   paths.push_back("resources/mobs/mettaur/mob_mettaur_hit.png");
   paths.push_back("resources/mobs/mettaur/mob_mettaur_attack.png");
+
+  paths.push_back("resources/mobs/mettaur/mob_mettaur_move_blue.png");
+  paths.push_back("resources/mobs/mettaur/mob_mettaur_hit_blue.png");
+  paths.push_back("resources/mobs/mettaur/mob_mettaur_attack_blue.png");
 
   // ProgsMan
   paths.push_back("resources/mobs/progsman/mob_progsman_idle.png");
@@ -135,6 +142,7 @@ TextureResourceManager::TextureResourceManager(void) {
 
   // In battle signs
   paths.push_back("resources/ui/program_advance.png");
+  paths.push_back("resources/ui/battle_start.png");
 
   // Battle Results Frame
   paths.push_back("resources/ui/battle_results.png");
@@ -147,6 +155,16 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/ui/folder_rarity.png");
   paths.push_back("resources/ui/scrollbar.png");
 
+  // Navi Select View
+  paths.push_back("resources/backgrounds/select/glow_sheet.png");
+  paths.push_back("resources/backgrounds/select/pad_base.png");
+  paths.push_back("resources/backgrounds/select/pad_bottom.png");
+  paths.push_back("resources/backgrounds/select/char_name.png");
+  paths.push_back("resources/backgrounds/select/stat.png");
+  paths.push_back("resources/backgrounds/select/element.png");
+  paths.push_back("resources/backgrounds/select/info_box.png");
+  paths.push_back("resources/backgrounds/select/symbol_slots.png");
+
   // Background/foreground
   paths.push_back("resources/backgrounds/title/bg_blue.png");
   paths.push_back("resources/backgrounds/title/prog-pulse.png");
@@ -157,6 +175,12 @@ TextureResourceManager::TextureResourceManager(void) {
   paths.push_back("resources/backgrounds/main_menu/ow2.png");
   paths.push_back("resources/backgrounds/main_menu/arrow.png");
   paths.push_back("resources/backgrounds/folder/bg.png");
+  paths.push_back("resources/backgrounds/select/bg.png");
+
+  // Overworld
+  paths.push_back("resources/backgrounds/main_menu/mr_prog_ow.png");
+  paths.push_back("resources/backgrounds/main_menu/numberman_ow.png");
+
   // other icons
   paths.push_back("resources/ui/gamepad_support_icon.png");
   paths.push_back("resources/ui/main_menu_ui.png");

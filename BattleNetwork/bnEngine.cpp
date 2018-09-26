@@ -11,10 +11,10 @@ Engine& Engine::GetInstance() {
 void Engine::Initialize() {
   view = sf::View(sf::Vector2f(240, 160), sf::Vector2f(480, 320));
   original = view; // never changes 
-  cam = Camera(view);
+  cam = new Camera(view);
 
   window = new RenderWindow(VideoMode((unsigned int)view.getSize().x, (unsigned int)view.getSize().y), "Battle Network: Progs Edition");
-  window->setFramerateLimit(120);
+  window->setFramerateLimit(60);
 
   window->setIcon(sfml_icon.width, sfml_icon.height, sfml_icon.pixel_data);
 
@@ -111,7 +111,7 @@ void Engine::Draw(vector<Drawable*> _drawable, bool applyShaders) {
 
 void Engine::Display() {
 
-  //view = cam.GetView();
+  //view = cam->GetView();
   //window->setView(view);
 
   // flip and ready buffer
@@ -144,8 +144,9 @@ RenderWindow* Engine::GetWindow() const {
 Engine::Engine(void)
   : layers(Layers()),
   overlay(Overlay()),
-  underlay(Underlay()),
-  cam(Camera(view)) {
+  underlay(Underlay()) {
+
+  cam = new Camera(view);
 }
 
 Engine::~Engine(void) {
@@ -153,7 +154,7 @@ Engine::~Engine(void) {
 }
 
 const sf::Vector2f Engine::GetViewOffset() {
-  return GetDefaultView().getCenter() - view.getCenter();
+  return GetDefaultView().getCenter() - cam->GetView().getCenter();
 }
 
 void Engine::Push(LayeredDrawable* _drawable) {
@@ -214,11 +215,18 @@ const sf::View Engine::GetDefaultView() {
   return original;
 }
 
-Camera& Engine::GetCamera()
+Camera* Engine::GetCamera()
 {
   return cam;
 }
 
-void Engine::SetView(sf::View v) {
+void Engine::SetCamera(Camera& camera) {
+  // if (cam) delete cam;
+
+  this->cam = &camera;
+}
+
+/*void Engine::SetView(sf::View v) {
   this->view = v;
 }
+*/

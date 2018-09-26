@@ -29,7 +29,7 @@ LongExplosion::LongExplosion(Field* _field, Team _team)
       y += EXPLODE_ANIMATION_HEIGHT;
       i = 0;
     }
-    explode.addFrame(0.3f, IntRect(EXPLODE_ANIMATION_WIDTH*i, y, EXPLODE_ANIMATION_WIDTH, EXPLODE_ANIMATION_HEIGHT));
+    explode.Add(0.1f, IntRect(EXPLODE_ANIMATION_WIDTH*i, y, EXPLODE_ANIMATION_WIDTH, EXPLODE_ANIMATION_HEIGHT));
     i++;
   }
   setScale(2.f, 2.f);
@@ -49,18 +49,18 @@ void LongExplosion::Update(float _elapsed) {
     y2 = tile->getPosition().y - 50.0f;
   }
 
-  explosionProgress += 0.1f/_elapsed;
+  explosionProgress += 2*_elapsed;
   if (explosionProgress >= 0.3f) {
-    explosionProgress2 += 0.1f/_elapsed;
+    explosionProgress2 += 2*_elapsed;
     explosion2.setScale(2.f, 2.f);
     explosion2.setPosition(x2, y2);
-    explode(explosion2, fmin(explosionProgress2, 1.0f));
+    animator(fmin(explosionProgress2, 1.0f), explosion2, explode);
   }
 
   if (explosionProgress <= 1.f) {
     explosion.setScale(2.f, 2.f);
     explosion.setPosition(x1, y1);
-    explode(explosion, fmin(explosionProgress, 1.0f));
+    animator(fmin(explosionProgress, 1.0f), explosion, explode);
   }
 
   if (explosionProgress2 >= 0.8f) {

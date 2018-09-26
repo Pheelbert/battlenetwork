@@ -122,12 +122,14 @@ Chip * PA::GetAdvanceChip()
    return advanceChipRef;
 }
 
-bool PA::FindPA(Chip ** input, unsigned size)
+const int PA::FindPA(Chip ** input, unsigned size)
 {
+  int startIndex = -1;
+
   std::cout << "size: " << size << "\n";
 
   if (size == 0) {
-    return false;
+    return startIndex;
   }
 
   for (iter = advances.begin(); iter != advances.end(); iter++) {
@@ -139,30 +141,40 @@ bool PA::FindPA(Chip ** input, unsigned size)
       continue; // try next 
     }
 
-    for (unsigned i = 0; i < iter->steps.size(); i++) {
-      char code = input[i]->GetCode();
 
-      if (code == '=') { code = '*'; } // Transform back from compatible font char
+    int index = 0;
+    while (index <= (int)size - (int)iter->steps.size()) {
+      char code = input[index]->GetCode();
 
-      std::cout << "iter->steps[i].code " << iter->steps[i].code << "\n";
-      std::cout << "code " << code << "\n";
-      std::cout << "iter->steps[i].chipShortName " << iter->steps[i].chipShortName << "\n";
-      std::cout << "input[i]->GetShortName() " << input[i]->GetShortName() << "\n";
+      if (iter->steps[0].code == code && iter->steps[0].chipShortName == input[0]->GetShortName()) {
+        for (unsigned i = 0; i < iter->steps.size(); i++) {
+          char code = input[i + index]->GetCode();
 
-      if (iter->steps[i].code != code) {
-        match = false;
-        break; // stop loop
+          if (code == '=') { code = '*'; } // Transform back from compatible font char
+
+          std::cout << "iter->steps[i].code " << iter->steps[i].code << "\n";
+          std::cout << "code " << code << "\n";
+          std::cout << "iter->steps[i].chipShortName " << iter->steps[i].chipShortName << "\n";
+          std::cout << "input[i]->GetShortName() " << input[i + index]->GetShortName() << "\n";
+
+          if (iter->steps[i].code == code && iter->steps[i].chipShortName == input[i + index]->GetShortName()) {
+            match = true;
+            // We do not break here. If it is a match all across the steps, then the for loop ends 
+            // and match stays == true
+
+            if (startIndex == -1) {
+              startIndex = i + index;
+            }
+          }
+          else {
+            match = false;
+            startIndex = -1;
+            break;
+          }
+        }
       }
-      // Ensure that the chip code and name matches as those are the best way to identify chips
-      else if (iter->steps[i].chipShortName != input[i]->GetShortName()) {
-        match = false;
-        break; // stop loop
-      }
-      else {
-        match = true;
-        // We do not break here. If it is a match all across the steps, then the for loop ends 
-        // and match stays == true
-      }
+
+      index++;
     }
 
     if (match) {
@@ -171,12 +183,13 @@ bool PA::FindPA(Chip ** input, unsigned size)
 
        advanceChipRef = new Chip(0, iter->icon, 0, iter->damage, iter->type, iter->name, "Program Advance", 0);
 
-      return true;
+      return startIndex;
     }
 
     // else keep looking
+    startIndex = -1;
   }
 
-  return false;
+  return startIndex;
 }
 

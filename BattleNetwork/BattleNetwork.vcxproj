@@ -100,7 +100,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\extern\libs</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;glew.lib;jpeg.lib;openal32.lib;sndfile.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-main-d.lib;thor-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;glew.lib;jpeg.lib;openal32.lib;sndfile.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-main-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,7 +145,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)\extern\libs;C:\Program Files (x86)\Windows Kits\10\Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew.lib;jpeg.lib;openal32.lib;sndfile.lib;freetype.lib;Winmm.lib;OpenGL32.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;sfml-audio.lib;sfml-main.lib;thor-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew.lib;jpeg.lib;openal32.lib;sndfile.lib;freetype.lib;Winmm.lib;OpenGL32.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;sfml-audio.lib;sfml-main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <Bscmake>
@@ -156,7 +156,6 @@
     <ClCompile Include="bnAnimate.cpp" />
     <ClCompile Include="bnAnimatedCharacter.cpp" />
     <ClCompile Include="bnAnimation.cpp" />
-    <ClCompile Include="bnBackground.cpp" />
     <ClCompile Include="bnBasicSword.cpp" />
     <ClCompile Include="bnBattleResults.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -171,6 +170,7 @@
     <ClCompile Include="bnChipUseListener.cpp" />
     <ClCompile Include="bnFolderScene.cpp" />
     <ClCompile Include="bnGraveyardBackground.cpp" />
+    <ClCompile Include="bnGridBackground.cpp" />
     <ClCompile Include="bnInfiniteMap.cpp" />
     <ClCompile Include="bnLanBackground.cpp" />
     <ClCompile Include="bnBattleResults.cpp">
@@ -204,7 +204,12 @@
     <ClCompile Include="bnProgsManBossFight.cpp" />
     <ClCompile Include="bnProgsManIdleState.cpp" />
     <ClCompile Include="bnRandomMettaurMob.cpp" />
+    <ClCompile Include="bnRoll.cpp" />
+    <ClCompile Include="bnRollHeal.cpp" />
+    <ClCompile Include="bnRollHeart.cpp" />
+    <ClCompile Include="bnSelectNaviScene.cpp" />
     <ClCompile Include="bnShaderResourceManager.cpp" />
+    <ClCompile Include="bnStarman.cpp" />
     <ClCompile Include="bnTile.cpp" />
     <ClCompile Include="bnPlayer.cpp" />
     <ClCompile Include="bnSpell.cpp" />
@@ -228,6 +233,7 @@
     <ClCompile Include="bnSelectMobScene.cpp" />
     <ClCompile Include="bnAgent.h" />
     <ClCompile Include="bnCanodumbCursor.cpp" />
+    <ClCompile Include="bnNaviRegistration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bnAnimate.h" />
@@ -247,9 +253,15 @@
     <ClInclude Include="bnChipFolder.h" />
     <ClInclude Include="bnChipUseListener.h" />
     <ClInclude Include="bnChipUsePublisher.h" />
+    <ClInclude Include="bnComponent.h" />
+    <ClInclude Include="bnEaseFunctions.h" />
+    <ClInclude Include="bnRoll.h" />
+    <ClInclude Include="bnRollHeart.h" />
+    <ClInclude Include="bnTileBehavior.h" />
     <ClInclude Include="bnElements.h" />
     <ClInclude Include="bnFolderScene.h" />
     <ClInclude Include="bnGraveyardBackground.h" />
+    <ClInclude Include="bnGridBackground.h" />
     <ClInclude Include="bnInfiniteMap.h" />
     <ClInclude Include="bnLanBackground.h" />
     <ClInclude Include="bnCamera.h" />
@@ -295,12 +307,15 @@
     <ClInclude Include="bnProgsManPunchState.h" />
     <ClInclude Include="bnRandomMettaurMob.h" />
     <ClInclude Include="bnSelectMobScene.h" />
+    <ClInclude Include="bnSelectNaviScene.h" />
     <ClInclude Include="bnShaderResourceManager.h" />
     <ClInclude Include="bnShaderType.h" />
     <ClInclude Include="bnSmartShader.h" />
     <ClInclude Include="bnSpawnPolicy.h" />
+    <ClInclude Include="bnStarman.h" />
     <ClInclude Include="bnStringEncoder.h" />
     <ClInclude Include="bnTeam.h" />
+    <ClInclude Include="bnTextBox.h" />
     <ClInclude Include="bnTextureType.h" />
     <ClInclude Include="bnTile.h" />
     <ClInclude Include="bnDirection.h" />
@@ -323,8 +338,13 @@
     <ClInclude Include="bnTimer.h" />
     <ClInclude Include="bnFileUtil.h" />
     <ClInclude Include="bnCanonSmoke.h" />
+    <ClInclude Include="bnNaviRegistration.h" />
+    <ClInclude Include="bnQueueNaviRegistration.h" />
+    <ClInclude Include="bnFramedTextBox.h" />
+    <ClInclude Include="bnChipSummonHandler.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="bnCanodumbCursor.h" />
+    <ClInclude Include="bnRollHeal.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BattleNetwork.rc" />

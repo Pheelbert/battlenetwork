@@ -25,7 +25,7 @@ Mob* ProgsManBossFight::Build() {
   int y = (field->GetHeight() / 2) + 1;
   mob->Spawn<RankEX<ProgsMan, ProgsManIdleState>>(x, y);
 
-  Tile* tile = field->GetAt(x, y);
+  Battle::Tile* tile = field->GetAt(x, y);
   if (!tile->IsWalkable()) { tile->SetState(TileState::NORMAL); }
 
   return mob;

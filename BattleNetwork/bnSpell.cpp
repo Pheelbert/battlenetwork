@@ -7,15 +7,9 @@
 #include "bnPlayer.h"
 #include "bnTextureResourceManager.h"
 
-#define COOLDOWN 40.0f
-#define DAMAGE_COOLDOWN 50.0f
 
-#define BULLET_ANIMATION_SPRITES 3
-#define BULLET_ANIMATION_WIDTH 30
-#define BULLET_ANIMATION_HEIGHT 27
-
-Spell::Spell(void) {
-  SetPassthrough(true);
+Spell::Spell(void) : animationComponent(this), Entity() {
+  SetFloatShoe(true);
   SetLayer(1);
   hit = false;
   srand((unsigned int)time(nullptr));
@@ -26,7 +20,6 @@ Spell::Spell(void) {
   hitHeight = 0.0f;
   direction = Direction::NONE;
   texture = nullptr;
-  animation = FrameAnimation();
   bool markTile = false;
 }
 

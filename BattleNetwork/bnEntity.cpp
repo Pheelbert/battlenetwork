@@ -10,13 +10,17 @@ Entity::Entity()
   team(Team::UNKNOWN),
   deleted(false),
   passthrough(false),
-  ownedByField(false) {
+  ownedByField(false),
+  element(Element::NONE) {
 }
 
 Entity::~Entity() {
 }
 
 void Entity::Update(float _elapsed) {
+  if (_elapsed <= 0)
+    return;
+
   if (IsDeleted()) {
     field->RemoveEntity(this);
   }
@@ -30,10 +34,6 @@ bool Entity::Move(Direction _direction) {
 vector<Drawable*> Entity::GetMiscComponents() {
   assert(false && "GetMiscComponents shouldn't be called directly from Entity");
   return vector<Drawable*>();
-}
-
-void Entity::SetAnimation(string _state) {
-  assert(false && "SetAnimation shouldn't be called directly from Entity");
 }
 
 const float Entity::GetHitHeight() const {
@@ -55,11 +55,11 @@ bool Entity::Teammate(Team _team) {
   return team == _team;
 }
 
-void Entity::SetTile(Tile* _tile) {
+void Entity::SetTile(Battle::Tile* _tile) {
   tile = _tile;
 }
 
-Tile* Entity::GetTile() const {
+Battle::Tile* Entity::GetTile() const {
   return tile;
 }
 
@@ -88,6 +88,16 @@ bool Entity::IsPassthrough()
   return passthrough;
 }
 
+void Entity::SetFloatShoe(bool state)
+{
+  floatShoe = state;
+}
+
+bool Entity::HasFloatShoe()
+{
+  return floatShoe;
+}
+
 void Entity::Delete()
 {
   deleted = true;
@@ -95,4 +105,14 @@ void Entity::Delete()
 
 bool Entity::IsDeleted() const {
   return deleted;
+}
+
+void Entity::SetElement(Element _elem)
+{
+  this->element = _elem;
+}
+
+const Element Entity::GetElement() const
+{
+  return element;
 }

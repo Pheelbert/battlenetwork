@@ -14,7 +14,7 @@ CanodumbMob::~CanodumbMob()
 Mob* CanodumbMob::Build() {
   Mob* mob = new Mob(field);
 
-  Tile* tile = field->GetAt(4, 2);
+  Battle::Tile* tile = field->GetAt(4, 2);
   if (!tile->IsWalkable()) { tile->SetState(TileState::NORMAL); }
 
   mob->Spawn< Rank1<Canodumb, CanodumbIdleState> >(5, 2);

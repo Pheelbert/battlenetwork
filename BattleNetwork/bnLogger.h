@@ -26,7 +26,7 @@ public:
     next = logs.front();
     logs.pop();
 
-    return (logs.size() > 0);
+    return (logs.size()+1 > 0);
   }
 
   static void Log(string _message) {

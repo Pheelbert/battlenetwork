@@ -1,7 +1,10 @@
 #include <time.h>
 #include "bnSelectMobScene.h"
+#include "bnTextBox.h"
 #include "bnTile.h"
 #include "bnField.h"
+#include "bnPlayer.h"
+#include "bnStarman.h"
 #include "bnMob.h"
 #include "bnMemory.h"
 #include "bnCamera.h"
@@ -24,7 +27,7 @@ using sf::Clock;
 using sf::Event;
 using sf::Font;
 
-int SelectMobScene::Run()
+int SelectMobScene::Run(SelectedNavi navi)
 {
   Camera camera(ENGINE.GetDefaultView());
 
@@ -35,7 +38,7 @@ int SelectMobScene::Run()
   menuLabel->setPosition(sf::Vector2f(20.f, 5.0f));
 
   // Selection input delays
-  double maxSelectInputCooldown = 1000.0f / 2.f; // half of a second
+  double maxSelectInputCooldown = 0.5; // half of a second
   double selectInputCooldown = maxSelectInputCooldown;
 
   // MOB UI font
@@ -57,15 +60,15 @@ int SelectMobScene::Run()
   hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
   hpLabel->setPosition(sf::Vector2f(180.f, 33.0f));
 
-  float maxNumberCooldown = 500.f;
+  float maxNumberCooldown = 0.5;
   float numberCooldown = maxNumberCooldown; // half a second
 
   // select menu graphic
-  sf::Sprite bg(*TEXTURES.GetTexture(TextureType::BATTLE_SELECT_BG));
+  sf::Sprite bg(LOAD_TEXTURE(BATTLE_SELECT_BG));
   bg.setScale(2.f, 2.f);
 
   // Current mob graphic
-  sf::Sprite mob(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE));
+  sf::Sprite mob(LOAD_TEXTURE(MOB_METTAUR_IDLE));
   mob.setScale(2.f, 2.f);
   mob.setOrigin(mob.getLocalBounds().width / 2.f, mob.getLocalBounds().height / 2.f);
   mob.setPosition(110.f, 130.f);
@@ -73,30 +76,31 @@ int SelectMobScene::Run()
   // Animator for mobs
   Animation mobAnimator;
 
-  // Distortion effect
-  sf::Texture& distortionMap = *TEXTURES.GetTexture(TextureType::DISTORTION_TEXTURE);
-
-  // It is important to set repeated to true to enable scrolling upwards
-  distortionMap.setRepeated(true);
-
   // Transition
-  sf::Shader& transition = *SHADERS.GetShader(ShaderType::TRANSITION);
+  sf::Shader& transition = LOAD_SHADER(TRANSITION);
   transition.setUniform("texture", sf::Shader::CurrentTexture);
-  transition.setUniform("map", *TEXTURES.GetTexture(TextureType::NOISE_TEXTURE));
+  transition.setUniform("map", LOAD_TEXTURE(NOISE_TEXTURE));
   transition.setUniform("progress", 0.f);
   float transitionProgress = 0.9f;
   ENGINE.RevokeShader();
 
   bool gotoNextScene = false;
 
-  sf::Shader& shader = *SHADERS.GetShader(ShaderType::DISTORTION);
-
-  shader.setUniform("currentTexture", sf::Shader::CurrentTexture);
-  shader.setUniform("distortionMapTexture", distortionMap);
+  SmartShader shader = LOAD_SHADER(TEXEL_PIXEL_BLUR);
+  float factor = 125;
 
   // Current selection index
   int mobSelectionIndex = 0;
 
+  // Text box navigator
+  TextBox textbox(280, 100);
+  textbox.Stop();
+  textbox.Mute();
+  textbox.setPosition(100, 210);
+  textbox.SetTextColor(sf::Color::Black);
+  textbox.SetSpeed(20);
+
+  // Clocks and timers
   Clock clock;
   float elapsed = 0.0f;
   float totalTime = 0.f;
@@ -120,6 +124,7 @@ int SelectMobScene::Run()
     //ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
+    textbox.Update(elapsed);
 
     ENGINE.Draw(bg);
     ENGINE.Draw(menuLabel);
@@ -155,8 +160,13 @@ int SelectMobScene::Run()
     ENGINE.DrawLayers();
     ENGINE.DrawOverlay();
 
+
+    int prevSelect = mobSelectionIndex;
+
     // Scene keyboard controls
     if (!gotoNextScene && transitionProgress == 0.f) {
+      textbox.Play();
+ 
       if (INPUT.has(PRESSED_LEFT)) {
         selectInputCooldown -= elapsed;
 
@@ -185,7 +195,7 @@ int SelectMobScene::Run()
         selectInputCooldown = 0;
       }
 
-      if (INPUT.has(PRESSED_ACTION2)) {
+      if (INPUT.has(PRESSED_B)) {
         gotoNextScene = true;
         AUDIO.Play(AudioType::CHIP_DESC_CLOSE);
       }
@@ -193,10 +203,10 @@ int SelectMobScene::Run()
 
     if (elapsed > 0) {
       if (gotoNextScene) {
-        transitionProgress += 0.1f / elapsed;
+        transitionProgress += 1 * elapsed;
       }
       else {
-        transitionProgress -= 0.1f / elapsed;
+        transitionProgress -= 1 * elapsed;
       }
     }
 
@@ -204,47 +214,43 @@ int SelectMobScene::Run()
     transitionProgress = std::min(1.f, transitionProgress);
 
     if (transitionProgress >= 1.f) {
-      return 2;
 
-      gotoNextScene = false;
+      delete font;
+      delete mobFont;
+      delete hpFont;
+      delete mobLabel;
+      delete attackLabel;
+      delete speedLabel;
+      delete menuLabel;
+      delete hpLabel;
+
+      ENGINE.RevokeShader();
+
+      return 2;
     }
 
     mobSelectionIndex = std::max(0, mobSelectionIndex);
     mobSelectionIndex = std::min(3, mobSelectionIndex);
 
     if (mobSelectionIndex == 0) {
-      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE),true);
-      mob.setPosition(110.f, 130.f);
       mobLabel->setString("Mettaur");
       speedLabel->setString("2");
       attackLabel->setString("1");
       hpLabel->setString("20");
     }
     else if (mobSelectionIndex == 1) {
-      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_PROGSMAN_IDLE),true);
-      mob.setPosition(100.f, 110.f);
       mobLabel->setString("ProgsMan");
       speedLabel->setString("4");
       attackLabel->setString("3");
       hpLabel->setString("300");
     }
     else if (mobSelectionIndex == 2) {
-      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
-      mob.setPosition(90.f, 130.f);
-
-      mobAnimator = Animation("resources/mobs/canodumb/canodumb.animation");
-      mobAnimator.Load();
-      mobAnimator.SetAnimation(MOB_CANODUMB_IDLE_1);
-      mobAnimator.SetFrame(1, &mob);
-
       mobLabel->setString("Canodumb");
       speedLabel->setString("1");
       attackLabel->setString("4");
       hpLabel->setString("60");
     }
     else {
-      mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_ANYTHING_GOES),true);
-      mob.setPosition(110.f, 110.f);
       mobLabel->setString("Random Mob");
       speedLabel->setString("*");
       attackLabel->setString("*");
@@ -264,7 +270,7 @@ int SelectMobScene::Run()
         } else {
           if (mobLabel->getString()[i] != ' ') {
             newstr += (char)(((rand() % (90 - 65)) + 65) + 1);
-            AUDIO.Play(AudioType::TEXT, 0);
+            AUDIO.Play(AudioType::TEXT, AudioPriority::LOWEST);
           }
           else {
             newstr += ' ';
@@ -279,31 +285,78 @@ int SelectMobScene::Run()
       speedLabel->setString(std::to_string(randSpeed));
       mobLabel->setString(sf::String(newstr));
     }
-             
+    
+    static bool doOnce = true;
+    if (mobSelectionIndex != prevSelect || doOnce) {
+      doOnce = false;
+      factor = 125;
+
+      if (mobSelectionIndex == 0) {
+        mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_METTAUR_IDLE), true);
+        mob.setPosition(110.f, 130.f);
+
+        textbox.SetMessage("Tutorial ranked Mettaurs. You got this!");
+      }
+      else if (mobSelectionIndex == 1) {
+        mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_PROGSMAN_IDLE), true);
+        mob.setPosition(100.f, 110.f);
+
+        textbox.SetMessage("A rogue Mr. Prog that became too strong to control.");
+      }
+      else if (mobSelectionIndex == 2) {
+        mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_CANODUMB_ATLAS));
+        mob.setPosition(100.f, 130.f);
+
+        mobAnimator = Animation("resources/mobs/canodumb/canodumb.animation");
+        mobAnimator.Load();
+        mobAnimator.SetAnimation(MOB_CANODUMB_IDLE_1);
+        mobAnimator.SetFrame(1, &mob);
+
+        textbox.SetMessage("A family of cannon based virii. Watch out!");
+      }
+      else {
+        mob.setTexture(*TEXTURES.GetTexture(TextureType::MOB_ANYTHING_GOES), true);
+        mob.setPosition(110.f, 130.f);
+        textbox.SetMessage("A randomly generated mob and field. Anything goes.");
+      }
+    }
+
     float progress = (maxNumberCooldown - numberCooldown) / maxNumberCooldown;
 
     if (progress > 1.f) progress = 1.f;
 
     mob.setColor(sf::Color(255, 255, 255, (sf::Uint32)(255.0*progress)));
 
-    shader.setUniform("time", 1.f-progress);
-    shader.setUniform("distortionFactor", 2.f*(1.f-progress));
-    shader.setUniform("riseFactor", 0.2f);
+    float range = (125.f - factor) / 125.f;
+    mob.setColor(sf::Color(255, 255, 255, (sf::Uint8)(255 * range)));
 
+    sf::IntRect t = mob.getTextureRect();
+    sf::Vector2u size = mob.getTexture()->getSize();
+    shader.SetUniform("x", (float)t.left / (float)size.x);
+    shader.SetUniform("y", (float)t.top / (float)size.y);
+    shader.SetUniform("w", (float)t.width / (float)size.x);
+    shader.SetUniform("h", (float)t.height / (float)size.y);
+    shader.SetUniform("pixel_threshold", (float)(factor / 400.f));
+
+    factor -= elapsed * 180.f;
+
+    if (factor <= 0.f) {
+      factor = 0.f;
+    }
 
     // Refresh mob graphic origin every frame as it may change
     mob.setOrigin(mob.getTextureRect().width / 2.f, mob.getTextureRect().height / 2.f);
     hpLabel->setOrigin(hpLabel->getLocalBounds().width, 0);
 
     LayeredDrawable* bake = new LayeredDrawable(sf::Sprite(mob));
-    bake->SetShader(&shader);
+    bake->SetShader(shader);
 
     ENGINE.Draw(bake);
     delete bake;
 
     // Make a selection
-    if (INPUT.has(PRESSED_ACTION1)) {
-      AUDIO.Play(AudioType::CHIP_CONFIRM, 0);
+    if (INPUT.has(PRESSED_A)) {
+      AUDIO.Play(AudioType::CHIP_CONFIRM, AudioPriority::LOWEST);
 
       // Stop music and go to battle screen 
       AUDIO.StopStream();
@@ -328,7 +381,12 @@ int SelectMobScene::Run()
 
       Mob* mob = factory->Build();
 
-      int win = BattleScene::Run(mob);
+      Player* player = NAVIS.At(navi).GetNavi();
+
+      int win = BattleScene::Run(player, mob);
+
+      // Fix camera if offset from battle
+      ENGINE.SetCamera(camera);
 
       delete mob;
       delete factory;
@@ -341,6 +399,8 @@ int SelectMobScene::Run()
       // Re-play music
       AUDIO.Stream("resources/loops/loop_navi_customizer.ogg", true);
     }
+
+    ENGINE.Draw(textbox);
 
     sf::Texture postprocessing = ENGINE.GetPostProcessingBuffer().getTexture(); // Make a copy
     sf::Sprite transitionPost;
@@ -357,7 +417,7 @@ int SelectMobScene::Run()
     // Write contents to screen (always last step)
     ENGINE.Display();
 
-    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+    elapsed = static_cast<float>(clock.getElapsedTime().asSeconds());
   }
   delete font;
   delete mobFont;

@@ -1,6 +1,7 @@
 #pragma once
 #include "bnArtifact.h"
 #include "bnField.h"
+#include "bnAnimate.h"
 
 class LongExplosion : public Artifact
 {
@@ -10,7 +11,8 @@ private:
   float explosionProgress2;
   Sprite explosion;
   Sprite explosion2;
-  FrameAnimation explode;
+  FrameList explode;
+  Animate animator;
   float x1, x2, y1, y2;
 public:
   LongExplosion(Field* _field, Team _team);

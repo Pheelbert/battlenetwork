@@ -9,6 +9,12 @@
 // For more authentic retro experience, decrease available channels.
 #define NUM_OF_CHANNELS 10
 
+enum class AudioPriority : int {
+  LOWEST,
+  LOW,
+  HIGH
+};
+
 class AudioResourceManager {
 public:
   static AudioResourceManager& GetInstance();
@@ -16,7 +22,7 @@ public:
   void EnableAudio(bool status);
   void LoadAllSources(std::atomic<int> &status);
   void LoadSource(AudioType type, const std::string& path);
-  int Play(AudioType type, int priority = 1);
+  int Play(AudioType type, AudioPriority priority = AudioPriority::LOW);
   int Stream(std::string path, bool loop = false);
   void StopStream();
   void SetStreamVolume(float volume);

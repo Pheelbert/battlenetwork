@@ -30,3 +30,4 @@ private:
 };
 
 #define SHADERS ShaderResourceManager::GetInstance()
+#define LOAD_SHADER(x) *SHADERS.GetShader(ShaderType::x)

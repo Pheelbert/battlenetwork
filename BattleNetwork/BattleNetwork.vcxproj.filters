@@ -170,9 +170,6 @@
     <Filter Include="Battle\Entity\Character\Player\Starman\States">
       <UniqueIdentifier>{b7b66854-d776-4a16-ac13-be8464927b6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Resources\TextureResource\Props">
-      <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Overworld">
       <UniqueIdentifier>{380f4ec8-7bec-4707-ac1e-38788c83c4b0}</UniqueIdentifier>
     </Filter>
@@ -206,20 +203,56 @@
     <Filter Include="Utilities">
       <UniqueIdentifier>{8c50a11b-c013-4ca0-a58e-cfc37e58a64f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUseListener">
+    <Filter Include="Battle\Chips\ChipUseListener">
       <UniqueIdentifier>{635d6105-57c6-40d2-be0b-a016ed816e8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUseListener\Player">
+    <Filter Include="Battle\Chips\ChipUseListener\Player">
       <UniqueIdentifier>{1130e585-ede8-4349-b692-28fef5025bb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUseListener\Any">
+    <Filter Include="Battle\Chips\ChipUseListener\Any">
       <UniqueIdentifier>{66d9858f-2c9d-4e25-9578-5c0dd84e32b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUsePublisher">
+    <Filter Include="Battle\Chips\ChipUsePublisher">
       <UniqueIdentifier>{0be851a6-6c86-4ffb-a4f9-0f230a542869}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\Components\ChipUsePublisher\UI">
+    <Filter Include="Battle\Chips\ChipUsePublisher\UI">
       <UniqueIdentifier>{2ffdbd56-f900-4230-b51b-8239abe620b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Select Navi">
+      <UniqueIdentifier>{9d3a1388-2568-497b-8e9d-9c02c4cc066e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Addons">
+      <UniqueIdentifier>{1f5b033a-23dc-49c3-851a-b980cd582e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Addons\NaviRegistration">
+      <UniqueIdentifier>{7083bfe5-ae7f-40a6-9cec-6611633e79df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs">
+      <UniqueIdentifier>{cd31e114-6877-4ce3-af38-7ece927997b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs\TextBox">
+      <UniqueIdentifier>{812c75d2-cb23-4b7b-a1cd-cdaf638d726b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs\TextBox\Framed">
+      <UniqueIdentifier>{75449fa7-9b60-4729-b0c3-eadd77a1448b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs\Background">
+      <UniqueIdentifier>{f518437e-3c00-47c0-88d0-0c62e29c64ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Player\Protoman">
+      <UniqueIdentifier>{6a4a149c-363c-4995-beeb-0fe217611da6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Player\Roll">
+      <UniqueIdentifier>{34dd93df-6037-4d84-ba75-91be8baca2fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Character\Player\Roll\States">
+      <UniqueIdentifier>{a85c89af-631a-4657-9c6c-3f47c2e18ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Summons">
+      <UniqueIdentifier>{fbaa3fbf-d796-4026-82d6-ddf7c391ef31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Entity\Summons\Roll">
+      <UniqueIdentifier>{541f9cd8-4857-4700-bb63-5aa7ce04599b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -246,9 +279,6 @@
     </ClCompile>
     <ClCompile Include="bnEntity.cpp">
       <Filter>Battle\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="bnMobHealthUI.cpp">
-      <Filter>Battle\Entity\Character\Mettaur</Filter>
     </ClCompile>
     <ClCompile Include="bnEngine.cpp">
       <Filter>Engine</Filter>
@@ -358,9 +388,6 @@
     <ClCompile Include="bnVirusBackground.cpp">
       <Filter>Battle\Backgrounds</Filter>
     </ClCompile>
-    <ClCompile Include="bnBackground.cpp">
-      <Filter>Engine\Resources\TextureResource\Props</Filter>
-    </ClCompile>
     <ClCompile Include="bnProgsManBossFight.cpp">
       <Filter>Battle\Mob\Boss\ProgsMan</Filter>
     </ClCompile>
@@ -383,9 +410,6 @@
       <Filter>Engine\Animate</Filter>
     </ClCompile>
     <ClCompile Include="bnPlayer.cpp">
-      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
-    </ClCompile>
-    <ClCompile Include="bnPlayerHealthUI.cpp">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClCompile>
     <ClCompile Include="bnOverworldMap.cpp">
@@ -428,10 +452,37 @@
       <Filter>Battle\Entity\Character</Filter>
     </ClCompile>
     <ClCompile Include="bnSelectedChipsUI.cpp">
-      <Filter>Battle\Components\ChipUsePublisher\UI</Filter>
+      <Filter>Battle\Chips\ChipUsePublisher\UI</Filter>
     </ClCompile>
     <ClCompile Include="bnChipUseListener.cpp">
-      <Filter>Battle\Components\ChipUseListener</Filter>
+      <Filter>Battle\Chips\ChipUseListener</Filter>
+    </ClCompile>
+    <ClCompile Include="bnStarman.cpp">
+      <Filter>Battle\Entity\Character\Player\Starman</Filter>
+    </ClCompile>
+    <ClCompile Include="bnSelectNaviScene.cpp">
+      <Filter>Scenes\Select Navi</Filter>
+    </ClCompile>
+    <ClCompile Include="bnNaviRegistration.cpp">
+      <Filter>Engine\Addons\NaviRegistration</Filter>
+    </ClCompile>
+    <ClCompile Include="bnGridBackground.cpp">
+      <Filter>Battle\Backgrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="bnMobHealthUI.cpp">
+      <Filter>Battle\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="bnPlayerHealthUI.cpp">
+      <Filter>Battle\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="bnRoll.cpp">
+      <Filter>Battle\Entity\Character\Player\Roll</Filter>
+    </ClCompile>
+    <ClCompile Include="bnRollHeal.cpp">
+      <Filter>Battle\Entity\Summons\Roll</Filter>
+    </ClCompile>
+    <ClCompile Include="bnRollHeart.cpp">
+      <Filter>Battle\Entity\Summons\Roll</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -482,9 +533,6 @@
     </ClInclude>
     <ClInclude Include="bnDirection.h">
       <Filter>Battle\Enumerations</Filter>
-    </ClInclude>
-    <ClInclude Include="bnMobHealthUI.h">
-      <Filter>Battle\Entity\Character\Mettaur</Filter>
     </ClInclude>
     <ClInclude Include="bnEngine.h">
       <Filter>Engine</Filter>
@@ -652,12 +700,6 @@
     <ClInclude Include="bnPlayer.h">
       <Filter>Battle\Entity\Character\Player\Megaman</Filter>
     </ClInclude>
-    <ClInclude Include="bnPlayerHealthUI.h">
-      <Filter>Battle\Entity\Character\Player\Megaman</Filter>
-    </ClInclude>
-    <ClInclude Include="bnBackground.h">
-      <Filter>Engine\Resources\TextureResource\Props</Filter>
-    </ClInclude>
     <ClInclude Include="bnOverworldMap.h">
       <Filter>Overworld\Map</Filter>
     </ClInclude>
@@ -707,16 +749,67 @@
       <Filter>Battle\Entity\Character\Any\States</Filter>
     </ClInclude>
     <ClInclude Include="bnChipUseListener.h">
-      <Filter>Battle\Components\ChipUseListener</Filter>
+      <Filter>Battle\Chips\ChipUseListener</Filter>
     </ClInclude>
     <ClInclude Include="bnChipUsePublisher.h">
-      <Filter>Battle\Components\ChipUsePublisher</Filter>
+      <Filter>Battle\Chips\ChipUsePublisher</Filter>
     </ClInclude>
     <ClInclude Include="bnSelectedChipsUI.h">
-      <Filter>Battle\Components\ChipUsePublisher\UI</Filter>
+      <Filter>Battle\Chips\ChipUsePublisher\UI</Filter>
     </ClInclude>
     <ClInclude Include="bnPlayerChipUseListener.h">
-      <Filter>Battle\Components\ChipUseListener\Player</Filter>
+      <Filter>Battle\Chips\ChipUseListener\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="bnComponent.h">
+      <Filter>Battle\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="bnStarman.h">
+      <Filter>Battle\Entity\Character\Player\Starman</Filter>
+    </ClInclude>
+    <ClInclude Include="bnSelectNaviScene.h">
+      <Filter>Scenes\Select Navi</Filter>
+    </ClInclude>
+    <ClInclude Include="bnNaviRegistration.h">
+      <Filter>Engine\Addons\NaviRegistration</Filter>
+    </ClInclude>
+    <ClInclude Include="bnQueueNaviRegistration.h">
+      <Filter>Engine\Addons</Filter>
+    </ClInclude>
+    <ClInclude Include="bnTextBox.h">
+      <Filter>Prefabs\TextBox</Filter>
+    </ClInclude>
+    <ClInclude Include="bnBackground.h">
+      <Filter>Prefabs\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="bnFramedTextBox.h">
+      <Filter>Prefabs\TextBox\Framed</Filter>
+    </ClInclude>
+    <ClInclude Include="bnGridBackground.h">
+      <Filter>Battle\Backgrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="bnMobHealthUI.h">
+      <Filter>Battle\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="bnPlayerHealthUI.h">
+      <Filter>Battle\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="bnTileBehavior.h">
+      <Filter>Battle\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="bnRoll.h">
+      <Filter>Battle\Entity\Character\Player\Roll</Filter>
+    </ClInclude>
+    <ClInclude Include="bnChipSummonHandler.h">
+      <Filter>Battle\Chips\ChipUseListener\Any</Filter>
+    </ClInclude>
+    <ClInclude Include="bnRollHeal.h">
+      <Filter>Battle\Entity\Summons\Roll</Filter>
+    </ClInclude>
+    <ClInclude Include="bnRollHeart.h">
+      <Filter>Battle\Entity\Summons\Roll</Filter>
+    </ClInclude>
+    <ClInclude Include="bnEaseFunctions.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

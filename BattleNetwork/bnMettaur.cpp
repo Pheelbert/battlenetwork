@@ -36,9 +36,18 @@ Mettaur::Mettaur(Rank _rank)
   this->StateChange<MettaurIdleState>();
   name = "Mettaur";
   Entity::team = Team::BLUE;
+
   health = 40;
-  hitHeight = 0;
   textureType = TextureType::MOB_METTAUR_IDLE;
+
+  if (rank == Rank::SP) {
+    health = 100;
+    textureType = TextureType::MOB_METTAUR_IDLE_BLUE;
+    animationComponent.SetPlaybackSpeed(1.2);
+  }
+
+  hitHeight = 0;
+
   healthUI = new MobHealthUI(this);
 
   setTexture(*TEXTURES.GetTexture(textureType));
@@ -65,15 +74,15 @@ int* Mettaur::GetAnimOffset() {
   Mettaur* mob = this;
 
   int* res = new int[2];
-  res[0] = 35;  res[1] = 35;
+  res[0] = 45;  res[1] = 55;
 
-  if (mob->GetTextureType() == TextureType::MOB_METTAUR_IDLE) {
+  if (state == MOB_IDLE) {
     res[0] = 35;
     res[1] = 35;
-  } else if (mob->GetTextureType() == TextureType::MOB_METTAUR_ATTACK) {
+  } else if (state == MOB_ATTACKING) {
     res[0] = 65;
     res[1] = 95;
-  } else if (mob->GetTextureType() == TextureType::MOB_MOVE) {
+  } else {
     res[0] = 45;
     res[1] = 55;
   } 
@@ -83,6 +92,7 @@ int* Mettaur::GetAnimOffset() {
 
 void Mettaur::Update(float _elapsed) {
   this->SetShader(nullptr);
+  this->RefreshTexture();
 
   if (stunCooldown > 0) {
     stunCooldown -= _elapsed;
@@ -94,7 +104,7 @@ void Mettaur::Update(float _elapsed) {
       animationComponent.Update(_elapsed);
     }
 
-    if ((int)stunCooldown % 5 == 0) {
+    if ((((int)(stunCooldown * 15))) % 2 == 0) {
       this->SetShader(stun);
     }
 
@@ -102,6 +112,10 @@ void Mettaur::Update(float _elapsed) {
       return;
     }
   }
+
+  healthUI->Update();
+
+  if (_elapsed <= 0) return;
 
   this->StateUpdate(_elapsed);
 
@@ -125,30 +139,38 @@ void Mettaur::Update(float _elapsed) {
 
     this->LockState();
   } else {
-    this->RefreshTexture();
     animationComponent.Update(_elapsed);
   }
 
-  healthUI->Update();
   Entity::Update(_elapsed);
 }
 
 void Mettaur::RefreshTexture() {
   if (state == MOB_IDLE) {
-    textureType = TextureType::MOB_METTAUR_IDLE;
+    if (rank == Rank::SP) {
+      textureType = TextureType::MOB_METTAUR_IDLE_BLUE;
+    }
+    else {
+      textureType = TextureType::MOB_METTAUR_IDLE;
+    }
   } else if (state == MOB_MOVING) {
-    textureType = TextureType::MOB_MOVE;
+      textureType = TextureType::MOB_MOVE;
   } else if (state == MOB_ATTACKING) {
-    textureType = TextureType::MOB_METTAUR_ATTACK;
+    if (rank == Rank::SP) {
+      textureType = TextureType::MOB_METTAUR_ATTACK_BLUE;
+    }
+    else {
+      textureType = TextureType::MOB_METTAUR_ATTACK;
+    }
   }
   setTexture(*TEXTURES.GetTexture(textureType));
 
-  if (textureType == TextureType::MOB_METTAUR_IDLE) {
+  if (state == MOB_IDLE) {
     setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 25.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 45.0f);
     hitHeight = getLocalBounds().height;
-  } else if (textureType == TextureType::MOB_MOVE) {
+  } else if (state == MOB_MOVING) {
     setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 35.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 60.0f);
-  } else if (textureType == TextureType::MOB_METTAUR_ATTACK) {
+  } else if (state == MOB_ATTACKING) {
     setPosition(tile->getPosition().x + tile->GetWidth() / 2.0f - 55.0f, tile->getPosition().y + tile->GetHeight() / 2.0f - 105.0f);
     hitHeight = getLocalBounds().height;
   }

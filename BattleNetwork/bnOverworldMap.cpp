@@ -1,24 +1,10 @@
 #include "bnOverworldMap.h"
+#include "bnEngine.h"
 
 namespace Overworld {
   Map::Map(int numOfCols, int numOfRows, int tileWidth, int tileHeight) : cols(numOfCols), rows(numOfRows), tileWidth(tileWidth), tileHeight(tileHeight), sf::Drawable() {
-    for (int i = 0; i < numOfCols; i++) {
-      for (int j = 0; j < numOfRows; j++) {
-        map.push_back(new Tile(sf::Vector2f((float)i*tileWidth, (float)j*tileHeight)));
 
-        int randLight = rand() % 100;
-
-        if (lights.size() < 50 && randLight < 10) {
-          sf::Uint8 lighten = 180;
-          sf::Uint8 r = rand() % (256 - lighten);
-          sf::Uint8 g = rand() % (256 - lighten);
-          sf::Uint8 b = rand() % (256 - lighten);
-          double radius = (double)(rand() % 200);
-          lights.push_back(new Light(sf::Vector2f(((float)i*tileWidth) + tileWidth / 2.0, ((float)j*tileHeight) + tileHeight / 2.0), sf::Color(r + lighten, g + lighten, b + lighten, 255), radius));
-        }
-      }
-    }
-
+    // We must have one for the origin
     sf::Uint8 lighten = 255;
     lights.push_back(new Light(sf::Vector2f(0, 0), sf::Color(lighten, lighten, lighten, 255), 100));
 
@@ -32,13 +18,13 @@ namespace Overworld {
   void Map::ToggleLighting(bool state) {
     enableLighting = state;
 
-    if (!enableLighting) {
+    /*if (!enableLighting) {
       for (int i = 0; i < lights.size(); i++) {
         delete lights[i];
       }
 
       lights.clear();
-    }
+    }*/
   }
 
   const sf::Vector2f Map::ScreenToWorld(sf::Vector2f screen) const
@@ -62,12 +48,24 @@ namespace Overworld {
     cam = _camera;
   }
 
+  void Map::AddLight(Overworld::Light * _light)
+  {
+    lights.push_back(_light);
+  }
+
   void Map::AddSprite(sf::Sprite * _sprite)
   {
     sprites.push_back(_sprite);
   }
 
-  void Map::Update()
+  void Map::RemoveSprite(sf::Sprite * _sprite) {
+    auto pos = std::find(sprites.begin(), sprites.end(), _sprite);
+
+    if(pos != sprites.end())
+      sprites.erase(pos);
+  }
+
+  void Map::Update(double elapsed)
   {
     for (int i = 0; i < map.size(); i++) {
       if (map[i]->ShouldRemove()) {
@@ -76,6 +74,9 @@ namespace Overworld {
         i--;
       }
     }
+
+    std::sort(sprites.begin(), sprites.end(), [](const sf::Sprite* sprite, const sf::Sprite* other) { return sprite->getPosition().y < other->getPosition().y; });
+
   }
 
   void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -114,7 +115,9 @@ namespace Overworld {
       if (cam) {
         if (lights.size() > 0) {
           sf::View view = cam->GetView();
-          lights[lights.size() - 1]->SetPosition(IsoToOrthogonal(view.getCenter() - (view.getSize() / 4.0f)));
+          sf::Vector2i posi = sf::Mouse::getPosition(*ENGINE.GetWindow());
+          sf::Vector2f pos = sf::Vector2f((float)posi.x, (float)posi.y);
+          lights[0]->SetPosition(IsoToOrthogonal(pos + (view.getCenter() - (view.getSize() / 8.0f))));
         }
 
         sf::View view = cam->GetView();
@@ -123,7 +126,7 @@ namespace Overworld {
         pos -= offset;
       }
 
-      for (int j = 0; j < lights.size(); j++) {
+      for (int j = 0; j < lights.size() && enableLighting; j++) {
         sf::View view = cam->GetView();
         sf::Vector2f offset = IsoToOrthogonal(view.getCenter() - (view.getSize() / 2.0f));
 
@@ -164,7 +167,7 @@ namespace Overworld {
     }
 
     if (cam) {
-      for (int i = 0; i < lights.size(); i++) {
+      for (int i = 0; i < lights.size() && enableLighting; i++) {
         sf::Sprite originTest(*TEXTURES.GetTexture(TextureType::LIGHT));
 
         sf::Vector2f pos = lights[i]->GetPosition();
@@ -174,7 +177,9 @@ namespace Overworld {
 
         pos -= offset;
 
-        originTest.setPosition(OrthoToIsometric(pos*2.0f));
+        pos = OrthoToIsometric(pos*2.0f);
+
+        originTest.setPosition(pos);
         target.draw(originTest);
       }
     }
@@ -185,6 +190,7 @@ namespace Overworld {
       sf::Sprite tileSprite(*sprites[i]->getTexture());
       tileSprite.setTextureRect(sprites[i]->getTextureRect());
       tileSprite.setPosition(sprites[i]->getPosition());
+      tileSprite.setOrigin(sprites[i]->getOrigin());
 
       if (enableLighting) {
         tileSprite.setColor(sf::Color::Black); // no lighting
@@ -211,18 +217,13 @@ namespace Overworld {
       pos = sprites[i]->getPosition();
 
       if (cam) {
-        if (lights.size() > 0) {
-          sf::View view = cam->GetView();
-          lights[lights.size() - 1]->SetPosition(IsoToOrthogonal(view.getCenter() - (view.getSize() / 4.0f)));
-        }
-
         sf::View view = cam->GetView();
         sf::Vector2f offset = IsoToOrthogonal(view.getCenter() - (view.getSize() / 2.0f));
 
         pos -= offset;
       }
 
-      for (int j = 0; j < lights.size(); j++) {
+      for (int j = 0; j < lights.size() && enableLighting; j++) {
         sf::View view = cam->GetView();
         sf::Vector2f offset = IsoToOrthogonal(view.getCenter() - (view.getSize() / 2.0f));
 

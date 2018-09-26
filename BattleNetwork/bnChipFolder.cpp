@@ -23,7 +23,7 @@ ChipFolder::ChipFolder() {
 
 
 ChipFolder::~ChipFolder() {
-  for (int i = folderSize; i >= 0; i--) {
+  for (int i = folderSize-1; i >= 0; i--) {
     delete folderList[i];
   }
 

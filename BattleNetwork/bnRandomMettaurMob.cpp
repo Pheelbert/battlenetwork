@@ -1,5 +1,7 @@
 #include "bnRandomMettaurMob.h"
 #include "bnProgsMan.h"
+#include "bnCanodumb.h"
+#include "bnCanodumbIdleState.h"
 #include "bnBattleItem.h"
 #include "bnStringEncoder.h"
 #include "bnChip.h"
@@ -22,19 +24,30 @@ Mob* RandomMettaurMob::Build() {
 
   for (int i = 0; i < field->GetWidth(); i++) {
     for (int j = 0; j < field->GetHeight(); j++) {
-      Tile* tile = field->GetAt(i + 1, j + 1);
+      Battle::Tile* tile = field->GetAt(i + 1, j + 1);
 
       tile->SetState((TileState)(rand() % (int)TileState::EMPTY)); // Make it random excluding an empty tile
       //tile->SetState(TileState::LAVA); 
 
       if (tile->IsWalkable() && tile->GetTeam() == Team::BLUE) {
         if (rand() % 50 > 30) {
-          //if (rand() % 10 > 8) {
-          //  mob->Spawn<ProgsMan, ProgsManIdleState>(i + 1, j + 1);
-          //}
-          //else {
+          if (rand() % 10 > 8) {
             mob->Spawn<Rank1<Mettaur, MettaurIdleState>>(i + 1, j + 1);
-          //}
+          }
+          else if(rand() % 10 > 5) {
+            mob->Spawn<RankSP<Mettaur, MettaurIdleState>>(i + 1, j + 1);
+          }
+          else if (rand() % 10 > 3) {
+            if (rand() % 10 > 8) {
+              mob->Spawn<Rank1<Canodumb, CanodumbIdleState>>(i + 1, j + 1);
+            }
+            else if (rand() % 10 > 5) {
+              mob->Spawn<Rank2<Canodumb, CanodumbIdleState>>(i + 1, j + 1);
+            }
+            else {
+              mob->Spawn<Rank3<Canodumb, CanodumbIdleState>>(i + 1, j + 1);
+            }
+          }
         }
       }
     }
@@ -45,7 +58,7 @@ Mob* RandomMettaurMob::Build() {
     int y = (field->GetHeight() / 2) + 1;
     mob->Spawn<Rank1<Mettaur, MettaurIdleState>>(x, y);
 
-    Tile* tile = field->GetAt(x, y);
+    Battle::Tile* tile = field->GetAt(x, y);
     if (!tile->IsWalkable()) { tile->SetState(TileState::NORMAL); }
   }
 

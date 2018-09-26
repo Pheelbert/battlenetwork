@@ -14,7 +14,6 @@ private:
 
   void ApplyUniforms();
   void ResetUniforms();
-  sf::Shader* Get();
 
 public:
   SmartShader();
@@ -26,5 +25,6 @@ public:
   void SetUniform(std::string uniform, float fvalue);
   void SetUniform(std::string uniform, int ivalue);
   void Reset();
+  sf::Shader* Get();
 };
 

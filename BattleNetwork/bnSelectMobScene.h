@@ -1,7 +1,10 @@
 #pragma once
+
+#include "bnNaviRegistration.h"
+
 class SelectMobScene
 {
 public:
-  static int Run();
+  static int Run(SelectedNavi navi);
 };
 

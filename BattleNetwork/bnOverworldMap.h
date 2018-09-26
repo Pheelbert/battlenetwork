@@ -4,6 +4,7 @@
 #include "bnTextureResourceManager.h"
 #include "bnCamera.h"
 #include "bnOverworldLight.h"
+#include "bnTile.h"
 
 namespace Overworld {
   class Tile {
@@ -26,7 +27,8 @@ namespace Overworld {
   public:
     Tile() { pos = sf::Vector2f(0, 0); LoadTexture(); cleanup = false;  }
     Tile(const Tile& rhs) { texture = rhs.texture; pos = rhs.pos;  cleanup = false; }
-    Tile(sf::Texture* _texture) { texture = _texture; cleanup = false; }
+
+    Tile(sf::Texture* _texture, sf::Vector2f pos = sf::Vector2f()) : pos(pos) { texture = _texture; cleanup = false; }
     Tile(sf::Vector2f pos) : pos(pos) { LoadTexture(); cleanup = false;}
     ~Tile() { ; }
     const sf::Vector2f GetPos() const { return pos; }
@@ -91,9 +93,12 @@ namespace Overworld {
     ~Map();
 
     void SetCamera(Camera* _camera);
-    void AddSprite(sf::Sprite* _sprite);
 
-    virtual void Update();
+    void AddLight(Overworld::Light* _light);
+    void AddSprite(sf::Sprite* _sprite);
+    void RemoveSprite(sf::Sprite * _sprite);
+
+    virtual void Update(double elapsed);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     const sf::Vector2i GetTileSize() const;

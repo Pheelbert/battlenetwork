@@ -10,8 +10,8 @@
 #include "bnTextureResourceManager.h"
 #include "bnAudioResourceManager.h"
 
-#define COOLDOWN 40.0f
-#define DAMAGE_COOLDOWN 50.0f
+#define COOLDOWN 40.0f/1000.0f
+#define DAMAGE_COOLDOWN 50.0f/1000.0f
 
 #define BULLET_ANIMATION_SPRITES 3
 #define BULLET_ANIMATION_WIDTH 30
@@ -26,7 +26,7 @@ Cannon::Cannon(Field* _field, Team _team, int _damage) {
   deleted = false;
   hit = false;
   progress = 0.0f;
-  hitHeight = 0.0f;
+  hitHeight = 10.0f;
   srand((unsigned int)time(nullptr));
   random = rand() % 20 - 20;
 
@@ -36,7 +36,7 @@ Cannon::Cannon(Field* _field, Team _team, int _damage) {
  
   setScale(2.f, 2.f);
   for (int x = 0; x < BULLET_ANIMATION_SPRITES; x++) {
-    animation.addFrame(0.3f, IntRect(BULLET_ANIMATION_WIDTH*x, 0, BULLET_ANIMATION_WIDTH, BULLET_ANIMATION_HEIGHT));
+    animation.Add(0.3f, IntRect(BULLET_ANIMATION_WIDTH*x, 0, BULLET_ANIMATION_WIDTH, BULLET_ANIMATION_HEIGHT));
   }
 }
 
@@ -49,8 +49,8 @@ void Cannon::Update(float _elapsed) {
       setTexture(*texture);
       setPosition(tile->getPosition().x + tile->GetWidth() / 2.f + random, tile->getPosition().y + tile->GetHeight() / 2.f - hitHeight);
     }
-    progress += 0.2f;
-    animation(*this, fmin(progress, 1.0f));
+    progress += 3 * _elapsed;
+    animator(fmin(progress, 1.0f), *this, animation);
     if (progress >= 1.f) {
       deleted = true;
       Entity::Update(_elapsed);
@@ -71,7 +71,7 @@ void Cannon::Update(float _elapsed) {
 
 bool Cannon::Move(Direction _direction) {
   tile->RemoveEntity(this);
-  Tile* next = nullptr;
+  Battle::Tile* next = nullptr;
   if (_direction == Direction::UP) {
     if (tile->GetY() - 1 > 0) {
       next = field->GetAt(tile->GetX(), tile->GetY() - 1);
@@ -109,7 +109,7 @@ bool Cannon::Move(Direction _direction) {
 }
 
 void Cannon::Attack(Entity* _entity) {
-  if (hit) {
+  if (hit || deleted) {
     return;
   }
 
@@ -124,8 +124,8 @@ void Cannon::Attack(Entity* _entity) {
     Character* isCharacter = dynamic_cast<Character*>(_entity);
 
     if (isCharacter && isCharacter->IsCountered()) {
-      AUDIO.Play(AudioType::COUNTER, 0);
-      isCharacter->Stun(1000);
+      AUDIO.Play(AudioType::COUNTER, AudioPriority::LOWEST);
+      isCharacter->Stun(1);
 
       if (isCharacter->GetHealth() == 0) {
         // Slide entity back a few pixels
@@ -137,9 +137,4 @@ void Cannon::Attack(Entity* _entity) {
 
 vector<Drawable*> Cannon::GetMiscComponents() {
   return vector<Drawable*>();
-}
-
-void Cannon::AddAnimation(int _state, FrameAnimation _animation, float _duration) {
-  //animator.addAnimation(static_cast<Buster>(_state), _animation, sf::seconds(_duration));
-  assert(false && "Buster does not have an animator");
 }

@@ -13,7 +13,7 @@ using std::vector;
 class Entity;
 class Player;
 
-class PlayerHealthUI {
+class PlayerHealthUI : public sf::Drawable{
 public:
   PlayerHealthUI(Entity* _entity);
   PlayerHealthUI(Player* _player);
@@ -21,6 +21,8 @@ public:
 
   bool GetNextComponent(Drawable*& out);
   void Update();
+  void OffsetPosition(const sf::Vector2f offset); // Get rid of this eventually. See BattleScene.cpp line 241
+  virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
   int lastHP;
@@ -31,4 +33,5 @@ private:
   Sprite sprite;
   Texture* texture;
   vector<Drawable*> components;
+  bool loaded;
 };

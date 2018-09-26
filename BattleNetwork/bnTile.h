@@ -15,69 +15,74 @@ class Field;
 #include "bnTextureType.h"
 #include "bnTileState.h"
 
-class Tile : public Sprite {
-public:
-  Tile(void);
-  Tile(int _x, int _y);
-  ~Tile(void);
+namespace Battle {
+  class Tile : public Sprite {
+  public:
+    Tile(void);
+    Tile(int _x, int _y);
+    ~Tile(void);
 
-  const TileState GetState() const;
+    Tile(const Tile& rhs);
+    Tile& operator=(const Tile& other);
 
-  void SetField(Field* _field);
+    const TileState GetState() const;
 
-  int GetX() const;
-  int GetY() const;
+    void SetField(Field* _field);
 
-  Team GetTeam() const;
-  void SetTeam(Team _team);
+    int GetX() const;
+    int GetY() const;
 
-  float GetWidth() const;
-  float GetHeight() const;
+    Team GetTeam() const;
+    void SetTeam(Team _team);
 
-  void SetState(TileState _state);
-  void RefreshTexture();
+    float GetWidth() const;
+    float GetHeight() const;
 
-  bool IsWalkable() const;
-  bool IsCracked() const;
+    void SetState(TileState _state);
+    void RefreshTexture();
 
-  bool IsHighlighted() const;
+    bool IsWalkable() const;
+    bool IsCracked() const;
 
-  void AddEntity(Entity* _entity);
-  void RemoveEntity(Entity* _entity);
-  bool ContainsEntity(Entity* _entity) const;
-  template<class Type> bool ContainsEntityType();
-  void AffectEntities(Spell* caller);
-  bool GetNextEntity(Entity*& out) const;
+    bool IsHighlighted() const;
 
-  void Update(float _elapsed);
+    void AddEntity(Entity* _entity);
+    void RemoveEntity(Entity* _entity);
+    bool ContainsEntity(Entity* _entity) const;
+    template<class Type> bool ContainsEntityType();
+    void AffectEntities(Spell* caller);
+    bool GetNextEntity(Entity*& out) const;
 
-  vector<Entity*> entities;
-private:
-  int x;
-  int y;
-  Team team;
-  TileState state;
-  TextureType textureType;
-  float elapsed;
- 
-  float width;
-  float height;
-  Field* field;
-  float cooldown;
-  float cooldownLength;
-  bool hasSpell;
-};
+    void Update(float _elapsed);
+
+    vector<Entity*> entities;
+  private:
+    int x;
+    int y;
+    Team team;
+    TileState state;
+    TextureType textureType;
+    float elapsed;
+
+    float width;
+    float height;
+    Field* field;
+    float cooldown;
+    float cooldownLength;
+    bool hasSpell;
+  };
 
 
-template<class Type>
-bool Tile::ContainsEntityType() {
-  // std::cout << "len of entities is: " << entities.size() << "\n";
+  template<class Type>
+  bool Tile::ContainsEntityType() {
+    // std::cout << "len of entities is: " << entities.size() << "\n";
 
-  for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
-    if (dynamic_cast<Type*>(*it) != nullptr) {
-      return true;
+    for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
+      if (dynamic_cast<Type*>(*it) != nullptr) {
+        return true;
+      }
     }
-  }
 
-  return false;
+    return false;
+  }
 }

@@ -7,12 +7,12 @@ Field::Field(void) {
 Field::Field(int _width, int _height)
   : width(_width),
   height(_height),
-  tiles(vector<vector<Tile*>>()),
+  tiles(vector<vector<Battle::Tile*>>()),
   entities(vector<Entity*>()) {
   for (int y = 0; y < _height; y++) {
-    vector<Tile*> row = vector<Tile*>();
+    vector<Battle::Tile*> row = vector<Battle::Tile*>();
     for (int x = 0; x < _width; x++) {
-      Tile* tile = new Tile(x + 1, y + 1);
+      Battle::Tile* tile = new Battle::Tile(x + 1, y + 1);
       tile->SetField(this);
       row.push_back(tile);
     }
@@ -36,7 +36,7 @@ int Field::GetHeight() const {
   return height;
 }
 
-bool Field::GetNextTile(Tile*& out) {
+bool Field::GetNextTile(Battle::Tile*& out) {
   static int y = 0;
   while (y < height) {
     static int x = width-1;
@@ -80,10 +80,10 @@ void Field::RemoveEntity(Entity* _entity) {
   }
 }
 
-Tile* Field::FindEntity(Entity* _entity) const {
+Battle::Tile* Field::FindEntity(Entity* _entity) const {
   for (int y = 1; y <= height; y++) {
     for (int x = 1; x <= width; x++) {
-      Tile* tile = GetAt(x, y);
+      Battle::Tile* tile = GetAt(x, y);
       if (tile->ContainsEntity(_entity)) {
         return tile;
       }
@@ -109,7 +109,7 @@ void Field::SetAt(int _x, int _y, Team _team) {
   tiles[_y - 1][_x - 1]->SetTeam(_team);
 }
 
-Tile* Field::GetAt(int _x, int _y) const {
+Battle::Tile* Field::GetAt(int _x, int _y) const {
   if (_x <= 0 || _x > 6) return nullptr;
   if (_y <= 0 || _y > 3) return nullptr;
 
@@ -122,9 +122,7 @@ void Field::Update(float _elapsed) {
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
       tiles[y][x]->Update(_elapsed);
-      entityCount += tiles[y][x]->entities.size();
+      entityCount += (int)tiles[y][x]->entities.size();
     }
   }
-
-  std::cout << "# of entities: " << entityCount << "\n";
 }

@@ -21,6 +21,8 @@ int FolderScene::Run()
 {
   Camera camera(ENGINE.GetDefaultView());
 
+  ENGINE.SetCamera(camera);
+
   // Menu name font
   sf::Font* font = TEXTURES.LoadFontFromFile("resources/fonts/dr_cain_terminal.ttf");
   sf::Text* menuLabel = new sf::Text("Library", *font);
@@ -28,7 +30,7 @@ int FolderScene::Run()
   menuLabel->setPosition(sf::Vector2f(20.f, 5.0f));
 
   // Selection input delays
-  double maxSelectInputCooldown = 1000.0f / 2.f; // half of a second
+  double maxSelectInputCooldown = 0.5; // half of a second
   double selectInputCooldown = maxSelectInputCooldown;
 
   // Chip UI font
@@ -117,7 +119,6 @@ int FolderScene::Run()
     INPUT.update();
 
     ENGINE.Clear();
-    ENGINE.SetView(camera.GetView());
 
     camera.Update(elapsed);
 
@@ -171,6 +172,7 @@ int FolderScene::Run()
 
     int offset = (int)(iter->GetElement());
     element.setTextureRect(sf::IntRect(14 * offset, 0, 14, 14));
+    element.setPosition(2.f*25.f, 143.f);
     ENGINE.Draw(element, false);
 
     // Now that we are at the viewing range, draw each chip in the list
@@ -189,18 +191,18 @@ int FolderScene::Run()
 
         int offset = (int)(iter->GetElement());
         element.setTextureRect(sf::IntRect(14 * offset, 0, 14, 14));
-        element.setPosition(2.f*178.f, 65.0f + (32.f*i));
+        element.setPosition(2.f*173.f, 65.0f + (32.f*i));
         ENGINE.Draw(element, false);
 
         chipLabel->setOrigin(0, 0);
-        chipLabel->setPosition(2.f*195.f, 60.0f + (32.f*i));
+        chipLabel->setPosition(2.f*190.f, 60.0f + (32.f*i));
         chipLabel->setString(std::string() + iter->GetCode());
         ENGINE.Draw(chipLabel, false);
 
         //Draw rating
         unsigned rarity = iter->GetRarity()-1;
         stars.setTextureRect(sf::IntRect(0, 15*rarity, 22, 14));
-        stars.setPosition(2.f*204.f, 74.0f + (32.f*i));
+        stars.setPosition(2.f*199.f, 74.0f + (32.f*i));
         ENGINE.Draw(stars, false);
 
         iter++;
@@ -216,7 +218,7 @@ int FolderScene::Run()
           // Go to previous mob 
           selectInputCooldown = maxSelectInputCooldown;
           currChipIndex--;
-          AUDIO.Play(AudioType::CHIP_SELECT, 1);
+          AUDIO.Play(AudioType::CHIP_SELECT);
         }
       }
       else if (INPUT.has(PRESSED_DOWN)) {
@@ -226,7 +228,7 @@ int FolderScene::Run()
           // Go to next mob 
           selectInputCooldown = maxSelectInputCooldown;
           currChipIndex++;
-          AUDIO.Play(AudioType::CHIP_SELECT, 1);
+          AUDIO.Play(AudioType::CHIP_SELECT);
         }
       }
       else {
@@ -236,7 +238,7 @@ int FolderScene::Run()
       currChipIndex = std::max(0, currChipIndex);
       currChipIndex = std::min(numOfChips-1, currChipIndex);
 
-      if (INPUT.has(PRESSED_ACTION2)) {
+      if (INPUT.has(PRESSED_B)) {
         gotoNextScene = true;
         AUDIO.Play(AudioType::CHIP_DESC_CLOSE);
       }
@@ -244,10 +246,10 @@ int FolderScene::Run()
 
     if (elapsed > 0) {
       if (gotoNextScene) {
-        transitionProgress += 0.1f / elapsed;
+        transitionProgress += 1 * elapsed;
       }
       else {
-        transitionProgress -= 0.1f / elapsed;
+        transitionProgress -= 1 * elapsed;
       }
     }
 
@@ -275,7 +277,7 @@ int FolderScene::Run()
     // Write contents to screen (always last step)
     ENGINE.Display();
 
-    elapsed = static_cast<float>(clock.getElapsedTime().asMilliseconds());
+    elapsed = static_cast<float>(clock.getElapsedTime().asSeconds());
   }
   delete font;
   delete chipFont;

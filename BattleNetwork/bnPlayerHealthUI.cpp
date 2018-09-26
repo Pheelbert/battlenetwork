@@ -19,9 +19,10 @@ PlayerHealthUI::PlayerHealthUI(Player* _player)
   sprite.setTexture(*texture);
   sprite.setPosition(3.f, 0.0f);
   sprite.setScale(2.f, 2.f);
-  components.push_back(&sprite);
-  components.push_back(&text);
+
   lastHP = currHP = _player->GetHealth();
+  text = Text(to_string(currHP), *font);
+  loaded = false;
 }
 
 PlayerHealthUI::~PlayerHealthUI(void) {
@@ -38,8 +39,18 @@ bool PlayerHealthUI::GetNextComponent(Drawable*& out) {
   return false;
 }
 
+void PlayerHealthUI::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+  target.draw(sprite);
+  target.draw(text);
+}
+
 void PlayerHealthUI::Update() {
   if (player) {
+    if (!loaded) {
+      lastHP = currHP = player->GetHealth();
+      loaded = true;
+    }
+
     if (lastHP != player->GetHealth()) {
       if (currHP > player->GetHealth()) {
         currHP -= 1;
@@ -50,7 +61,8 @@ void PlayerHealthUI::Update() {
       }
     }
 
-    text = Text(to_string(currHP), *font);
+    text.setFillColor(sf::Color::White);
+    text.setString(to_string(currHP));
     text.setOrigin(text.getLocalBounds().width, 0);
     text.setPosition(80.0f, -1.f);
     text.setScale(0.8f, 0.8f);
@@ -64,4 +76,10 @@ void PlayerHealthUI::Update() {
     text.setOutlineColor(sf::Color(48, 56, 80));
     text.setOutlineThickness(2.f);
   }
+}
+
+void PlayerHealthUI::OffsetPosition(const sf::Vector2f offset)
+{
+  text.setPosition(offset + sf::Vector2f(80.f, -1.f));
+  sprite.setPosition(offset + sf::Vector2f(3.f, 0.0f));
 }

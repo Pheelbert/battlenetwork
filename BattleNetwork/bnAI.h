@@ -85,14 +85,14 @@ public:
   }
 
   void StateUpdate(float _elapsed) {
-    if (stateMachine) {
+    if (stateMachine != nullptr) {
       AIState<T>* nextState = stateMachine->Update(_elapsed, *ref);
 
-      if (nextState) {
+      if (nextState != nullptr) {
         stateMachine->OnLeave(*ref);
         delete stateMachine;
 
-        stateMachine = std::move(nextState);
+        stateMachine = nextState;
         stateMachine->OnEnter(*ref);
       }
     }
